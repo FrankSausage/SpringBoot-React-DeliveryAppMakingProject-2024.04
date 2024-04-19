@@ -14,12 +14,15 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 
 @Entity
 @Table(name = "Menu")
 public class Menu {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column( columnDefinition = "BIGINT")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long menuId;
     private Long storeId;
 

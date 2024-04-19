@@ -8,13 +8,16 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 
 
 @Entity
 @Table(name = "MenuOption")
 public class MenuOption {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column( columnDefinition = "BIGINT")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long menuOptionId;
     private Long menuId;
 

@@ -8,12 +8,15 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 
 @Entity
 @Table(name = "Dibs")
 public class Dibs {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column( columnDefinition = "BIGINT")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
     private Long storeId;
 
