@@ -15,8 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "Stores")
 public class Stores {
     @Id
-    @Column( columnDefinition = "BIGINT")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long storeId;
 
     @Column(nullable = false)

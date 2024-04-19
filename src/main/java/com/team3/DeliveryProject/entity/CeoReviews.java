@@ -15,8 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "CeoReviews")
 public class CeoReviews {
     @Id
-    @Column( columnDefinition = "BIGINT")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
 
     @Column(nullable = true)

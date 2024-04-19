@@ -15,8 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "Carts")
 public class Carts {
     @Id
-    @Column( columnDefinition = "BIGINT")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartId;
     private Long userId;
     private Long storeId;

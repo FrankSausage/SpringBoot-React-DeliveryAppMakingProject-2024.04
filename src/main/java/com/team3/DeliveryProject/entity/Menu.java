@@ -21,8 +21,7 @@ import lombok.ToString;
 @Table(name = "Menu")
 public class Menu {
     @Id
-    @Column( columnDefinition = "BIGINT")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long menuId;
     private Long storeId;
 

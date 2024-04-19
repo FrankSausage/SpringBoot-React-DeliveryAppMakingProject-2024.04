@@ -18,8 +18,7 @@ import java.time.LocalDateTime;
 @Table(name = "Address")
 public class Address {
     @Id
-    @Column( columnDefinition = "BIGINT")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long addressId;
     private Long userId;
 

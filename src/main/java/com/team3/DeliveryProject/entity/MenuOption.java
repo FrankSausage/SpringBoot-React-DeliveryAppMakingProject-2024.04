@@ -16,13 +16,12 @@ import java.time.LocalDateTime;
 @Table(name = "MenuOption")
 public class MenuOption {
     @Id
-    @Column( columnDefinition = "BIGINT")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long menuOptionId;
     private Long menuId;
 
     @Column(nullable = false)
-    private String option;
+    private String menuOption;
 
     @Column(nullable = false)
     private String content;
