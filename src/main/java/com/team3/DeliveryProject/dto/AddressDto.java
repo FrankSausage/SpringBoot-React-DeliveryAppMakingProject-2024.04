@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class AddressDto {
-    private int addressId;
-    private int userId;
+    private Long addressId;
+    private Long userId;
     private String address;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
@@ -21,10 +21,14 @@ public class AddressDto {
 
     public static AddressDto toDTO(Address entity) {
         return AddressDto.builder()
+                .addressId(entity.getAddressId())
+                .userId(entity.getUserId())
                 .address(entity.getAddress())
                 .createdDate(entity.getCreatedDate())
                 .modifiedDate(entity.getModifiedDate())
                 .status(entity.getStatus())
                 .build();
     }
+
+
 }

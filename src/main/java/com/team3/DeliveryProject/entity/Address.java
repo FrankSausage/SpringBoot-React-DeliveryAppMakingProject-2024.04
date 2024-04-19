@@ -1,19 +1,16 @@
 package com.team3.DeliveryProject.entity;
 
-import com.team3.DeliveryProject.dto.AddressDto;
+
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
+
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Slf4j
+
 
 @Entity
 @Table(name = "Address")
@@ -22,6 +19,7 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long addressId;
     private Long userId;
+
     @Column(nullable = false)
     private String address;
 
@@ -30,6 +28,7 @@ public class Address {
 
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime modifiedDate;
-    @Column(name = "status")
+
+    @Column(nullable = false)
     private String status;
 }

@@ -1,5 +1,6 @@
 package com.team3.DeliveryProject.dto;
 
+import com.team3.DeliveryProject.entity.Users;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class UsersDto {
-    private int userId;
+    private Long userId;
     private String password;
     private String name;
     private String phone;
@@ -23,5 +24,21 @@ public class UsersDto {
     private LocalDateTime modifiedDate;
     private String status;
     private int point;
+
+    public static UsersDto toDTO(Users entity) {
+        return UsersDto.builder()
+                .userId(entity.getUserId())
+                .password(entity.getPassword())
+                .name(entity.getName())
+                .phone(entity.getPhone())
+                .email(entity.getEmail())
+                .grade(entity.getGrade())
+                .role(entity.getRole())
+                .currentAddress(entity.getCurrentAddress())
+                .createdDate(entity.getCreatedDate())
+                .status(entity.getStatus())
+                .point(entity.getPoint())
+                .build();
+    }
 
 }
