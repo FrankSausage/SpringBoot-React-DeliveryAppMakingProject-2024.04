@@ -18,7 +18,7 @@ export default function SignUp() {
   const [username, setUsername] = useState('');
   const [isUsernameAvailable, setIsUsernameAvailable] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState('');
-
+  // 우편 번호 및 주소를 가져오기 위한 부분
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
       const script = document.createElement('script');
@@ -36,22 +36,27 @@ export default function SignUp() {
       // 언마운트 시 스크립트 제거 로직
     };
   }, []);
-
+  
   const handleFindPostcode = () => {
     findPostcode(setPostcode, setRoadAddress, setJibunAddress, setExtraAddress); // use findPostcode from AddressUtil
   };
-
+  // 데이터를 압축해서 보내기 위한 곳
   const handleSubmit = (event) => {
-    // event.preventDefault();
+    event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    console.log({         // 데이터가 입력이 잘 되었는지 출력 
       email: data.get('email'),
       password: data.get('password'),
-      gender: data.get('gender'),
+      gender: gender,
       phone: data.get('phone'),
-
+      address: {
+        postcode: postcode,
+        roadAddress: roadAddress,
+        extraAddress: extraAddress,
+        detailAddress: data.get('address'), // 상세주소는 FormData에서 직접 가져옵니다.
+      }
     });
-
+    // 비밀 번호 일치 불일치 확인 부분
     const password = data.get('password');
     const password2 = data.get('password2');
     if (password !== password2) {
@@ -101,7 +106,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="uid"        //userId로 수정해야 할 것 같음
+                  id="uid"       
                   label="아이디"
                   name="lastName"
                   autoComplete="family-name"
@@ -121,7 +126,7 @@ export default function SignUp() {
                   <Typography variant="caption" color="error">아이디가 이미 사용 중입니다.</Typography>
                 )}
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12}>       
                 <TextField
                   required
                   fullWidth
