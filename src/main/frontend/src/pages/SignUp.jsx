@@ -17,6 +17,7 @@ export default function SignUp() {
   const [passwordMatch, setPasswordMatch] = useState(true);
   const [username, setUsername] = useState('');
   const [isUsernameAvailable, setIsUsernameAvailable] = useState(true);
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
@@ -61,6 +62,17 @@ export default function SignUp() {
 
   const checkUsernameAvailability = () => {
     setIsUsernameAvailable(username !== '');
+  };
+  const formatPhoneNumber = (phoneNumberValue) => {
+    const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
+    //  핸드폰 입력 formatting (e.g., XXX-XXXX-XXXX)
+    const formattedPhoneNumber = strippedPhoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+    return formattedPhoneNumber;
+  };
+
+  const handlePhoneNumberChange = (event) => {
+    const formattedPhoneNumber = formatPhoneNumber(event.target.value);
+    setPhoneNumber(formattedPhoneNumber);
   };
 
   return (
@@ -150,6 +162,21 @@ export default function SignUp() {
                   label="이메일"
                   name="email"
                   autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="telephone"
+                  label="휴대전화"
+                  name="telephone"
+                  autoComplete="telephone"
+                  value={phoneNumber}
+                  onChange={handlePhoneNumberChange}
+                  InputProps={{
+                    inputMode: 'numeric',
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
