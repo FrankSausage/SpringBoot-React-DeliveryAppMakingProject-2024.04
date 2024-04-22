@@ -3,8 +3,11 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Gri
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
-import { Link } from 'react-router-dom';
+import { Form, Link } from 'react-router-dom';
 import { findPostcode } from '../utils/AddressUtil'; 
+import { register, registerTest } from '../utils/firebase';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import axios from 'axios';
 
 const defaultTheme = createTheme();
 
@@ -13,10 +16,11 @@ export default function SignUp() {
   const [roadAddress, setRoadAddress] = useState('');
   const [jibunAddress, setJibunAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
-  const [gender, setGender] = useState('');
+  const [role, setRole] = useState('');
   const [passwordMatch, setPasswordMatch] = useState(true);
   const [username, setUsername] = useState('');
   const [isUsernameAvailable, setIsUsernameAvailable] = useState(true);
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
@@ -40,15 +44,13 @@ export default function SignUp() {
     findPostcode(setPostcode, setRoadAddress, setJibunAddress, setExtraAddress); // use findPostcode from AddressUtil
   };
 
-  const handleSubmit = (event) => {
+const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-      gender: gender,
-    });
-
+    const data = new FormData(event.currentTarget)
+    setFormData(data)
+      .then(res => register(res))
+      .then(() => {axios.post('/dp/test/signup', data)});
+      
     const password = data.get('password');
     const password2 = data.get('password2');
     if (password !== password2) {
@@ -58,6 +60,29 @@ export default function SignUp() {
 
     setPasswordMatch(true);
   };
+  const formatPhoneNumber = (phoneNumberValue) => {
+    const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
+    //  핸드폰 입력 formatting (e.g., XXX-XXXX-XXXX)
+    const formattedPhoneNumber = strippedPhoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+    return formattedPhoneNumber;
+  };
+  const handlePhoneNumberChange = (event) => {
+    const formattedPhoneNumber = formatPhoneNumber(event.target.value);
+    setPhoneNumber(formattedPhoneNumber);
+  };
+
+  const setFormData = async (data) => {
+    try{
+      data.append('currentAddress', (roadAddress + ' ' + jibunAddress + ' ' + extraAddress));
+      data.append('role', role);
+      data.append('uid', username);
+      data.append('phone', phoneNumber);
+      return await data;
+    }
+    catch{
+      return 'Error!';
+    }
+  }
 
   const checkUsernameAvailability = () => {
     setIsUsernameAvailable(username !== '');
@@ -134,10 +159,10 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="name"
                   required
                   fullWidth
-                  id="firstName"
+                  id="name"
                   label="이름"
                   autoFocus
                 />
@@ -150,6 +175,21 @@ export default function SignUp() {
                   label="이메일"
                   name="email"
                   autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="phone"
+                  label="휴대전화"
+                  name="phone"
+                  autoComplete="phone"
+                  value={phoneNumber}
+                  onChange={handlePhoneNumberChange}
+                  InputProps={{
+                    inputMode: 'numeric',
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -209,12 +249,12 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <FormControlLabel
-                  control={<Checkbox checked={gender === 'male'} onChange={() => setGender('male')} color="primary" />}
-                  label="남"
+                  control={<Checkbox checked={role === '회원'} onChange={() => setRole('회원')} color="primary" />}
+                  label="회원"
                 />
                 <FormControlLabel
-                  control={<Checkbox checked={gender === 'female'} onChange={() => setGender('female')} color="primary" />}
-                  label="여"
+                  control={<Checkbox checked={role === '점주'} onChange={() => setRole('점주')} color="primary" />}
+                  label="점주"
                 />
               </Grid>
               <Grid item xs={12}>

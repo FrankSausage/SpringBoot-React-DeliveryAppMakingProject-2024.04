@@ -6,6 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
+import ProtectedRoute from './pages/ProtectedRoute';
+
 const router = createBrowserRouter([
   {
     path:'/',
