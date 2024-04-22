@@ -7,6 +7,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite'; 
 import SearchIcon from '@mui/icons-material/Search'; 
 import { Link } from 'react-router-dom';
+import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 
 export default function SwipeableTemporaryDrawer() {
   const [state, setState] = React.useState({
@@ -63,20 +64,22 @@ export default function SwipeableTemporaryDrawer() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            휴먼 딜리버리
+            <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>휴먼 딜리버리</Link>    
+            {/* Home 으로 이동 */}
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
+            <GpsFixedIcon style={{ color: 'white' }} />&nbsp;
             <OutlinedInput
               placeholder="주소를 입력 하세요"
               startAdornment={
                 <InputAdornment position="start">
-                  <SearchIcon color="primary" />
                 </InputAdornment>
               }
               sx={{ width: '100%', maxWidth: 400, mr: 1, backgroundColor: 'white' }} 
             />
-          </Box>
-          <Link to={'/SignIn'} color="inherit">로그인</Link>
+          </Box> 
+          <div style={{ marginRight: '20px' }}><Link to={'/SignIn'} style={{ textDecoration: 'none', color: 'white'  }}  >로그인</Link></div>
+          <div style={{ margin: '20px' }}><Link to={'/SignUp'} style={{ textDecoration: 'none', color: 'white' }}>회원가입</Link></div>
         </Toolbar>
       </AppBar>
       
