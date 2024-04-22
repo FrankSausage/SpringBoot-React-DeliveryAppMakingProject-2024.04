@@ -93,12 +93,12 @@ export default function SignIn() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link href="#" variant="body2" style={{ textDecoration: 'none', color: 'black'  }}>
                     비밀번호을 잊으셨나요?
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link to="/SignUp" variant="body2">
+                  <Link to="/SignUp" variant="body2" style={{ textDecoration: 'none', color: 'black'  }}>
                     {"계정이 없으신가요? 가입하기"}
                   </Link>
                 </Grid>

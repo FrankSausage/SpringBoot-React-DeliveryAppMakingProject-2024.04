@@ -77,9 +77,9 @@ export default function SwipeableTemporaryDrawer() {
               }
               sx={{ width: '100%', maxWidth: 400, mr: 1, backgroundColor: 'white' }} 
             />
-          </Box>
-          <Link to={'/SignIn'} color="inherit">로그인</Link><br/><br/>
-          <Link to={'/SignUp'} color="inherit">회원가입</Link>
+          </Box> 
+          <div style={{ marginRight: '20px' }}><Link to={'/SignIn'} style={{ textDecoration: 'none', color: 'white'  }}  >로그인</Link></div>
+          <div style={{ margin: '20px' }}><Link to={'/SignUp'} style={{ textDecoration: 'none', color: 'white' }}>회원가입</Link></div>
         </Toolbar>
       </AppBar>
       
