@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-const useWatchLocation = (options = {}) => {
+const Geolocation = (options = {}) => {
   // 내 위치 정보 저장
   const [location, setLocation] = useState();
   // 에러 메세지 저장
