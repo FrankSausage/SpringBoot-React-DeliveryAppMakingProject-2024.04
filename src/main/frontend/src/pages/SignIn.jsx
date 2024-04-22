@@ -56,7 +56,7 @@ export default function SignIn() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              로그인
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
@@ -81,7 +81,7 @@ export default function SignIn() {
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+                label="나를 기억하기"   // 아이디 기억하기 기능이나 로그인 상태 유지하기 구현 예정
               />
               <Button
                 type="submit"
@@ -89,7 +89,7 @@ export default function SignIn() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                로그인
               </Button>
               <Grid container>
                 <Grid item xs>

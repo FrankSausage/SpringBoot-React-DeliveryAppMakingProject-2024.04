@@ -42,12 +42,14 @@ export default function SignUp() {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+    // event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get('email'),
       password: data.get('password'),
-      gender: gender,
+      gender: data.get('gender'),
+      phone: data.get('phone'),
+
     });
 
     const password = data.get('password');
@@ -99,7 +101,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="uid"
+                  id="uid"        //userId로 수정해야 할 것 같음
                   label="아이디"
                   name="lastName"
                   autoComplete="family-name"
@@ -149,7 +151,7 @@ export default function SignUp() {
                   name="firstName"
                   required
                   fullWidth
-                  id="firstName"
+                  id="name"
                   label="이름"
                   autoFocus
                 />
@@ -168,10 +170,10 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="telephone"
+                  id="phone"
                   label="휴대전화"
-                  name="telephone"
-                  autoComplete="telephone"
+                  name="phone"
+                  autoComplete="phone"
                   value={phoneNumber}
                   onChange={handlePhoneNumberChange}
                   InputProps={{
@@ -183,7 +185,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="sample4_postcode"
+                  id="postcode"
                   label="우편번호"
                   value={postcode}
                   InputProps={{
@@ -204,7 +206,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="sample4_roadAddress"
+                  id="roadAddress"
                   label="도로명주소"
                   value={roadAddress}
                   InputProps={{
@@ -216,7 +218,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="sample4_extraAddress"
+                  id="extraAddress"
                   label="참고항목"
                   value={extraAddress}
                   InputProps={{
@@ -228,7 +230,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="sample4_detailAddress"
+                  id="detailAddress"
                   label="상세주소"
                   name="address"
                   autoComplete="address"
