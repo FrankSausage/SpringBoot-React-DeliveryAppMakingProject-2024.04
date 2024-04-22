@@ -1,5 +1,8 @@
 import { Box, Grid, Stack, Typography, Button } from "@mui/material";
 import SearchHeader from "../components/SearchHeader"
+import Footer from "../components/Footer";
+
+//주소: http://localhost:3000
 
 export default function Home() {
     return(
@@ -49,6 +52,7 @@ export default function Home() {
             </Grid>
             <Grid item xs />
           </Grid>
+         <Footer />
         </Box>
     );
 }
