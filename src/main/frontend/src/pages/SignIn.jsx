@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import SearchHeader from '../components/SearchHeader'
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
+import { Api } from '@mui/icons-material';
 
 // 주소: /SignIn
 
@@ -22,6 +23,20 @@ export default function SignIn() {
       password: data.get('password'),
     });
   };
+  const register = async () => {
+    await Api
+      .post("/pages/SignIn", {
+        uid,
+        password,
+      })
+      .then((res) =>{
+        console.log(res);
+        const token = res.data.access_token;
+        localStorage.setItem("token", token);
+        window.localStorage.replace("/");
+      })
+      .catch((err) => console.log(err));
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
