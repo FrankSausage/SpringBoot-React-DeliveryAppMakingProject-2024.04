@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 @Table(name = "Users")
 public class Users {
@@ -48,17 +47,6 @@ public class Users {
 
     @Column(nullable = false)
     private String status;
-
-    public Users(Long userId, String password, String name, String phone, String email, String role,
-        String currentAddress) {
-        this.userId = userId;
-        this.password = password;
-        this.name = name;
-        this.phone = phone;
-        this.email = email;
-        this.role = role;
-        this.currentAddress = currentAddress;
-    }
 
     @Column(nullable = false)
     private int point;

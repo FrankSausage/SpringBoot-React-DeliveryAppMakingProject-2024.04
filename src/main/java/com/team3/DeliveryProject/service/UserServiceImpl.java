@@ -24,6 +24,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public ResponseEntity<Response> signUp(Users user) {
         System.out.println("서비스 진입");
+        System.out.println("파라미터 user 출력");
+        System.out.println(user);
         if (usersRepository.findUsersByUserId(user.getUserId()).isPresent()){
             System.out.println("회원가입 오류 (UserId가 중복되었습니다.)");
             Response response = new Response(400,"회원가입 오류 (UserId가 중복되었습니다.");
@@ -39,7 +41,7 @@ public class UserServiceImpl implements UserService{
 
             Address address = new Address(tmpUser.getUserId(), tmpUser.getCurrentAddress(),
                 LocalDateTime.now(),LocalDateTime.now(),"일반");
-            System.out.println(tmpUser.getUserId());
+            System.out.println(tmpUser);
             usersRepository.save(tmpUser);
             addressRepository.save(address);
             return Response.toResponseEntity(USER_SIGNUP_SUCCESS);

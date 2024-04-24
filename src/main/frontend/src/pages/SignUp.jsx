@@ -47,28 +47,55 @@ export default function SignUp() {
 
   const registing = useMutation()
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget)
-    setFormData(data)
-      .then(res => {
-        register(res)
-        axios.post('/dp/test/signup', res);
-      })
-      .then(() => {
-        alert('가입이 완료되었습니다.');
-        navigate('/');
-      });
-      
-    const password = data.get('password');
-    const password2 = data.get('password2');
+
+    const password = event.target.password.value;
+    const password2 = event.target.password2.value;
+
     if (password !== password2) {
       setPasswordMatch(false);
       return;
     }
 
     setPasswordMatch(true);
+
+    // 모든 필요한 필드 값을 변수로 추출
+    const username = event.target.userId.value;
+    const email = event.target.email.value;
+    const name = event.target.name.value;
+    const phone = phoneNumber; // 이미 formatted된 전화번호
+    const address = event.target.address.value;
+    const currentAddress = `${roadAddress} ${jibunAddress} ${extraAddress} ${address}`;
+
+    // 데이터를 JSON 객체로 구성
+    const userData = {
+      username,
+      password,
+      name,
+      email,
+      phone,
+      role,
+      currentAddress
+    };
+
+    try {
+      // Axios를 사용하여 데이터를 JSON 형태로 전송
+      const response = await axios.post('/dp/user/signup', userData, {
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      // 성공적으로 등록 후 메인 페이지로 리디렉션
+      alert('가입이 완료되었습니다.');
+      navigate('/');
+    } catch (error) {
+      // 에러 처리 로직
+      console.error('가입 처리 중 오류가 발생했습니다', error);
+      alert('가입 처리 중 오류가 발생했습니다');
+    }
   };
+
+
   const formatPhoneNumber = (phoneNumberValue) => {
     const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
     //  핸드폰 입력 formatting (e.g., XXX-XXXX-XXXX)
@@ -79,7 +106,6 @@ export default function SignUp() {
     const formattedPhoneNumber = formatPhoneNumber(event.target.value);
     setPhoneNumber(formattedPhoneNumber);
   };
-
   const setFormData = async (data) => {
     try{
       data.append('currentAddress', (roadAddress + ' ' + jibunAddress + ' ' + extraAddress));
