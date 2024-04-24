@@ -67,7 +67,7 @@ export default function SignUp() {
       })
       .then(() => {
         alert('가입이 완료되었습니다.');
-        navigate('/');
+        navigate('/SignIn');
       });
   };
 
