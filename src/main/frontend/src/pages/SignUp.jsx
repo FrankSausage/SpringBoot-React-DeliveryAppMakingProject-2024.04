@@ -3,9 +3,9 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Gri
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
-import { Form, Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../utils/AddressUtil'; 
-import { register, registerTest } from '../utils/firebase';
+import { register } from '../utils/firebase';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -18,8 +18,6 @@ export default function SignUp() {
   const [extraAddress, setExtraAddress] = useState('');
   const [role, setRole] = useState('');
   const [passwordMatch, setPasswordMatch] = useState(true);
-  const [username, setUsername] = useState('');
-  const [isUsernameAvailable, setIsUsernameAvailable] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState('');
   const navigate = useNavigate();
 
@@ -92,17 +90,12 @@ export default function SignUp() {
     try{
       data.append('currentAddress', (roadAddress + ' ' + jibunAddress + ' ' + extraAddress));
       data.append('role', role);
-      data.append('userId', username);
       return await data;
     }
     catch{
       return 'Error!';
     }
   }
-
-  const checkUsernameAvailability = () => {
-    setIsUsernameAvailable(username !== '');
-  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -128,25 +121,11 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="userId"
-                  label="아이디"
-                  name="userId"
-                  autoComplete="family-name"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  id="email"
+                  label="이메일"
+                  name="email"
+                  autoComplete="email"
                 />
-                <Button
-                  type="button"
-                  onClick={checkUsernameAvailability}
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 1, mb: 2 }}
-                >
-                  아이디 중복 확인
-                </Button>
-                {!isUsernameAvailable && (
-                  <Typography variant="caption" color="error">아이디가 이미 사용 중입니다.</Typography>
-                )}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -187,23 +166,14 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="email"
-                  label="이메일"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
                   id="phone"
                   label="휴대전화"
                   name="phone"
                   autoComplete="phone"
                   value={phoneNumber}
                   onChange={handlePhoneNumberChange}
-                  InputProps={{
+                  inputProps={{
+                    maxLength: 13,
                     inputMode: 'numeric',
                   }}
                 />
