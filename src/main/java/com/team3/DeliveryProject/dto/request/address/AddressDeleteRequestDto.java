@@ -1,4 +1,4 @@
-package com.team3.DeliveryProject.dto.request;
+package com.team3.DeliveryProject.dto.request.address;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,10 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserUpdateRequestDto {
-    private String password;
-    private String name;
-    private String phone;
-    private String email;
-    private String currentAddress;
+public class AddressDeleteRequestDto {
+    private Long addressId;
+
 }

@@ -1,4 +1,4 @@
-package com.team3.DeliveryProject.dto.request;
+package com.team3.DeliveryProject.dto.request.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

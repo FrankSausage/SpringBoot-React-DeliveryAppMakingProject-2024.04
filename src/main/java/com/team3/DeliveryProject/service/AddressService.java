@@ -1,11 +1,10 @@
 package com.team3.DeliveryProject.service;
 
 import com.team3.DeliveryProject.dto.common.Response;
-import com.team3.DeliveryProject.dto.request.AddressAddRequestDto;
-import com.team3.DeliveryProject.dto.request.AddressDeleteRequestDto;
-import com.team3.DeliveryProject.dto.request.AddressModifyRequestDto;
+import com.team3.DeliveryProject.dto.request.address.AddressAddRequestDto;
+import com.team3.DeliveryProject.dto.request.address.AddressDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.address.AddressModifyRequestDto;
 import com.team3.DeliveryProject.entity.Address;
-import com.team3.DeliveryProject.entity.Users;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 

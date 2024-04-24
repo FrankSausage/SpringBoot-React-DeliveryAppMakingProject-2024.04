@@ -1,18 +1,14 @@
 package com.team3.DeliveryProject.service;
 
-import static com.team3.DeliveryProject.responseCode.ErrorCode.USERNAME_IS_ALREADY_EXIST;
-import static com.team3.DeliveryProject.responseCode.ErrorCode.USER_EMAIL_IS_ALREADY_EXIST;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.ADDRESS_ADD_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.ADDRESS_DELETE_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.ADDRESS_MODIFY_SUCCESS;
-import static com.team3.DeliveryProject.responseCode.ResponseCode.USER_SIGNUP_SUCCESS;
 
 import com.team3.DeliveryProject.dto.common.Response;
-import com.team3.DeliveryProject.dto.request.AddressAddRequestDto;
-import com.team3.DeliveryProject.dto.request.AddressDeleteRequestDto;
-import com.team3.DeliveryProject.dto.request.AddressModifyRequestDto;
+import com.team3.DeliveryProject.dto.request.address.AddressAddRequestDto;
+import com.team3.DeliveryProject.dto.request.address.AddressDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.address.AddressModifyRequestDto;
 import com.team3.DeliveryProject.entity.Address;
-import com.team3.DeliveryProject.entity.Users;
 import com.team3.DeliveryProject.repository.AddressRepository;
 import com.team3.DeliveryProject.repository.UsersRepository;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package com.team3.DeliveryProject.dto.request;
+package com.team3.DeliveryProject.dto.request.address;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
