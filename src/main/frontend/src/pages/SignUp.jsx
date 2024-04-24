@@ -45,16 +45,15 @@ export default function SignUp() {
     findPostcode(setPostcode, setRoadAddress, setJibunAddress, setExtraAddress); // use findPostcode from AddressUtil
   };
 
-  const registing = useMutation()
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget)
+    // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}}
     setFormData(data)
       .then(res => {
         register(res)
-        axios.post('/dp/test/signup', res);
-      })
+        axios.post('/dp/user/signup', extractDataFromFormData(res));
+       })
       .then(() => {
         alert('가입이 완료되었습니다.');
         navigate('/');
@@ -69,6 +68,15 @@ export default function SignUp() {
 
     setPasswordMatch(true);
   };
+
+  function extractDataFromFormData(formData) {
+    const data = {};
+    for (const [key, value] of formData.entries()) {
+      data[key] = value;
+    }
+    return data;
+  }
+
   const formatPhoneNumber = (phoneNumberValue) => {
     const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
     //  핸드폰 입력 formatting (e.g., XXX-XXXX-XXXX)
@@ -85,7 +93,6 @@ export default function SignUp() {
       data.append('currentAddress', (roadAddress + ' ' + jibunAddress + ' ' + extraAddress));
       data.append('role', role);
       data.append('userId', username);
-      data.append('phone', phoneNumber);
       return await data;
     }
     catch{
@@ -123,7 +130,7 @@ export default function SignUp() {
                   fullWidth
                   id="userId"
                   label="아이디"
-                  name="lastName"
+                  name="userId"
                   autoComplete="family-name"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
