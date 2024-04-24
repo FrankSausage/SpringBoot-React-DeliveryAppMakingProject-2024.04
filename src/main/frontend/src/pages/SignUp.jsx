@@ -3,10 +3,10 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Gri
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
-import { Form, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../utils/AddressUtil'; 
-import { register, registerTest } from '../utils/firebase';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { register } from '../utils/firebase';
+import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
 const defaultTheme = createTheme();
@@ -18,9 +18,8 @@ export default function SignUp() {
   const [extraAddress, setExtraAddress] = useState('');
   const [role, setRole] = useState('');
   const [passwordMatch, setPasswordMatch] = useState(true);
-  const [username, setUsername] = useState('');
-  const [isUsernameAvailable, setIsUsernameAvailable] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
@@ -44,22 +43,42 @@ export default function SignUp() {
     findPostcode(setPostcode, setRoadAddress, setJibunAddress, setExtraAddress); // use findPostcode from AddressUtil
   };
 
-const handleSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget)
-    setFormData(data)
-      .then(res => register(res))
-      .then(() => {axios.post('/dp/test/signup', data)});
-      
+    const data = new FormData(event.currentTarget);
+  
+    // 비밀번호 일치 여부 확인
     const password = data.get('password');
     const password2 = data.get('password2');
     if (password !== password2) {
+      // 비밀번호가 일치하지 않을 때
       setPasswordMatch(false);
-      return;
+      return; // 회원가입 절차를 중지하고 함수를 종료합니다.
     }
-
+  
+    // 일치할 때는 회원가입 절차를 계속 진행합니다.
     setPasswordMatch(true);
+  
+    // 나머지 회원가입 절차를 여기에 추가합니다.
+    setFormData(data)
+      .then(res => {
+        register(res);
+        axios.post('/dp/user/signup', extractDataFromFormData(res));
+      })
+      .then(() => {
+        alert('가입이 완료되었습니다.');
+        navigate('/');
+      });
   };
+
+  function extractDataFromFormData(formData) {
+    const data = {};
+    for (const [key, value] of formData.entries()) {
+      data[key] = value;
+    }
+    return data;
+  }
+
   const formatPhoneNumber = (phoneNumberValue) => {
     const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
     //  핸드폰 입력 formatting (e.g., XXX-XXXX-XXXX)
@@ -75,18 +94,12 @@ const handleSubmit = (event) => {
     try{
       data.append('currentAddress', (roadAddress + ' ' + jibunAddress + ' ' + extraAddress));
       data.append('role', role);
-      data.append('uid', username);
-      data.append('phone', phoneNumber);
       return await data;
     }
     catch{
       return 'Error!';
     }
   }
-
-  const checkUsernameAvailability = () => {
-    setIsUsernameAvailable(username !== '');
-  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -112,25 +125,11 @@ const handleSubmit = (event) => {
                 <TextField
                   required
                   fullWidth
-                  id="uid"
-                  label="아이디"
-                  name="lastName"
-                  autoComplete="family-name"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  id="email"
+                  label="이메일"
+                  name="email"
+                  autoComplete="email"
                 />
-                <Button
-                  type="button"
-                  onClick={checkUsernameAvailability}
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 1, mb: 2 }}
-                >
-                  아이디 중복 확인
-                </Button>
-                {!isUsernameAvailable && (
-                  <Typography variant="caption" color="error">아이디가 이미 사용 중입니다.</Typography>
-                )}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -171,16 +170,6 @@ const handleSubmit = (event) => {
                 <TextField
                   required
                   fullWidth
-                  id="email"
-                  label="이메일"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
                   id="phone"
                   label="휴대전화"
                   name="phone"
@@ -188,6 +177,10 @@ const handleSubmit = (event) => {
                   value={phoneNumber}
                   onChange={handlePhoneNumberChange}
                   inputProps={{
+<<<<<<< HEAD
+=======
+                    maxLength: 13,
+>>>>>>> sub_main
                     inputMode: 'numeric',
                     maxLength: 13,
                   }}
