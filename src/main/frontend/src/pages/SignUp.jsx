@@ -45,7 +45,9 @@ export default function SignUp() {
     findPostcode(setPostcode, setRoadAddress, setJibunAddress, setExtraAddress); // use findPostcode from AddressUtil
   };
 
-const handleSubmit = (event) => {
+  const registing = useMutation()
+
+  const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget)
     setFormData(data)
@@ -82,7 +84,7 @@ const handleSubmit = (event) => {
     try{
       data.append('currentAddress', (roadAddress + ' ' + jibunAddress + ' ' + extraAddress));
       data.append('role', role);
-      data.append('uid', username);
+      data.append('userId', username);
       data.append('phone', phoneNumber);
       return await data;
     }
@@ -119,7 +121,7 @@ const handleSubmit = (event) => {
                 <TextField
                   required
                   fullWidth
-                  id="uid"
+                  id="userId"
                   label="아이디"
                   name="lastName"
                   autoComplete="family-name"
