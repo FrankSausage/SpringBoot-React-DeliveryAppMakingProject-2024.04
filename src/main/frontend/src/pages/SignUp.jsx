@@ -187,8 +187,9 @@ const handleSubmit = (event) => {
                   autoComplete="phone"
                   value={phoneNumber}
                   onChange={handlePhoneNumberChange}
-                  InputProps={{
+                  inputProps={{
                     inputMode: 'numeric',
+                    maxLength: 13,
                   }}
                 />
               </Grid>

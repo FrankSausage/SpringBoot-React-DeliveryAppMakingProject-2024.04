@@ -28,9 +28,11 @@ export default function Home() {
           <Grid container>
             <Grid item xs/>
             <Grid container sx={{border: 1, borderColor:'red', justifyContent:'center', alignItems:'center'}}>
-              <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2}} 
-              sx={gridStyle}>                 
-                  <Box sx={boxStyle}></Box>
+              <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2}} sx={gridStyle}>                 
+                  <Box sx={{ ...boxStyle, position: 'relative', textAlign: 'center', fontSize: '16px', lineHeight: '100px', zIndex: 1 }}>
+                    <span style={{ position: 'relative', zIndex: 2 }}>전체 메뉴</span>
+                    <img src={'/img/00a.jpg'} style={{ width: '90%', height: '90%', position: 'absolute', top: '5%', left: '5%', zIndex: 0 }} />
+                  </Box>
                   <Box sx={boxStyle}></Box>
                   <Box sx={boxStyle}></Box>
                   <Box sx={boxStyle}></Box>
