@@ -1,6 +1,5 @@
 package com.team3.DeliveryProject.dto.request;
 
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserRequestDto {
+public class UserSignUpRequestDto {
     private Long userId;
     private String password;
     private String name;
