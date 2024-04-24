@@ -177,12 +177,8 @@ export default function SignUp() {
                   value={phoneNumber}
                   onChange={handlePhoneNumberChange}
                   inputProps={{
-<<<<<<< HEAD
-=======
                     maxLength: 13,
->>>>>>> sub_main
                     inputMode: 'numeric',
-                    maxLength: 13,
                   }}
                 />
               </Grid>
