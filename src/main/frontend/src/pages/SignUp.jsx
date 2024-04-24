@@ -3,10 +3,10 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Gri
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
-import { Form, Link } from 'react-router-dom';
+import { Form, Link, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../utils/AddressUtil'; 
 import { register, registerTest } from '../utils/firebase';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
 const defaultTheme = createTheme();
@@ -21,6 +21,7 @@ export default function SignUp() {
   const [username, setUsername] = useState('');
   const [isUsernameAvailable, setIsUsernameAvailable] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
@@ -48,8 +49,14 @@ const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget)
     setFormData(data)
-      .then(res => register(res))
-      .then(() => {axios.post('/dp/test/signup', data)});
+      .then(res => {
+        register(res)
+        axios.post('/dp/test/signup', res);
+      })
+      .then(() => {
+        alert('가입이 완료되었습니다.');
+        navigate('/');
+      });
       
     const password = data.get('password');
     const password2 = data.get('password2');
