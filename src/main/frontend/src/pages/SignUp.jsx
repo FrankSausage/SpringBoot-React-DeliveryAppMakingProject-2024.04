@@ -45,26 +45,25 @@ export default function SignUp() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget)
-    // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}}
-    setFormData(data)
-      .then(res => {
-        register(res)
-        axios.post('/dp/user/signup', extractDataFromFormData(res));
-       })
-      .then(() => {
-        alert('가입이 완료되었습니다.');
-        navigate('/');
-      });
-      
     const password = data.get('password');
     const password2 = data.get('password2');
     if (password !== password2) {
       setPasswordMatch(false);
       return;
+    } else {
+      setPasswordMatch(true);
+      const data = new FormData(event.currentTarget)
+      // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}}
+      setFormData(data)
+        .then(res => {
+          register(res)
+          axios.post('/dp/user/signup', extractDataFromFormData(res));
+          })
+        .then(() => {
+          alert('가입이 완료되었습니다.');
+          navigate('/');
+        });
     }
-
-    setPasswordMatch(true);
   };
 
   function extractDataFromFormData(formData) {

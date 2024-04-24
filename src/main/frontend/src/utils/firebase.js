@@ -20,18 +20,7 @@ export async function register(user) {
         displayName: name, 
       })
     })
-    .then(() => console.log)
     .catch(console.error);
-}
-
-export function registerTest(data) {
-  console.log({
-    email: data.get('email'),
-    password: data.get('password'),
-    uid: data.get('uid'),
-    role: data.get('role'),
-    currentAddress: data.get('currentAddress'),
-  })
 }
 
 export function login({ email, password }) {
