@@ -43,4 +43,10 @@ public class Address {
 
     @Column(nullable = false)
     private String status;
+
+    public Address(Long userId, String address, String status) {
+        this.userId = userId;
+        this.address = address;
+        this.status = status;
+    }
 }
