@@ -4,38 +4,30 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox,
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import SearchHeader from '../components/SearchHeader'
-import { Link } from 'react-router-dom';
+import { login } from '../utils/firebase' // Firebase에서 login 함수를 가져옵니다.
+import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
-import { Api } from '@mui/icons-material';
-
-// 주소: /SignIn
-
-
+import axios from 'axios';
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
-  const register = async () => {
-    await Api
-      .post("/pages/SignIn", {
-        uid,
-        password,
-      })
-      .then((res) =>{
-        console.log(res);
-        const token = res.data.access_token;
-        localStorage.setItem("token", token);
-        window.localStorage.replace("/");
-      })
-      .catch((err) => console.log(err));
+  const [userInfo, setUserInfo] = useState({email:'', password:''});
+  const navigate = useNavigate();
+
+  const handleChange = e => {
+    setUserInfo({...userInfo, [e.target.name]: e.target.value});
+  }
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await login(userInfo); // Firebase의 login 함수를 사용하여 로그인을 시도합니다.
+      navigate('/'); // 로그인 성공 시 '/' 경로로 이동합니다.
+    } catch (error) {
+      console.error('로그인 실패:', error);
+      // 로그인 실패 시 처리할 코드를 추가할 수 있습니다.
+    }
   }
 
   return (
@@ -79,27 +71,31 @@ export default function SignIn() {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="이메일"
                 name="email"
                 autoComplete="email"
                 autoFocus
+                value={userInfo.email}
+                onChange={handleChange}
               />
               <TextField
                 margin="normal"
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="비밀번호"
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={userInfo.password}
+                onChange={handleChange}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="나를 기억하기"   // 아이디 기억하기 기능이나 로그인 상태 유지하기 구현 예정
               />
               <Button
-                type="submit"
+                type="submit" 
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
@@ -109,7 +105,7 @@ export default function SignIn() {
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2" style={{ textDecoration: 'none', color: 'black'  }}>
-                    비밀번호을 잊으셨나요?
+                    비밀번호를 잊으셨나요?
                   </Link>
                 </Grid>
                 <Grid item>
