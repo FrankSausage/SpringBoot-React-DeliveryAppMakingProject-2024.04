@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class Users {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
     @Column(nullable = false)
@@ -49,7 +49,31 @@ public class Users {
     @Column(nullable = false)
     private String status;
 
+    public Users(Long userId, String password, String name, String phone, String email, String role,
+        String currentAddress) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.role = role;
+        this.currentAddress = currentAddress;
+    }
+
     @Column(nullable = false)
     private int point;
 
+    public Users(Long userId, String password, String name, String phone, String email, int grade,
+        String role, String currentAddress, String status, int point) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.grade = grade;
+        this.role = role;
+        this.currentAddress = currentAddress;
+        this.status = status;
+        this.point = point;
+    }
 }
