@@ -45,56 +45,37 @@ export default function SignUp() {
     findPostcode(setPostcode, setRoadAddress, setJibunAddress, setExtraAddress); // use findPostcode from AddressUtil
   };
 
-  const registing = useMutation()
-
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-
-    const password = event.target.password.value;
-    const password2 = event.target.password2.value;
-
+    const data = new FormData(event.currentTarget)
+    // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}}
+    setFormData(data)
+      .then(res => {
+        register(res)
+        axios.post('/dp/user/signup', extractDataFromFormData(res));
+       })
+      .then(() => {
+        alert('가입이 완료되었습니다.');
+        navigate('/');
+      });
+      
+    const password = data.get('password');
+    const password2 = data.get('password2');
     if (password !== password2) {
       setPasswordMatch(false);
       return;
     }
 
     setPasswordMatch(true);
-
-    // 모든 필요한 필드 값을 변수로 추출
-    const username = event.target.userId.value;
-    const email = event.target.email.value;
-    const name = event.target.name.value;
-    const phone = phoneNumber; // 이미 formatted된 전화번호
-    const address = event.target.address.value;
-    const currentAddress = `${roadAddress} ${jibunAddress} ${extraAddress} ${address}`;
-
-    // 데이터를 JSON 객체로 구성
-    const userData = {
-      username,
-      password,
-      name,
-      email,
-      phone,
-      role,
-      currentAddress
-    };
-
-    try {
-      // Axios를 사용하여 데이터를 JSON 형태로 전송
-      const response = await axios.post('/dp/user/signup', userData, {
-        headers: { 'Content-Type': 'application/json' }
-      });
-
-      // 성공적으로 등록 후 메인 페이지로 리디렉션
-      alert('가입이 완료되었습니다.');
-      navigate('/');
-    } catch (error) {
-      // 에러 처리 로직
-      console.error('가입 처리 중 오류가 발생했습니다', error);
-      alert('가입 처리 중 오류가 발생했습니다');
-    }
   };
 
+  function extractDataFromFormData(formData) {
+    const data = {};
+    for (const [key, value] of formData.entries()) {
+      data[key] = value;
+    }
+    return data;
+  }
 
   const formatPhoneNumber = (phoneNumberValue) => {
     const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
@@ -106,12 +87,12 @@ export default function SignUp() {
     const formattedPhoneNumber = formatPhoneNumber(event.target.value);
     setPhoneNumber(formattedPhoneNumber);
   };
+
   const setFormData = async (data) => {
     try{
       data.append('currentAddress', (roadAddress + ' ' + jibunAddress + ' ' + extraAddress));
       data.append('role', role);
       data.append('userId', username);
-      data.append('phone', phoneNumber);
       return await data;
     }
     catch{
@@ -149,7 +130,7 @@ export default function SignUp() {
                   fullWidth
                   id="userId"
                   label="아이디"
-                  name="lastName"
+                  name="userId"
                   autoComplete="family-name"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
