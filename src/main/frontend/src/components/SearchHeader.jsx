@@ -1,18 +1,36 @@
-import * as React from 'react';
+// SearchHeader.jsx
+
+import React, { useEffect, useState } from 'react';
 import { AppBar, Box, Toolbar, Typography, SwipeableDrawer, IconButton, List, ListItem, 
-  ListItemButton, ListItemIcon, ListItemText, Button, InputAdornment, OutlinedInput, Divider} from '@mui/material';
+  ListItemButton, ListItemIcon, ListItemText, InputAdornment, OutlinedInput, Divider, Stack, Grid} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ReceiptIcon from '@mui/icons-material/Receipt'; 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; 
 import FavoriteIcon from '@mui/icons-material/Favorite'; 
-import SearchIcon from '@mui/icons-material/Search'; 
-import { Link } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
+import { useAuthContext } from '../context/AuthContext';
 
-export default function SwipeableTemporaryDrawer() {
+export default function SearchHeader() {
+  const [text, setText] = useState('');
+  const { keyword } = useParams();
   const [state, setState] = React.useState({
     left: false,
   });
+
+  const { user, setUser, logout } = useAuthContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, [setUser]);
+
+  useEffect(() => {
+    setText(keyword || '');
+  }, [keyword]);
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -24,6 +42,16 @@ export default function SwipeableTemporaryDrawer() {
     }
 
     setState({ left: open });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    logout();
+    navigate('/SignIn');
+  };
+
+  const handleLogin = () => {
+    navigate('/SignIn');
   };
 
   const list = (
@@ -38,7 +66,7 @@ export default function SwipeableTemporaryDrawer() {
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
-                {index === 0 ? <ReceiptIcon /> : index === 1 ? <ShoppingCartIcon /> : <FavoriteIcon />} {/* 변경: 아이콘 변경 */}
+                {index === 0 ? <ReceiptIcon /> : index === 1 ? <ShoppingCartIcon /> : <FavoriteIcon />}
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>
@@ -59,13 +87,12 @@ export default function SwipeableTemporaryDrawer() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
-            onClick={toggleDrawer(!state.left)} // IconButton 클릭 시 toggleDrawer 함수 호출
+            onClick={toggleDrawer(!state.left)}
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>휴먼 딜리버리</Link>    
-            {/* Home 으로 이동 */}
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
             <GpsFixedIcon style={{ color: 'white' }} />&nbsp;
@@ -78,8 +105,21 @@ export default function SwipeableTemporaryDrawer() {
               sx={{ width: '100%', maxWidth: 400, mr: 1, backgroundColor: 'white' }} 
             />
           </Box> 
-          <div style={{ marginRight: '20px' }}><Link to={'/SignIn'} style={{ textDecoration: 'none', color: 'white'  }}  >로그인</Link></div>
-          <div style={{ margin: '20px' }}><Link to={'/SignUp'} style={{ textDecoration: 'none', color: 'white' }}>회원가입</Link></div>
+          <Grid item xs={3}>
+            <Stack direction='row' spacing={1} justifyContent='right' alignItems='center'>
+              {user ? (
+                <>
+                  <Typography variant="body1" sx={{ color: 'white', mr: 1 }}>{user.displayName}</Typography>
+                  <button onClick={handleLogout} style={{ color: 'white', textDecoration: 'none', background: 'none', border: 'none' }}>로그아웃</button>
+                </>
+              ) : (
+                <>
+                  <Link to='/SignIn' style={{ textDecoration: 'none', color: 'white' }}>로그인</Link>
+                  <Link to='/SignUp' style={{ textDecoration: 'none', color: 'white' }}>회원가입</Link>
+                </>
+              )}
+            </Stack>
+          </Grid>
         </Toolbar>
       </AppBar>
       
