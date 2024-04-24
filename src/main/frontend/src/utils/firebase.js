@@ -12,16 +12,26 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 
-export function register({ email, password, name, photo }) {
-  console.log('firebase:register():', email, password);
-  createUserWithEmailAndPassword(auth, email, password)
+export async function register(user) {
+  const { name, password, email } = extractDataFromFormData(user);
+  return await createUserWithEmailAndPassword(auth, email, password)
     .then(() => {
       updateProfile(auth.currentUser, {
-        displayName: name, photoURL: photo
+        displayName: name, 
       })
     })
-    .then(() => {logout()})
+    .then(() => console.log)
     .catch(console.error);
+}
+
+export function registerTest(data) {
+  console.log({
+    email: data.get('email'),
+    password: data.get('password'),
+    uid: data.get('uid'),
+    role: data.get('role'),
+    currentAddress: data.get('currentAddress'),
+  })
 }
 
 export function login({ email, password }) {
@@ -44,4 +54,12 @@ export function onUserStateChanged(callback) {
   onAuthStateChanged(auth, (user) => {
     callback(user);
   });
+}
+
+function extractDataFromFormData(formData) {
+  const data = {};
+  for (const [key, value] of formData.entries()) {
+    data[key] = value;
+  }
+  return data;
 }
