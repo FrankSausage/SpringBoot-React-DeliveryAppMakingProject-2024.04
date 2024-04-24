@@ -45,26 +45,30 @@ export default function SignUp() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget)
-    // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}}
+    const data = new FormData(event.currentTarget);
+  
+    // 비밀번호 일치 여부 확인
+    const password = data.get('password');
+    const password2 = data.get('password2');
+    if (password !== password2) {
+      // 비밀번호가 일치하지 않을 때
+      setPasswordMatch(false);
+      return; // 회원가입 절차를 중지하고 함수를 종료합니다.
+    }
+  
+    // 일치할 때는 회원가입 절차를 계속 진행합니다.
+    setPasswordMatch(true);
+  
+    // 나머지 회원가입 절차를 여기에 추가합니다.
     setFormData(data)
       .then(res => {
-        register(res)
+        register(res);
         axios.post('/dp/user/signup', extractDataFromFormData(res));
-       })
+      })
       .then(() => {
         alert('가입이 완료되었습니다.');
         navigate('/');
       });
-      
-    const password = data.get('password');
-    const password2 = data.get('password2');
-    if (password !== password2) {
-      setPasswordMatch(false);
-      return;
-    }
-
-    setPasswordMatch(true);
   };
 
   function extractDataFromFormData(formData) {
