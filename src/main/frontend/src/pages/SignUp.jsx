@@ -92,7 +92,7 @@ export default function SignUp() {
     try{
       data.append('currentAddress', (roadAddress + ' ' + jibunAddress + ' ' + extraAddress));
       data.append('role', role);
-      data.append('userId', username);
+      // data.append('userId', username);
       return await data;
     }
     catch{
@@ -124,30 +124,30 @@ export default function SignUp() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="userId"
-                  label="아이디"
-                  name="userId"
-                  autoComplete="family-name"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-                <Button
-                  type="button"
-                  onClick={checkUsernameAvailability}
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 1, mb: 2 }}
-                >
-                  아이디 중복 확인
-                </Button>
-                {!isUsernameAvailable && (
-                  <Typography variant="caption" color="error">아이디가 이미 사용 중입니다.</Typography>
-                )}
-              </Grid>
+              {/*<Grid item xs={12}>*/}
+                {/*<TextField*/}
+                {/*  required*/}
+                {/*  fullWidth*/}
+                {/*  id="userId"*/}
+                {/*  label="아이디"*/}
+                {/*  name="userId"*/}
+                {/*  autoComplete="family-name"*/}
+                {/*  value={username}*/}
+                {/*  onChange={(e) => setUsername(e.target.value)}*/}
+                {/*/>*/}
+              {/*  <Button*/}
+              {/*    type="button"*/}
+              {/*    // onClick={checkUsernameAvailability}*/}
+              {/*    fullWidth*/}
+              {/*    variant="contained"*/}
+              {/*    sx={{ mt: 1, mb: 2 }}*/}
+              {/*  >*/}
+              {/*    아이디 중복 확인*/}
+              {/*  </Button>*/}
+              {/*  {!isUsernameAvailable && (*/}
+              {/*    <Typography variant="caption" color="error">아이디가 이미 사용 중입니다.</Typography>*/}
+              {/*  )}*/}
+              {/*</Grid>*/}
               <Grid item xs={12}>
                 <TextField
                   required

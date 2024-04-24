@@ -24,7 +24,7 @@ public class UserController {
     public ResponseEntity<?> signUp(@RequestBody UserRequestDto userRequestDto) {
         System.out.println("컨트롤러 진입");
 
-        Users users = new Users(userRequestDto.getUserId(),userRequestDto.getPassword(),userRequestDto.getName(),userRequestDto.getPhone(),
+        Users users = new Users(userRequestDto.getPassword(),userRequestDto.getName(),userRequestDto.getPhone(),
             userRequestDto.getEmail(),0,userRequestDto.getRole(),userRequestDto.getCurrentAddress(),"일반",0);
         System.out.println(users);
         System.out.println("!@@!@#W@!!@#@!#@!#@!#!@#");
