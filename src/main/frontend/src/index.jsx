@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
-import Stores from './pages/Stores';
+import Store from './pages/Store';
 import ProtectedRoute from './pages/ProtectedRoute';
 
 
@@ -18,7 +18,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'Signin', element: <SignIn />},
       { path: 'SignUp', element: <SignUp />},
-      { path: 'Stores', element: <Stores />},
+      { path: 'Store', element: <Store />},
     ]
   }
 ]);

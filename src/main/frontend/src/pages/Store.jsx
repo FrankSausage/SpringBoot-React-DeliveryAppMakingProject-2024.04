@@ -3,14 +3,23 @@ import SearchHeader from "../components/SearchHeader"
 import Footer from "../components/Footer"
 import PropTypes from 'prop-types';
 import { Tab, Tabs, Box, Typography, Stack, Grid, } from '@mui/material';
+import styled from '@mui/system/styled';
 
-
-export default function Stores() {
+export default function Store() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const Item = styled('div')(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    border: '1px solid',
+    borderColor: theme.palette.mode === 'dark' ? '#444d58' : '#ced7e0',
+    padding: theme.spacing(1),
+    borderRadius: '4px',
+    textAlign: 'center',
+  }));
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -48,7 +57,23 @@ export default function Stores() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        Item 전체
+      <Grid container>
+            <Grid item xs/>
+            <Grid container sx={{border: 1, borderColor:'red', justifyContent:'center', alignItems:'center'}}>
+              <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2}} 
+              sx={gridStyle}>
+                <Grid xs={8}>
+                  <Item>xs=8</Item>
+                </Grid>
+                <Grid xs={4}>
+                  <Item>xs=4</Item>
+                </Grid>
+                  {/* <Box sx={boxStyle}></Box>
+                  <Box sx={boxStyle}></Box> */}
+              </Grid>
+              </Grid>
+            <Grid item xs />
+          </Grid>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         Item 한식
@@ -74,6 +99,7 @@ export default function Stores() {
       <CustomTabPanel value={value} index={8}>
         Item 디저트
       </CustomTabPanel>
+      <Footer/>
     </Box>
   );
 }
@@ -111,3 +137,15 @@ function a11yProps(index) {
   };
 }
 
+let boxStyle = {
+  width: 200, 
+  height: 200, 
+  border:1, 
+  borderColor: 'black', 
+  m:1
+}
+let gridStyle ={
+  justifyContent:'center',
+  alignItems:'center',
+  p:2
+}

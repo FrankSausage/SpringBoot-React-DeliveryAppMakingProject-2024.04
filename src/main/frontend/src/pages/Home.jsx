@@ -30,9 +30,9 @@ export default function Home() {
             <Grid container sx={{border: 1, borderColor:'red', justifyContent:'center', alignItems:'center'}}>
             <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2}} sx={gridStyle}>                 
                   <Box sx={{ ...boxStyle, position: 'relative' }}>
-                    <Link to='/Stores'>
+                    
                       <img src={'/img/00.jpg'} style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
-                    </Link>
+                    
                   </Box>
                   <Box sx={{ ...boxStyle, position: 'relative' }}>
                       <img src={'/img/01.jpg'} style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
