@@ -1,79 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
 import axios from 'axios';
 import SearchHeader from '../components/SearchHeader';
-import { getAuth, updateEmail as updateEmailFirebase, updatePassword as updatePasswordFirebase, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
 
 const defaultTheme = createTheme();
 
 export default function Update() {
-    const [user, setUser] = useState({}); // 사용자 정보를 저장할 상태
+    const [user, setUser] = useState({});
 
-    // Firebase 현재 사용자 가져오기
-    const currentUser = getAuth().currentUser;
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await axios.get('/dp/user/update');
+                setUser(response.data);
+            } catch (error) {
+                console.error('사용자 데이터 가져오기 실패:', error);
+            }
+        };
 
-    // 이메일 업데이트
+        fetchUserData();
+    }, []);
+
     const updateEmail = () => {
-        const newEmail = "user@example.com"; // 새 이메일
-        updateEmailFirebase(currentUser, newEmail)
-            .then(() => {
-                alert('이메일이 업데이트되었습니다.');
-            })
-            .catch((error) => {
-                console.error('이메일 업데이트 중 에러 발생:', error);
-            });
+        // 이메일 업데이트 함수 구현
     };
 
-    // 비밀번호 업데이트
     const updatePassword = () => {
-        const newPassword = "newPassword123"; // 새 비밀번호
-        updatePasswordFirebase(currentUser, newPassword)
-            .then(() => {
-                alert('비밀번호가 업데이트되었습니다.');
-            })
-            .catch((error) => {
-                console.error('비밀번호 업데이트 중 에러 발생:', error);
-            });
+        // 비밀번호 업데이트 함수 구현
     };
 
-    // 계정 삭제
+    const updateName = () => {
+        // 이름 업데이트 함수 구현
+    };
+
+    const updatePhone = () => {
+        // 이름 업데이트 함수 구현
+    };
+
+
     const deleteUserAccount = () => {
-        deleteUser(currentUser)
-            .then(() => {
-                alert('계정이 삭제되었습니다.');
-            })
-            .catch((error) => {
-                console.error('계정 삭제 중 에러 발생:', error);
-            });
+        // 계정 삭제 함수 구현
     };
 
-    // 재인증
     const reauthenticate = () => {
-        const credential = EmailAuthProvider.credential(
-            currentUser.email, // 현재 사용자의 이메일
-            'password123' // 사용자의 현재 비밀번호
-        );
-
-        reauthenticateWithCredential(currentUser, credential)
-            .then(() => {
-                alert('재인증되었습니다.');
-            })
-            .catch((error) => {
-                console.error('재인증 중 에러 발생:', error);
-            });
+        // 재인증 함수 구현
     };
 
-    // 주소 업데이트
     const updateAddress = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
 
         try {
-            // 수정된 주소 정보를 서버로 보냄 (예: axios.put('/api/user/address', formData) 등)
-            await axios.put('/api/user/address', formData);
+            await axios.put('/dp/user/address', formData);
             alert('주소가 업데이트되었습니다.');
         } catch (error) {
             console.error('주소 업데이트 중 에러 발생:', error);
@@ -110,7 +91,7 @@ export default function Update() {
                                     label="이메일"
                                     defaultValue={user.email} 
                                 />
-                                 <Button onClick={updateEmail} fullWidth variant="contained" sx={{ mt: 2 }}>이메일 업데이트</Button>
+                                <Button onClick={updateEmail} fullWidth variant="contained" sx={{ mt: 2 }}>이메일 업데이트</Button>
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
@@ -132,7 +113,7 @@ export default function Update() {
                                     label="이름"
                                     defaultValue={user.name} 
                                 />
-                                <Button onClick={updatePassword} fullWidth variant="contained" sx={{ mt: 2 }}>비밀번호 업데이트</Button>
+                                <Button onClick={updateName} fullWidth variant="contained" sx={{ mt: 2 }}>이름 업데이트</Button>
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
@@ -143,8 +124,8 @@ export default function Update() {
                                     label="휴대폰"
                                     defaultValue={user.phone} 
                                 />
+                                <Button onClick={updatePhone} fullWidth variant="contained" sx={{ mt: 2 }}>전화번호 업데이트</Button>
                             </Grid>
-                            {/* 주소 정보 입력 필드 */}
                             <Grid item xs={12}>
                                 <TextField
                                     required
@@ -152,19 +133,13 @@ export default function Update() {
                                     id="address"
                                     name="address"
                                     label="주소"
-                                    defaultValue={user.address} // 기존 주소 정보 표시
+                                    defaultValue={user.address} 
                                 />
+                                <Button onClick={updateAddress} fullWidth variant="contained" sx={{ mt: 2 }}>주소 업데이트</Button>
                             </Grid>
-                            {/* 이메일, 비밀번호, 계정 삭제, 재인증 버튼 */}
-                            
-                            {/* 비밀번호 업데이트 버튼 */}
-                            <Grid item xs={12}>
-                            </Grid>
-                            {/* 계정 삭제 버튼 */}
                             <Grid item xs={12}>
                                 <Button onClick={deleteUserAccount} fullWidth variant="contained" sx={{ mt: 2 }}>계정 삭제</Button>
                             </Grid>
-                            {/* 재인증 버튼 */}
                             <Grid item xs={12}>
                                 <Button onClick={reauthenticate} fullWidth variant="contained" sx={{ mt: 2 }}>재인증</Button>
                             </Grid>

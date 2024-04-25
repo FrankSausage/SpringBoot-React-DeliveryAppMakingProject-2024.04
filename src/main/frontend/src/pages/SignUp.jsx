@@ -67,7 +67,7 @@ export default function SignUp() {
       })
       .then(() => {
         alert('가입이 완료되었습니다.');
-        navigate('/SignIn');
+        navigate('/signin');
       });
   };
 
@@ -116,6 +116,9 @@ export default function SignUp() {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>    
+          </Typography>
           <Typography component="h1" variant="h5">
             회원가입
           </Typography>
@@ -186,7 +189,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="sample4_postcode"
+                  id="postcode"
                   label="우편번호"
                   value={postcode}
                   InputProps={{
@@ -207,7 +210,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="sample4_roadAddress"
+                  id="roadAddress"
                   label="도로명주소"
                   value={roadAddress}
                   InputProps={{
@@ -219,7 +222,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="sample4_extraAddress"
+                  id="extraAddress"
                   label="참고항목"
                   value={extraAddress}
                   InputProps={{
@@ -231,7 +234,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="sample4_detailAddress"
+                  id="detailAddress"
                   label="상세주소"
                   name="address"
                   autoComplete="address"
