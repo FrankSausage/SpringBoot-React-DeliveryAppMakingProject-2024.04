@@ -117,9 +117,9 @@ export default function SignIn() {
                   </Link>
                 </Grid>
               </Grid>
-              <Footer sx={{ mt: 5 }} />
             </Box>
           </Box>
+          <Footer sx={{ mt: 5 }} />
         </Grid>
       </Grid>
     </ThemeProvider>

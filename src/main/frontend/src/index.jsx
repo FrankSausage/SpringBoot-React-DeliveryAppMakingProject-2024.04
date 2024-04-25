@@ -8,7 +8,6 @@ import SignUp from './pages/SignUp';
 import Home from './pages/Home';
 import Update from './pages/Update';
 import ProtectedRoute from './pages/ProtectedRoute';
-import Update from './pages/Update';
 
 const router = createBrowserRouter([
   {

@@ -156,14 +156,9 @@ export default function Update() {
                                     label="주소"
                                     defaultValue={user.address} 
                                 />
-                                <Button onClick={updateAddress} fullWidth variant="contained" sx={{ mt: 2 }}>주소 업데이트</Button>
                             </Grid>
                             <Grid item xs={12}>
-                                <Button onClick={deleteUserAccount} fullWidth variant="contained" sx={{ mt: 2 }}>계정 삭제</Button>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Button onClick={reauthenticate} fullWidth variant="contained" sx={{ mt: 2 }}>재인증</Button>
-
+                                <Button fullWidth variant="contained" sx={{ mt: 2 }}>계정 삭제</Button>
                             </Grid>
                         </Grid>
                         <Button
@@ -175,9 +170,9 @@ export default function Update() {
                             정보 업데이트
                         </Button>
                     </Box>
-                    <Footer sx={{ mt: 5 }} />
                 </Box>
-            </Container>
-        </ThemeProvider>
+            <Footer sx={{ mt: 5 }} />
+        </Container>
+    </ThemeProvider>
     );
 }
