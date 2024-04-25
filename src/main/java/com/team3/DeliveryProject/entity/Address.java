@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 
 
 @Entity
@@ -19,6 +21,16 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long addressId;
     private Long userId;
+
+    public Address(Long userId, String address, LocalDateTime createdDate,
+        LocalDateTime modifiedDate,
+        String status) {
+        this.userId = userId;
+        this.address = address;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.status = status;
+    }
 
     @Column(nullable = false)
     private String address;

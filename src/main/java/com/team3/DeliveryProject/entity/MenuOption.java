@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 
 
 @Entity
@@ -19,7 +21,7 @@ public class MenuOption {
     private Long menuId;
 
     @Column(nullable = false)
-    private String option;
+    private String menuOption;
 
     @Column(nullable = false)
     private String content;
