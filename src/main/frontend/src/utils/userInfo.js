@@ -6,10 +6,10 @@ export const useUserByEmail = email => {
     const { isLoading, error, data: user } = useQuery({
         queryKey: ['email', email],
         queryFn: async () => {
-            return await axios
-                .get(`/dp/user/update/`, {email: email})
-                .then(res => res.data)
-                .catch(console.error);
+            return axios.get(`/dp/user/update`, { params: { email: email }})
+            .then(res =>
+                res.data)
+            .catch(console.error);
         }
     })
     return {isLoading, error, user};

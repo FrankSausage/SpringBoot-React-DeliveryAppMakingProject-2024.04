@@ -22,10 +22,11 @@ export default function Update() {
         event.preventDefault();
         const formData = new FormData(event.target);
         try {
-            await axios.put('/dp/user/update', extractDataFromFormData(formData));
+            await axios.post('/dp/user/update', extractDataFromFormData(formData));
             alert('회원 정보가 업데이트되었습니다.');
         } catch (error) {
             console.error('회원 정보 업데이트 중 에러 발생:', error);
+            console.log(extractDataFromFormData(formData));
         }
     };
 
@@ -73,19 +74,19 @@ export default function Update() {
                                 autoComplete="new-password"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                required
-                                fullWidth
-                                name="password2"
-                                label="비밀번호 확인"
-                                type="password"
-                                id="password2"
-                                autoComplete="new-password"
-                                error={!passwordMatch}
-                                helperText={!passwordMatch && "비밀번호가 일치하지 않습니다"}
-                                />
-                            </Grid>
+                            {/*<Grid item xs={12}>*/}
+                            {/*    <TextField*/}
+                            {/*    required*/}
+                            {/*    fullWidth*/}
+                            {/*    name="password2"*/}
+                            {/*    label="비밀번호 확인"*/}
+                            {/*    type="password"*/}
+                            {/*    id="password2"*/}
+                            {/*    autoComplete="new-password"*/}
+                            {/*    error={!passwordMatch}*/}
+                            {/*    helperText={!passwordMatch && "비밀번호가 일치하지 않습니다"}*/}
+                            {/*    />*/}
+                            {/*</Grid>*/}
                             <Grid item xs={12}>
                                 <TextField
                                     required

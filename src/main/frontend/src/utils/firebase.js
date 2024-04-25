@@ -25,7 +25,6 @@ export async function register(user) {
 }
 
 export function login({ email, password }) {
-  console.log('firebase.js:login(): ', email, password);
   signInWithEmailAndPassword(auth, email, password)
     .catch(console.error);
 }

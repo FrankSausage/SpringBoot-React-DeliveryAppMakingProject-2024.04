@@ -1,5 +1,6 @@
 package com.team3.DeliveryProject.controller;
 
+import com.team3.DeliveryProject.dto.request.user.UserDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.user.UserSignUpRequestDto;
 import com.team3.DeliveryProject.dto.request.user.UserUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.user.UserUpdatePostRequestDto;
@@ -27,44 +28,41 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody UserSignUpRequestDto requestDto) {
-        System.out.println("컨트롤러 진입");
 
         Users users = new Users(requestDto.getPassword(),requestDto.getName(),requestDto.getPhone(),
             requestDto.getEmail(),0,requestDto.getRole(),requestDto.getCurrentAddress(),"우리집",0);
-        System.out.println(users);
         userService.signUp(users);
         return ResponseEntity.ok().body("User registered successfully");
     }
 
     @PostMapping("/update")
     public ResponseEntity<?> updateUser(@RequestBody UserUpdatePostRequestDto requestDto){
-        System.out.println("컨트롤러 진입");
-
         Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).get();
-        System.out.println(user);
 
         user.setPhone(requestDto.getPhone());
         user.setName(requestDto.getName());
         user.setPassword(requestDto.getPassword());
         user.setCurrentAddress(requestDto.getCurrentAddress());
-        System.out.println("바뀐 유저 출력");
-        System.out.println(user);
         userService.updateUser(user);
         return ResponseEntity.ok().body("User update successfully");
     }
 
     @GetMapping("/update")
-    public UserUpdateResponseDto updateUser(@RequestBody UserUpdateGetRequestDto requestDto) {
-        System.out.println("컨트롤러 진입");
+    public ResponseEntity<?> updateUser(@ModelAttribute UserUpdateGetRequestDto requestDto) {
         Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
-        System.out.println(user);
 
         UserUpdateResponseDto responseDto = UserUpdateResponseDto.builder()
             .phone(user.getPhone())
             .currentAddress(user.getCurrentAddress())
             .build();
-        System.out.println(responseDto);
-        return responseDto;
+        return ResponseEntity.ok().body(responseDto);
     }
 
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteUser(@RequestBody UserDeleteRequestDto requestDto){
+        Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+
+        userService.deleteUser(user);
+        return ResponseEntity.ok().body("User delete successfully");
+    }
 }

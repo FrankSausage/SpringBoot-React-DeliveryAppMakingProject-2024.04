@@ -7,8 +7,10 @@ import static com.team3.DeliveryProject.responseCode.ResponseCode.ADDRESS_MODIFY
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.address.AddressAddRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.address.AddressFindAllRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressModifyRequestDto;
 import com.team3.DeliveryProject.entity.Address;
+import com.team3.DeliveryProject.entity.Users;
 import com.team3.DeliveryProject.repository.AddressRepository;
 import com.team3.DeliveryProject.repository.UsersRepository;
 import java.time.LocalDateTime;
@@ -25,12 +27,10 @@ public class AddressServiceImpl implements AddressService{
     private final AddressRepository addressRepository;
     @Override
     public ResponseEntity<Response> addAddress(AddressAddRequestDto requestDto) {
-        System.out.println("서비스 정상로직 진입");
 
         Address address = new Address(requestDto.getUserId(), requestDto.getAddress(), "일반");
         address.setCreatedDate(LocalDateTime.now());
         address.setModifiedDate(LocalDateTime.now());
-        System.out.println(address);
         addressRepository.save(address);
 
         return Response.toResponseEntity(ADDRESS_ADD_SUCCESS);
@@ -55,7 +55,10 @@ public class AddressServiceImpl implements AddressService{
     }
 
     @Override
-    public List<Address> findAllAddress() {
-        return addressRepository.findAll();
+    public List<Address> findAllAddress(AddressFindAllRequestDto requestDto) {
+        Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+
+        return addressRepository.findAllByUserId(user.getUserId());
     }
+
 }
