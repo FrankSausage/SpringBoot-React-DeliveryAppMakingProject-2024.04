@@ -186,7 +186,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="postcode"
+                  id="sample4_postcode"
                   label="우편번호"
                   value={postcode}
                   InputProps={{
@@ -207,7 +207,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="roadAddress"
+                  id="sample4_roadAddress"
                   label="도로명주소"
                   value={roadAddress}
                   InputProps={{
@@ -219,7 +219,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="extraAddress"
+                  id="sample4_extraAddress"
                   label="참고항목"
                   value={extraAddress}
                   InputProps={{
@@ -231,7 +231,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="detailAddress"
+                  id="sample4_detailAddress"
                   label="상세주소"
                   name="address"
                   autoComplete="address"
