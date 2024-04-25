@@ -11,8 +11,6 @@ import com.team3.DeliveryProject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,10 +51,10 @@ public class UserController {
         return ResponseEntity.ok().body("User update successfully");
     }
 
-    @GetMapping("/update")
-    public UserUpdateResponseDto updateUser(String email) {
+    @PostMapping("/update/get")
+    public UserUpdateResponseDto updateUser(@RequestBody UserUpdateGetRequestDto requestDto) {
         System.out.println("컨트롤러 진입");
-        Users user = usersRepository.findUsersByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
         System.out.println(user);
 
         UserUpdateResponseDto responseDto = UserUpdateResponseDto.builder()
