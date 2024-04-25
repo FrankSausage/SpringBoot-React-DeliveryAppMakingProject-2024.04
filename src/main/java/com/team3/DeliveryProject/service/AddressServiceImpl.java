@@ -7,8 +7,10 @@ import static com.team3.DeliveryProject.responseCode.ResponseCode.ADDRESS_MODIFY
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.address.AddressAddRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.address.AddressFindAllRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressModifyRequestDto;
 import com.team3.DeliveryProject.entity.Address;
+import com.team3.DeliveryProject.entity.Users;
 import com.team3.DeliveryProject.repository.AddressRepository;
 import com.team3.DeliveryProject.repository.UsersRepository;
 import java.time.LocalDateTime;
@@ -55,7 +57,11 @@ public class AddressServiceImpl implements AddressService{
     }
 
     @Override
-    public List<Address> findAllAddress() {
-        return addressRepository.findAll();
+    public List<Address> findAllAddress(AddressFindAllRequestDto requestDto) {
+        Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+        System.out.println("찾은 users 출력");
+
+        return addressRepository.findAllByUserId(user.getUserId());
     }
+
 }
