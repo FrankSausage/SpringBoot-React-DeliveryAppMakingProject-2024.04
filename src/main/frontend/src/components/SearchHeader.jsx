@@ -1,5 +1,3 @@
-// SearchHeader.jsx
-
 import React, { useEffect, useState } from 'react';
 import { AppBar, Box, Toolbar, Typography, SwipeableDrawer, IconButton, List, ListItem, 
   ListItemButton, ListItemIcon, ListItemText, InputAdornment, OutlinedInput, Divider, Stack, Grid} from '@mui/material';
@@ -11,8 +9,14 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import { useAuthContext } from '../context/AuthContext';
 import { getCurrentUser } from '../utils/firebase';
+import { findPostcode } from '../utils/AddressUtil'; 
 
 export default function SearchHeader() {
+  const [postcode, setPostcode] = useState('');
+  const [roadAddress, setRoadAddress] = useState('');
+  const [jibunAddress, setJibunAddress] = useState('');
+  const [extraAddress, setExtraAddress] = useState('');
+
   const [text, setText] = useState('');
   const { keyword } = useParams();
   const [state, setState] = React.useState({
@@ -48,11 +52,33 @@ export default function SearchHeader() {
 
   const handleLogout = () => {
     logout();
-    navigate('/SignIn');
+    navigate('/');
   };
 
   const handleLogin = () => {
     navigate('/SignIn');
+  };
+
+  useEffect(() => {
+    const loadDaumPostcodeScript = () => {
+      const script = document.createElement('script');
+      script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+      script.async = true;
+      document.body.appendChild(script);
+      script.onload = () => {
+        console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
+      };
+    };
+
+    loadDaumPostcodeScript();
+
+    return () => {
+      // 언마운트 시 스크립트 제거 로직
+    };
+  }, []);
+
+  const handleFindPostcode = () => {
+    findPostcode(setPostcode, setRoadAddress, setJibunAddress, setExtraAddress); // use findPostcode from AddressUtil
   };
 
   const list = (
@@ -95,12 +121,18 @@ export default function SearchHeader() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>휴먼 딜리버리</Link>    
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
-            <GpsFixedIcon style={{ color: 'white' }} />&nbsp;
+          <Box sx={{  alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
+            <GpsFixedIcon style={{ color: 'white' }} />
             <OutlinedInput
-              placeholder="주소를 입력 하세요"
+              placeholder="주소를 입력하세요"
+              id="roadAddress"
+              value={roadAddress}
+                  InputProps={{
+                    readOnly: true,
+                  }}
               startAdornment={
                 <InputAdornment position="start">
+                  <button onClick={handleFindPostcode}>{user && user.displayAddress}</button>
                 </InputAdornment>
               }
               sx={{ width: '100%', maxWidth: 400, mr: 1, backgroundColor: 'white' }} 
