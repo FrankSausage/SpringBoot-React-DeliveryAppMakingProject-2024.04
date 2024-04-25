@@ -2,6 +2,7 @@ package com.team3.DeliveryProject.service;
 
 import static com.team3.DeliveryProject.responseCode.ErrorCode.USERNAME_IS_ALREADY_EXIST;
 import static com.team3.DeliveryProject.responseCode.ErrorCode.USER_EMAIL_IS_ALREADY_EXIST;
+import static com.team3.DeliveryProject.responseCode.ResponseCode.USER_DELETE_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.USER_SIGNUP_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.USER_UPDATE_SUCCESS;
 
@@ -58,5 +59,18 @@ public class UserServiceImpl implements UserService{
         System.out.println(users);
         usersRepository.save(users);
         return Response.toResponseEntity(USER_UPDATE_SUCCESS);
+    }
+
+    @Override
+    public ResponseEntity<Response> deleteUser(Users user) {
+        System.out.println("서비스 정상로직 진입");
+        Users users = usersRepository.findUsersByEmail(user.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+        System.out.println("찾은 users 출력");
+        System.out.println(users);;
+        users.setStatus("탈퇴");
+        System.out.println("바뀐 users 출력");
+        System.out.println(users);
+        usersRepository.save(users);
+        return Response.toResponseEntity(USER_DELETE_SUCCESS);
     }
 }

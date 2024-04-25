@@ -1,5 +1,6 @@
 package com.team3.DeliveryProject.controller;
 
+import com.team3.DeliveryProject.dto.request.user.UserDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.user.UserSignUpRequestDto;
 import com.team3.DeliveryProject.dto.request.user.UserUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.user.UserUpdatePostRequestDto;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/user")
@@ -67,4 +67,13 @@ public class UserController {
         return responseDto;
     }
 
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteUser(@RequestBody UserDeleteRequestDto requestDto){
+        System.out.println("컨트롤러 진입");
+        Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+        System.out.println(user);
+
+        userService.deleteUser(user);
+        return ResponseEntity.ok().body("User delete successfully");
+    }
 }
