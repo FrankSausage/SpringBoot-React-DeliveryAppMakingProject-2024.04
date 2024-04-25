@@ -33,7 +33,6 @@ export default function SignIn() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-        <SearchHeader />
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
@@ -63,6 +62,9 @@ export default function SignIn() {
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>    
+          </Typography>
             <Typography component="h1" variant="h5">
               로그인
             </Typography>

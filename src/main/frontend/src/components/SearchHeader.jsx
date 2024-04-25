@@ -47,7 +47,6 @@ export default function SearchHeader() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
     logout();
     navigate('/SignIn');
   };
@@ -108,19 +107,23 @@ export default function SearchHeader() {
             />
           </Box> 
           <Grid item xs={3}>
-            <Stack direction='row' spacing={1} justifyContent='right' alignItems='center'>
-              {user ? (
-                <>
-                  <Typography variant="body1" sx={{ color: 'white', mr: 1 }}><Link to={`/update/${email}`}>{user.displayName}</Link></Typography>
-                  <button onClick={handleLogout} style={{ color: 'white', textDecoration: 'none', background: 'none', border: 'none' }}>로그아웃</button>
-                </>
-              ) : (
-                <>
-                  <Link to='/SignIn' style={{ textDecoration: 'none', color: 'white' }}>로그인</Link>
-                  <Link to='/SignUp' style={{ textDecoration: 'none', color: 'white' }}>회원가입</Link>
-                </>
-              )}
-            </Stack>
+          <Stack direction='row' spacing={1} justifyContent='right' alignItems='center'>
+            {user ? (
+              <>
+                <Typography variant="body1" sx={{ color: 'white', mr: 1 }}>
+                  <Link to="/Update" style={{ textDecoration: 'none', color: 'white' }}>
+                    {user.displayName}
+                  </Link>
+                </Typography>
+                <button onClick={handleLogout} style={{ color: 'white', textDecoration: 'none', background: 'none', border: 'none' }}>로그아웃</button>
+              </>
+            ) : (
+              <>
+                <Link to='/SignIn' style={{ textDecoration: 'none', color: 'white' }}>로그인</Link>
+                <Link to='/SignUp' style={{ textDecoration: 'none', color: 'white' }}>회원가입</Link>
+              </>
+            )}
+          </Stack>
           </Grid>
         </Toolbar>
       </AppBar>

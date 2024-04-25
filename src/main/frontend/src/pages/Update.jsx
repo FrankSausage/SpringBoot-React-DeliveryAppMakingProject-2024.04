@@ -8,7 +8,6 @@ import SearchHeader from '../components/SearchHeader';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
-
 const defaultTheme = createTheme();
 
 export default function Update() {
@@ -106,11 +105,7 @@ export default function Update() {
                                         inputMode: 'numeric',
                                     }}
                                 />
-                            </Grid>
-                            <Grid item xs={12}>
                                 <TextField
-                                    required
-                                    fullWidth
                                     id="postcode"
                                     name="postcode"
                                     label="우편번호"
@@ -155,6 +150,20 @@ export default function Update() {
                                     label="상세주소"
                                     defaultValue={user.detailAddress} // 기존 상세주소 정보 표시
                                 />
+                                <TextField
+                                    id="address"
+                                    name="address"
+                                    label="주소"
+                                    defaultValue={user.address} 
+                                />
+                                <Button onClick={updateAddress} fullWidth variant="contained" sx={{ mt: 2 }}>주소 업데이트</Button>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button onClick={deleteUserAccount} fullWidth variant="contained" sx={{ mt: 2 }}>계정 삭제</Button>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button onClick={reauthenticate} fullWidth variant="contained" sx={{ mt: 2 }}>재인증</Button>
+
                             </Grid>
                         </Grid>
                         <Button
@@ -166,8 +175,8 @@ export default function Update() {
                             정보 업데이트
                         </Button>
                     </Box>
+                    <Footer sx={{ mt: 5 }} />
                 </Box>
-                <Footer sx={{ mt: 5 }} />
             </Container>
         </ThemeProvider>
     );
