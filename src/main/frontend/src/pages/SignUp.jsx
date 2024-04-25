@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../utils/AddressUtil'; 
 import { getCurrentUser, register } from '../utils/firebase';
+import { extractDataFromFormData } from '../utils/userInfo';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -57,8 +58,12 @@ export default function SignUp() {
       // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}}
       setFormData(data)
         .then(res => {
-          register(res)
-          // axios.post('/dp/user/signup', extractDataFromFormData(res));
+          register(res);
+          extractDataFromFormData(res)
+            .then(resFormData => {
+              axios.post(`/dp/user/signup`, resFormData)
+              console.log(resFormData);
+            })
           })
         .then(() => {
           alert('가입이 완료되었습니다.');
@@ -68,13 +73,6 @@ export default function SignUp() {
     }
   };
 
-  function extractDataFromFormData(formData) {
-    const data = {};
-    for (const [key, value] of formData.entries()) {
-      data[key] = value;
-    }
-    return data;
-  }
 
   const formatPhoneNumber = (phoneNumberValue) => {
     const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
@@ -89,7 +87,7 @@ export default function SignUp() {
 
   const setFormData = async (data) => {
     try{
-      data.append('currentAddress', (roadAddress + ' ' + jibunAddress + ' ' + extraAddress));
+      data.append('currentAddress', (roadAddress + ',' + jibunAddress + ',' + extraAddress + ',' + data.get('detailAddress')));
       data.append('role', role);
       return await data;
     }
