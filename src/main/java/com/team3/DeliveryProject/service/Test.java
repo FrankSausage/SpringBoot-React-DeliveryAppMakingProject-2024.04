@@ -13,6 +13,6 @@ import java.util.Optional;
 public class Test {
         private final AddressRepository addressRepository;
         public void findTest() {
-            System.out.println(addressRepository.findByUserId(1L));
+            System.out.println(addressRepository.findAddressByUserId(1L));
         }
 }
