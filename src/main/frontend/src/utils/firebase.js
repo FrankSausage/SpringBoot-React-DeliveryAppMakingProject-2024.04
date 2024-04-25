@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, GithubAuthProvider,
   signInWithPopup, signOut, updateProfile, signInWithEmailAndPassword,
   onAuthStateChanged } from "firebase/auth";
+import { extractDataFromFormData } from '../utils/userInfo';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -13,25 +14,14 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 
 export async function register(user) {
-  const { name, password, email } = extractDataFromFormData(user);
+  const { name, password, email } = await extractDataFromFormData(user);
   return await createUserWithEmailAndPassword(auth, email, password)
     .then(() => {
       updateProfile(auth.currentUser, {
         displayName: name, 
       })
     })
-    .then(() => console.log)
     .catch(console.error);
-}
-
-export function registerTest(data) {
-  console.log({
-    email: data.get('email'),
-    password: data.get('password'),
-    uid: data.get('uid'),
-    role: data.get('role'),
-    currentAddress: data.get('currentAddress'),
-  })
 }
 
 export function login({ email, password }) {
@@ -46,6 +36,16 @@ export function loginWithGithub() {
     .catch(console.error);
 }
 
+export function getCurrentUser() {
+  const userData = {};
+  const user = auth.currentUser;
+  if(user !== null) {
+    userData.displayName = user.displayName;
+    userData.email = user.email;
+  }
+  return userData;
+}
+
 export function logout() {
   signOut(auth).catch(console.error);
 }
@@ -54,12 +54,4 @@ export function onUserStateChanged(callback) {
   onAuthStateChanged(auth, (user) => {
     callback(user);
   });
-}
-
-function extractDataFromFormData(formData) {
-  const data = {};
-  for (const [key, value] of formData.entries()) {
-    data[key] = value;
-  }
-  return data;
 }
