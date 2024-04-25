@@ -4,7 +4,7 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox,
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import SearchHeader from '../components/SearchHeader'
-import { login } from '../utils/firebase' // Firebase에서 login 함수를 가져옵니다.
+import { login, getCurrentUser } from '../utils/firebase' // Firebase에서 login 함수를 가져옵니다.
 import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import axios from 'axios';
@@ -24,6 +24,7 @@ export default function SignIn() {
     try {
       await login(userInfo); // Firebase의 login 함수를 사용하여 로그인을 시도합니다.
       navigate('/'); // 로그인 성공 시 '/' 경로로 이동합니다.
+      getCurrentUser();
     } catch (error) {
       console.error('로그인 실패:', error);
       // 로그인 실패 시 처리할 코드를 추가할 수 있습니다.
@@ -118,6 +119,7 @@ export default function SignIn() {
               </Grid>
             </Box>
           </Box>
+          <Footer sx={{ mt: 5 }} />
         </Grid>
       </Grid>
               <Footer sx={{ mt: 5 }} />

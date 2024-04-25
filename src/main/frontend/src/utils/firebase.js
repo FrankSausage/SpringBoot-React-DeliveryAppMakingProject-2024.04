@@ -20,18 +20,7 @@ export async function register(user) {
         displayName: name, 
       })
     })
-    .then(() => console.log)
     .catch(console.error);
-}
-
-export function registerTest(data) {
-  console.log({
-    email: data.get('email'),
-    password: data.get('password'),
-    uid: data.get('uid'),
-    role: data.get('role'),
-    currentAddress: data.get('currentAddress'),
-  })
 }
 
 export function login({ email, password }) {
@@ -44,6 +33,16 @@ export function loginWithGithub() {
   const provider = new GithubAuthProvider();
   signInWithPopup(auth, provider)
     .catch(console.error);
+}
+
+export function getCurrentUser() {
+  const userData = {};
+  const user = auth.currentUser;
+  if(user !== null) {
+    userData.displayName = user.displayName;
+    userData.email = user.email;
+  }
+  return userData;
 }
 
 export function logout() {

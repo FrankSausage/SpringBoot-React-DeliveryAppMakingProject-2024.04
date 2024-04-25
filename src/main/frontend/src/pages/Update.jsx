@@ -5,59 +5,25 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
 import axios from 'axios';
 import SearchHeader from '../components/SearchHeader';
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
 export default function Update() {
-    const [user, setUser] = useState({});
-
-    useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const response = await axios.get('/dp/user/update');
-                setUser(response.data);
-            } catch (error) {
-                console.error('사용자 데이터 가져오기 실패:', error);
-            }
-        };
-
-        fetchUserData();
-    }, []);
-
-    const updateEmail = () => {
-        // 이메일 업데이트 함수 구현
-    };
-
-    const updatePassword = () => {
-        // 비밀번호 업데이트 함수 구현
-    };
-
-    const updateName = () => {
-        // 이름 업데이트 함수 구현
-    };
-
-    const updatePhone = () => {
-        // 이름 업데이트 함수 구현
-    };
-
-
-    const deleteUserAccount = () => {
-        // 계정 삭제 함수 구현
-    };
-
-    const reauthenticate = () => {
-        // 재인증 함수 구현
-    };
-
-    const updateAddress = async (event) => {
+    const [user, setUser] = useState({}); // 사용자 정보를 저장할 상태
+    const [passwordMatch, setPasswordMatch] = useState(true);
+    const { userEmail } = useParams();
+    
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
 
         try {
-            await axios.put('/dp/user/address', formData);
-            alert('주소가 업데이트되었습니다.');
+            await axios.put('/api/user', formData);
+            alert('회원 정보가 업데이트되었습니다.');
         } catch (error) {
-            console.error('주소 업데이트 중 에러 발생:', error);
+            console.error('회원 정보 업데이트 중 에러 발생:', error);
         }
     };
 
@@ -80,7 +46,7 @@ export default function Update() {
                     <Typography component="h1" variant="h5">
                         회원정보 수정
                     </Typography>
-                    <Box component="form" onSubmit={updateAddress} sx={{ mt: 3 }}>
+                    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
@@ -89,20 +55,32 @@ export default function Update() {
                                     id="email"
                                     name="email"
                                     label="이메일"
-                                    defaultValue={user.email} 
+                                    defaultValue={user.email} // 기존 이메일 정보 표시
                                 />
-                                <Button onClick={updateEmail} fullWidth variant="contained" sx={{ mt: 2 }}>이메일 업데이트</Button>
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                    required
-                                    fullWidth
-                                    id="password"
-                                    name="password"
-                                    label="비밀번호"
-                                    defaultValue={user.password} 
+                                required
+                                fullWidth
+                                name="password"
+                                label="비밀번호"
+                                type="password"
+                                id="password"
+                                autoComplete="new-password"
                                 />
-                                <Button onClick={updatePassword} fullWidth variant="contained" sx={{ mt: 2 }}>비밀번호 업데이트</Button>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                required
+                                fullWidth
+                                name="password2"
+                                label="비밀번호 확인"
+                                type="password"
+                                id="password2"
+                                autoComplete="new-password"
+                                error={!passwordMatch}
+                                helperText={!passwordMatch && "비밀번호가 일치하지 않습니다"}
+                                />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
@@ -111,9 +89,8 @@ export default function Update() {
                                     id="name"
                                     name="name"
                                     label="이름"
-                                    defaultValue={user.name} 
+                                    defaultValue={user.name} // 기존 이름 정보 표시
                                 />
-                                <Button onClick={updateName} fullWidth variant="contained" sx={{ mt: 2 }}>이름 업데이트</Button>
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
@@ -121,27 +98,67 @@ export default function Update() {
                                     fullWidth
                                     id="phone"
                                     name="phone"
-                                    label="휴대폰"
-                                    defaultValue={user.phone} 
+                                    label="휴대전화"
+                                    defaultValue={user.phone} // 기존 휴대전화 정보 표시
+                                    inputProps={{
+                                        maxLength: 13,
+                                        inputMode: 'numeric',
+                                    }}
                                 />
-                                <Button onClick={updatePhone} fullWidth variant="contained" sx={{ mt: 2 }}>전화번호 업데이트</Button>
+                                <TextField
+                                    id="postcode"
+                                    name="postcode"
+                                    label="우편번호"
+                                    defaultValue={user.postcode} // 기존 우편번호 정보 표시
+                                    InputProps={{
+                                        readOnly: true, // 우편번호는 수정되지 않도록 설정되어 있습니다.
+                                    }}
+                                />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
                                     required
                                     fullWidth
+                                    id="roadAddress"
+                                    name="roadAddress"
+                                    label="도로명주소"
+                                    defaultValue={user.roadAddress} // 기존 도로명주소 정보 표시
+                                    InputProps={{
+                                        readOnly: true, // 도로명주소도 수정되지 않도록 설정되어 있습니다.
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="extraAddress"
+                                    name="extraAddress"
+                                    label="참고항목"
+                                    defaultValue={user.extraAddress} // 기존 참고항목 정보 표시
+                                    InputProps={{
+                                        readOnly: true, // 참고항목도 수정되지 않도록 설정되어 있습니다.
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="detailAddress"
+                                    name="detailAddress"
+                                    label="상세주소"
+                                    defaultValue={user.detailAddress} // 기존 상세주소 정보 표시
+                                />
+                                <TextField
                                     id="address"
                                     name="address"
                                     label="주소"
                                     defaultValue={user.address} 
                                 />
-                                <Button onClick={updateAddress} fullWidth variant="contained" sx={{ mt: 2 }}>주소 업데이트</Button>
                             </Grid>
                             <Grid item xs={12}>
-                                <Button onClick={deleteUserAccount} fullWidth variant="contained" sx={{ mt: 2 }}>계정 삭제</Button>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Button onClick={reauthenticate} fullWidth variant="contained" sx={{ mt: 2 }}>재인증</Button>
+                                <Button fullWidth variant="contained" sx={{ mt: 2 }}>계정 삭제</Button>
                             </Grid>
                         </Grid>
                         <Button
@@ -153,9 +170,9 @@ export default function Update() {
                             정보 업데이트
                         </Button>
                     </Box>
-                    <Footer sx={{ mt: 5 }} />
                 </Box>
-            </Container>
-        </ThemeProvider>
+            <Footer sx={{ mt: 5 }} />
+        </Container>
+    </ThemeProvider>
     );
 }

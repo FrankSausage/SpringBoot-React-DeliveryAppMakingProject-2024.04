@@ -10,6 +10,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import { useAuthContext } from '../context/AuthContext';
+import { getCurrentUser } from '../utils/firebase';
 
 export default function SearchHeader() {
   const [text, setText] = useState('');
@@ -17,6 +18,7 @@ export default function SearchHeader() {
   const [state, setState] = React.useState({
     left: false,
   });
+  const { email } = getCurrentUser();
 
   const { user, setUser, logout } = useAuthContext();
   const navigate = useNavigate();
