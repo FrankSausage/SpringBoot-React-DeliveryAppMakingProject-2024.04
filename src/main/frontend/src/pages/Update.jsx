@@ -5,6 +5,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
 import axios from 'axios';
 import SearchHeader from '../components/SearchHeader';
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
 
 const defaultTheme = createTheme();
@@ -12,8 +14,8 @@ const defaultTheme = createTheme();
 export default function Update() {
     const [user, setUser] = useState({}); // 사용자 정보를 저장할 상태
     const [passwordMatch, setPasswordMatch] = useState(true);
-
-
+    const { userEmail } = useParams();
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);

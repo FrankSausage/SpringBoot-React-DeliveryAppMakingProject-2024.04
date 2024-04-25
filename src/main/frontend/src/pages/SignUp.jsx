@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../utils/AddressUtil'; 
-import { register } from '../utils/firebase';
+import { getCurrentUser, register } from '../utils/firebase';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -45,6 +45,7 @@ export default function SignUp() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const data = new FormData(event.currentTarget)
     const password = data.get('password');
     const password2 = data.get('password2');
     if (password !== password2) {
@@ -52,15 +53,15 @@ export default function SignUp() {
       return;
     } else {
       setPasswordMatch(true);
-      const data = new FormData(event.currentTarget)
       // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}}
       setFormData(data)
         .then(res => {
           register(res)
-          axios.post('/dp/user/signup', extractDataFromFormData(res));
+          // axios.post('/dp/user/signup', extractDataFromFormData(res));
           })
         .then(() => {
           alert('가입이 완료되었습니다.');
+          getCurrentUser();
           navigate('/');
         });
     }

@@ -35,6 +35,16 @@ export function loginWithGithub() {
     .catch(console.error);
 }
 
+export function getCurrentUser() {
+  const userData = {};
+  const user = auth.currentUser;
+  if(user !== null) {
+    userData.displayName = user.displayName;
+    userData.email = user.email;
+  }
+  return userData;
+}
+
 export function logout() {
   signOut(auth).catch(console.error);
 }
