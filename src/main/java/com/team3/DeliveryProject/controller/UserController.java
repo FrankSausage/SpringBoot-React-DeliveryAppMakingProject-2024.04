@@ -54,9 +54,9 @@ public class UserController {
     }
 
     @GetMapping("/update")
-    public UserUpdateResponseDto updateUser(String email) {
+    public UserUpdateResponseDto updateUser(@RequestBody UserUpdateGetRequestDto requestDto) {
         System.out.println("컨트롤러 진입");
-        Users user = usersRepository.findUsersByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
         System.out.println(user);
 
         UserUpdateResponseDto responseDto = UserUpdateResponseDto.builder()

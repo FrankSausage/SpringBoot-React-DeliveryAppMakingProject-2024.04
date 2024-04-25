@@ -3,13 +3,12 @@ import axios from "axios"
 import { getAuth } from "firebase/auth"
 
 export const useUserByEmail = email => {
-    const auth = getAuth();
     const { isLoading, error, data: user } = useQuery({
         queryKey: ['email', email],
         queryFn: async () => {
             return await axios
-                .get(`/dp/user/update/`, email)
-                .then(res => console.log(res.data))
+                .get(`/dp/user/update/`, {email: email})
+                .then(res => res.data)
                 .catch(console.error);
         }
     })
