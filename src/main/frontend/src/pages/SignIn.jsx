@@ -116,11 +116,11 @@ export default function SignIn() {
                   </Link>
                 </Grid>
               </Grid>
-              <Footer sx={{ mt: 5 }} />
             </Box>
           </Box>
         </Grid>
       </Grid>
+              <Footer sx={{ mt: 5 }} />
     </ThemeProvider>
   );
 }
