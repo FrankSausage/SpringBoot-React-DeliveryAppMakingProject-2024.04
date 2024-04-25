@@ -27,12 +27,10 @@ public class AddressServiceImpl implements AddressService{
     private final AddressRepository addressRepository;
     @Override
     public ResponseEntity<Response> addAddress(AddressAddRequestDto requestDto) {
-        System.out.println("서비스 정상로직 진입");
 
         Address address = new Address(requestDto.getUserId(), requestDto.getAddress(), "일반");
         address.setCreatedDate(LocalDateTime.now());
         address.setModifiedDate(LocalDateTime.now());
-        System.out.println(address);
         addressRepository.save(address);
 
         return Response.toResponseEntity(ADDRESS_ADD_SUCCESS);
@@ -59,7 +57,6 @@ public class AddressServiceImpl implements AddressService{
     @Override
     public List<Address> findAllAddress(AddressFindAllRequestDto requestDto) {
         Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
-        System.out.println("찾은 users 출력");
 
         return addressRepository.findAllByUserId(user.getUserId());
     }
