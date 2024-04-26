@@ -16,7 +16,7 @@ export default function Update() {
     // const [user, setUser] = useState({}); // 사용자 정보를 저장할 상태
     const [passwordMatch, setPasswordMatch] = useState(true);
     const { email, displayName } = getCurrentUser();
-    const { isLoading, error, user } = useUserByEmail('james@naver.com');
+    const { isLoading, error, user } = useUserByEmail(email);
     
     const handleSubmit = async (event) => {
         event.preventDefault();

@@ -71,12 +71,13 @@ public class UserController {
         return ResponseEntity.ok().body("User delete successfully");
     }
 
-    @GetMapping("/login")
+    @GetMapping("/signin")
     public ResponseEntity<?> signIn(@ModelAttribute UserSignInRequestDto requestDto) {
         Users user = usersRepository.findUsersByEmail(requestDto.getEmail())
             .orElseThrow(() -> new RuntimeException("User not found"));
         UserSignInResponseDto responseDto = UserSignInResponseDto.builder()
             .currentAddress(user.getCurrentAddress())
+            .role(user.getRole())
             .build();
         return ResponseEntity.ok().body(responseDto);
     }

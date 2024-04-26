@@ -15,4 +15,5 @@ import lombok.ToString;
 @Builder
 public class UserSignInResponseDto {
     private String currentAddress;
+    private String role;
 }
