@@ -16,6 +16,7 @@ export default function Update() {
     const [passwordMatch, setPasswordMatch] = useState(true);
     const { email, displayName } = getCurrentUser();
     const { isLoading, error, user } = useUserByEmail(email);
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);

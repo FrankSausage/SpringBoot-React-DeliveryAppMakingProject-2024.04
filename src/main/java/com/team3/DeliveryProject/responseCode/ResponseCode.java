@@ -11,6 +11,7 @@ public enum ResponseCode {
     USER_UPDATE_SUCCESS(HttpStatus.OK, "회원수정 성공"),
     USER_DELETE_SUCCESS(HttpStatus.OK,"회원삭제 성공"),
     ADDRESS_ADD_SUCCESS(HttpStatus.OK,"주소 추가 성공"),
+    STORE_ADD_SUCCESS(HttpStatus.OK,"가게 추가 성공"),
     ADDRESS_MODIFY_SUCCESS(HttpStatus.OK,"주소 수정 성공"),
     ADDRESS_DELETE_SUCCESS(HttpStatus.OK,"주소 삭제 성공"),
     USER_INFO_UPDATE_SUCCESS(HttpStatus.OK, "계정정보 변경 성공"),
