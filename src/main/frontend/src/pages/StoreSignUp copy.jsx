@@ -21,7 +21,6 @@ export default function StoreSignUp() {
   const [passwordMatch, setPasswordMatch] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState('');
   const navigate = useNavigate();
-  
 
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
@@ -96,27 +95,7 @@ export default function StoreSignUp() {
       return 'Error!';
     }
   }
-  
-  const [storePictureName, setStorePictureName] = useState('');
 
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setStorePictureName(file.name);
-      // 여기서 파일 업로드 처리를 수행할 수 있습니다.
-    }
-  };
-
-  const uploadButtonStyle = {
-    display: 'inline-block',
-    width: '90px',
-    height: '90px',
-    background: 'url("src/assets/icon-add-photo.svg") no-repeat',
-    backgroundPosition: 'center',
-    border: '1px solid #ccc',
-    borderRadius: '10px',
-    cursor: 'pointer',
-  };
   
   
   
@@ -375,44 +354,28 @@ export default function StoreSignUp() {
                   variant='outlined'
                 />
               </Grid>
-              
-                <Grid item xs={12}>
-                  <Typography variant="h6" gutterBottom>
-                    가게 사진
-                  </Typography>
-                    <input
-                      accept=".png, .jpeg, .jpg"
-                      id="upload-photo"
-                      type="file"
-                      style={{ display: 'none' }}
-                      onChange={handleFileUpload}
-                    />
-                    
-                      <TextField
-                        autoComplete="given-name"
-                        name="storePictureName"
-                        value={storePictureName}
-                        required
-                        fullWidth
-                        id="storePictureName"
-                        label="가게 사진"
-                        autoFocus
-                        onClick={(e) => {
-                          e.target.value = null;
-                        }}
-                      />
-                      {/* 아이콘 대신에 "사진 올리기" 텍스트를 사용하고 싶다면 아래 주석 처리된 라인을 사용하세요 */}
-                      {/* <span>사진 올리기</span> */}
-                    
-                      <Button
-                        type="button"
-                        variant="contained"
-                        onClick={() => document.getElementById('upload-photo').click()}
-                        sx={{ mt: 3, mb: 2 }}>
-                        사진 올리기
-                      </Button>
-                  </Grid>
+              <Grid item xs={12}>
+                <Typography variant="h6" gutterBottom>
+                  가게 사진
+                </Typography>
                 
+                <TextField
+                  autoComplete="given-name"
+                  name="storePictureName"
+                  required
+                  fullWidth
+                  id="storePictureName"
+                  label="가게 사진"
+                  autoFocus
+                />
+
+                <Button
+                  type="button"
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}>
+                  사진 올리기
+                </Button>
+              </Grid>
 
               {/* <Grid item xs={12}>
                 <TextField
