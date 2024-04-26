@@ -9,7 +9,7 @@ export const useUserByEmail = email => {
             .then(res => res.data)
             .catch(console.error);
         }
-    })
+    })        
     const { roadAddress, extraAddress, detailAddress } = user ? splitAddressFromCurrentUserAddress(user.currentAddress) : '';
     return { isLoading, error, user, roadAddress, extraAddress, detailAddress };
 }
