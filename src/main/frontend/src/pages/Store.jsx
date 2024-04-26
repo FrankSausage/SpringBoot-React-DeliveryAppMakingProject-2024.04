@@ -4,6 +4,7 @@ import Footer from "../components/Footer"
 import PropTypes from 'prop-types';
 import { Tab, Tabs, Box, Typography, Stack, Grid, InputBase} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { BorderClear, BorderColor } from '@mui/icons-material';
 
 
 function CustomTabPanel(props) {
@@ -221,7 +222,8 @@ let boxStyle = {
   width: 200, 
   height: 200, 
   border:1, 
-  borderColor: 'rgb(217, 217, 217)', 
+  // borderColor: 'rgb(217, 217, 217)',
+  BorderColor: 'red',
   m:2
 }
 let gridStyle ={
