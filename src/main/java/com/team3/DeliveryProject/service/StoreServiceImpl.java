@@ -13,6 +13,7 @@ import com.team3.DeliveryProject.entity.Stores;
 import com.team3.DeliveryProject.repository.StoresRepository;
 import com.team3.DeliveryProject.repository.UsersRepository;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -60,5 +61,10 @@ public class StoreServiceImpl implements StoreService{
         stores.setModifiedDate(LocalDateTime.now());
         storesRepository.save(stores);
         return Response.toResponseEntity(STORE_DELETE_SUCCESS);
+    }
+
+    @Override
+    public Optional<Stores> getUpdateStore(Long storeId) {
+        return storesRepository.findById(storeId);
     }
 }
