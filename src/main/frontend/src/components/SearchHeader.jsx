@@ -121,29 +121,31 @@ export default function SearchHeader() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>휴먼 딜리버리</Link>    
           </Typography>
+          {user &&
+          <>
           <Box sx={{  alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
             <GpsFixedIcon style={{ color: 'white' }} />
             <OutlinedInput
               placeholder="주소를 입력하세요"
               id="roadAddress"
-              value={roadAddress}
-                  InputProps={{
-                    readOnly: true,
-                  }}
+              value={user.currentAddress}
+                 
               startAdornment={
-                <InputAdornment position="start">
-                  <button onClick={handleFindPostcode}>{user && user.displayAddress}</button>
+                <InputAdornment position="start" value={user.roadAddress}>
+                  <button onClick={handleFindPostcode} value={user.roadAddress}/>
                 </InputAdornment>
               }
-              sx={{ width: '100%', maxWidth: 400, mr: 1, backgroundColor: 'white' }} 
+              sx={{ width: '100%', maxWidth: 400, mr: 20, backgroundColor: 'white' }} 
             />
           </Box> 
+          </>
+          }
           <Grid item xs={3}>
           <Stack direction='row' spacing={1} justifyContent='right' alignItems='center'>
             {user ? (
               <>
                 <Typography variant="body1" sx={{ color: 'white', mr: 1 }}>
-                  <Link to="/Update" state={{ email }} style={{ textDecoration: 'none', color: 'white' }}>
+                  <Link to="/Update" style={{ textDecoration: 'none', color: 'white' }}>
                     {user.displayName}
                   </Link>
                 </Typography>

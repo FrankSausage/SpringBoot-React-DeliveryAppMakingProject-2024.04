@@ -49,12 +49,16 @@ public class UserController {
 
     @GetMapping("/update")
     public ResponseEntity<?> updateUser(@ModelAttribute UserUpdateGetRequestDto requestDto) {
+        System.out.println("진입");
         Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+        System.out.println(user)
+        ;
 
         UserUpdateResponseDto responseDto = UserUpdateResponseDto.builder()
             .phone(user.getPhone())
             .currentAddress(user.getCurrentAddress())
             .build();
+        System.out.println(responseDto);
         return ResponseEntity.ok().body(responseDto);
     }
 
