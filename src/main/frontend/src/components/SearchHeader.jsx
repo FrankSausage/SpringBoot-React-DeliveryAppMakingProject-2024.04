@@ -121,25 +121,20 @@ export default function SearchHeader() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>휴먼 딜리버리</Link>    
           </Typography>
-          {user &&
-          <>
           <Box sx={{  alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
-            <GpsFixedIcon style={{ color: 'white' }} />
             <OutlinedInput
               placeholder="주소를 입력하세요"
               id="roadAddress"
-              value={user.currentAddress}
+              value={roadAddress}
                  
               startAdornment={
-                <InputAdornment position="start" value={user.roadAddress}>
-                  <button onClick={handleFindPostcode} value={user.roadAddress}/>
+                <InputAdornment position="start">
+                  <GpsFixedIcon onClick={handleFindPostcode}/>
                 </InputAdornment>
               }
-              sx={{ width: '100%', maxWidth: 400, mr: 20, backgroundColor: 'white' }} 
+              sx={{ width: '100%', maxWidth: 400, mr: 30, backgroundColor: 'white' }} 
             />
           </Box> 
-          </>
-          }
           <Grid item xs={3}>
           <Stack direction='row' spacing={1} justifyContent='right' alignItems='center'>
             {user ? (

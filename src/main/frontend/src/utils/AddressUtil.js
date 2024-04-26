@@ -1,5 +1,3 @@
-// AddressUtil.js
-
 export const findPostcode = (setPostcode, setRoadAddress, setJibunAddress, setExtraAddress) => {
   if (window.daum && window.daum.Postcode) {
     new window.daum.Postcode({

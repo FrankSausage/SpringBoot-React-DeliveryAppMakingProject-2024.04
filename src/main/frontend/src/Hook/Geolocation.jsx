@@ -1,3 +1,5 @@
+// Geolocation.js
+
 import { useState, useEffect, useRef } from "react";
 
 const Geolocation = (options = {}) => {
@@ -51,4 +53,4 @@ const Geolocation = (options = {}) => {
   return { location, cancelLocationWatch, error };
 };
 
-export default useWatchLocation;
+export default Geolocation;

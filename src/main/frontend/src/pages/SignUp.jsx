@@ -5,9 +5,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../utils/AddressUtil'; 
-import { getCurrentUser, register } from '../utils/firebase';
+import { register } from '../utils/firebase';
 import { extractDataFromFormData } from '../utils/userInfo';
-import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
 const defaultTheme = createTheme();
