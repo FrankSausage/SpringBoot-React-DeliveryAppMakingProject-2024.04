@@ -143,7 +143,7 @@ export default function SearchHeader() {
             {user ? (
               <>
                 <Typography variant="body1" sx={{ color: 'white', mr: 1 }}>
-                  <Link to="/Update" style={{ textDecoration: 'none', color: 'white' }}>
+                  <Link to="/Update" state={{ email }} style={{ textDecoration: 'none', color: 'white' }}>
                     {user.displayName}
                   </Link>
                 </Typography>

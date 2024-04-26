@@ -5,7 +5,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../utils/AddressUtil'; 
-import { register } from '../utils/firebase';
+import { getCurrentUser, register } from '../utils/firebase';
+import { extractDataFromFormData } from '../utils/userInfo';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -53,31 +54,26 @@ export default function SignUp() {
     if (password !== password2) {
       // 비밀번호가 일치하지 않을 때
       setPasswordMatch(false);
-      return; // 회원가입 절차를 중지하고 함수를 종료합니다.
+      return;
+    } else {
+      setPasswordMatch(true);
+      // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}}
+      setFormData(data)
+        .then(res => {
+          register(res);
+          extractDataFromFormData(res)
+            .then(resFormData => {
+              axios.post(`/dp/user/signup`, resFormData)
+              console.log(resFormData);
+            })
+          })
+        .then(() => {
+          alert('가입이 완료되었습니다.');
+          navigate('/signin');
+        });
     }
-
-    // 일치할 때는 회원가입 절차를 계속 진행합니다.
-    setPasswordMatch(true);
-  
-    // 나머지 회원가입 절차를 여기에 추가합니다.
-    setFormData(data)
-      .then(res => {
-        register(res);
-        axios.post('/dp/user/signup', extractDataFromFormData(res));
-      })
-      .then(() => {
-        alert('가입이 완료되었습니다.');
-        navigate('/signin');
-      });
   };
 
-  function extractDataFromFormData(formData) {
-    const data = {};
-    for (const [key, value] of formData.entries()) {
-      data[key] = value;
-    }
-    return data;
-  }
 
   const formatPhoneNumber = (phoneNumberValue) => {
     const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
@@ -92,7 +88,7 @@ export default function SignUp() {
 
   const setFormData = async (data) => {
     try{
-      data.append('currentAddress', (roadAddress + ' ' + jibunAddress + ' ' + extraAddress));
+      data.append('currentAddress', (roadAddress + ',' + jibunAddress + ',' + extraAddress + ',' + data.get('detailAddress')));
       data.append('role', role);
       return await data;
     }
