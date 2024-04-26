@@ -7,7 +7,7 @@ import Footer from "../components/Footer"
 export default function Home() {
     return(
         <Box>
-          <SearchHeader />
+          <SearchHeader />          
           <Grid container>
               <Grid item xs={12} sx={{border: 1}}>
                 <Stack sx={{maxHeight: 200}}>

@@ -1,10 +1,13 @@
 package com.team3.DeliveryProject.controller;
 
-import com.team3.DeliveryProject.dto.UsersDto;
-import com.team3.DeliveryProject.dto.request.UserRequestDto;
+import com.team3.DeliveryProject.dto.request.user.UserDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.user.UserSignUpRequestDto;
+import com.team3.DeliveryProject.dto.request.user.UserUpdateGetRequestDto;
+import com.team3.DeliveryProject.dto.request.user.UserUpdatePostRequestDto;
+import com.team3.DeliveryProject.dto.response.user.UserUpdateResponseDto;
 import com.team3.DeliveryProject.entity.Users;
+import com.team3.DeliveryProject.repository.UsersRepository;
 import com.team3.DeliveryProject.service.UserService;
-import java.util.Locale.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,36 +16,53 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private UsersRepository usersRepository;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody UserRequestDto userRequestDto) {
-        System.out.println("컨트롤러 진입");
+    public ResponseEntity<?> signUp(@RequestBody UserSignUpRequestDto requestDto) {
 
-        Users users = new Users(userRequestDto.getPassword(),userRequestDto.getName(),userRequestDto.getPhone(),
-            userRequestDto.getEmail(),0,userRequestDto.getRole(),userRequestDto.getCurrentAddress(),"일반",0);
-        System.out.println(users);
-        System.out.println("!@@!@#W@!!@#@!#@!#@!#!@#");
+        Users users = new Users(requestDto.getPassword(),requestDto.getName(),requestDto.getPhone(),
+            requestDto.getEmail(),0,requestDto.getRole(),requestDto.getCurrentAddress(),"우리집",0);
         userService.signUp(users);
         return ResponseEntity.ok().body("User registered successfully");
     }
 
-//    @PostMapping("/signup")
-//    public ResponseEntity<?> signUp(String userId, String password, String name, String phone, String email, String role, String currentAddress) {
-//        System.out.println("컨트롤러 진입");
-//
-//        System.out.println(userId);
-//        System.out.println(password);
-//        System.out.println(name);
-//        System.out.println(phone);
-//        System.out.println(email);
-//        System.out.println(role);
-//        System.out.println(currentAddress);
-//        return ResponseEntity.ok().body("User registered successfully");
-//    }
+    @PostMapping("/update")
+    public ResponseEntity<?> updateUser(@RequestBody UserUpdatePostRequestDto requestDto){
+        Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).get();
+
+        user.setPhone(requestDto.getPhone());
+        user.setName(requestDto.getName());
+        user.setPassword(requestDto.getPassword());
+        user.setCurrentAddress(requestDto.getCurrentAddress());
+        userService.updateUser(user);
+        return ResponseEntity.ok().body("User update successfully");
+    }
+
+    @GetMapping("/update")
+    public ResponseEntity<?> updateUser(@ModelAttribute UserUpdateGetRequestDto requestDto) {
+        Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+
+        UserUpdateResponseDto responseDto = UserUpdateResponseDto.builder()
+            .phone(user.getPhone())
+            .currentAddress(user.getCurrentAddress())
+            .build();
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteUser(@RequestBody UserDeleteRequestDto requestDto){
+        Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+
+        userService.deleteUser(user);
+        return ResponseEntity.ok().body("User delete successfully");
+    }
 }
