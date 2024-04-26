@@ -4,7 +4,6 @@ import Footer from "../components/Footer"
 import PropTypes from 'prop-types';
 import { Tab, Tabs, Box, Typography, Stack, Grid, InputBase} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { BorderClear, BorderColor } from '@mui/icons-material';
 
 
 function CustomTabPanel(props) {
@@ -70,14 +69,14 @@ export default function Store() {
               </Grid>              
           </Grid>
           <Grid container></Grid>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider',  display: 'flex', justifyContent: 'center' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'red'/*'divider'*/,  display: 'flex', justifyContent: 'center' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="전체" {...a11yProps(0)} />
           <Tab label="한식" {...a11yProps(1)} />
           <Tab label="중식" {...a11yProps(2)} />
           <Tab label="일식" {...a11yProps(3)} />
           <Tab label="양식" {...a11yProps(4)} />
-          <Tab label="fast" {...a11yProps(5)} />
+          <Tab label="패스트" {...a11yProps(5)} />
           <Tab label="치킨" {...a11yProps(6)} />
           <Tab label="분식" {...a11yProps(7)} />
           <Tab label="디저트" {...a11yProps(8)} />
@@ -162,7 +161,7 @@ export default function Store() {
       </Grid>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={5}>
-        Item fast
+        Item 패스트
         <Grid container>
         <Grid item xs/>
         <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
@@ -222,8 +221,7 @@ let boxStyle = {
   width: 200, 
   height: 200, 
   border:1, 
-  // borderColor: 'rgb(217, 217, 217)',
-  BorderColor: 'red',
+  borderColor: 'rgb(217, 217, 217)', 
   m:2
 }
 let gridStyle ={
