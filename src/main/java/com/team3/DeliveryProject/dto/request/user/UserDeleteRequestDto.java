@@ -13,10 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserUpdatePostRequestDto {
-    private String currentAddress;
+public class UserDeleteRequestDto {
     private String email;
-    private String name;
-    private String password;
-    private String phone;
+
 }

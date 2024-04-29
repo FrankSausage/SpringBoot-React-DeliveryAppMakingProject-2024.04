@@ -10,6 +10,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import { useAuthContext } from '../context/AuthContext';
+import { getCurrentUser } from '../utils/firebase';
 
 export default function SearchHeader() {
   const [text, setText] = useState('');
@@ -17,6 +18,7 @@ export default function SearchHeader() {
   const [state, setState] = React.useState({
     left: false,
   });
+  const { email } = getCurrentUser();
 
   const { user, setUser, logout } = useAuthContext();
   const navigate = useNavigate();
@@ -45,7 +47,6 @@ export default function SearchHeader() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
     logout();
     navigate('/SignIn');
   };
@@ -106,19 +107,23 @@ export default function SearchHeader() {
             />
           </Box> 
           <Grid item xs={3}>
-            <Stack direction='row' spacing={1} justifyContent='right' alignItems='center'>
-              {user ? (
-                <>
-                  <Typography variant="body1" sx={{ color: 'white', mr: 1 }}>{user.displayName}</Typography>
-                  <button onClick={handleLogout} style={{ color: 'white', textDecoration: 'none', background: 'none', border: 'none' }}>로그아웃</button>
-                </>
-              ) : (
-                <>
-                  <Link to='/SignIn' style={{ textDecoration: 'none', color: 'white' }}>로그인</Link>
-                  <Link to='/SignUp' style={{ textDecoration: 'none', color: 'white' }}>회원가입</Link>
-                </>
-              )}
-            </Stack>
+          <Stack direction='row' spacing={1} justifyContent='right' alignItems='center'>
+            {user ? (
+              <>
+                <Typography variant="body1" sx={{ color: 'white', mr: 1 }}>
+                  <Link to="/Update" state={{ email }} style={{ textDecoration: 'none', color: 'white' }}>
+                    {user.displayName}
+                  </Link>
+                </Typography>
+                <button onClick={handleLogout} style={{ color: 'white', textDecoration: 'none', background: 'none', border: 'none' }}>로그아웃</button>
+              </>
+            ) : (
+              <>
+                <Link to='/SignIn' style={{ textDecoration: 'none', color: 'white' }}>로그인</Link>
+                <Link to='/SignUp' style={{ textDecoration: 'none', color: 'white' }}>회원가입</Link>
+              </>
+            )}
+          </Stack>
           </Grid>
         </Toolbar>
       </AppBar>

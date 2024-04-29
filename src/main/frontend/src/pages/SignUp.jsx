@@ -5,7 +5,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../utils/AddressUtil'; 
-import { register } from '../utils/firebase';
+import { getCurrentUser, register } from '../utils/firebase';
+import { extractDataFromFormData } from '../utils/userInfo';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -45,39 +46,33 @@ export default function SignUp() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-  
-    // 비밀번호 일치 여부 확인
+    const data = new FormData(event.currentTarget)
     const password = data.get('password');
     const password2 = data.get('password2');
     if (password !== password2) {
       // 비밀번호가 일치하지 않을 때
       setPasswordMatch(false);
-      return; // 회원가입 절차를 중지하고 함수를 종료합니다.
+      return;
+    } else {
+      setPasswordMatch(true);
+      // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}}
+      setFormData(data)
+        .then(res => {
+          register(res);
+          extractDataFromFormData(res)
+            .then(resFormData => {
+              axios.post(`/dp/user/signup`, resFormData)
+              console.log(resFormData);
+            })
+          })
+        .then(() => {
+          alert('가입이 완료되었습니다.');
+          getCurrentUser();
+          navigate('/signin');
+        });
     }
-  
-    // 일치할 때는 회원가입 절차를 계속 진행합니다.
-    setPasswordMatch(true);
-  
-    // 나머지 회원가입 절차를 여기에 추가합니다.
-    setFormData(data)
-      .then(res => {
-        register(res);
-        axios.post('/dp/user/signup', extractDataFromFormData(res));
-      })
-      .then(() => {
-        alert('가입이 완료되었습니다.');
-        navigate('/');
-      });
   };
 
-  function extractDataFromFormData(formData) {
-    const data = {};
-    for (const [key, value] of formData.entries()) {
-      data[key] = value;
-    }
-    return data;
-  }
 
   const formatPhoneNumber = (phoneNumberValue) => {
     const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
@@ -92,7 +87,7 @@ export default function SignUp() {
 
   const setFormData = async (data) => {
     try{
-      data.append('currentAddress', (roadAddress + ' ' + jibunAddress + ' ' + extraAddress));
+      data.append('currentAddress', (roadAddress + ',' + jibunAddress + ',' + extraAddress + ',' + data.get('detailAddress')));
       data.append('role', role);
       return await data;
     }
@@ -116,6 +111,9 @@ export default function SignUp() {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>    
+          </Typography>
           <Typography component="h1" variant="h5">
             회원가입
           </Typography>
@@ -186,7 +184,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="sample4_postcode"
+                  id="postcode"
                   label="우편번호"
                   value={postcode}
                   InputProps={{
@@ -207,7 +205,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="sample4_roadAddress"
+                  id="roadAddress"
                   label="도로명주소"
                   value={roadAddress}
                   InputProps={{
@@ -219,7 +217,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="sample4_extraAddress"
+                  id="extraAddress"
                   label="참고항목"
                   value={extraAddress}
                   InputProps={{
@@ -231,7 +229,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="sample4_detailAddress"
+                  id="detailAddress"
                   label="상세주소"
                   name="address"
                   autoComplete="address"

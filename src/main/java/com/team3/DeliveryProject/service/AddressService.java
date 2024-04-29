@@ -3,6 +3,7 @@ package com.team3.DeliveryProject.service;
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.address.AddressAddRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.address.AddressFindAllRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressModifyRequestDto;
 import com.team3.DeliveryProject.entity.Address;
 import java.util.List;
@@ -12,6 +13,6 @@ public interface AddressService {
     public ResponseEntity<Response> addAddress(AddressAddRequestDto requestDto);
     public ResponseEntity<Response> modifyAddress(AddressModifyRequestDto requestDto);
     public ResponseEntity<Response> deleteAddress(AddressDeleteRequestDto requestDto);
-    public List<Address> findAllAddress();
+    public List<Address> findAllAddress(AddressFindAllRequestDto requestDto);
 
 }
