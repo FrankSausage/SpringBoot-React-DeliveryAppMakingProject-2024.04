@@ -4,6 +4,8 @@ import Footer from "../components/Footer"
 import PropTypes from 'prop-types';
 import { Tab, Tabs, Box, Typography, Stack, Grid, InputBase} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
 
 
 function CustomTabPanel(props) {
@@ -34,15 +36,15 @@ CustomTabPanel.propTypes = {
 
 function a11yProps(index) {
   return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    id: `tab-${index}`,
+    'aria-controls': `tabpanel-${index}`,
   };
 }
 
 
 export default function Store() {
-  const [value, setValue] = React.useState(0);
-
+  const { state: category } = useLocation();  
+  const [value, setValue] = useState(category);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -51,29 +53,11 @@ export default function Store() {
   return (
     <Box sx={{ margin: -1 }}>
       <SearchHeader />
-      <Grid container>
-              <Grid item xs={12} sx={{border: 1}}>
-                <Stack sx={{maxHeight: 200}}>
-                  <Box 
-                  sx={
-                      {
-                      width: '100%', 
-                      height: 200, 
-                      backgroundImage: `url(https://source.unsplash.com/random?wallpapers)`,
-                      backgroundRepeat: 'no-repeat',
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                      }}>
-                  </Box>
-                </Stack>
-              </Grid>              
-          </Grid>
-          <Grid container></Grid>
       <Box sx={{ borderBottom: 1, borderColor: 'black'/*'divider'*/,  display: 'flex', justifyContent: 'center' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="전체" {...a11yProps(0)} />
-          <Tab label="한식" {...a11yProps(1)} />
-          <Tab label="중식" {...a11yProps(2)} />
+          <Tab label="한식" component={Link} to="/Store/HanSick" {...a11yProps(1)} autoFocus/>
+          <Tab label="중식" component={Link} to="/Store/china" {...a11yProps(2)} />
           <Tab label="일식" {...a11yProps(3)} />
           <Tab label="양식" {...a11yProps(4)} />
           <Tab label="패스트" {...a11yProps(5)} />
@@ -119,7 +103,6 @@ export default function Store() {
           </Grid>
         <Grid item xs />
       </Grid>
-
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         Item 중식

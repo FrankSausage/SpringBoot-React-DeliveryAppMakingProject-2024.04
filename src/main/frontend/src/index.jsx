@@ -21,7 +21,8 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'Signin', element: <SignIn />},
       { path: 'SignUp', element: <SignUp />},
-      { path: 'Store', element: <Store />},
+      { path: 'Store', element: <Store  />},
+      { path: 'Store/:category', element: <Store />},
       { path: 'Update', element: <ProtectedRoute><Update /></ProtectedRoute>},
       { path: 'StoreSignUP', element: <StoreSignUp />},
       { path: 'StoreList', element: <StoreList />,}
