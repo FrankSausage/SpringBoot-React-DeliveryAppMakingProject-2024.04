@@ -1,4 +1,4 @@
-package com.team3.DeliveryProject.dto.request.user;
+package com.team3.DeliveryProject.dto.response.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,9 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserUpdatePostRequestDto {
+public class UserSignInResponseDto {
     private String currentAddress;
-    private String email;
-    private String name;
-    private String phone;
+    private String role;
 }
