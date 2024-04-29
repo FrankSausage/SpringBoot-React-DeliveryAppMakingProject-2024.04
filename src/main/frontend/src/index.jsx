@@ -6,9 +6,12 @@ import reportWebVitals from './reportWebVitals';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
+import Store from './pages/Store';
 import Update from './pages/Update';
 import ProtectedRoute from './pages/ProtectedRoute';
-import TestField from './pages/TestField';
+import StoreSignUp from './pages/StoreSignUp';
+import StoreList from './pages/StoreList';
+
 
 const router = createBrowserRouter([
   {
@@ -18,8 +21,10 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'Signin', element: <SignIn />},
       { path: 'SignUp', element: <SignUp />},
-      { path: 'test', element: <TestField />},
+      { path: 'Store', element: <Store />},
       { path: 'Update', element: <ProtectedRoute><Update /></ProtectedRoute>},
+      { path: 'StoreSignUP', element: <StoreSignUp />},
+      { path: 'StoreList', element: <StoreList />,}
     ]
   }
 ]);
