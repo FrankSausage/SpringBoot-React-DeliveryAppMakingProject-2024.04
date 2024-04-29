@@ -3,7 +3,7 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Gri
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { findPostcode } from '../utils/AddressUtil'; 
 import { register } from '../utils/firebase';
 import { extractDataFromFormData, formatPhoneNumber } from '../utils/userInfo';
@@ -19,6 +19,7 @@ export default function SignUp() {
   const [ passwordCheack, setPasswordCheack ] = useState('');
   const [ isPasswordMatch, setIsPasswordMatch ] = useState(true);
   const [ phoneNumber, setPhoneNumber ] = useState('');
+  const { setOutletAddress } = useOutletContext();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,6 +60,7 @@ export default function SignUp() {
             extractDataFromFormData(res)
               .then(resFormData => {
                 // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}} // 이미지 파일 첨부 대비 코드
+                setOutletAddress(resFormData.currentAddress);
                 axios.post(`/dp/user/signup`, resFormData)
               })
           })

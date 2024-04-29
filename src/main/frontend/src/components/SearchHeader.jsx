@@ -7,7 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ReceiptIcon from '@mui/icons-material/Receipt'; 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; 
 import FavoriteIcon from '@mui/icons-material/Favorite'; 
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import { useAuthContext } from '../context/AuthContext';
 import { logout } from '../utils/firebase';
@@ -15,6 +15,7 @@ import { logout } from '../utils/firebase';
 export default function SearchHeader() {
   const [state, setState] = useState({ left: false, });
   const { user } = useAuthContext();
+  const { outletAddress } = useOutletContext();
   const address = localStorage.getItem("address") && localStorage.getItem("address");
   console.log(localStorage.getItem("address"))
   const navigate = useNavigate();

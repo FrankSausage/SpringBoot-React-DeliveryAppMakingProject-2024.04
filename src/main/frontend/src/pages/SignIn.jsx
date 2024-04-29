@@ -4,7 +4,7 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox,
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { login, } from '../utils/firebase';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import Footer from '../components/Footer';
 import axios from 'axios';
 
@@ -14,6 +14,7 @@ const defaultTheme = createTheme();
 
 export default function SignIn() {
   const [userInfo, setUserInfo] = useState({email:'', password:''});
+  const { setOutletAddress } = useOutletContext() // 주소 표시 비동기 임시 처리
   const navigate = useNavigate();
 
   const handleChange = e => {
@@ -35,6 +36,7 @@ export default function SignIn() {
           } else {
             axios.get(`dp/user/signin`, { params: { email: userInfo.email }})
               .then(res => {
+                setOutletAddress(res.data.currentAddress);
                 localStorage.setItem("address", res.data.currentAddress);
               })
               .then(navigate('/'))
