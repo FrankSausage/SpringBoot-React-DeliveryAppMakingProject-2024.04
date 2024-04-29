@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 import axios from 'axios';
 import SearchHeader from '../components/SearchHeader';
 import { findPostcode } from '../utils/AddressUtil'; 
-import { extractDataFromFormData, splitAddressFromCurrentUserAddress, useUserByEmail } from '../utils/userInfo';
+import { extractDataFromFormData, useUserByEmail } from '../utils/userInfo';
 import { getCurrentUser, logout, updateUser } from '../utils/firebase';
 import { useNavigate } from 'react-router-dom';
 
@@ -140,6 +140,7 @@ export default function Update() {
                                     name="email"
                                     label="이메일"
                                     defaultValue={email} // 기존 이메일 정보 표시
+                                    autoComplete="current-email"
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -150,7 +151,7 @@ export default function Update() {
                                 label="비밀번호"
                                 type="password"
                                 id="password"
-                                autoComplete="new-password"
+                                autoComplete="current-password"
                                 />
                             </Grid>
                             <Grid item xs={12}>
