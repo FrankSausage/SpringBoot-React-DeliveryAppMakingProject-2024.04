@@ -6,7 +6,7 @@ import SearchIcon from '@mui/icons-material/Search';
 
 export default function StoreList() {
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ margin: -1 }}>
       <SearchHeader />
       <Grid container>
         <Grid item xs={12} sx={{border: 1}}>

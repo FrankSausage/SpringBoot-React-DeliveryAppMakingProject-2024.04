@@ -49,7 +49,7 @@ export default function Store() {
 
   
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ margin: -1 }}>
       <SearchHeader />
       <Grid container>
               <Grid item xs={12} sx={{border: 1}}>
@@ -69,7 +69,7 @@ export default function Store() {
               </Grid>              
           </Grid>
           <Grid container></Grid>
-      <Box sx={{ borderBottom: 1, borderColor: 'red'/*'divider'*/,  display: 'flex', justifyContent: 'center' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'black'/*'divider'*/,  display: 'flex', justifyContent: 'center' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="전체" {...a11yProps(0)} />
           <Tab label="한식" {...a11yProps(1)} />
