@@ -21,12 +21,24 @@ export default function SignIn() {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!userInfo.email || !userInfo.password) {
+      alert("이메일를 입력하시오");
+      console.log("정보를 입력하세요.");
+      return; // 데이터가 없으면 함수를 여기서 종료합니다.
+    }
     try {
       await login(userInfo); // Firebase의 login 함수를 사용하여 로그인을 시도합니다.
       navigate('/'); // 로그인 성공 시 '/' 경로로 이동합니다.
     } catch (error) {
       console.error('로그인 실패:', error);
-      // 로그인 실패 시 처리할 코드를 추가할 수 있습니다.
+      // Firebase에서 반환한 에러 코드를 기반으로 메시지를 나타냅니다.
+      if (error.code === "auth/user-not-found") {
+        alert("이메일이 틀렸습니다.");
+      } else if (error.code === "auth/wrong-password") {
+        alert("비밀번호가 틀렸습니다.");
+      } else {
+        alert("로그인에 실패하였습니다.");
+      }
     }
   }
 
