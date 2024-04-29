@@ -1,6 +1,7 @@
-import { Box, Grid, Stack, Link,Typography, Button } from "@mui/material";
+import { Box, Grid, Stack, Typography, Button } from "@mui/material";
 import SearchHeader from "../components/SearchHeader"
 import Footer from "../components/Footer"
+import { Link } from 'react-router-dom'
 
 //주소: http://localhost:3000
 
@@ -30,12 +31,14 @@ export default function Home() {
             <Grid container sx={{border: 1, borderColor:'white', justifyContent:'center', alignItems:'center'}}>
             <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2}} sx={gridStyle}>                 
                   <Box sx={{ ...boxStyle, position: 'relative' }}>
-                    <div>
-                        <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                            <li style={{ textAlign: 'right', writingMode: 'vertical-rl', textOrientation: 'mixed', marginTop:15, marginRight:7 }}>전체</li>
-                        </ul>
-                        <img src={'/img/00.jpg'} style={{ width: '82%', height: '82%', position: 'absolute', top: 35, left: 0 }} />
-                    </div>
+                    <Link to="/Store" style={{ textDecoration: 'none', color: 'black' }}>
+                        <div>
+                            <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                                <li style={{ textAlign: 'right', writingMode: 'vertical-rl', textOrientation: 'mixed', marginTop:15, marginRight:7 }}>전체</li>
+                            </ul>
+                            <img src={'/img/00.jpg'} style={{ width: '82%', height: '82%', position: 'absolute', top: 35, left: 0 }} />
+                        </div>
+                    </Link>
                   </Box>
                   <Box sx={{ ...boxStyle, position: 'relative' }}>
                     <div>

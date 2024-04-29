@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import { Stack, Box, Grid, InputBase, Button, } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 
-export default function StoreList() {
+export default function StoreDetail() {
   return (
     <Box sx={{ margin: -1 }}>
       <SearchHeader />
@@ -41,7 +41,17 @@ export default function StoreList() {
         <Grid item xs/>
         <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
             <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2}} sx={gridStyle}>
-              
+              <Box sx={{...boxStyle, position: 'relative', width: { xs: '100%', sm: '70%' }, height: '150px', marginX: 'auto', marginBottom: '1px'}}>
+                <div>
+                  <img src={'/img/01.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
+                  <ul style={{ position: 'absolute', top: '50%', left: '30%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
+                    <li style={{ listStyleType: 'none' }}>찜순</li>
+                    <li style={{ listStyleType: 'none' }}>최소 주문 금액</li>
+                    <li style={{ listStyleType: 'none' }}>평점순</li>
+                    <li style={{ listStyleType: 'none' }}>리뷰순</li>
+                  </ul>
+                </div>         
+              </Box>
               <Box sx={{...boxStyle, position: 'relative', width: { xs: '100%', sm: '70%' }, height: '150px', marginX: 'auto'}}>
                 <div>
                   <img src={'/img/01.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
@@ -58,8 +68,8 @@ export default function StoreList() {
               <Button
                 type="submit"
                 variant="contained"
-                sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem' }}>
-                가게 추가하기
+                sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.1rem' }}>
+                가게 정보 수정하기
               </Button>
             </div>
         </Grid>
