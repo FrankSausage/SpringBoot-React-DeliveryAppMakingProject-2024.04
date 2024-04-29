@@ -78,7 +78,7 @@ export default function StoreSignUp() {
   const formatPhoneNumber = (phoneNumberValue) => {
     const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
     //  핸드폰 입력 formatting (e.g., XXX-XXXX-XXXX)
-    const formattedPhoneNumber = strippedPhoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+    const formattedPhoneNumber = strippedPhoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
     return formattedPhoneNumber;
   };
   const handlePhoneNumberChange = (event) => {
@@ -203,13 +203,13 @@ export default function StoreSignUp() {
                   required
                   fullWidth
                   id="phone"
-                  label="가게 전화번호"
+                  label="전화번호"
                   name="phone"
                   autoComplete="phone"
                   value={phoneNumber}
                   onChange={handlePhoneNumberChange}
                   inputProps={{
-                    maxLength: 13,
+                    maxLength: 12,
                     inputMode: 'numeric',
                   }}
                 />
