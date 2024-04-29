@@ -13,14 +13,15 @@ import axios from 'axios';
 const defaultTheme = createTheme();
 
 export default function StoreSignUp() {
+  const [name, setName] = useState('');
+  const [role, setRole] = useState('');
   const [postcode, setPostcode] = useState('');
   const [roadAddress, setRoadAddress] = useState('');
   const [jibunAddress, setJibunAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
-  const [role, setRole] = useState('');
-  const [passwordMatch, setPasswordMatch] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState('');
   const navigate = useNavigate();
+  // const [passwordMatch, setPasswordMatch] = useState(true);
   
 
   useEffect(() => {
@@ -47,32 +48,36 @@ export default function StoreSignUp() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget)
-    const password = data.get('password');
-    const password2 = data.get('password2');
-    if (password !== password2) {
-      // 비밀번호가 일치하지 않을 때
-      setPasswordMatch(false);
-      return;
-    } else {
-      setPasswordMatch(true);
-      // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}}
-      setFormData(data)
-        .then(res => {
-          register(res);
-          extractDataFromFormData(res)
-            .then(resFormData => {
-              axios.post(`/dp/user/signup`, resFormData)
-              console.log(resFormData);
-            })
+  const data = new FormData(event.currentTarget);
+  const name = data.get('name');
+  const roles = ['한식', '중식', '일식', '양식', '패스트', '치킨', '분식', '디저트'].filter(role => data.get(role));
+  
+  if (name && roles.length > 0) {
+    console.log('가게 이름:', name);
+    console.log('카테고리:', roles);
+    // 여기서부터 추가 작업을 수행합니다.
+    setFormData(data);
+    extractDataFromFormData(data)
+      .then(resFormData => {
+        axios.post(`/dp/user/signup`, resFormData)
+          .then(() => {
+            alert('입점 신청이 완료되었습니다.');
+            getCurrentUser();
+            navigate('/signin');
           })
-        .then(() => {
-          alert('가입이 완료되었습니다.');
-          getCurrentUser();
-          navigate('/signin');
-        });
-    }
-  };
+          .catch(error => {
+            console.error('Error while submitting data:', error);
+            alert('입점 신청 중 오류가 발생했습니다.');
+          });
+      })
+      .catch(error => {
+        console.error('Error while extracting form data:', error);
+        alert('입점 신청 중 오류가 발생했습니다.');
+      });
+  } else {
+    alert('가게 이름과 카테고리를 선택해주세요.');
+  }
+};
 
 
   const formatPhoneNumber = (phoneNumberValue) => {
@@ -412,53 +417,6 @@ export default function StoreSignUp() {
                         사진 올리기
                       </Button>
                   </Grid>
-                
-
-              {/* <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="사업자등록번호"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid> */}
-              {/* <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="name"
-                  required
-                  fullWidth
-                  id="name"
-                  label="대표자 명"
-                  autoFocus
-                />
-              </Grid> */}
-              {/* <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="비밀번호"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
-              </Grid> */}
-              {/* <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password2"
-                  label="비밀번호 확인"
-                  type="password"
-                  id="password2"
-                  autoComplete="new-password"
-                  error={!passwordMatch}
-                  helperText={!passwordMatch && "비밀번호가 일치하지 않습니다"}
-                />
-              </Grid> */}
               
               <Grid item xs={12}>
                 <FormControlLabel
@@ -474,13 +432,6 @@ export default function StoreSignUp() {
               sx={{ mt: 3, mb: 2 }}>
               입점 신청하기
             </Button>
-            {/* <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link to="/SignIn" variant="body2" style={{ textDecoration: 'none', color: 'black'  }}>
-                  계정이 있으신가요? 로그인
-                </Link>
-            </Grid> */}
-          
           </Box>
         </Box>
         <Footer sx={{ mt: 5 }} />
