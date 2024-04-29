@@ -6,7 +6,7 @@ import SearchIcon from '@mui/icons-material/Search';
 
 export default function StoreList() {
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ margin: -1 }}>
       <SearchHeader />
       <Grid container>
         <Grid item xs={12} sx={{border: 1}}>
@@ -45,7 +45,6 @@ export default function StoreList() {
                 <div>
                   <img src={'/img/01.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
                   <ul style={{ position: 'absolute', top: '50%', left: '30%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
-                    <li style={{ listStyleType: 'none' }}>가게 주소</li>
                     <li style={{ listStyleType: 'none' }}>찜순</li>
                     <li style={{ listStyleType: 'none' }}>최소 주문 금액</li>
                     <li style={{ listStyleType: 'none' }}>평점순</li>
@@ -53,15 +52,22 @@ export default function StoreList() {
                   </ul>
                 </div>                
               </Box>
-                
             </Grid>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Button
-              type="submit"
-              variant="contained"
-              sx={{ mt: 5, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem' }}>
-              가게 추가하기
+                type="submit"
+                variant="contained"
+                sx={{ mt: 5, mb: 2, width: '140px', height: '50px', fontSize: '1rem' }}>
+                가게 수정하기
               </Button>
-          </Grid>
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem' }}>
+                가게 추가하기
+              </Button>
+            </div>
+        </Grid>
         <Grid item xs />
       </Grid>
       <Footer/>

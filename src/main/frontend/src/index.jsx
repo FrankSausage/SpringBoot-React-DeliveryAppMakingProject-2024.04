@@ -11,6 +11,7 @@ import Update from './pages/Update';
 import ProtectedRoute from './pages/ProtectedRoute';
 import StoreSignUp from './pages/StoreSignUp';
 import StoreList from './pages/StoreList';
+import StoreUpdate from './pages/StoreUpdate'
 
 
 const router = createBrowserRouter([
@@ -24,7 +25,8 @@ const router = createBrowserRouter([
       { path: 'Store', element: <Store />},
       { path: 'Update', element: <ProtectedRoute><Update /></ProtectedRoute>},
       { path: 'StoreSignUP', element: <StoreSignUp />},
-      { path: 'StoreList', element: <StoreList />,}
+      { path: 'StoreList', element: <StoreList />},
+      { path: 'StoreUpdate', element: <StoreUpdate />},
     ]
   }
 ]);

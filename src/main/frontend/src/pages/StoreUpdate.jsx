@@ -67,7 +67,7 @@ export default function StoreSignUp() {
             })
           })
         .then(() => {
-          alert('입점 신청이 완료되었습니다.');
+          alert('가게 정보가 수정되었습니다.');
           getCurrentUser();
           navigate('/storelist');
         });
@@ -106,6 +106,7 @@ export default function StoreSignUp() {
       // 여기서 파일 업로드 처리를 수행할 수 있습니다.
     }
   };
+
   
   
   
@@ -129,7 +130,7 @@ export default function StoreSignUp() {
             <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>    
           </Typography>
           <Typography component="h1" variant="h5">
-           온라인 입점 신청서
+           가게 정보 수정
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -414,7 +415,7 @@ export default function StoreSignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}>
-              입점 신청하기
+              수정하기
             </Button>
           </Box>
         </Box>

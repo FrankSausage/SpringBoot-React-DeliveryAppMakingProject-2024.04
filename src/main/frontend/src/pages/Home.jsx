@@ -6,7 +6,7 @@ import Footer from "../components/Footer"
 
 export default function Home() {
     return(
-        <Box>
+        <Box sx={{ margin: -1 }}>
           <SearchHeader />          
           <Grid container>
               <Grid item xs={12} sx={{border: 1}}>
@@ -27,7 +27,7 @@ export default function Home() {
           </Grid>
           <Grid container>
             <Grid item xs/>
-            <Grid container sx={{border: 1, borderColor:'red', justifyContent:'center', alignItems:'center'}}>
+            <Grid container sx={{border: 1, borderColor:'white', justifyContent:'center', alignItems:'center'}}>
             <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2}} sx={gridStyle}>                 
                   <Box sx={{ ...boxStyle, position: 'relative' }}>
                     <div>
