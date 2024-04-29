@@ -1,0 +1,45 @@
+/store/register	
+가게 등록	
+
+name 가게 이름,
+
+category 음식카테고리
+
+phone 가게 전화번호
+
+address 가게 주소
+
+type 배달,포장
+
+minDeliveryPrice 최소주문금액
+
+deliveryTip 배달팁
+ 
+minDeliveryTime 최소배달 예상시간
+
+maxDeliveryTime 최대배달 예상시간
+
+operationHours 운영 시간
+
+closedDays 휴무일
+
+deliveryAddress 배달 지역
+
+content 가게 소개글
+
+storePictureName 가게 사진
+
+
+
+
+
+
+
+
+
+여기 사장님은 거리 최소,최대 등록해야함
+
+배달지역 (법정동 선택해야함)
+
+type의경우 int 로 선언되어있기때문에 
+"배달"인경우 0, "배달 + 포장"인경우 1로 보내주셔야 합니다.
