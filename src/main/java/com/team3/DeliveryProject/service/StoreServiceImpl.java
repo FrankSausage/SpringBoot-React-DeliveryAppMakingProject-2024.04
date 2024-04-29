@@ -3,11 +3,13 @@ package com.team3.DeliveryProject.service;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.ADDRESS_ADD_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.STORE_ADD_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.STORE_DELETE_SUCCESS;
+import static com.team3.DeliveryProject.responseCode.ResponseCode.STORE_UPDATE_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.USER_SIGNUP_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.USER_UPDATE_SUCCESS;
 
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.store.StoreAddRequestDto;
+import com.team3.DeliveryProject.dto.request.store.StoreDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateRequestDto;
 import com.team3.DeliveryProject.entity.Stores;
 import com.team3.DeliveryProject.repository.StoresRepository;
@@ -60,11 +62,20 @@ public class StoreServiceImpl implements StoreService{
         stores.setDeliveryAddress(requestDto.getDeliveryAddress());
         stores.setModifiedDate(LocalDateTime.now());
         storesRepository.save(stores);
-        return Response.toResponseEntity(STORE_DELETE_SUCCESS);
+        return Response.toResponseEntity(STORE_UPDATE_SUCCESS);
     }
 
     @Override
     public Optional<Stores> getUpdateStore(Long storeId) {
         return storesRepository.findById(storeId);
+    }
+
+    @Override
+    public ResponseEntity<Response> deleteStore(StoreDeleteRequestDto requestDto) {
+        Stores stores = storesRepository.findById(requestDto.getStoreId()).orElseThrow(()-> new RuntimeException("Store not found"));
+        stores.setStatus("삭제");
+        storesRepository.save(stores);
+
+        return Response.toResponseEntity(STORE_DELETE_SUCCESS);
     }
 }
