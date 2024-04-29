@@ -18,7 +18,7 @@ export default function SearchHeader() {
   const [state, setState] = React.useState({
     left: false,
   });
-  const { email } = getCurrentUser();
+  const { email, currentAddress } = getCurrentUser();
 
   const { user, setUser, logout } = useAuthContext();
   const navigate = useNavigate();
@@ -98,7 +98,7 @@ export default function SearchHeader() {
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
             <GpsFixedIcon style={{ color: 'white' }} />&nbsp;
             <OutlinedInput
-              placeholder="주소를 입력 하세요"
+              placeholder={email} 
               startAdornment={
                 <InputAdornment position="start">
                 </InputAdornment>

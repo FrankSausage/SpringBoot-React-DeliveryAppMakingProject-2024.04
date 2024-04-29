@@ -5,10 +5,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
 import axios from 'axios';
 import SearchHeader from '../components/SearchHeader';
-import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
 import { extractDataFromFormData, useUserByEmail } from '../utils/userInfo';
 import { getCurrentUser } from '../utils/firebase';
+
 
 const defaultTheme = createTheme();
 
@@ -16,7 +15,7 @@ export default function Update() {
     // const [user, setUser] = useState({}); // 사용자 정보를 저장할 상태
     const [passwordMatch, setPasswordMatch] = useState(true);
     const { email, displayName } = getCurrentUser();
-    const { isLoading, error, data: user } = useUserByEmail(email);
+    const { isLoading, error, user } = useUserByEmail(email);
     
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -32,9 +31,11 @@ export default function Update() {
 
     return (
         <ThemeProvider theme={defaultTheme}>
-        <SearchHeader />
         {isLoading && <Typography>Loading...</Typography>}
         {error && <Typography>에러 발생!</Typography>}
+        {user &&
+        <>
+            <SearchHeader />
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -104,7 +105,7 @@ export default function Update() {
                                     id="phone"
                                     name="phone"
                                     label="휴대전화"
-                                    // defaultValue={user.phone} // 기존 휴대전화 정보 표시
+                                    defaultValue={user.phone} // 기존 휴대전화 정보 표시
                                     inputProps={{
                                         maxLength: 13,
                                         inputMode: 'numeric',
@@ -121,7 +122,12 @@ export default function Update() {
                                 /> */}
                             </Grid>
                             <Grid item xs={12}>
-                                {/* {user.currentAddress} */}
+                            <TextField
+                                    required
+                                    fullWidth
+                                    label="주소"
+                                value={user.currentAddress}
+                                />
                                 {/* <TextField
                                     required
                                     fullWidth
@@ -179,7 +185,8 @@ export default function Update() {
                 </Box>
             <Footer sx={{ mt: 5 }} />
         </Container>
-    </ThemeProvider>
-
+        </>
+        }
+        </ThemeProvider>
     );
 }
