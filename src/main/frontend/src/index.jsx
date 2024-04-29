@@ -8,6 +8,7 @@ import SignUp from './pages/SignUp';
 import Home from './pages/Home';
 import Update from './pages/Update';
 import ProtectedRoute from './pages/ProtectedRoute';
+import TestField from './pages/TestField';
 
 const router = createBrowserRouter([
   {
@@ -17,8 +18,8 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'Signin', element: <SignIn />},
       { path: 'SignUp', element: <SignUp />},
-      { path: 'Update', 
-      element: <ProtectedRoute><Update /></ProtectedRoute>},
+      { path: 'test', element: <TestField />},
+      { path: 'Update', element: <ProtectedRoute><Update /></ProtectedRoute>},
     ]
   }
 ]);

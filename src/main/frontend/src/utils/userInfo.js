@@ -1,22 +1,17 @@
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
-import { getAuth } from "firebase/auth"
 
 export const useUserByEmail = email => {
-    const auth = getAuth();
     const { isLoading, error, data: user } = useQuery({
         queryKey: ['email', email],
         queryFn: async () => {
             return axios.get(`/dp/user/update`, { params: { email: email }})
-            .then(res =>
-                res.data)
-            .catch(error => {
-                console.error(error);
-                throw error;
-            });
+            .then(res => res.data)
+            .catch(console.error);
         }
-    })
-    return {isLoading, error, user};
+    })        
+    const { roadAddress, extraAddress, detailAddress } = user ? splitAddressFromCurrentUserAddress(user.currentAddress) : '';
+    return { isLoading, error, user, roadAddress, extraAddress, detailAddress };
 }
 
 export async function extractDataFromFormData(formData) {
@@ -27,3 +22,19 @@ export async function extractDataFromFormData(formData) {
     return await data;
   }
 
+export const formatPhoneNumber = (phoneNumberValue) => {
+  const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
+  //  핸드폰 입력 formatting (e.g., XXX-XXXX-XXXX)
+  const formattedPhoneNumber = strippedPhoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+  
+  return formattedPhoneNumber;
+  };
+
+export function splitAddressFromCurrentUserAddress(currentAddress) {
+    const splitAddress = currentAddress.split(',')
+    const roadAddress = (splitAddress[0] || '');
+    const extraAddress = (splitAddress[1] || '');
+    const detailAddress = (splitAddress[2] || '');
+
+    return { roadAddress: roadAddress, extraAddress: extraAddress, detailAddress: detailAddress };
+}
