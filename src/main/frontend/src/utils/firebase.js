@@ -35,9 +35,17 @@ export async function updateUser(user) {
   }
 }
 
-export function login({ email, password }) {
-  signInWithEmailAndPassword(auth, email, password)
-    .catch(e => alert(e.code));
+export async function login({ email, password }) {
+  return await signInWithEmailAndPassword(auth, email, password)
+    .then(res => {
+      if(res) {
+        return true;
+      }
+    })
+    .catch(e => {
+      console.error(e);
+      return false;
+    });
 }
 
 export function loginWithGithub() {

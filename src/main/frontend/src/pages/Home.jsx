@@ -1,4 +1,4 @@
-import { Box, Grid, Stack, Typography, Button } from "@mui/material";
+import { Box, Grid, Stack, } from "@mui/material";
 import SearchHeader from "../components/SearchHeader"
 import Footer from "../components/Footer"
 
@@ -6,8 +6,8 @@ import Footer from "../components/Footer"
 
 export default function Home() {
     return(
-        <Box>
-          <SearchHeader />          
+      <Box>
+          <SearchHeader />
           <Grid container>
               <Grid item xs={12} sx={{border: 1}}>
                 <Stack sx={{maxHeight: 200}}>
