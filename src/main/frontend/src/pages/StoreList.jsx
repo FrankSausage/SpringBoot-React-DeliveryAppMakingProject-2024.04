@@ -45,14 +45,13 @@ export default function StoreList() {
                 <div>
                   <img src={'/img/01.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
                   <ul style={{ position: 'absolute', top: '50%', left: '30%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
-                    <li>가게 주소</li>
-                    <li>찜순</li>
-                    <li>최소 주문 금액</li>
-                    <li>평점순</li>
-                    <li>리뷰순</li>
+                    <li style={{ listStyleType: 'none' }}>가게 주소</li>
+                    <li style={{ listStyleType: 'none' }}>찜순</li>
+                    <li style={{ listStyleType: 'none' }}>최소 주문 금액</li>
+                    <li style={{ listStyleType: 'none' }}>평점순</li>
+                    <li style={{ listStyleType: 'none' }}>리뷰순</li>
                   </ul>
-                </div>
-                
+                </div>                
               </Box>
                 
             </Grid>
