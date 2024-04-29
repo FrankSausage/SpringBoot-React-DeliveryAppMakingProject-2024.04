@@ -45,7 +45,6 @@ public class UserController {
 
         user.setPhone(requestDto.getPhone());
         user.setName(requestDto.getName());
-        user.setPassword(requestDto.getPassword());
         user.setCurrentAddress(requestDto.getCurrentAddress());
         userService.updateUser(user);
         return ResponseEntity.ok().body("User update successfully");
