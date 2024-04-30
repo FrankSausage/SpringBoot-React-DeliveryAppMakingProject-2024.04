@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
+import { useState } from "react";
 
 export const useUserByEmail = email => {
     const { isLoading, error, data: user } = useQuery({
@@ -10,8 +11,7 @@ export const useUserByEmail = email => {
             .catch(console.error);
         }
     })        
-    const { roadAddress, extraAddress, detailAddress } = user ? splitAddressFromCurrentUserAddress(user.currentAddress) : '';
-    return { isLoading, error, user, roadAddress, extraAddress, detailAddress };
+    return { isLoading, error, user };
 }
 
 export async function extractDataFromFormData(formData) {

@@ -23,7 +23,6 @@ export default function SearchHeader() {
   const [ JibunAddress, setJibunAddress] = useState('');
   const [ postcode, setPostcode] = useState('');
   const address = localStorage.getItem("address") && localStorage.getItem("address");
-  console.log(localStorage.getItem("address"))
   const navigate = useNavigate();
 
 
@@ -40,7 +39,6 @@ export default function SearchHeader() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("address");
     logout();
     navigate('/');
   };
@@ -109,7 +107,7 @@ export default function SearchHeader() {
           </Typography>
           <Box sx={{  alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
             <OutlinedInput
-              value={address ? address : ''}
+              value={address ? address : outletAddress}
               placeholder="주소를 입력 하세요"
               startAdornment={
                 <InputAdornment position="start">

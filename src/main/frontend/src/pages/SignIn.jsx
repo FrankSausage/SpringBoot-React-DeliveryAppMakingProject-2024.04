@@ -7,6 +7,7 @@ import { login, } from '../utils/firebase';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import Footer from '../components/Footer';
 import axios from 'axios';
+import { splitAddressFromCurrentUserAddress } from '../utils/userInfo';
 
 
 
@@ -38,6 +39,7 @@ export default function SignIn() {
               .then(res => {
                 setOutletAddress(res.data.currentAddress);
                 localStorage.setItem("address", res.data.currentAddress);
+                localStorage.setItem("splitAddress", JSON.stringify(splitAddressFromCurrentUserAddress(res.data.currentAddress)))
               })
               .then(navigate('/'))
           }

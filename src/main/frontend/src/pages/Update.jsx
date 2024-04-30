@@ -15,9 +15,10 @@ const defaultTheme = createTheme();
 
 export default function Update() {
     const { email, displayName } = getCurrentUser();
-    const { isLoading, error, user, roadAddress, extraAddress, detailAddress } = useUserByEmail(email);
+    const { isLoading, error, user } = useUserByEmail(email);
     const [ passwordCheack, setPasswordCheack ] = useState('');
     const [ isPasswordMatch, setIsPasswordMatch ] = useState(true);
+    const { roadAddress, extraAddress, detailAddress} = JSON.parse(localStorage.getItem("splitAddress"))
     const [ updateRoadAddress, setUpdateRoadAddress ] = useState(roadAddress);
     const [ updateExtraAddress, setUpdateExtraAddress ] = useState(extraAddress);
     const [ updateDetailAddress ,setUpdateDetailAddress ] = useState(detailAddress);
@@ -25,6 +26,7 @@ export default function Update() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const navigate = useNavigate();  
+
     useEffect(() => {
         const loadDaumPostcodeScript = () => {
           const script = document.createElement('script');
