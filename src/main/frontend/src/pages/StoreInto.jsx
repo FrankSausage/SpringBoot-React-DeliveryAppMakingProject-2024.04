@@ -1,5 +1,4 @@
 import * as React from 'react';
-import SearchHeader from "../components/SearchHeader"
 import Footer from "../components/Footer"
 import PropTypes from 'prop-types';
 import { Tab, Tabs, Box, Typography, Stack, Grid, InputBase} from '@mui/material';

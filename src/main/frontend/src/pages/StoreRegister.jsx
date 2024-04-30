@@ -4,21 +4,18 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
-import { findPostcode } from '../utils/AddressUtil'; 
+import { findPostcode } from '../utils/AddressUtil';
 import { getCurrentUser, register } from '../utils/firebase';
-import { extractDataFromFormData } from '../utils/userInfo';
-
+import { extractDataFromFormData, formatPhoneNumber } from '../utils/userInfo';
 import axios from 'axios';
 
 const defaultTheme = createTheme();
 
-export default function StoreSignUp() {
-  const [postcode, setPostcode] = useState('');
+export default function StoreRegister() {
   const [roadAddress, setRoadAddress] = useState('');
-  const [jibunAddress, setJibunAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
+  const [ detailAddress, setDetailAddress ] = useState('');
   const [role, setRole] = useState('');
-  const [passwordMatch, setPasswordMatch] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState('');
   const navigate = useNavigate();
   
@@ -42,20 +39,16 @@ export default function StoreSignUp() {
   }, []);
 
   const handleFindPostcode = () => {
-    findPostcode(setPostcode, setRoadAddress, setJibunAddress, setExtraAddress); // use findPostcode from AddressUtil
+    findPostcode(setRoadAddress, setExtraAddress); // use findPostcode from AddressUtil
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget)
-    const password = data.get('password');
-    const password2 = data.get('password2');
-    if (password !== password2) {
-      // 비밀번호가 일치하지 않을 때
-      setPasswordMatch(false);
+    if (!data.get('name') || !data.get('phone')) {
+      alert('필수 항목을 입력하세요.');
       return;
     } else {
-      setPasswordMatch(true);
       // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}}
       setFormData(data)
         .then(res => {
@@ -69,14 +62,13 @@ export default function StoreSignUp() {
         .then(() => {
           alert('입점 신청이 완료되었습니다.');
           getCurrentUser();
-          navigate('/storelist');
+          navigate('/Home');
         });
     }
   };
 
-
   const formatPhoneNumber = (phoneNumberValue) => {
-    const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
+  const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
     //  핸드폰 입력 formatting (e.g., XXX-XXXX-XXXX)
     const formattedPhoneNumber = strippedPhoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
     return formattedPhoneNumber;
@@ -88,12 +80,13 @@ export default function StoreSignUp() {
 
   const setFormData = async (data) => {
     try{
-      data.append('currentAddress', (roadAddress + ',' + jibunAddress + ',' + extraAddress + ',' + data.get('detailAddress')));
+      data.append('currentAddress', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '') 
+          + ',' + (detailAddress ? detailAddress : '')));
       data.append('role', role);
       return await data;
     }
-    catch{
-      return 'Error!';
+    catch (error) {
+      return ('setFormData Error!: ' + error);
     }
   }
   
@@ -106,9 +99,6 @@ export default function StoreSignUp() {
       // 여기서 파일 업로드 처리를 수행할 수 있습니다.
     }
   };
-  
-  
-  
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -133,8 +123,7 @@ export default function StoreSignUp() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              
-              <Grid item xs={12}>
+             <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
                   name="name"
@@ -207,35 +196,23 @@ export default function StoreSignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="postcode"
-                  label="가게 주소"
-                  value={postcode}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-                <Button
-                  type="button"
-                  onClick={handleFindPostcode}
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 1, mb: 2 }}
-                >
-                  우편번호 찾기
-                </Button>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
                   id="roadAddress"
-                  label="도로명주소"
+                  label="도로명 주소"
                   value={roadAddress}
                   InputProps={{
                     readOnly: true,
                   }}
                 />
               </Grid>
+                <Button
+                  type="button"
+                  onClick={handleFindPostcode}
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 1, mb: 2, ml: 2}}
+                >
+                  주소 찾기
+                </Button>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -254,8 +231,9 @@ export default function StoreSignUp() {
                   fullWidth
                   id="detailAddress"
                   label="상세주소"
-                  name="address"
-                  autoComplete="address"
+                  name="detailAddress"
+                  autoComplete="detailAddress"
+                  onChange={e => setDetailAddress(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
