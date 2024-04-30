@@ -9,14 +9,12 @@ import com.team3.DeliveryProject.dto.request.address.AddressAddRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressFindAllRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressModifyRequestDto;
-import com.team3.DeliveryProject.dto.response.address.AddressFindAllResponseDto;
 import com.team3.DeliveryProject.entity.Address;
 import com.team3.DeliveryProject.entity.Users;
 import com.team3.DeliveryProject.repository.AddressRepository;
 import com.team3.DeliveryProject.repository.UsersRepository;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -30,8 +28,9 @@ public class AddressServiceImpl implements AddressService{
     @Override
     public ResponseEntity<Response> addAddress(AddressAddRequestDto requestDto) {
 
-        Address address = new Address(requestDto.getUserId(), requestDto.getAddress(),
-            LocalDateTime.now(), LocalDateTime.now(),"일반");
+        Address address = new Address(requestDto.getUserId(), requestDto.getAddress(), "일반");
+        address.setCreatedDate(LocalDateTime.now());
+        address.setModifiedDate(LocalDateTime.now());
         addressRepository.save(address);
 
         return Response.toResponseEntity(ADDRESS_ADD_SUCCESS);
@@ -56,15 +55,10 @@ public class AddressServiceImpl implements AddressService{
     }
 
     @Override
-    public List<AddressFindAllResponseDto> findAllAddress(AddressFindAllRequestDto requestDto) {
+    public List<Address> findAllAddress(AddressFindAllRequestDto requestDto) {
         Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
-        List<Address> addresses = addressRepository.findAllByUserId(user.getUserId());
-        List<AddressFindAllResponseDto> responseDtos = addresses.stream()
-            .filter(address -> !address.getStatus().equals("삭제"))
-            .map(address -> new AddressFindAllResponseDto(address))
-            .collect(Collectors.toList());
 
-        return responseDtos;
+        return addressRepository.findAllByUserId(user.getUserId());
     }
 
 }
