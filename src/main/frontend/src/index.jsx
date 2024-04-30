@@ -13,6 +13,7 @@ import StoreSignUp from './pages/StoreSignUp';
 import StoreList from './pages/StoreList';
 import StoreUpdate from './pages/StoreUpdate';
 import StoreDetail from './pages/StoreDetail';
+import StoreInto from './pages/StoreInto';
 
 
 const router = createBrowserRouter([
@@ -29,6 +30,8 @@ const router = createBrowserRouter([
       { path: 'StoreList', element: <StoreList />},
       { path: 'StoreUpdate', element: <StoreUpdate />},
       { path: 'StoreDetail', element: <StoreDetail />},
+      { path: 'StoreInto', element: <StoreInto />,}
+      
     ]
   }
 ]);
