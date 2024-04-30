@@ -30,7 +30,7 @@ public class AddressServiceImpl implements AddressService{
     @Override
     public ResponseEntity<Response> addAddress(AddressAddRequestDto requestDto) {
 
-        Address address = new Address(requestDto.getUserId(), requestDto.getAddress(),
+        Address address = new Address(requestDto.getUserId(), requestDto.getAddress(), requestDto.getAddressCode(),
             LocalDateTime.now(), LocalDateTime.now(),"일반");
         addressRepository.save(address);
 
