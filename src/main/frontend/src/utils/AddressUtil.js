@@ -1,10 +1,12 @@
 // AddressUtil.js
 
-export const findPostcode = (setRoadAddress, setExtraAddress) => {
+export const findPostcode = (setPostcode, setRoadAddress, setJibunAddress, setExtraAddress) => {
   if (window.daum && window.daum.Postcode) {
     new window.daum.Postcode({
       oncomplete: (data) => {
+        setPostcode(data.zonecode);
         setRoadAddress(data.roadAddress);
+        setJibunAddress(data.jibunAddress);
         let extraRoadAddr = '';
         if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
           extraRoadAddr += data.bname;

@@ -6,7 +6,6 @@ import reportWebVitals from './reportWebVitals';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
-import Store from './pages/Store';
 import Update from './pages/Update';
 import ProtectedRoute from './pages/ProtectedRoute';
 import StoreRegister from './pages/StoreRegister';
@@ -33,6 +32,7 @@ const router = createBrowserRouter([
     ]
   }
 ]);
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

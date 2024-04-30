@@ -3,19 +3,16 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox,
     Paper, Grid, Box, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { login, } from '../utils/firebase';
-import { Link, useNavigate, useOutletContext } from 'react-router-dom';
+import SearchHeader from '../components/SearchHeader'
+import { login, getCurrentUser } from '../utils/firebase' // Firebase에서 login 함수를 가져옵니다.
+import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import axios from 'axios';
-import { splitAddressFromCurrentUserAddress } from '../utils/userInfo';
-
-
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
   const [userInfo, setUserInfo] = useState({email:'', password:''});
-  const { setOutletAddress } = useOutletContext() // 주소 표시 비동기 임시 처리
   const navigate = useNavigate();
 
   const handleChange = e => {
@@ -24,26 +21,13 @@ export default function SignIn() {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!userInfo.email){
-      alert('이메일을 입력해주세요.')
-    } else if (!userInfo.password) {
-      alert('비밀번호를 입력해주세요.')
-    } else {
-      login(userInfo)
-        .then(res => {
-          if(!res){
-            alert('계정이 존재하지 않습니다.')
-            return false;
-          } else {
-            axios.get(`dp/user/signin`, { params: { email: userInfo.email }})
-              .then(res => {
-                setOutletAddress(res.data.currentAddress);
-                localStorage.setItem("address", res.data.currentAddress);
-                localStorage.setItem("splitAddress", JSON.stringify(splitAddressFromCurrentUserAddress(res.data.currentAddress)))
-              })
-              .then(navigate('/'))
-          }
-        })
+    try {
+      await login(userInfo); // Firebase의 login 함수를 사용하여 로그인을 시도합니다.
+      navigate('/'); // 로그인 성공 시 '/' 경로로 이동합니다.
+      getCurrentUser();
+    } catch (error) {
+      console.error('로그인 실패:', error);
+      // 로그인 실패 시 처리할 코드를 추가할 수 있습니다.
     }
   }
 
