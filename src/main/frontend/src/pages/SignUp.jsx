@@ -15,13 +15,13 @@ export default function SignUp() {
   const [ roadAddress, setRoadAddress ] = useState('');
   const [ extraAddress, setExtraAddress ] = useState('');
   const [ detailAddress, setDetailAddress ] = useState('');
+  const [ addressCode, setAddressCode ] = useState('');
   const [ role, setRole ] = useState('');
   const [ passwordCheack, setPasswordCheack ] = useState('');
   const [ isPasswordMatch, setIsPasswordMatch ] = useState(true);
   const [ phoneNumber, setPhoneNumber ] = useState('');
   const { setOutletAddress } = useOutletContext();
   const navigate = useNavigate();
-
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
       const script = document.createElement('script');
@@ -41,7 +41,7 @@ export default function SignUp() {
   }, []);
 
   const handleFindPostcode = () => {
-    findPostcode(setRoadAddress, setExtraAddress); // use findPostcode from AddressUtil
+    findPostcode(setRoadAddress, setExtraAddress, setAddressCode); // use findPostcode from AddressUtil
   };
 
   const handleSubmit = (event) => {
@@ -82,6 +82,7 @@ export default function SignUp() {
       data.append('currentAddress', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '') 
           + ',' + (detailAddress ? detailAddress : '')));
       data.append('role', role);
+      data.append('addressCode', addressCode);
       return await data;
     }
     catch (error) {
