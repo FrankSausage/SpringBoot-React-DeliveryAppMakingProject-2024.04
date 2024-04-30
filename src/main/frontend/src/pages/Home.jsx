@@ -5,6 +5,7 @@ import Footer from "../components/Footer"
 //주소: http://localhost:3000
 
 export default function Home() {
+  
     return(
       <Box>
           <SearchHeader />

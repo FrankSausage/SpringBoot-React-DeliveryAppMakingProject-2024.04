@@ -17,7 +17,6 @@ export default function SearchHeader() {
   const { user } = useAuthContext();
   const { outletAddress } = useOutletContext();
   const address = localStorage.getItem("address") && localStorage.getItem("address");
-  console.log(localStorage.getItem("address"))
   const navigate = useNavigate();
 
 
@@ -34,7 +33,6 @@ export default function SearchHeader() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("address");
     logout();
     navigate('/');
   };
@@ -82,7 +80,7 @@ export default function SearchHeader() {
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
             <GpsFixedIcon style={{ color: 'white' }} />&nbsp;
             <OutlinedInput
-              value={address ? address : ''}
+              value={address ? address : outletAddress}
               placeholder="주소를 입력 하세요"
               startAdornment={
                 <InputAdornment position="start">

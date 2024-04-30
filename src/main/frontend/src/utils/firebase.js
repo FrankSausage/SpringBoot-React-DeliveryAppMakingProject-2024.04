@@ -66,6 +66,7 @@ export function getCurrentUser() {
 
 export function logout() {
   signOut(auth).catch(console.error);
+  localStorage.clear();
 }
 
 export function onUserStateChanged(callback) {
