@@ -1,38 +1,30 @@
 // SearchHeader.jsx
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { AppBar, Box, Toolbar, Typography, SwipeableDrawer, IconButton, List, ListItem, 
   ListItemButton, ListItemIcon, ListItemText, InputAdornment, OutlinedInput, Divider, Stack, Grid} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ReceiptIcon from '@mui/icons-material/Receipt'; 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; 
 import FavoriteIcon from '@mui/icons-material/Favorite'; 
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import { useAuthContext } from '../context/AuthContext';
-import { getCurrentUser } from '../utils/firebase';
+import { logout } from '../utils/firebase';
+import { findPostcode } from '../utils/AddressUtil'; 
 
 export default function SearchHeader() {
-  const [text, setText] = useState('');
-  const { keyword } = useParams();
-  const [state, setState] = React.useState({
-    left: false,
-  });
-  const { email } = getCurrentUser();
-
-  const { user, setUser, logout } = useAuthContext();
+  const [state, setState] = useState({ left: false, });
+  const { user } = useAuthContext();
+  const { outletAddress } = useOutletContext();
+  const [ roadAddress, setRoadAddress ] = useState('');
+  const [ extraAddress, setExtraAddress ] = useState('');
+  const [ detailAddress, setDetailAddress ] = useState('');
+  const [ JibunAddress, setJibunAddress] = useState('');
+  const [ postcode, setPostcode] = useState('');
+  const address = localStorage.getItem("address") && localStorage.getItem("address");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, [setUser]);
-
-  useEffect(() => {
-    setText(keyword || '');
-  }, [keyword]);
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -48,11 +40,29 @@ export default function SearchHeader() {
 
   const handleLogout = () => {
     logout();
-    navigate('/SignIn');
+    navigate('/');
   };
 
-  const handleLogin = () => {
-    navigate('/SignIn');
+  useEffect(() => {
+    const loadDaumPostcodeScript = () => {
+      const script = document.createElement('script');
+      script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+      script.async = true;
+      document.body.appendChild(script);
+      script.onload = () => {
+        console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
+      };
+    };
+
+    loadDaumPostcodeScript();
+
+    return () => {
+      // 언마운트 시 스크립트 제거 로직
+    };
+  }, []);
+
+  const handleFindPostcode = () => {
+    findPostcode(setPostcode, setRoadAddress, setJibunAddress, setExtraAddress); // use findPostcode from AddressUtil
   };
 
   const list = (
@@ -95,15 +105,17 @@ export default function SearchHeader() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>휴먼 딜리버리</Link>    
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
-            <GpsFixedIcon style={{ color: 'white' }} />&nbsp;
+          <Box sx={{  alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
             <OutlinedInput
+             onClick={handleFindPostcode}
+              value={address ? address : outletAddress}
               placeholder="주소를 입력 하세요"
               startAdornment={
                 <InputAdornment position="start">
+                  <GpsFixedIcon />
                 </InputAdornment>
               }
-              sx={{ width: '100%', maxWidth: 400, mr: 1, backgroundColor: 'white' }} 
+              sx={{ width: '100%', maxWidth: 400, mr: 30, backgroundColor: 'white' }} 
             />
           </Box> 
           <Grid item xs={3}>
@@ -111,7 +123,7 @@ export default function SearchHeader() {
             {user ? (
               <>
                 <Typography variant="body1" sx={{ color: 'white', mr: 1 }}>
-                  <Link to="/Update" state={{ email }} style={{ textDecoration: 'none', color: 'white' }}>
+                  <Link to="/Update" style={{ textDecoration: 'none', color: 'white' }}>
                     {user.displayName}
                   </Link>
                 </Typography>

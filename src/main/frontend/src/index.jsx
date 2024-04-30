@@ -6,8 +6,15 @@ import reportWebVitals from './reportWebVitals';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
+import Store from './pages/Store';
 import Update from './pages/Update';
 import ProtectedRoute from './pages/ProtectedRoute';
+import StoreRegister from './pages/StoreRegister';
+import StoreList from './pages/StoreList';
+import StoreUpdate from './pages/StoreUpdate';
+import StoreDetail from './pages/StoreDetail';
+import StoreInto from './pages/StoreInto';
+
 
 const router = createBrowserRouter([
   {
@@ -17,12 +24,18 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'Signin', element: <SignIn />},
       { path: 'SignUp', element: <SignUp />},
-      { path: 'Update', 
-      element: <ProtectedRoute><Update /></ProtectedRoute>},
+      { path: 'Store', element: <Store  />},
+      { path: 'Store/:category', element: <Store />},
+      { path: 'Update', element: <ProtectedRoute><Update /></ProtectedRoute>},
+      { path: 'StoreRegister', element: <StoreRegister />},
+      { path: 'StoreList', element: <StoreList />},
+      { path: 'StoreUpdate', element: <StoreUpdate />},
+      { path: 'StoreDetail', element: <StoreDetail />},
+      { path: 'StoreInto', element: <StoreInto />,}
+      
     ]
   }
 ]);
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
