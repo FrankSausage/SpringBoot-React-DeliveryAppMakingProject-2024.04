@@ -49,88 +49,49 @@ export default function Store() {
 
   
   return (
-    <Box sx={{ margin: -1 }}>
+    <Box sx={{ margin: 1 }}>
+
+        
       
-      <Grid container></Grid>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider',  display: 'flex', justifyContent: 'center' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="정보" {...a11yProps(0)} />
-          <Tab label="메뉴" {...a11yProps(1)} />
-          <Tab label="리뷰" {...a11yProps(2)} />
-        </Tabs>
-      </Box>
-      <Grid container justifyContent="center" alignItems="center" mt={2}>
-        <Grid item xs={6} md={4}>
-          <Box sx={{ display: 'flex', alignItems: 'center', border: 1, borderColor: 'divider', borderRadius: 1 }}>
-            <SearchIcon sx={{ m: 1 }} />
-            <InputBase
-              placeholder="검색"
-              inputProps={{ 'aria-label': 'search' }}
-              fullWidth
-            />
-          </Box>
-        </Grid>
-      </Grid>
-      <CustomTabPanel value={value} index={0}>
+    
+      
         Item 정보
         <Grid container>
           <Grid item xs/>
           <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
               <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2}} sx={gridStyle}>
-              <Box sx={{...boxStyle, position: 'relative', width: { xs: '100%', sm: '70%' }, height: '150px', marginX: 'auto'}}>
+              <Box sx={{...boxStyle, position: 'relative', width: { xs: '100%', sm: '70%' }, height: '300px', marginX: 'auto', marginBottom: '10px' }}>
                 <div>
-                  <img src={'가게 사진 or 마크.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
-                  <ul style={{ position: 'absolute', top: '50%', left: '30%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
-                    <li style={{ listStyleType: 'none' }}>찜순</li>
-                    <li style={{ listStyleType: 'none' }}>최소 주문 금액</li>
-                    <li style={{ listStyleType: 'none' }}>평점순</li>
-                    <li style={{ listStyleType: 'none' }}>리뷰순</li>
-                  </ul>
-                </div>         
-              </Box>
-              <Box sx={{...boxStyle, position: 'relative', width: { xs: '100%', sm: '70%' }, height: '150px', marginX: 'auto'}}>
-                <div>
-                  <img src={'가게 사진 or 마크.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
-                  <ul style={{ position: 'absolute', top: '50%', left: '30%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
-                    <li style={{ listStyleType: 'none' }}>찜순</li>
-                    <li style={{ listStyleType: 'none' }}>최소 주문 금액</li>
-                    <li style={{ listStyleType: 'none' }}>평점순</li>
-                    <li style={{ listStyleType: 'none' }}>리뷰순</li>
-                  </ul>
+                  <img src={'/img/01.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
                 </div>
+              </Box>
+              
+              <Box sx={{...boxStyle, position: 'relative', width: { xs: '100%', sm: '70%' }, height: '350px', marginX: 'auto', marginBottom: '10px' }}>
+                  <ul style={{ position: 'absolute', top: '50%', left: '15%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
+                    <li style={{ listStyleType: 'none' }}>가게 이름</li>
+                    <li style={{ listStyleType: 'none' }}>가게 주소</li>
+                    <li style={{ listStyleType: 'none' }}>전화번호</li>
+                    <li style={{ listStyleType: 'none' }}>카테고리</li>
+                    <li style={{ listStyleType: 'none' }}>최소 주문 금액</li>
+                    <li style={{ listStyleType: 'none' }}>배달팁</li>
+                    <li style={{ listStyleType: 'none' }}>최소 배달 예상 시간</li>
+                    <li style={{ listStyleType: 'none' }}>최대 배달 예상 시간</li>
+                    <li style={{ listStyleType: 'none' }}>운영 시간</li>
+                    <li style={{ listStyleType: 'none' }}>휴무일</li>
+                    <li style={{ listStyleType: 'none' }}>배달지역</li>
+                  </ul>       
+              </Box>
+              <Box sx={{...boxStyle, position: 'relative', width: { xs: '100%', sm: '70%' }, height: '300px', marginX: 'auto', marginBottom: '10px' }}>
+                  <ul style={{ position: 'absolute', top: '50%', left: '15%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
+                    <li style={{ listStyleType: 'none' }}>가게 소개</li>
+                  </ul>
               </Box>
               </Grid>
             </Grid>
           <Grid item xs />
         </Grid>
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        Item 메뉴
-        <Grid container>
-        <Grid item xs/>
-        <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
-            <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2}} sx={gridStyle}>
-              <Box sx={{...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto'}}></Box>
-              <Box sx={{...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto'}}></Box>
-            </Grid>
-          </Grid>
-        <Grid item xs />
-      </Grid>
-
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        Item 리뷰
-        <Grid container>
-        <Grid item xs/>
-        <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
-            <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2}} sx={gridStyle}>
-              <Box sx={{...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto'}}></Box>
-              <Box sx={{...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto'}}></Box>
-            </Grid>
-          </Grid>
-        <Grid item xs />
-      </Grid>
-      </CustomTabPanel>
+      
+      
       <Footer/>
     </Box>
   );
