@@ -1,6 +1,6 @@
 // SearchHeader.jsx
 
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { AppBar, Box, Toolbar, Typography, SwipeableDrawer, IconButton, List, ListItem, 
   ListItemButton, ListItemIcon, ListItemText, InputAdornment, OutlinedInput, Divider, Stack, Grid} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -11,11 +11,17 @@ import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import { useAuthContext } from '../context/AuthContext';
 import { logout } from '../utils/firebase';
+import { findPostcode } from '../utils/AddressUtil'; 
 
 export default function SearchHeader() {
   const [state, setState] = useState({ left: false, });
   const { user } = useAuthContext();
   const { outletAddress } = useOutletContext();
+  const [ roadAddress, setRoadAddress ] = useState('');
+  const [ extraAddress, setExtraAddress ] = useState('');
+  const [ detailAddress, setDetailAddress ] = useState('');
+  const [ JibunAddress, setJibunAddress] = useState('');
+  const [ postcode, setPostcode] = useState('');
   const address = localStorage.getItem("address") && localStorage.getItem("address");
   console.log(localStorage.getItem("address"))
   const navigate = useNavigate();
