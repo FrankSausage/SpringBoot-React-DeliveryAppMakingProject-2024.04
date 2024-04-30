@@ -15,4 +15,5 @@ import lombok.ToString;
 @Builder
 public class StoreDeleteRequestDto {
     private Long storeId;
+    private String email;
 }

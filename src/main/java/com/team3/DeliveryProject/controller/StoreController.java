@@ -27,27 +27,22 @@ public class StoreController {
     @Autowired
     private StoreService storeService;
 
-    @PostMapping("/register")
+    @PostMapping("/owner/register")
     public ResponseEntity<?> addStore(@RequestBody StoreAddRequestDto requestDto) {
-        storeService.addStore(requestDto);
-        return ResponseEntity.ok().body("Store add successfully");
+        return ResponseEntity.ok().body(storeService.addStore(requestDto).getBody());
     }
 
-    @PostMapping("/update")
+    @PostMapping("/owner/update")
     public ResponseEntity<?> updateStore(@RequestBody StoreUpdateRequestDto requestDto) {
-        storeService.updateStore(requestDto);
-        return ResponseEntity.ok().body("Store update successfully");
+        return ResponseEntity.ok().body(storeService.updateStore(requestDto).getBody());
     }
-    @PostMapping("/delete")
+    @PostMapping("/owner/delete")
     public ResponseEntity<?> deleteStore(@RequestBody StoreDeleteRequestDto requestDto) {
-        storeService.deleteStore(requestDto);
-        return ResponseEntity.ok().body("Store delete successfully");
+        return ResponseEntity.ok().body(storeService.deleteStore(requestDto).getBody());
     }
 
-    @GetMapping("/update")
+    @GetMapping("/owner/update")
     public ResponseEntity<?> updateStoreGet(@RequestBody StoreUpdateGetRequestDto requestDto) {
-        System.out.println(requestDto.getStoreId());
-        System.out.println("ㅇㅇㅇㅇㅇ");
         Stores stores = storeService.getUpdateStore(requestDto.getStoreId()).orElseThrow(()
             -> new RuntimeException("Stores not found"));
         StoreUpdateResponseDto responseDto = StoreUpdateResponseDto.builder()
