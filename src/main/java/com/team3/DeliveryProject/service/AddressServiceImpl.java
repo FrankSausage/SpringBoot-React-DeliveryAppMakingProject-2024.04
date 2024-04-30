@@ -41,6 +41,7 @@ public class AddressServiceImpl implements AddressService{
     public ResponseEntity<Response> modifyAddress(AddressModifyRequestDto requestDto) {
         Address address = addressRepository.findAddressByAddressId(requestDto.getAddressId()).get();
         address.setAddress(requestDto.getAddress());
+        address.setAddressCode(requestDto.getAddressCode());
         address.setStatus("수정");
         address.setModifiedDate(LocalDateTime.now());
         addressRepository.save(address);
