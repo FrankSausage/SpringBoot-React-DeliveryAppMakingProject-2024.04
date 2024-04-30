@@ -98,7 +98,7 @@ export default function Update() {
           + (updateExtraAddress ? updateExtraAddress : '') + ',' 
           + (updateDetailAddress ? updateDetailAddress : '')
         ));
-        data.append('addressCode', addressCode);
+        data.append('addressCode', addressCode.substring(0,8));
         return await data;
       }
       catch (error) {

@@ -82,7 +82,7 @@ export default function SignUp() {
       data.append('currentAddress', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '') 
           + ',' + (detailAddress ? detailAddress : '')));
       data.append('role', role);
-      data.append('addressCode', addressCode);
+      data.append('addressCode', addressCode.substring(0,8));
       return await data;
     }
     catch (error) {
