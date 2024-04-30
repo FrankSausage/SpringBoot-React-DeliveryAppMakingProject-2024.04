@@ -57,13 +57,13 @@ export default function Store() {
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="전체" {...a11yProps(0)} />
           <Tab label="한식" component={Link} to="/Store/HanSick" {...a11yProps(1)} autoFocus/>
-          <Tab label="중식" component={Link} to="/Store/Chinesefood" {...a11yProps(2)} />
-          <Tab label="일식" component={Link} to="/Store/Japanese" {...a11yProps(3)} />
-          <Tab label="양식" component={Link} to="/Store/western style" {...a11yProps(4)} />
-          <Tab label="패스트" component={Link} to="/Store/fastfood" {...a11yProps(5)} />
-          <Tab label="치킨"  component={Link} to="/Store/chicken"{...a11yProps(6)} />
-          <Tab label="분식" component={Link} to="/Store/snackbar" {...a11yProps(7)} />
-          <Tab label="디저트" component={Link} to="/Store/dessert" {...a11yProps(8)} />
+          <Tab label="중식" component={Link} to="/Store/china" {...a11yProps(2)} />
+          <Tab label="일식" {...a11yProps(3)} />
+          <Tab label="양식" {...a11yProps(4)} />
+          <Tab label="패스트" {...a11yProps(5)} />
+          <Tab label="치킨" {...a11yProps(6)} />
+          <Tab label="분식" {...a11yProps(7)} />
+          <Tab label="디저트" {...a11yProps(8)} />
         </Tabs>
       </Box>
       <Grid container justifyContent="center" alignItems="center" mt={2}>

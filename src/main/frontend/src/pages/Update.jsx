@@ -76,7 +76,7 @@ export default function Update() {
             })
             .then(() => {
             alert('회원 정보 수정이 완료되었습니다.');
-            navigate('/signin');
+            navigate('/SignIn');
             });
         }
     }
