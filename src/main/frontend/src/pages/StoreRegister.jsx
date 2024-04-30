@@ -93,9 +93,10 @@ export default function StoreRegister() {
   const [storePictureName, setStorePictureName] = useState('');
 
   const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setStorePictureName(file.name);
+    const files = Array.from(e.target.files); // 선택된 파일들을 배열로 변환
+    if (files.length > 0) {
+      const fileNames = files.map(file => file.name);
+      setStorePictureName(fileNames);
       // 여기서 파일 업로드 처리를 수행할 수 있습니다.
     }
   };
@@ -175,7 +176,6 @@ export default function StoreRegister() {
                   </Grid>
                 </Grid>
               </Grid>
-
               <Grid item xs={12}>
                 <TextField
                   required
@@ -332,7 +332,6 @@ export default function StoreRegister() {
                 <TextField
                   autoComplete="given-name"
                   name="content"
-                  required
                   fullWidth
                   id="content"
                   label="가게 소개글"
@@ -352,14 +351,13 @@ export default function StoreRegister() {
                       id="upload-photo"
                       type="file"
                       style={{ display: 'none' }}
-                      onChange={handleFileUpload}
+                      onChange={handleFileUpload} multiple
                     />
                     
                       <TextField
                         autoComplete="given-name"
                         name="storePictureName"
                         value={storePictureName}
-                        required
                         fullWidth
                         id="storePictureName"
                         label="가게 사진"
@@ -375,7 +373,7 @@ export default function StoreRegister() {
                         type="button"
                         variant="contained"
                         onClick={() => document.getElementById('upload-photo').click()}
-                        sx={{ mt: 3, mb: 2 }}>
+                        sx={{ mt: 3, mb: 2,}}>
                         사진 올리기
                       </Button>
                   </Grid>
@@ -391,7 +389,7 @@ export default function StoreRegister() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}>
+              sx={{ mt: 3, mb: 2, fontSize: '1.1rem'}}>
               입점 신청하기
             </Button>
           </Box>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Footer from "../components/Footer"
 import PropTypes from 'prop-types';
-import { Tab, Tabs, Box, Typography, Stack, Grid, InputBase} from '@mui/material';
+import { Tab, Tabs, Box, Typography, Grid, InputBase} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom'
 
