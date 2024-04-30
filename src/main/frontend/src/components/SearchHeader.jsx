@@ -1,39 +1,25 @@
 // SearchHeader.jsx
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { AppBar, Box, Toolbar, Typography, SwipeableDrawer, IconButton, List, ListItem, 
   ListItemButton, ListItemIcon, ListItemText, InputAdornment, OutlinedInput, Divider, Stack, Grid} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ReceiptIcon from '@mui/icons-material/Receipt'; 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; 
 import FavoriteIcon from '@mui/icons-material/Favorite'; 
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import { useAuthContext } from '../context/AuthContext';
-import { getCurrentUser } from '../utils/firebase';
+import { logout } from '../utils/firebase';
+import Address from './Address';
 
 export default function SearchHeader() {
-  const [text, setText] = useState('');
-  const { keyword } = useParams();
-  const [state, setState] = React.useState({
-    left: false,
-  });
-  const { email } = getCurrentUser();
-
-  const { user, setUser, logout } = useAuthContext();
-  const navigate = useNavigate();
+  const [ state, setState ] = useState({ left: false, });
+  const [ stateToggle, setStateToggle ] = useState(false); 
+  const { user } = useAuthContext();
   const { outletAddress } = useOutletContext();
   const address = localStorage.getItem("address") && localStorage.getItem("address");
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, [setUser]);
-
-  useEffect(() => {
-    setText(keyword || '');
-  }, [keyword]);
+  const navigate = useNavigate();
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -49,7 +35,7 @@ export default function SearchHeader() {
 
   const handleLogout = () => {
     logout();
-    navigate('/SignIn');
+    navigate('/');
   };
 
   const list = (
@@ -95,8 +81,8 @@ export default function SearchHeader() {
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
             <GpsFixedIcon style={{ color: 'white' }} />&nbsp;
             <OutlinedInput
-              placeholder="주소를 입력 하세요"
               value={address ? address : outletAddress}
+              placeholder="주소를 입력 하세요"
               startAdornment={
                 <InputAdornment position="start">
                 </InputAdornment>
@@ -110,7 +96,7 @@ export default function SearchHeader() {
             {user ? (
               <>
                 <Typography variant="body1" sx={{ color: 'white', mr: 1 }}>
-                  <Link to="/Update" state={{ email }} style={{ textDecoration: 'none', color: 'white' }}>
+                  <Link to="/Update" style={{ textDecoration: 'none', color: 'white' }}>
                     {user.displayName}
                   </Link>
                 </Typography>
