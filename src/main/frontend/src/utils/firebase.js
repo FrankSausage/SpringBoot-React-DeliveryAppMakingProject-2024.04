@@ -1,8 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, GithubAuthProvider,
   signInWithPopup, signOut, updateProfile, signInWithEmailAndPassword,
-  onAuthStateChanged, 
-  updatePassword} from "firebase/auth";
+  onAuthStateChanged } from "firebase/auth";
 import { extractDataFromFormData } from '../utils/userInfo';
 
 const firebaseConfig = {
@@ -25,27 +24,9 @@ export async function register(user) {
     .catch(console.error);
 }
 
-export async function updateUser(user) {
-  if(auth.currentUser !== null) {
-    const { name, password } = await extractDataFromFormData(user);
-    updateProfile(auth.currentUser, {
-      displayName: name,
-    }).catch(console.error);
-    updatePassword(auth.currentUser, password).catch(console.error);
-  }
-}
-
-export async function login({ email, password }) {
-  return await signInWithEmailAndPassword(auth, email, password)
-    .then(res => {
-      if(res) {
-        return true;
-      }
-    })
-    .catch(e => {
-      console.error(e);
-      return false;
-    });
+export function login({ email, password }) {
+  signInWithEmailAndPassword(auth, email, password)
+    .catch(console.error);
 }
 
 export function loginWithGithub() {
@@ -66,7 +47,6 @@ export function getCurrentUser() {
 
 export function logout() {
   signOut(auth).catch(console.error);
-  localStorage.clear();
 }
 
 export function onUserStateChanged(callback) {

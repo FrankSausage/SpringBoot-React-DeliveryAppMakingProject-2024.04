@@ -46,11 +46,9 @@ public class UserServiceImpl implements UserService{
         Users users = usersRepository.findUsersByEmail(user.getEmail()).get();
         users.setPhone(user.getPhone());
         users.setName(user.getName());
+        users.setPassword(user.getPassword());
         users.setCurrentAddress(user.getCurrentAddress());
-        Long userId = usersRepository.save(users).getUserId();
-        Address address = addressRepository.findAddressByUserId(userId).get();
-        address.setAddress(users.getCurrentAddress());
-        addressRepository.save(address);
+        usersRepository.save(users);
         return Response.toResponseEntity(USER_UPDATE_SUCCESS);
     }
 
