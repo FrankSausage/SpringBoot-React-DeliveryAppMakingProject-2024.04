@@ -68,9 +68,6 @@ public class Stores {
     @Column(nullable = true)
     private String closedDays;
 
-    @Column(nullable = true)
-    private String deliveryAddress;
-
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdDate;
 
@@ -84,7 +81,7 @@ public class Stores {
         String storePictureName, String phone, String content, int minDeliveryPrice,
         int deliveryTip,
         int minDeliveryTime, int maxDeliveryTime, double rating, int dibsCount, int reviewCount,
-        String operationHours, String closedDays, String deliveryAddress, LocalDateTime createdDate,
+        String operationHours, String closedDays, LocalDateTime createdDate,
         LocalDateTime modifiedDate, String status) {
         this.userId = userId;
         this.name = name;
@@ -103,7 +100,6 @@ public class Stores {
         this.reviewCount = reviewCount;
         this.operationHours = operationHours;
         this.closedDays = closedDays;
-        this.deliveryAddress = deliveryAddress;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
         this.status = status;

@@ -34,7 +34,8 @@ public class Address {
 
     @Column(nullable = false)
     private String address;
-
+    @Column(nullable = false)
+    private String addressCode;
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdDate;
 
