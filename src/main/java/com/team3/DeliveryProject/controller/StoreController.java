@@ -1,6 +1,7 @@
 package com.team3.DeliveryProject.controller;
 
 import com.team3.DeliveryProject.dto.request.store.StoreAddRequestDto;
+import com.team3.DeliveryProject.dto.request.store.StoreDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateRequestDto;
 import com.team3.DeliveryProject.dto.request.user.UserSignUpRequestDto;
@@ -36,6 +37,11 @@ public class StoreController {
     public ResponseEntity<?> updateStore(@RequestBody StoreUpdateRequestDto requestDto) {
         storeService.updateStore(requestDto);
         return ResponseEntity.ok().body("Store update successfully");
+    }
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteStore(@RequestBody StoreDeleteRequestDto requestDto) {
+        storeService.deleteStore(requestDto);
+        return ResponseEntity.ok().body("Store delete successfully");
     }
 
     @GetMapping("/update")
