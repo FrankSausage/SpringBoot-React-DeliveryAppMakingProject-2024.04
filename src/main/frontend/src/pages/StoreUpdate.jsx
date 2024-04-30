@@ -67,9 +67,9 @@ export default function StoreSignUp() {
             })
           })
         .then(() => {
-          alert('입점 신청이 완료되었습니다.');
+          alert('가게 정보가 수정되었습니다.');
           getCurrentUser();
-          navigate('/signin');
+          navigate('/storelist');
         });
     }
   };
@@ -107,16 +107,6 @@ export default function StoreSignUp() {
     }
   };
 
-  const uploadButtonStyle = {
-    display: 'inline-block',
-    width: '90px',
-    height: '90px',
-    background: 'url("src/assets/icon-add-photo.svg") no-repeat',
-    backgroundPosition: 'center',
-    border: '1px solid #ccc',
-    borderRadius: '10px',
-    cursor: 'pointer',
-  };
   
   
   
@@ -140,7 +130,7 @@ export default function StoreSignUp() {
             <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>    
           </Typography>
           <Typography component="h1" variant="h5">
-           온라인 입점 신청서
+           가게 정보 수정
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -416,7 +406,7 @@ export default function StoreSignUp() {
               <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="이메일을 통해 마케팅 프로모션, 업데이트를 받고 싶습니다.(선택)"
+                  label="개인정보 수집 및 이용에 동의합니다"
                 />
               </Grid>
             </Grid>
@@ -425,7 +415,7 @@ export default function StoreSignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}>
-              입점 신청하기
+              수정하기
             </Button>
           </Box>
         </Box>
