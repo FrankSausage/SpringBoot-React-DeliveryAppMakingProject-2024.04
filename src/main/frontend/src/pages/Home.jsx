@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 //주소: http://localhost:3000
 
 export default function Home() {
+  
     return(
         <Box sx={{ margin: -1 }}>
           <SearchHeader />          
