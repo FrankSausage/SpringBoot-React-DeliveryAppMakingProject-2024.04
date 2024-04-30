@@ -11,14 +11,15 @@ import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import { useAuthContext } from '../context/AuthContext';
 import { logout } from '../utils/firebase';
+import Address from './Address';
 
 export default function SearchHeader() {
-  const [state, setState] = useState({ left: false, });
+  const [ state, setState ] = useState({ left: false, });
+  const [ stateToggle, setStateToggle ] = useState(false); 
   const { user } = useAuthContext();
   const { outletAddress } = useOutletContext();
   const address = localStorage.getItem("address") && localStorage.getItem("address");
   const navigate = useNavigate();
-
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -28,9 +29,9 @@ export default function SearchHeader() {
     ) {
       return;
     }
-
     setState({ left: open });
   };
+
 
   const handleLogout = () => {
     logout();
@@ -86,6 +87,7 @@ export default function SearchHeader() {
                 <InputAdornment position="start">
                 </InputAdornment>
               }
+              onClick={() => {stateToggle ? setStateToggle(false) : setStateToggle(true)} }
               sx={{ width: '100%', maxWidth: 400, mr: 1, backgroundColor: 'white' }} 
             />
           </Box> 
@@ -110,6 +112,8 @@ export default function SearchHeader() {
           </Grid>
         </Toolbar>
       </AppBar>
+
+      <Address stateToggle={stateToggle} />
       
       <div>
         <SwipeableDrawer
