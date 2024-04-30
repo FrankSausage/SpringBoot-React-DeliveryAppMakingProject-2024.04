@@ -4,10 +4,10 @@ import Footer from "../components/Footer";
 import { Stack, Box, Grid, InputBase, Button, } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 
-export default function StoreList() {
+export default function OwnerMain() {
+
   return (
     <Box sx={{ margin: -1 }}>
-      <SearchHeader />
       <Grid container>
         <Grid item xs={12} sx={{border: 1}}>
           <Stack sx={{maxHeight: 200}}>
@@ -62,7 +62,6 @@ export default function StoreList() {
         </Grid>
         <Grid item xs />
       </Grid>
-      <Footer/>
     </Box>
   );
 }

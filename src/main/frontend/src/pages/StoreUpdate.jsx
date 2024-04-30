@@ -21,6 +21,7 @@ export default function StoreSignUp() {
   const [passwordMatch, setPasswordMatch] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState('');
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
@@ -66,9 +67,9 @@ export default function StoreSignUp() {
             })
           })
         .then(() => {
-          alert('가입이 완료되었습니다.');
+          alert('가게 정보가 수정되었습니다.');
           getCurrentUser();
-          navigate('/signin');
+          navigate('/storelist');
         });
     }
   };
@@ -77,7 +78,7 @@ export default function StoreSignUp() {
   const formatPhoneNumber = (phoneNumberValue) => {
     const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
     //  핸드폰 입력 formatting (e.g., XXX-XXXX-XXXX)
-    const formattedPhoneNumber = strippedPhoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+    const formattedPhoneNumber = strippedPhoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
     return formattedPhoneNumber;
   };
   const handlePhoneNumberChange = (event) => {
@@ -95,6 +96,16 @@ export default function StoreSignUp() {
       return 'Error!';
     }
   }
+  
+  const [storePictureName, setStorePictureName] = useState('');
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setStorePictureName(file.name);
+      // 여기서 파일 업로드 처리를 수행할 수 있습니다.
+    }
+  };
 
   
   
@@ -119,7 +130,7 @@ export default function StoreSignUp() {
             <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>    
           </Typography>
           <Typography component="h1" variant="h5">
-           온라인 입점 신청서
+           가게 정보 수정
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -182,13 +193,13 @@ export default function StoreSignUp() {
                   required
                   fullWidth
                   id="phone"
-                  label="가게 전화번호"
+                  label="전화번호"
                   name="phone"
                   autoComplete="phone"
                   value={phoneNumber}
                   onChange={handlePhoneNumberChange}
                   inputProps={{
-                    maxLength: 13,
+                    maxLength: 12,
                     inputMode: 'numeric',
                   }}
                 />
@@ -354,79 +365,48 @@ export default function StoreSignUp() {
                   variant='outlined'
                 />
               </Grid>
-              <Grid item xs={12}>
-                <Typography variant="h6" gutterBottom>
-                  가게 사진
-                </Typography>
-                
-                <TextField
-                  autoComplete="given-name"
-                  name="storePictureName"
-                  required
-                  fullWidth
-                  id="storePictureName"
-                  label="가게 사진"
-                  autoFocus
-                />
-
-                <Button
-                  type="button"
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}>
-                  사진 올리기
-                </Button>
-              </Grid>
-
-              {/* <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="사업자등록번호"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid> */}
-              {/* <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="name"
-                  required
-                  fullWidth
-                  id="name"
-                  label="대표자 명"
-                  autoFocus
-                />
-              </Grid> */}
-              {/* <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="비밀번호"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
-              </Grid> */}
-              {/* <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password2"
-                  label="비밀번호 확인"
-                  type="password"
-                  id="password2"
-                  autoComplete="new-password"
-                  error={!passwordMatch}
-                  helperText={!passwordMatch && "비밀번호가 일치하지 않습니다"}
-                />
-              </Grid> */}
+              
+                <Grid item xs={12}>
+                  <Typography variant="h6" gutterBottom>
+                    가게 사진
+                  </Typography>
+                    <input
+                      accept=".png, .jpeg, .jpg"
+                      id="upload-photo"
+                      type="file"
+                      style={{ display: 'none' }}
+                      onChange={handleFileUpload}
+                    />
+                    
+                      <TextField
+                        autoComplete="given-name"
+                        name="storePictureName"
+                        value={storePictureName}
+                        required
+                        fullWidth
+                        id="storePictureName"
+                        label="가게 사진"
+                        autoFocus
+                        onClick={(e) => {
+                          e.target.value = null;
+                        }}
+                      />
+                      {/* 아이콘 대신에 "사진 올리기" 텍스트를 사용하고 싶다면 아래 주석 처리된 라인을 사용하세요 */}
+                      {/* <span>사진 올리기</span> */}
+                    
+                      <Button
+                        type="button"
+                        variant="contained"
+                        onClick={() => document.getElementById('upload-photo').click()}
+                        sx={{ mt: 3, mb: 2 }}>
+                        사진 올리기
+                      </Button>
+                  </Grid>
               
               <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="이메일을 통해 마케팅 프로모션, 업데이트를 받고 싶습니다.(선택)"
+                  label="개인정보 수집 및 이용에 동의합니다"
                 />
               </Grid>
             </Grid>
@@ -435,15 +415,8 @@ export default function StoreSignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}>
-              입점 신청하기
+              수정하기
             </Button>
-            {/* <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link to="/SignIn" variant="body2" style={{ textDecoration: 'none', color: 'black'  }}>
-                  계정이 있으신가요? 로그인
-                </Link>
-            </Grid> */}
-          
           </Box>
         </Box>
         <Footer sx={{ mt: 5 }} />
