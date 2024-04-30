@@ -107,11 +107,12 @@ export default function SearchHeader() {
           </Typography>
           <Box sx={{  alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
             <OutlinedInput
+             onClick={handleFindPostcode}
               value={address ? address : outletAddress}
               placeholder="주소를 입력 하세요"
               startAdornment={
                 <InputAdornment position="start">
-                  <GpsFixedIcon onClick={handleFindPostcode}/>
+                  <GpsFixedIcon />
                 </InputAdornment>
               }
               sx={{ width: '100%', maxWidth: 400, mr: 30, backgroundColor: 'white' }} 
