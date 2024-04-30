@@ -1,42 +1,25 @@
-import React, { useEffect, useState } from 'react';
+// SearchHeader.jsx
+
+import React, { useState } from 'react';
 import { AppBar, Box, Toolbar, Typography, SwipeableDrawer, IconButton, List, ListItem, 
   ListItemButton, ListItemIcon, ListItemText, InputAdornment, OutlinedInput, Divider, Stack, Grid} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ReceiptIcon from '@mui/icons-material/Receipt'; 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; 
 import FavoriteIcon from '@mui/icons-material/Favorite'; 
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import { useAuthContext } from '../context/AuthContext';
-import { getCurrentUser } from '../utils/firebase';
-import { findPostcode } from '../utils/AddressUtil'; 
+import { logout } from '../utils/firebase';
 
 export default function SearchHeader() {
-  const [postcode, setPostcode] = useState('');
-  const [roadAddress, setRoadAddress] = useState('');
-  const [jibunAddress, setJibunAddress] = useState('');
-  const [extraAddress, setExtraAddress] = useState('');
-
-  const [text, setText] = useState('');
-  const { keyword } = useParams();
-  const [state, setState] = React.useState({
-    left: false,
-  });
-  const { email } = getCurrentUser();
-
-  const { user, setUser, logout } = useAuthContext();
+  const [state, setState] = useState({ left: false, });
+  const { user } = useAuthContext();
+  const { outletAddress } = useOutletContext();
+  const address = localStorage.getItem("address") && localStorage.getItem("address");
+  console.log(localStorage.getItem("address"))
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, [setUser]);
-
-  useEffect(() => {
-    setText(keyword || '');
-  }, [keyword]);
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -51,12 +34,9 @@ export default function SearchHeader() {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem("address");
     logout();
     navigate('/');
-  };
-
-  const handleLogin = () => {
-    navigate('/SignIn');
   };
 
   useEffect(() => {
@@ -123,10 +103,8 @@ export default function SearchHeader() {
           </Typography>
           <Box sx={{  alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
             <OutlinedInput
-              placeholder="주소를 입력하세요"
-              id="roadAddress"
-              value={roadAddress}
-                 
+              value={address ? address : ''}
+              placeholder="주소를 입력 하세요"
               startAdornment={
                 <InputAdornment position="start">
                   <GpsFixedIcon onClick={handleFindPostcode}/>

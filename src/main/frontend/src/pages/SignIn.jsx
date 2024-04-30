@@ -3,16 +3,18 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox,
     Paper, Grid, Box, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import SearchHeader from '../components/SearchHeader'
-import { login } from '../utils/firebase' // Firebase에서 login 함수를 가져옵니다.
-import { Link, useNavigate } from 'react-router-dom';
+import { login, } from '../utils/firebase';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import Footer from '../components/Footer';
 import axios from 'axios';
+
+
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
   const [userInfo, setUserInfo] = useState({email:'', password:''});
+  const { setOutletAddress } = useOutletContext() // 주소 표시 비동기 임시 처리
   const navigate = useNavigate();
 
   const handleChange = e => {
@@ -21,24 +23,25 @@ export default function SignIn() {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!userInfo.email || !userInfo.password) {
-      alert("이메일를 입력하시오");
-      console.log("정보를 입력하세요.");
-      return; // 데이터가 없으면 함수를 여기서 종료합니다.
-    }
-    try {
-      await login(userInfo); // Firebase의 login 함수를 사용하여 로그인을 시도합니다.
-      navigate('/'); // 로그인 성공 시 '/' 경로로 이동합니다.
-    } catch (error) {
-      console.error('로그인 실패:', error);
-      // Firebase에서 반환한 에러 코드를 기반으로 메시지를 나타냅니다.
-      if (error.code === "auth/user-not-found") {
-        alert("이메일이 틀렸습니다.");
-      } else if (error.code === "auth/wrong-password") {
-        alert("비밀번호가 틀렸습니다.");
-      } else {
-        alert("로그인에 실패하였습니다.");
-      }
+    if(!userInfo.email){
+      alert('이메일을 입력해주세요.')
+    } else if (!userInfo.password) {
+      alert('비밀번호를 입력해주세요.')
+    } else {
+      login(userInfo)
+        .then(res => {
+          if(!res){
+            alert('계정이 존재하지 않습니다.')
+            return false;
+          } else {
+            axios.get(`dp/user/signin`, { params: { email: userInfo.email }})
+              .then(res => {
+                setOutletAddress(res.data.currentAddress);
+                localStorage.setItem("address", res.data.currentAddress);
+              })
+              .then(navigate('/'))
+          }
+        })
     }
   }
 

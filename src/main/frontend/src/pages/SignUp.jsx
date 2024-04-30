@@ -3,22 +3,23 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Gri
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { findPostcode } from '../utils/AddressUtil'; 
 import { register } from '../utils/firebase';
-import { extractDataFromFormData } from '../utils/userInfo';
+import { extractDataFromFormData, formatPhoneNumber } from '../utils/userInfo';
 import axios from 'axios';
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const [postcode, setPostcode] = useState('');
-  const [roadAddress, setRoadAddress] = useState('');
-  const [jibunAddress, setJibunAddress] = useState('');
-  const [extraAddress, setExtraAddress] = useState('');
-  const [role, setRole] = useState('');
-  const [passwordMatch, setPasswordMatch] = useState(true);
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [ roadAddress, setRoadAddress ] = useState('');
+  const [ extraAddress, setExtraAddress ] = useState('');
+  const [ detailAddress, setDetailAddress ] = useState('');
+  const [ role, setRole ] = useState('');
+  const [ passwordCheack, setPasswordCheack ] = useState('');
+  const [ isPasswordMatch, setIsPasswordMatch ] = useState(true);
+  const [ phoneNumber, setPhoneNumber ] = useState('');
+  const { setOutletAddress } = useOutletContext();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,46 +41,37 @@ export default function SignUp() {
   }, []);
 
   const handleFindPostcode = () => {
-    findPostcode(setPostcode, setRoadAddress, setJibunAddress, setExtraAddress); // use findPostcode from AddressUtil
+    findPostcode(setRoadAddress, setExtraAddress); // use findPostcode from AddressUtil
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-  
-    // 비밀번호 일치 여부 확인
-    const password = data.get('password');
-    const password2 = data.get('password2');
-    if (password !== password2) {
-      // 비밀번호가 일치하지 않을 때
-      setPasswordMatch(false);
-      return;
+    const data = new FormData(event.currentTarget)
+    if (data.get('password') !== passwordCheack) {      
+      setIsPasswordMatch(false);
+        return;
     } else {
-      setPasswordMatch(true);
-      // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}}
-      setFormData(data)
-        .then(res => {
-          register(res);
-          extractDataFromFormData(res)
-            .then(resFormData => {
-              axios.post(`/dp/user/signup`, resFormData)
-              console.log(resFormData);
-            })
+      setIsPasswordMatch(true);
+      
+      if(setIsPasswordMatch) {
+        setFormData(data)
+          .then(res => {
+            register(res);
+            extractDataFromFormData(res)
+              .then(resFormData => {
+                // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}} // 이미지 파일 첨부 대비 코드
+                setOutletAddress(resFormData.currentAddress);
+                axios.post(`/dp/user/signup`, resFormData)
+              })
           })
-        .then(() => {
-          alert('가입이 완료되었습니다.');
-          navigate('/signin');
-        });
+          .then(() => {
+            alert('가입이 완료되었습니다.');
+            navigate('/signin');
+          });
+      }
     }
   };
 
-
-  const formatPhoneNumber = (phoneNumberValue) => {
-    const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
-    //  핸드폰 입력 formatting (e.g., XXX-XXXX-XXXX)
-    const formattedPhoneNumber = strippedPhoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
-    return formattedPhoneNumber;
-  };
   const handlePhoneNumberChange = (event) => {
     const formattedPhoneNumber = formatPhoneNumber(event.target.value);
     setPhoneNumber(formattedPhoneNumber);
@@ -87,12 +79,13 @@ export default function SignUp() {
 
   const setFormData = async (data) => {
     try{
-      data.append('currentAddress', (roadAddress + ',' + jibunAddress + ',' + extraAddress + ',' + data.get('detailAddress')));
+      data.append('currentAddress', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '') 
+          + ',' + (detailAddress ? detailAddress : '')));
       data.append('role', role);
       return await data;
     }
-    catch{
-      return 'Error!';
+    catch (error) {
+      return ('setFormData Error!: ' + error);
     }
   }
 
@@ -117,8 +110,19 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             회원가입
           </Typography>
-          <Box component="form"  onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete="given-name"
+                  name="name"
+                  required
+                  fullWidth
+                  id="name"
+                  label="이름"
+                  autoFocus
+                />
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -144,24 +148,12 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  name="password2"
                   label="비밀번호 확인"
                   type="password"
-                  id="password2"
+                  onChange={e => {setPasswordCheack(e.target.value)}}
+                  error={!isPasswordMatch}
+                  helperText={!isPasswordMatch && "비밀번호가 일치하지 않습니다"}
                   autoComplete="new-password"
-                  error={!passwordMatch}
-                  helperText={!passwordMatch && "비밀번호가 일치하지 않습니다"}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="name"
-                  required
-                  fullWidth
-                  id="name"
-                  label="이름"
-                  autoFocus
                 />
               </Grid>
               <Grid item xs={12}>
@@ -184,27 +176,6 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="postcode"
-                  label="우편번호"
-                  value={postcode}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-                <Button
-                  type="button"
-                  onClick={handleFindPostcode}
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 1, mb: 2 }}
-                >
-                  우편번호 찾기
-                </Button>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
                   id="roadAddress"
                   label="도로명주소"
                   value={roadAddress}
@@ -213,9 +184,17 @@ export default function SignUp() {
                   }}
                 />
               </Grid>
+                  <Button
+                    type="button"
+                    onClick={handleFindPostcode}
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 1, mb: 2, ml: 2}}
+                  >
+                    주소 찾기
+                  </Button>
               <Grid item xs={12}>
                 <TextField
-                  required
                   fullWidth
                   id="extraAddress"
                   label="참고항목"
@@ -231,8 +210,9 @@ export default function SignUp() {
                   fullWidth
                   id="detailAddress"
                   label="상세주소"
-                  name="address"
-                  autoComplete="address"
+                  name="detailAddress"
+                  autoComplete="detailAddress"
+                  onChange={e => setDetailAddress(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
