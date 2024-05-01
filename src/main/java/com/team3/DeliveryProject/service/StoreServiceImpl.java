@@ -21,6 +21,7 @@ import com.team3.DeliveryProject.repository.StoresRepository;
 import com.team3.DeliveryProject.repository.UsersRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -127,7 +128,21 @@ public class StoreServiceImpl implements StoreService{
                 }
             }
         }
-        System.out.println(filteredStores);
+        // 정렬 로직
+        String sortCriteria = requestDto.getSort();
+        switch (sortCriteria) {
+            case "dibs":
+                filteredStores.sort(Comparator.comparing(StoreListInnerResponseDto::getDibsCount).reversed());
+                break;
+            case "rating":
+                filteredStores.sort(Comparator.comparing(StoreListInnerResponseDto::getRating).reversed());
+                break;
+            case "reviewCount":
+                filteredStores.sort(Comparator.comparing(StoreListInnerResponseDto::getReviewCount).reversed());
+                break;
+        }
+
+        // 결과 DTO 생성
         StoreListResponseDto responseDto = StoreListResponseDto.builder()
             .storeList(filteredStores)
             .build();
