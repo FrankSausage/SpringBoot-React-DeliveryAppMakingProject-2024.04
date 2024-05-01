@@ -5,13 +5,16 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../utils/AddressUtil';
-import { getCurrentUser, register } from '../utils/firebase';
-import { extractDataFromFormData, } from '../utils/userInfo';
+import { getCurrentUser, register, } from '../utils/firebase';
+import { extractDataFromFormData, formatPhoneNumber, useUserByEmail} from '../utils/userInfo';
 import axios from 'axios';
 
 const defaultTheme = createTheme();
 
 export default function StoreRegister() {
+
+  const { email } = getCurrentUser();
+  const { isLoading, error, user } = useUserByEmail(email);
   const [roadAddress, setRoadAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
   const [ detailAddress, setDetailAddress ] = useState('');
@@ -316,7 +319,7 @@ export default function StoreRegister() {
                   
                 />
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
@@ -335,7 +338,7 @@ export default function StoreRegister() {
                   sx={{ mt: 1, mb: 2, ml: 2}}
                 >
                   주소 찾기
-                  </Button>
+                  </Button> */}
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
