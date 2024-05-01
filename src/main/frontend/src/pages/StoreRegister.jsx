@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../utils/AddressUtil';
 import { getCurrentUser, register } from '../utils/firebase';
-import { extractDataFromFormData, } from '../utils/userInfo';
+import { extractDataFromFormData,  formatPhoneNumber, useUserByEmail} from '../utils/userInfo';
 import axios from 'axios';
 
 const defaultTheme = createTheme();
@@ -14,14 +14,17 @@ const defaultTheme = createTheme();
 export default function StoreRegister() {
   const [roadAddress, setRoadAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
-  const [ detailAddress, setDetailAddress ] = useState('');
+  const [detailAddress, setDetailAddress] = useState('');
   const [category, setCategory] = useState('');
-  const [ type, setType] = useState('');
-  const [ phoneNumber, setPhoneNumber] = useState('');
-  const [ addressCode, setAddressCode ] = useState('');
-  const [ minDeliveryPrice, setMinDeliveryPrice] = useState('');
+  const [type, setType] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [addressCode, setAddressCode] = useState('');
+  const [minDeliveryPrice, setMinDeliveryPrice] = useState('');
   const navigate = useNavigate();
-  
+
+  const { isLoading, error, user } = useUserByEmail(email);
+  const { email, displayName } = getCurrentUser();
+
 
   useEffect(() => {         // 주소 찾기 지금 기능에서 처음 검색한 주소가 저장도 되면서 그다음 주소도 추가 가능하고 이전 선택한 주소도 선택 삭제 가능하게
     const loadDaumPostcodeScript = () => {
@@ -42,7 +45,7 @@ export default function StoreRegister() {
   }, []);
 
   const handleFindPostcode = () => {
-    findPostcode(setRoadAddress, setExtraAddress , setAddressCode); // use findPostcode from AddressUtil
+    findPostcode(setRoadAddress, setExtraAddress, setAddressCode); // use findPostcode from AddressUtil
   };
 
   const handleSubmit = (event) => {
@@ -58,20 +61,20 @@ export default function StoreRegister() {
           register(res);
           extractDataFromFormData(res)
             .then(resFormData => {
-              axios.post(`/dp//store/owner/register`, resFormData)
+              axios.post(`/dp/user/update`, resFormData)
               console.log(resFormData);
             })
-          })
+        })
         .then(() => {
           alert('입점 신청이 완료되었습니다.');
           getCurrentUser();
-          navigate('/Home');
+          navigate('/');
         });
     }
   };
 
   const formatPhoneNumber = (phoneNumberValue) => {
-  const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
+    const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
     //  핸드폰 입력 formatting (e.g., XXX-XXXX-XXXX)
     const formattedPhoneNumber = strippedPhoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
     return formattedPhoneNumber;
@@ -82,12 +85,12 @@ export default function StoreRegister() {
   };
 
   const setFormData = async (data) => {
-    try{
-      data.append('currentAddress', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '') 
-          + ',' + (detailAddress ? detailAddress : '')));
+    try {
+      data.append('currentAddress', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '')
+        + ',' + (detailAddress ? detailAddress : '')));
       data.append('addressCode', addressCode.substring(0, 8));   // 여러개의 주소를 주소코드로 바꿔서 띄어쓰기로 구분해서 전달 // 배달 지역 부분
       data.append('category', category);
-      data.append('type', type );
+      data.append('type', type);
       data.append('minDeliveryPrice', minDeliveryPrice);
       return await data;
     }
@@ -95,7 +98,7 @@ export default function StoreRegister() {
       return ('setFormData Error!: ' + error);
     }
   }
-  
+
   const [storePictureName, setStorePictureName] = useState('');
 
   const handleFileUpload = (e) => {
@@ -123,22 +126,49 @@ export default function StoreRegister() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>    
+            <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>
           </Typography>
           <Typography component="h1" variant="h5">
-           온라인 입점 신청서
+            온라인 입점 신청서
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-             <Grid item xs={12}>
+              <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"
-                  name="name"
                   required
                   fullWidth
+                  autoComplete="given-name"
+                  name="name"
                   id="name"
                   label="가게 이름"
                   autoFocus
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  name="email"
+                  label="이메일"
+                  defaultValue={email} 
+                  autoComplete="current-email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="phone"
+                  label="전화번호"
+                  name="phone"
+                  autoComplete="phone"
+                  value={phoneNumber}
+                  onChange={handlePhoneNumberChange}
+                  inputProps={{
+                    maxLength: 12,
+                    inputMode: 'numeric',
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -186,22 +216,6 @@ export default function StoreRegister() {
                 <TextField
                   required
                   fullWidth
-                  id="phone"
-                  label="전화번호"
-                  name="phone"
-                  autoComplete="phone"
-                  value={phoneNumber}
-                  onChange={handlePhoneNumberChange}
-                  inputProps={{
-                    maxLength: 12,
-                    inputMode: 'numeric',
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>       
-                <TextField
-                  required
-                  fullWidth
                   id="roadAddress"
                   label="도로명 주소"
                   value={roadAddress}
@@ -210,15 +224,15 @@ export default function StoreRegister() {
                   }}
                 />
               </Grid>
-                <Button
-                  type="button"
-                  onClick={handleFindPostcode}
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 1, mb: 2, ml: 2}}
-                >
-                  주소 찾기
-                </Button>
+              <Button
+                type="button"
+                onClick={handleFindPostcode}
+                fullWidth
+                variant="contained"
+                sx={{ mt: 1, mb: 2, ml: 2 }}
+              >
+                주소 찾기
+              </Button>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -348,43 +362,43 @@ export default function StoreRegister() {
                   variant='outlined'
                 />
               </Grid>
-              
-                <Grid item xs={12}>
-                  <Typography variant="h6" gutterBottom>
-                    가게 사진
-                  </Typography>
-                    <input
-                      accept=".png, .jpeg, .jpg"
-                      id="upload-photo"
-                      type="file"
-                      style={{ display: 'none' }}
-                      onChange={handleFileUpload} multiple
-                    />
-                    
-                      <TextField
-                        autoComplete="given-name"
-                        name="storePictureName"
-                        value={storePictureName}
-                        fullWidth
-                        id="storePictureName"
-                        label="가게 사진"
-                        autoFocus
-                        onClick={(e) => {
-                          e.target.value = null;
-                        }}
-                      />
-                      {/* 아이콘 대신에 "사진 올리기" 텍스트를 사용하고 싶다면 아래 주석 처리된 라인을 사용하세요 */}
-                      {/* <span>사진 올리기</span> */}
-                    
-                      <Button
-                        type="button"
-                        variant="contained"
-                        onClick={() => document.getElementById('upload-photo').click()}
-                        sx={{ mt: 3, mb: 2,}}>
-                        사진 올리기
-                      </Button>
-                  </Grid>
-              
+
+              <Grid item xs={12}>
+                <Typography variant="h6" gutterBottom>
+                  가게 사진
+                </Typography>
+                <input
+                  accept=".png, .jpeg, .jpg"
+                  id="upload-photo"
+                  type="file"
+                  style={{ display: 'none' }}
+                  onChange={handleFileUpload} multiple
+                />
+
+                <TextField
+                  autoComplete="given-name"
+                  name="storePictureName"
+                  value={storePictureName}
+                  fullWidth
+                  id="storePictureName"
+                  label="가게 사진"
+                  autoFocus
+                  onClick={(e) => {
+                    e.target.value = null;
+                  }}
+                />
+                {/* 아이콘 대신에 "사진 올리기" 텍스트를 사용하고 싶다면 아래 주석 처리된 라인을 사용하세요 */}
+                {/* <span>사진 올리기</span> */}
+
+                <Button
+                  type="button"
+                  variant="contained"
+                  onClick={() => document.getElementById('upload-photo').click()}
+                  sx={{ mt: 3, mb: 2, }}>
+                  사진 올리기
+                </Button>
+              </Grid>
+
               <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
@@ -396,7 +410,7 @@ export default function StoreRegister() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, fontSize: '1.1rem'}}>
+              sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
               입점 신청하기
             </Button>
           </Box>

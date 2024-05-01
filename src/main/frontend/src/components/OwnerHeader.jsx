@@ -6,14 +6,21 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; 
 import FavoriteIcon from '@mui/icons-material/Favorite'; 
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
+import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import { useAuthContext } from '../context/AuthContext';
 import { logout } from '../utils/firebase';
+import { findPostcode } from '../utils/AddressUtil'; 
 
-export default function OwnerHeader() {
+export default function Ownerheader() {
   const [ state, setState ] = useState({ left: false, });
   const { user } = useAuthContext();
+  const { outletAddress } = useOutletContext();
   const address = localStorage.getItem("address") && localStorage.getItem("address");
   const navigate = useNavigate();
+  const [ roadAddress, setRoadAddress ] = useState('');
+  const [ extraAddress, setExtraAddress ] = useState('');
+  const [ detailAddress, setDetailAddress ] = useState('');
+  const [ addressCode, setAddressCode ] = useState('');
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -31,7 +38,26 @@ export default function OwnerHeader() {
     navigate('/');
   };
 
-  
+  useEffect(() => {
+    const loadDaumPostcodeScript = () => {
+      const script = document.createElement('script');
+      script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+      script.async = true;
+      document.body.appendChild(script);
+      script.onload = () => {
+        console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
+      };
+    };
+
+    loadDaumPostcodeScript();
+
+    return () => {
+      // 언마운트 시 스크립트 제거 로직
+    };
+  }, []);
+  const handleFindPostcode = () => {
+    findPostcode(setRoadAddress, setExtraAddress, setAddressCode); // use findPostcode from AddressUtil
+  };
 
   const list = (
     <Box
@@ -71,9 +97,9 @@ export default function OwnerHeader() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'white' }}>휴먼 딜리버리</Link>    
+            <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>휴먼 딜리버리</Link>    
           </Typography>
-         
+          
           <Grid item xs={3}>
           <Stack direction='row' spacing={1} justifyContent='right' alignItems='center'>
             {user ? (
