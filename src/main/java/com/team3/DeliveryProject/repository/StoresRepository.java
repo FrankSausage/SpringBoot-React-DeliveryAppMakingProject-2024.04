@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StoresRepository  extends JpaRepository<Stores, Long> {
     List<Stores> findAllByUserId(Long userId);
-    List<Stores> findByNameContaining(String name);
+    List<Stores> findByCategoryContaining(String name);
 }

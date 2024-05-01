@@ -29,5 +29,5 @@ public class StoreAddRequestDto {
     private int maxDeliveryTime;
     private String operationHours;
     private String closedDays;
-    private String deliveryAddress;
+    private String addressCode;
 }

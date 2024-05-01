@@ -2,12 +2,9 @@ package com.team3.DeliveryProject.service;
 
 import static com.team3.DeliveryProject.responseCode.ErrorCode.STORE_DELETE_FAIL;
 import static com.team3.DeliveryProject.responseCode.ErrorCode.STORE_UPDATE_FAIL;
-import static com.team3.DeliveryProject.responseCode.ResponseCode.ADDRESS_ADD_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.STORE_ADD_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.STORE_DELETE_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.STORE_UPDATE_SUCCESS;
-import static com.team3.DeliveryProject.responseCode.ResponseCode.USER_SIGNUP_SUCCESS;
-import static com.team3.DeliveryProject.responseCode.ResponseCode.USER_UPDATE_SUCCESS;
 
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.store.StoreAddRequestDto;
@@ -51,6 +48,16 @@ public class StoreServiceImpl implements StoreService{
         System.out.println(stores);
 
         Long storeId = storesRepository.save(stores).getStoreId();
+
+        System.out.println(requestDto.getAddressCode());
+        String[] addressCodes = requestDto.getAddressCode().split(" ");
+        System.out.println(addressCodes);
+        for (String code : addressCodes) {
+            Long parsedCode = Long.parseLong(code.trim());  // 문자열을 Long 형으로 변환
+            AddressCode addressCode = new AddressCode(storeId, parsedCode);
+            addressCodeRepository.save(addressCode);  // AddressCode 저장
+        }
+
         System.out.println("저장된거 제대로 됫는지 출력해보기 (아래)");
         System.out.println(storesRepository.findById(storeId));
         return Response.toResponseEntity(STORE_ADD_SUCCESS);
@@ -104,11 +111,11 @@ public class StoreServiceImpl implements StoreService{
     public StoreListResponseDto getStoreList(StoreListRequestDto requestDto) {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()-> new RuntimeException("user not found"));
         Long addrCode = users.getAddressCode();
-        List<Stores> storesList = storesRepository.findByNameContaining(requestDto.getQuery());
+        List<Stores> storesList = storesRepository.findByCategoryContaining(requestDto.getQuery());
         List<StoreListInnerResponseDto> filteredStores = new ArrayList<>();
         for (Stores store : storesList) {
             Long storeId = store.getStoreId();
-            List<AddressCode> addressCodes = addressCodeRepository.findByStoreId(storeId).orElseThrow(
+            List<AddressCode> addressCodes = addressCodeRepository.findAllByStoreId(storeId).orElseThrow(
                 ()->new RuntimeException("storeId에 해당하는 데이터가 addressCode 테이블에 존재하지 않습니다."));
 
             // AddressCode 리스트에서 유저의 addrCode와 일치하는지 확인 ㅇㅇ
