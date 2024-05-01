@@ -9,8 +9,10 @@ import static com.team3.DeliveryProject.responseCode.ResponseCode.STORE_UPDATE_S
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.store.StoreAddRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.store.StoreDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreListRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateRequestDto;
+import com.team3.DeliveryProject.dto.response.store.StoreDetailResponseDto;
 import com.team3.DeliveryProject.dto.response.store.StoreListInnerResponseDto;
 import com.team3.DeliveryProject.dto.response.store.StoreListResponseDto;
 import com.team3.DeliveryProject.entity.AddressCode;
@@ -162,6 +164,35 @@ public class StoreServiceImpl implements StoreService{
             .build();
         return responseDto;
     }
+
+    @Override
+    public StoreDetailResponseDto getStoreDetail(StoreDetailRequestDto requestDto) {
+        Users users = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()-> new RuntimeException("user not found"));
+        Stores stores = storesRepository.findById(requestDto.getStoreId()).orElseThrow(()-> new RuntimeException("store not found"));
+        StoreDetailResponseDto responseDto = StoreDetailResponseDto.builder()
+            .role(users.getRole())
+            .name(stores.getName())
+            .type(stores.getType())
+            .category(stores.getCategory())
+            .address(stores.getAddress())
+            .storePictureName(stores.getStorePictureName())
+            .phone(stores.getPhone())
+            .content(stores.getContent())
+            .minDeliveryPrice(stores.getMinDeliveryPrice())
+            .deliveryTip(stores.getDeliveryTip())
+            .minDeliveryTime(stores.getMinDeliveryTime())
+            .maxDeliveryTime(stores.getMaxDeliveryTime())
+            .rating(stores.getRating())
+            .dibsCount(stores.getDibsCount())
+            .reviewCount(stores.getReviewCount())
+            .operationHours(stores.getOperationHours())
+            .closedDays(stores.getClosedDays())
+            .createdDate(stores.getCreatedDate())
+            .modifiedDate(stores.getModifiedDate())
+            .build();
+        return responseDto;
+    }
+
     private StoreListInnerResponseDto convertToDto(Stores store) {
         if (store == null) {
             return null;

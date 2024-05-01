@@ -2,6 +2,7 @@ package com.team3.DeliveryProject.controller;
 
 import com.team3.DeliveryProject.dto.request.store.StoreAddRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.store.StoreDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreListRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateRequestDto;
@@ -76,6 +77,11 @@ public class StoreController {
     @GetMapping("/list/search")
     public ResponseEntity<?> getStoreList(@ModelAttribute StoreListRequestDto requestDto) {
         return ResponseEntity.ok().body(storeService.getStoreList(requestDto));
+    }
+
+    @GetMapping("/detail")
+    public ResponseEntity<?> getStoreDetail(@ModelAttribute StoreDetailRequestDto requestDto) {
+        return ResponseEntity.ok().body(storeService.getStoreDetail(requestDto));
     }
 
 }
