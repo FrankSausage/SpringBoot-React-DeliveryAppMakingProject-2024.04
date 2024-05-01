@@ -12,12 +12,14 @@ import static com.team3.DeliveryProject.responseCode.ResponseCode.USER_UPDATE_SU
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.store.StoreAddRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.store.StoreListRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateRequestDto;
 import com.team3.DeliveryProject.entity.Stores;
 import com.team3.DeliveryProject.entity.Users;
 import com.team3.DeliveryProject.repository.StoresRepository;
 import com.team3.DeliveryProject.repository.UsersRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +38,7 @@ public class StoreServiceImpl implements StoreService{
             requestDto.getPhone(), requestDto.getContent(), requestDto.getMinDeliveryPrice(),
             requestDto.getDeliveryTip(),requestDto.getMinDeliveryTime(),
             requestDto.getMaxDeliveryTime(), 0,0,0,requestDto.getOperationHours(),
-            requestDto.getClosedDays(), requestDto.getDeliveryAddress(),
+            requestDto.getClosedDays(),
             LocalDateTime.now(), LocalDateTime.now(),"일반");
 
         System.out.println("Dto -> Entity가 제대로 됫는지 출력해보기 (아래). 아직 저장전임 ㅇㅇ");
@@ -66,7 +68,6 @@ public class StoreServiceImpl implements StoreService{
             stores.setMaxDeliveryTime(requestDto.getMaxDeliveryTime());
             stores.setOperationHours(requestDto.getOperationHours());
             stores.setClosedDays(requestDto.getClosedDays());
-            stores.setDeliveryAddress(requestDto.getDeliveryAddress());
             stores.setModifiedDate(LocalDateTime.now());
             storesRepository.save(stores);
             return Response.toResponseEntity(STORE_UPDATE_SUCCESS);
@@ -92,4 +93,10 @@ public class StoreServiceImpl implements StoreService{
             return Response.toResponseEntity(STORE_DELETE_FAIL);
         }
     }
+
+//    @Override
+//    public List<Stores> getStoreList(StoreListRequestDto requestDto) {
+//        requestDto.
+//        return null;
+//    }
 }

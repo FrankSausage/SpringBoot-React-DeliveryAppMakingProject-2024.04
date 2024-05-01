@@ -13,7 +13,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StoreUpdateResponseDto {
+public class StoreListInnerResponseDto {
+    private Long storeId;
     private String name;
     private int type;
     private String category;
@@ -25,7 +26,11 @@ public class StoreUpdateResponseDto {
     private int deliveryTip;
     private int minDeliveryTime;
     private int maxDeliveryTime;
+    private Double rating;
+    private int dibsCount;
+    private int reviewCount;
     private String operationHours;
     private String closedDays;
+    private String deliveryAddress;
 
 }

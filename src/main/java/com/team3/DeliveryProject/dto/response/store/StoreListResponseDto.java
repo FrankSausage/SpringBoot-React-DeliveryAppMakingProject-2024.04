@@ -1,6 +1,6 @@
-package com.team3.DeliveryProject.dto.request.address;
+package com.team3.DeliveryProject.dto.response.store;
 
-import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,8 +14,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AddressAddRequestDto {
-    private Long userId;
-    private String address;
-    private Long addressCode;
+public class StoreListResponseDto {
+   private List<StoreListInnerResponseDto> storeList;
+
 }
