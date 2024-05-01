@@ -4,26 +4,25 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
-import { findPostcode } from '../utils/AddressUtil'; 
+import { findPostcode } from '../utils/AddressUtil';
 import { getCurrentUser, register } from '../utils/firebase';
-import { extractDataFromFormData } from '../utils/userInfo';
-
+import { extractDataFromFormData, } from '../utils/userInfo';
 import axios from 'axios';
 
 const defaultTheme = createTheme();
 
-export default function StoreSignUp() {
-  const [postcode, setPostcode] = useState('');
+export default function StoreRegister() {
   const [roadAddress, setRoadAddress] = useState('');
-  const [jibunAddress, setJibunAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
-  const [role, setRole] = useState('');
-  const [passwordMatch, setPasswordMatch] = useState(true);
+  const [ detailAddress, setDetailAddress ] = useState('');
+  const [category, setCategory] = useState('');
+  const [ type, setType] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [ addressCode, setAddressCode ] = useState('');
   const navigate = useNavigate();
   
 
-  useEffect(() => {
+  useEffect(() => {         // 주소 찾기 지금 기능에서 처음 검색한 주소가 저장도 되면서 그다음 주소도 추가 가능하고 이전 선택한 주소도 선택 삭제 가능하게
     const loadDaumPostcodeScript = () => {
       const script = document.createElement('script');
       script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
@@ -42,41 +41,36 @@ export default function StoreSignUp() {
   }, []);
 
   const handleFindPostcode = () => {
-    findPostcode(setPostcode, setRoadAddress, setJibunAddress, setExtraAddress); // use findPostcode from AddressUtil
+    findPostcode(setRoadAddress, setExtraAddress , setAddressCode); // use findPostcode from AddressUtil
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget)
-    const password = data.get('password');
-    const password2 = data.get('password2');
-    if (password !== password2) {
-      // 비밀번호가 일치하지 않을 때
-      setPasswordMatch(false);
+    if (!data.get('name') || !data.get('phone')) {
+      alert('필수 항목을 입력하세요.');
       return;
     } else {
-      setPasswordMatch(true);
       // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}}
       setFormData(data)
         .then(res => {
           register(res);
           extractDataFromFormData(res)
             .then(resFormData => {
-              axios.post(`/dp/user/signup`, resFormData)
+              axios.post(`/dp//store/owner/register`, resFormData)
               console.log(resFormData);
             })
           })
         .then(() => {
           alert('입점 신청이 완료되었습니다.');
           getCurrentUser();
-          navigate('/storelist');
+          navigate('/Home');
         });
     }
   };
 
-
   const formatPhoneNumber = (phoneNumberValue) => {
-    const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
+  const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
     //  핸드폰 입력 formatting (e.g., XXX-XXXX-XXXX)
     const formattedPhoneNumber = strippedPhoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
     return formattedPhoneNumber;
@@ -88,27 +82,28 @@ export default function StoreSignUp() {
 
   const setFormData = async (data) => {
     try{
-      data.append('currentAddress', (roadAddress + ',' + jibunAddress + ',' + extraAddress + ',' + data.get('detailAddress')));
-      data.append('role', role);
+      data.append('currentAddress', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '') 
+          + ',' + (detailAddress ? detailAddress : '')));
+      data.append('addressCode', addressCode.substring(0, 8));   // 여러개의 주소를 주소코드로 바꿔서 띄어쓰기로 구분해서 전달 // 배달 지역 부분
+      data.append('category', category);
+      data.append('type', type )
       return await data;
     }
-    catch{
-      return 'Error!';
+    catch (error) {
+      return ('setFormData Error!: ' + error);
     }
   }
   
   const [storePictureName, setStorePictureName] = useState('');
 
   const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setStorePictureName(file.name);
+    const files = Array.from(e.target.files); // 선택된 파일들을 배열로 변환
+    if (files.length > 0) {
+      const fileNames = files.map(file => file.name);
+      setStorePictureName(fileNames);
       // 여기서 파일 업로드 처리를 수행할 수 있습니다.
     }
   };
-  
-  
-  
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -133,8 +128,7 @@ export default function StoreSignUp() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              
-              <Grid item xs={12}>
+             <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
                   name="name"
@@ -152,41 +146,40 @@ export default function StoreSignUp() {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <FormControlLabel
-                      control={<Checkbox checked={role === '한식'} onChange={() => setRole('한식')} color="primary" />}
+                      control={<Checkbox checked={category === '한식'} onChange={() => setCategory('한식')} color="primary" />}
                       label="한식"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={role === '중식'} onChange={() => setRole('중식')} color="primary" />}
+                      control={<Checkbox checked={category === '중식'} onChange={() => setCategory('중식')} color="primary" />}
                       label="중식"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={role === '일식'} onChange={() => setRole('일식')} color="primary" />}
+                      control={<Checkbox checked={category === '일식'} onChange={() => setCategory('일식')} color="primary" />}
                       label="일식"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={role === '양식'} onChange={() => setRole('양식')} color="primary" />}
+                      control={<Checkbox checked={category === '양식'} onChange={() => setCategory('양식')} color="primary" />}
                       label="양식"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={role === '패스트'} onChange={() => setRole('패스트')} color="primary" />}
+                      control={<Checkbox checked={category === '패스트'} onChange={() => setCategory('패스트')} color="primary" />}
                       label="패스트"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={role === '치킨'} onChange={() => setRole('치킨')} color="primary" />}
+                      control={<Checkbox checked={category === '치킨'} onChange={() => setCategory('치킨')} color="primary" />}
                       label="치킨"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={role === '분식'} onChange={() => setRole('분식')} color="primary" />}
+                      control={<Checkbox checked={category === '분식'} onChange={() => setCategory('분식')} color="primary" />}
                       label="분식"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={role === '디저트'} onChange={() => setRole('디저트')} color="primary" />}
+                      control={<Checkbox checked={category === '디저트'} onChange={() => setCategory('디저트')} color="primary" />}
                       label="디저트"
                     />
                   </Grid>
                 </Grid>
               </Grid>
-
               <Grid item xs={12}>
                 <TextField
                   required
@@ -203,39 +196,27 @@ export default function StoreSignUp() {
                   }}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="postcode"
-                  label="가게 주소"
-                  value={postcode}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-                <Button
-                  type="button"
-                  onClick={handleFindPostcode}
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 1, mb: 2 }}
-                >
-                  우편번호 찾기
-                </Button>
-              </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12}>       
                 <TextField
                   required
                   fullWidth
                   id="roadAddress"
-                  label="도로명주소"
+                  label="도로명 주소"
                   value={roadAddress}
                   InputProps={{
                     readOnly: true,
                   }}
                 />
               </Grid>
+                <Button
+                  type="button"
+                  onClick={handleFindPostcode}
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 1, mb: 2, ml: 2}}
+                >
+                  주소 찾기
+                </Button>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -254,8 +235,9 @@ export default function StoreSignUp() {
                   fullWidth
                   id="detailAddress"
                   label="상세주소"
-                  name="address"
-                  autoComplete="address"
+                  name="detailAddress"
+                  autoComplete="detailAddress"
+                  onChange={e => setDetailAddress(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -263,11 +245,11 @@ export default function StoreSignUp() {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <FormControlLabel
-                      control={<Checkbox checked={role === '배달'} onChange={() => setRole('배달')} color="primary" />}
+                      control={<Checkbox checked={type === 0} onChange={() => setType(0)} color="primary" />}
                       label="배달"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={role === '배달+포장'} onChange={() => setRole('배달+포장')} color="primary" />}
+                      control={<Checkbox checked={type === 1} onChange={() => setType(1)} color="primary" />}
                       label="배달+포장"
                     />
                   </Grid>
@@ -354,7 +336,6 @@ export default function StoreSignUp() {
                 <TextField
                   autoComplete="given-name"
                   name="content"
-                  required
                   fullWidth
                   id="content"
                   label="가게 소개글"
@@ -374,14 +355,13 @@ export default function StoreSignUp() {
                       id="upload-photo"
                       type="file"
                       style={{ display: 'none' }}
-                      onChange={handleFileUpload}
+                      onChange={handleFileUpload} multiple
                     />
                     
                       <TextField
                         autoComplete="given-name"
                         name="storePictureName"
                         value={storePictureName}
-                        required
                         fullWidth
                         id="storePictureName"
                         label="가게 사진"
@@ -397,7 +377,7 @@ export default function StoreSignUp() {
                         type="button"
                         variant="contained"
                         onClick={() => document.getElementById('upload-photo').click()}
-                        sx={{ mt: 3, mb: 2 }}>
+                        sx={{ mt: 3, mb: 2,}}>
                         사진 올리기
                       </Button>
                   </Grid>
@@ -413,7 +393,7 @@ export default function StoreSignUp() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}>
+              sx={{ mt: 3, mb: 2, fontSize: '1.1rem'}}>
               입점 신청하기
             </Button>
           </Box>

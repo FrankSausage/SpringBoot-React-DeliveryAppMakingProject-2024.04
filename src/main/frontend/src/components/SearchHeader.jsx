@@ -1,6 +1,4 @@
-// SearchHeader.jsx
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppBar, Box, Toolbar, Typography, SwipeableDrawer, IconButton, List, ListItem, 
   ListItemButton, ListItemIcon, ListItemText, InputAdornment, OutlinedInput, Divider, Stack, Grid} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -11,6 +9,7 @@ import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import { useAuthContext } from '../context/AuthContext';
 import { logout } from '../utils/firebase';
+import { findPostcode } from '../utils/AddressUtil'; 
 
 export default function SearchHeader() {
   const [ state, setState ] = useState({ left: false, });
@@ -18,6 +17,10 @@ export default function SearchHeader() {
   const { outletAddress } = useOutletContext();
   const address = localStorage.getItem("address") && localStorage.getItem("address");
   const navigate = useNavigate();
+  const [ roadAddress, setRoadAddress ] = useState('');
+  const [ extraAddress, setExtraAddress ] = useState('');
+  const [ detailAddress, setDetailAddress ] = useState('');
+  const [ addressCode, setAddressCode ] = useState('');
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -33,6 +36,27 @@ export default function SearchHeader() {
   const handleLogout = () => {
     logout();
     navigate('/');
+  };
+
+  useEffect(() => {
+    const loadDaumPostcodeScript = () => {
+      const script = document.createElement('script');
+      script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+      script.async = true;
+      document.body.appendChild(script);
+      script.onload = () => {
+        console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
+      };
+    };
+
+    loadDaumPostcodeScript();
+
+    return () => {
+      // 언마운트 시 스크립트 제거 로직
+    };
+  }, []);
+  const handleFindPostcode = () => {
+    findPostcode(setRoadAddress, setExtraAddress, setAddressCode); // use findPostcode from AddressUtil
   };
 
   const list = (
@@ -75,13 +99,14 @@ export default function SearchHeader() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>휴먼 딜리버리</Link>    
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
-            <GpsFixedIcon style={{ color: 'white' }} />&nbsp;
+          <Box sx={{  alignItems: 'center', justifyContent: 'center', flexGrow: 2 }}>
             <OutlinedInput
+              onClick={handleFindPostcode}
               value={address ? address : outletAddress}
               placeholder="주소를 입력 하세요"
               startAdornment={
                 <InputAdornment position="start">
+                  <GpsFixedIcon style={{ color: 'gray' }} />
                 </InputAdornment>
               }
               sx={{ width: '100%', maxWidth: 400, mr: 1, backgroundColor: 'white' }} 

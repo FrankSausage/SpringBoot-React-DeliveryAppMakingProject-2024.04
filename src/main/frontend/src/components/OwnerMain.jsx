@@ -1,6 +1,8 @@
 import React from 'react';
 import { Stack, Box, Grid, InputBase, Button, } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
+import SearchHeader from './SearchHeader';
+import { Link } from 'react-router-dom';
 
 export default function OwnerMain() {
 
@@ -54,7 +56,8 @@ export default function OwnerMain() {
                 type="submit"
                 variant="contained"
                 sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem' }}>
-                가게 추가하기
+                <Link to='/StoreRegister'>가게 추가하기</Link>
+
               </Button>
             </div>
         </Grid>
