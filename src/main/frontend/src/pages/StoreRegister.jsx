@@ -16,6 +16,7 @@ export default function StoreRegister() {
   const [roadAddress, setRoadAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
+  const [addressCode, setAddressCode] = useState('');
   const [type, setType] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ export default function StoreRegister() {
   }, []);
 
   const handleFindPostcode = () => {
-    findPostcode(setRoadAddress, setExtraAddress); // use findPostcode from AddressUtil
+    findPostcode(setRoadAddress, setExtraAddress, setAddressCode); // use findPostcode from AddressUtil
   };
 
   const handleSubmit = (event) => {
@@ -85,6 +86,7 @@ export default function StoreRegister() {
           + ',' + (detailAddress ? detailAddress : '')));
       data.append('category', category);
       data.append('type', type);
+      data.append('addressCode', addressCode.substring(0,8));
       return await data;
     }
     catch (error) {
