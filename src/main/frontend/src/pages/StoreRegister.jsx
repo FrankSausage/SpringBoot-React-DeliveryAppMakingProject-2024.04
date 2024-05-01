@@ -130,7 +130,6 @@ export default function StoreRegister() {
             <Grid container spacing={2}>
              <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"
                   name="name"
                   required
                   fullWidth
@@ -257,7 +256,6 @@ export default function StoreRegister() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"
                   name="minDeliveryPrice"
                   required
                   fullWidth
@@ -268,7 +266,6 @@ export default function StoreRegister() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"
                   name="deliveryTip"
                   required
                   fullWidth
@@ -279,7 +276,6 @@ export default function StoreRegister() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"
                   name="minDeliveryTime"
                   required
                   fullWidth
@@ -290,7 +286,6 @@ export default function StoreRegister() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"
                   name="maxDeliveryTime"
                   required
                   fullWidth
@@ -301,7 +296,6 @@ export default function StoreRegister() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"
                   name="operationHours"
                   required
                   fullWidth
@@ -312,7 +306,6 @@ export default function StoreRegister() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"
                   name="closedDays"
                   required
                   fullWidth
