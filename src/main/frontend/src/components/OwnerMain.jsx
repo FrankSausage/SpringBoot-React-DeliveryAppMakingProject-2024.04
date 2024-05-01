@@ -8,7 +8,7 @@ export default function OwnerMain() {
 
   return (
     <Box sx={{ margin: -1 }}>
-      <Grid container>
+      {/* <Grid container>
         <Grid item xs={12} sx={{border: 1}}>
           <Stack sx={{maxHeight: 200}}>
             <Box 
@@ -23,7 +23,7 @@ export default function OwnerMain() {
               </Box>
           </Stack>
         </Grid>              
-      </Grid>
+      </Grid> */}
       <Grid container></Grid>
       <Grid container justifyContent="center" alignItems="center" mt={2}>
         <Grid item xs={6} md={4}>
