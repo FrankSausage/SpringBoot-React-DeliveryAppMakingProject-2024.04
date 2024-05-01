@@ -3,8 +3,10 @@ package com.team3.DeliveryProject.service;
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.store.StoreAddRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.store.StoreDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreListRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateRequestDto;
+import com.team3.DeliveryProject.dto.response.store.StoreDetailResponseDto;
 import com.team3.DeliveryProject.dto.response.store.StoreListInnerResponseDto;
 import com.team3.DeliveryProject.dto.response.store.StoreListResponseDto;
 import com.team3.DeliveryProject.entity.Stores;
@@ -24,4 +26,6 @@ public interface StoreService {
     public ResponseEntity<Response> deleteStore(StoreDeleteRequestDto requestDto);
 
     StoreListResponseDto getStoreList(StoreListRequestDto requestDto);
+
+    StoreDetailResponseDto getStoreDetail(StoreDetailRequestDto requestDto);
 }
