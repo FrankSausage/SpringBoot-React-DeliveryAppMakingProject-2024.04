@@ -57,21 +57,32 @@ export default function StoreRegister() {
     } else {
       // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}}
       setFormData(data)
-        .then(res => {
-          register(res);
-          extractDataFromFormData(res)
-            .then(resFormData => {
-              axios.post(`/dp/store/owner/register`, resFormData)
-              console.log(resFormData);
-            })
+        .then(resFormData => {
+          register(resFormData);
+          extractDataFromFormData(resFormData)
+          .then((res) => {
+            axios.post(`/dp/store/owner/register`, res)
+              .then(() => {
+                alert('입점 신청이 완료되었습니다.');
+                getCurrentUser();
+                navigate('/');
+              })
+              // .catch((error) => {
+              //   console.error('Error occurred during store registration:', error);
+              //   alert('입점 신청 중 오류가 발생했습니다.');
+              // });
           })
-        .then(() => {
-          alert('입점 신청이 완료되었습니다.');
-          getCurrentUser();
-          navigate('/');
-        });
-    }
-  };
+          // .catch((error) => {
+          //   console.error('Error occurred while extracting form data:', error);
+          //   alert('입점 신청 중 오류가 발생했습니다.');
+          // });
+      // })
+      // .catch((error) => {
+      //   console.error('Error occurred while setting form data:', error);
+      //   alert('입점 신청 중 오류가 발생했습니다.');
+      });
+  }
+};
 
   const formatPhoneNumber = (phoneNumberValue) => {
   const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
