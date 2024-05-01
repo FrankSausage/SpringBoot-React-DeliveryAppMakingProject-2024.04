@@ -1,6 +1,6 @@
 // AddressUtil.js
 
-export const findPostcode = (setRoadAddress, setExtraAddress) => {
+export const findPostcode = (setRoadAddress, setExtraAddress, setAddressCode) => {
   if (window.daum && window.daum.Postcode) {
     new window.daum.Postcode({
       oncomplete: (data) => {
@@ -16,6 +16,7 @@ export const findPostcode = (setRoadAddress, setExtraAddress) => {
           extraRoadAddr = ' (' + extraRoadAddr + ')';
         }
         setExtraAddress(extraRoadAddr);
+        setAddressCode(data.bcode);
       }
     }).open();
   } else {

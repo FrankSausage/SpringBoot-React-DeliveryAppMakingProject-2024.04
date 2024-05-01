@@ -1,4 +1,4 @@
-import { Box, Grid, Stack, Typography, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import SearchHeader from "../components/SearchHeader"
 import Footer from "../components/Footer"
 import UserMain from "../components/UserMain";
