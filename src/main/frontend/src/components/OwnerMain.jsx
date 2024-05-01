@@ -1,13 +1,14 @@
 import React from 'react';
 import { Stack, Box, Grid, InputBase, Button, } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
-import SearchHeader from './SearchHeader';
+import OwnerHeader from './OwnerHeader';
 import { Link } from 'react-router-dom';
 
 export default function OwnerMain() {     // 해더 부분 주소창 안뜨게 추가 할것 반드시!
 
   return (
     <Box sx={{ margin: -1 }}>
+      <OwnerHeader />
       <Grid container>
         <Grid item xs={12} sx={{border: 1}}>
           <Stack sx={{maxHeight: 200}}>

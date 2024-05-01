@@ -17,8 +17,9 @@ export default function StoreRegister() {
   const [ detailAddress, setDetailAddress ] = useState('');
   const [category, setCategory] = useState('');
   const [ type, setType] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [ phoneNumber, setPhoneNumber] = useState('');
   const [ addressCode, setAddressCode ] = useState('');
+  const [ minDeliveryPrice, setMinDeliveryPrice] = useState('');
   const navigate = useNavigate();
   
 
@@ -86,7 +87,8 @@ export default function StoreRegister() {
           + ',' + (detailAddress ? detailAddress : '')));
       data.append('addressCode', addressCode.substring(0, 8));   // 여러개의 주소를 주소코드로 바꿔서 띄어쓰기로 구분해서 전달 // 배달 지역 부분
       data.append('category', category);
-      data.append('type', type )
+      data.append('type', type );
+      data.append('minDeliveryPrice', minDeliveryPrice);
       return await data;
     }
     catch (error) {
@@ -263,6 +265,7 @@ export default function StoreRegister() {
                   fullWidth
                   id="minDeliveryPrice"
                   label="최소 주문금액"
+                  onChange={e => setMinDeliveryPrice(e.target.value)}
                   autoFocus
                 />
               </Grid>

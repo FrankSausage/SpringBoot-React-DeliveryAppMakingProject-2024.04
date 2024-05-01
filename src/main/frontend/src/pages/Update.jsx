@@ -231,7 +231,7 @@ export default function Update() {
                                     label="상세주소"
                                     value={updateDetailAddress}
                                     onChange={e => setUpdateDetailAddress(e.target.value)}
-                                />
+                                    />
                             </Grid>
                             <Grid item xs={12}>
                                 <Button 
