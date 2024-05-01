@@ -1,8 +1,8 @@
 import React from 'react';
 import { Stack, Box, Grid, InputBase, Button, } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
-import OwnerHeader from './OwnerHeader';
 import { Link } from 'react-router-dom';
+import OwnerHeader from './OwnerHeader';
 
 export default function OwnerMain() {     // 해더 부분 주소창 안뜨게 추가 할것 반드시!
 
@@ -20,7 +20,7 @@ export default function OwnerMain() {     // 해더 부분 주소창 안뜨게 �
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-              }}>
+              }}>05
               </Box>
           </Stack>
         </Grid>              
@@ -57,7 +57,7 @@ export default function OwnerMain() {     // 해더 부분 주소창 안뜨게 �
                 type="submit"
                 variant="contained"
                 sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem' }}>
-                <Link to='/StoreRegister'>가게 추가하기</Link>
+                <Link to='/StoreRegister'style={{textDecoration: 'none', color: 'white'}} >가게 추가하기</Link>
 
               </Button>
             </div>
