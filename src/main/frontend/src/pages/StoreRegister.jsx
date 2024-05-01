@@ -263,7 +263,7 @@ export default function StoreRegister() {
                   fullWidth
                   id="minDeliveryPrice"
                   label="최소 주문금액"
-                  autoFocus
+                  
                 />
               </Grid>
               <Grid item xs={12}>
@@ -274,7 +274,7 @@ export default function StoreRegister() {
                   fullWidth
                   id="deliveryTip"
                   label="배달팁"
-                  autoFocus
+                  
                 />
               </Grid>
               <Grid item xs={12}>
@@ -285,7 +285,7 @@ export default function StoreRegister() {
                   fullWidth
                   id="minDeliveryTime"
                   label="최소 배달 예상 시간"
-                  autoFocus
+                  
                 />
               </Grid>
               <Grid item xs={12}>
@@ -296,7 +296,7 @@ export default function StoreRegister() {
                   fullWidth
                   id="maxDeliveryTime"
                   label="최대 배달 예상 시간"
-                  autoFocus
+                  
                 />
               </Grid>
               <Grid item xs={12}>
@@ -307,7 +307,7 @@ export default function StoreRegister() {
                   fullWidth
                   id="operationHours"
                   label="운영 시간"
-                  autoFocus
+                  
                 />
               </Grid>
               <Grid item xs={12}>
@@ -318,20 +318,29 @@ export default function StoreRegister() {
                   fullWidth
                   id="closedDays"
                   label="휴무일"
-                  autoFocus
+                  
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"
-                  name="deliveryAddress"
                   required
                   fullWidth
                   id="deliveryAddress"
                   label="배달 지역"
-                  autoFocus
-                />
+                  value={extraAddress}
+                  InputProps={{
+                    readOnly: true,
+                  }}/>
               </Grid>
+                <Button
+                  type="button"
+                  onClick={handleFindPostcode}
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 1, mb: 2, ml: 2}}
+                >
+                  주소 찾기
+                  </Button>
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
@@ -339,7 +348,6 @@ export default function StoreRegister() {
                   fullWidth
                   id="content"
                   label="가게 소개글"
-                  autoFocus
                   multiline
                   rows={4}
                   variant='outlined'
@@ -365,7 +373,6 @@ export default function StoreRegister() {
                         fullWidth
                         id="storePictureName"
                         label="가게 사진"
-                        autoFocus
                         onClick={(e) => {
                           e.target.value = null;
                         }}
