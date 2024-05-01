@@ -5,6 +5,8 @@ import com.team3.DeliveryProject.dto.request.store.StoreAddRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreListRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateRequestDto;
+import com.team3.DeliveryProject.dto.response.store.StoreListInnerResponseDto;
+import com.team3.DeliveryProject.dto.response.store.StoreListResponseDto;
 import com.team3.DeliveryProject.entity.Stores;
 import java.util.List;
 import java.util.Optional;
@@ -21,5 +23,5 @@ public interface StoreService {
 
     public ResponseEntity<Response> deleteStore(StoreDeleteRequestDto requestDto);
 
-//    List<Stores> getStoreList(StoreListRequestDto requestDto);
+    StoreListResponseDto getStoreList(StoreListRequestDto requestDto);
 }

@@ -14,11 +14,16 @@ import com.team3.DeliveryProject.dto.request.store.StoreAddRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreListRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateRequestDto;
+import com.team3.DeliveryProject.dto.response.store.StoreListInnerResponseDto;
+import com.team3.DeliveryProject.dto.response.store.StoreListResponseDto;
+import com.team3.DeliveryProject.entity.AddressCode;
 import com.team3.DeliveryProject.entity.Stores;
 import com.team3.DeliveryProject.entity.Users;
+import com.team3.DeliveryProject.repository.AddressCodeRepository;
 import com.team3.DeliveryProject.repository.StoresRepository;
 import com.team3.DeliveryProject.repository.UsersRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +35,7 @@ import org.springframework.stereotype.Service;
 public class StoreServiceImpl implements StoreService{
     private final StoresRepository storesRepository;
     private final UsersRepository usersRepository;
+    private final AddressCodeRepository addressCodeRepository;
     @Override
     public ResponseEntity<Response> addStore(StoreAddRequestDto requestDto) {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()-> new RuntimeException("user not found"));;
@@ -94,9 +100,38 @@ public class StoreServiceImpl implements StoreService{
         }
     }
 
-//    @Override
-//    public List<Stores> getStoreList(StoreListRequestDto requestDto) {
-//        requestDto.
-//        return null;
-//    }
+    @Override
+    public StoreListResponseDto getStoreList(StoreListRequestDto requestDto) {
+        Users users = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()-> new RuntimeException("user not found"));
+        Long addrCode = users.getAddressCode();
+        List<Stores> storesList = storesRepository.findByNameContaining(requestDto.getQuery());
+        List<StoreListInnerResponseDto> filteredStores = new ArrayList<>();
+        for (Stores store : storesList) {
+            Long storeId = store.getStoreId();
+            List<AddressCode> addressCodes = addressCodeRepository.findByStoreId(storeId).orElseThrow(
+                ()->new RuntimeException("storeId에 해당하는 데이터가 addressCode 테이블에 존재하지 않습니다."));
+
+            // AddressCode 리스트에서 유저의 addrCode와 일치하는지 확인 ㅇㅇ
+            for (AddressCode addressCode : addressCodes) {
+                if (addressCode.getAddressCode().equals(addrCode)) {
+                    // 조건에 맞는 Store 정보를 DTO로 변환하고 리스트에 추가
+                    filteredStores.add(convertToDto(store));
+                    break;  // 일치하는 주소 코드를 찾으면 더 이상 반복하지 않음
+                }
+            }
+        }
+        System.out.println(filteredStores);
+        StoreListResponseDto responseDto = StoreListResponseDto.builder()
+            .storeList(filteredStores)
+            .build();
+        return responseDto;
+    }
+    private StoreListInnerResponseDto convertToDto(Stores store) {
+        if (store == null) {
+            return null;
+        }
+        return new StoreListInnerResponseDto(store.getStoreId(), store.getName(), store.getStorePictureName(),
+            store.getRating(), store.getDibsCount(), store.getReviewCount());
+    }
+
 }

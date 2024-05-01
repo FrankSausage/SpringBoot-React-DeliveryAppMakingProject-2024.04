@@ -14,7 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class StoreListRequestDto {
-    private String currentAddress;
+    private String email;
     private String query;
     private String sort;
 }

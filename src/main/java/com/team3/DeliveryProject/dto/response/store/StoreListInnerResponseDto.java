@@ -16,21 +16,8 @@ import lombok.ToString;
 public class StoreListInnerResponseDto {
     private Long storeId;
     private String name;
-    private int type;
-    private String category;
-    private String address;
     private String storePictureName;
-    private String phone;
-    private String content;
-    private int minDeliveryPrice;
-    private int deliveryTip;
-    private int minDeliveryTime;
-    private int maxDeliveryTime;
     private Double rating;
     private int dibsCount;
     private int reviewCount;
-    private String operationHours;
-    private String closedDays;
-    private String deliveryAddress;
-
 }

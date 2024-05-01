@@ -74,8 +74,8 @@ public class StoreController {
 
     }
     @GetMapping("/list/search")
-    public ResponseEntity<?> getStoreList(@RequestBody StoreListRequestDto requestDto) {
-        return ResponseEntity.ok().body("");
+    public ResponseEntity<?> getStoreList(@ModelAttribute StoreListRequestDto requestDto) {
+        return ResponseEntity.ok().body(storeService.getStoreList(requestDto));
     }
 
 }
