@@ -63,7 +63,7 @@ export default function StoreRegister() {
         .then(() => {
           alert('입점 신청이 완료되었습니다.');
           getCurrentUser();
-          navigate('/Home');
+          navigate('/OwnerMain');
         });
     }
   };
