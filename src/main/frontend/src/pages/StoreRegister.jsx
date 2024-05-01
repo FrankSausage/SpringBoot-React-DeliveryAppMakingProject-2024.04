@@ -6,16 +6,17 @@ import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../utils/AddressUtil';
 import { getCurrentUser, register } from '../utils/firebase';
-import { extractDataFromFormData, formatPhoneNumber } from '../utils/userInfo';
+import { extractDataFromFormData, } from '../utils/userInfo';
 import axios from 'axios';
 
 const defaultTheme = createTheme();
 
 export default function StoreRegister() {
+  const [category, setCategory] = useState('');
   const [roadAddress, setRoadAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
-  const [ detailAddress, setDetailAddress ] = useState('');
-  const [role, setRole] = useState('');
+  const [detailAddress, setDetailAddress] = useState('');
+  const [type, setType] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const navigate = useNavigate();
   
@@ -45,7 +46,7 @@ export default function StoreRegister() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget)
-    if (!data.get('name') || !data.get('phone')) {
+    if (!data.get('name') || !data.get('phone') ) {
       alert('필수 항목을 입력하세요.');
       return;
     } else {
@@ -55,7 +56,7 @@ export default function StoreRegister() {
           register(res);
           extractDataFromFormData(res)
             .then(resFormData => {
-              axios.post(`/dp/user/signup`, resFormData)
+              axios.post(`/dp/store/owner/register`, resFormData)
               console.log(resFormData);
             })
           })
@@ -82,7 +83,8 @@ export default function StoreRegister() {
     try{
       data.append('currentAddress', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '') 
           + ',' + (detailAddress ? detailAddress : '')));
-      data.append('role', role);
+      data.append('category', category);
+      data.append('type', type);
       return await data;
     }
     catch (error) {
@@ -142,35 +144,35 @@ export default function StoreRegister() {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <FormControlLabel
-                      control={<Checkbox checked={role === '한식'} onChange={() => setRole('한식')} color="primary" />}
+                      control={<Checkbox checked={category === '한식'} onChange={() => setCategory('한식')} color="primary" />}
                       label="한식"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={role === '중식'} onChange={() => setRole('중식')} color="primary" />}
+                      control={<Checkbox checked={category === '중식'} onChange={() => setCategory('중식')} color="primary" />}
                       label="중식"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={role === '일식'} onChange={() => setRole('일식')} color="primary" />}
+                      control={<Checkbox checked={category === '일식'} onChange={() => setCategory('일식')} color="primary" />}
                       label="일식"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={role === '양식'} onChange={() => setRole('양식')} color="primary" />}
+                      control={<Checkbox checked={category === '양식'} onChange={() => setCategory('양식')} color="primary" />}
                       label="양식"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={role === '패스트'} onChange={() => setRole('패스트')} color="primary" />}
+                      control={<Checkbox checked={category === '패스트'} onChange={() => setCategory('패스트')} color="primary" />}
                       label="패스트"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={role === '치킨'} onChange={() => setRole('치킨')} color="primary" />}
+                      control={<Checkbox checked={category === '치킨'} onChange={() => setCategory('치킨')} color="primary" />}
                       label="치킨"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={role === '분식'} onChange={() => setRole('분식')} color="primary" />}
+                      control={<Checkbox checked={category === '분식'} onChange={() => setCategory('분식')} color="primary" />}
                       label="분식"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={role === '디저트'} onChange={() => setRole('디저트')} color="primary" />}
+                      control={<Checkbox checked={category === '디저트'} onChange={() => setCategory('디저트')} color="primary" />}
                       label="디저트"
                     />
                   </Grid>
@@ -241,11 +243,11 @@ export default function StoreRegister() {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <FormControlLabel
-                      control={<Checkbox checked={role === '배달'} onChange={() => setRole('배달')} color="primary" />}
+                      control={<Checkbox checked={type === 0} onChange={() => setType(0)} color="primary" />}
                       label="배달"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={role === '배달+포장'} onChange={() => setRole('배달+포장')} color="primary" />}
+                      control={<Checkbox checked={type === 1} onChange={() => setType(1)} color="primary" />}
                       label="배달+포장"
                     />
                   </Grid>
