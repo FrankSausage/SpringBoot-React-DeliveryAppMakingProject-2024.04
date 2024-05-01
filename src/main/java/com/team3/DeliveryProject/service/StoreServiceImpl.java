@@ -112,13 +112,27 @@ public class StoreServiceImpl implements StoreService{
     public StoreListResponseDto getStoreList(StoreListRequestDto requestDto) {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()-> new RuntimeException("user not found"));
         Long addrCode = users.getAddressCode();
-        List<Stores> storesList = storesRepository.findByCategoryContaining(requestDto.getQuery());
+        List<Stores> storesListByCategory = storesRepository.findByCategoryContaining(requestDto.getQuery());
+        List<Stores> storesListByName = storesRepository.findByNameContaining(requestDto.getQuery());
+
         List<StoreListInnerResponseDto> filteredStores = new ArrayList<>();
-        for (Stores store : storesList) {
+        for (Stores store : storesListByCategory) {
             Long storeId = store.getStoreId();
             List<AddressCode> addressCodes = addressCodeRepository.findAllByStoreId(storeId).orElseThrow(
                 ()->new RuntimeException("storeId에 해당하는 데이터가 addressCode 테이블에 존재하지 않습니다."));
-
+            // AddressCode 리스트에서 유저의 addrCode와 일치하는지 확인 ㅇㅇ
+            for (AddressCode addressCode : addressCodes) {
+                if (addressCode.getAddressCode().equals(addrCode)) {
+                    // 조건에 맞는 Store 정보를 DTO로 변환하고 리스트에 추가
+                    filteredStores.add(convertToDto(store));
+                    break;  // 일치하는 주소 코드를 찾으면 더 이상 반복하지 않음
+                }
+            }
+        }
+        for (Stores store : storesListByName) {
+            Long storeId = store.getStoreId();
+            List<AddressCode> addressCodes = addressCodeRepository.findAllByStoreId(storeId).orElseThrow(
+                ()->new RuntimeException("storeId에 해당하는 데이터가 addressCode 테이블에 존재하지 않습니다."));
             // AddressCode 리스트에서 유저의 addrCode와 일치하는지 확인 ㅇㅇ
             for (AddressCode addressCode : addressCodes) {
                 if (addressCode.getAddressCode().equals(addrCode)) {
