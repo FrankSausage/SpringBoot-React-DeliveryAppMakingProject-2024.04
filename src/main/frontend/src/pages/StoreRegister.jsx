@@ -6,8 +6,9 @@ import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../utils/AddressUtil';
 import { getCurrentUser, register } from '../utils/firebase';
-import { extractDataFromFormData,  formatPhoneNumber, useUserByEmail} from '../utils/userInfo';
+import { extractDataFromFormData, formatPhoneNumber, useUserByEmail } from '../utils/userInfo';
 import axios from 'axios';
+import Ownerheader from '../components/OwnerHeader';
 
 const defaultTheme = createTheme();
 
@@ -22,8 +23,15 @@ export default function StoreRegister() {
   const [minDeliveryPrice, setMinDeliveryPrice] = useState('');
   const navigate = useNavigate();
 
+
+
+  const [email, setEmail] = useState('');
   const { isLoading, error, user } = useUserByEmail(email);
-  const { email, displayName } = getCurrentUser();
+
+  useEffect(() => {
+    const { email } = getCurrentUser();
+    setEmail(email);
+  }, []);
 
 
   useEffect(() => {         // 주소 찾기 지금 기능에서 처음 검색한 주소가 저장도 되면서 그다음 주소도 추가 가능하고 이전 선택한 주소도 선택 삭제 가능하게
@@ -48,30 +56,29 @@ export default function StoreRegister() {
     findPostcode(setRoadAddress, setExtraAddress, setAddressCode); // use findPostcode from AddressUtil
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget)
-    if (!data.get('name') || !data.get('phone')) {
-      alert('필수 항목을 입력하세요.');
-      return;
-    } else {
-      // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}}
-      setFormData(data)
-        .then(res => {
-          register(res);
-          extractDataFromFormData(res)
-            .then(resFormData => {
-              axios.post(`/dp/user/update`, resFormData)
-              console.log(resFormData);
-            })
-        })
-        .then(() => {
-          alert('입점 신청이 완료되었습니다.');
-          getCurrentUser();
-          navigate('/');
-        });
+  // 서버 측 오류 수정
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  const data = new FormData(event.currentTarget);
+  if (!data.get('name') || !data.get('phone')) {
+    alert('필수 항목을 입력하세요.');
+    return;
+  } else {
+    try {
+      const formData = await setFormData(data);
+      const response = await axios.post(`/dp/store/owner/register`, formData); // 백엔드 엔드포인트 수정 필요
+      console.log(response.data);
+      alert('입점 신청이 완료되었습니다.');
+      navigate('/OwnerMain');
+    } catch (error) {
+      console.error('백엔드 요청 에러:', error);
+      alert('입점 신청 중 오류가 발생했습니다.');
     }
-  };
+  }
+};
+
+
+
 
   const formatPhoneNumber = (phoneNumberValue) => {
     const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
@@ -112,311 +119,307 @@ export default function StoreRegister() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>
-          </Typography>
-          <Typography component="h1" variant="h5">
-            온라인 입점 신청서
-          </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  autoComplete="given-name"
-                  name="name"
-                  id="name"
-                  label="가게 이름"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  name="email"
-                  label="이메일"
-                  defaultValue={email} 
-                  autoComplete="current-email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="phone"
-                  label="전화번호"
-                  name="phone"
-                  autoComplete="phone"
-                  value={phoneNumber}
-                  onChange={handlePhoneNumberChange}
-                  inputProps={{
-                    maxLength: 12,
-                    inputMode: 'numeric',
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="h6" gutterBottom>
-                  카테고리
-                </Typography>
-                <Grid container spacing={3}>
+      {isLoading && <Typography>Loading...</Typography>}
+      {error && <Typography>에러 발생!</Typography>}
+      {user &&
+        <>
+          <Ownerheader />
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>
+              </Typography>
+              <Typography component="h1" variant="h5">
+                온라인 입점 신청서
+              </Typography>
+              <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      autoComplete="given-name"
+                      name="name"
+                      id="name"
+                      label="가게 이름"
+                      autoFocus
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      id="phone"
+                      label="전화번호"
+                      name="phone"
+                      autoComplete="phone"
+                      value={phoneNumber}
+                      onChange={handlePhoneNumberChange}
+                      inputProps={{
+                        maxLength: 12,
+                        inputMode: 'numeric',
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="h6" gutterBottom>
+                      카테고리
+                    </Typography>
+                    <Grid container spacing={3}>
+                      <Grid item xs={12}>
+                        <FormControlLabel
+                          control={<Checkbox checked={category === '한식'} onChange={() => setCategory('한식')} color="primary" />}
+                          label="한식"
+                        />
+                        <FormControlLabel
+                          control={<Checkbox checked={category === '중식'} onChange={() => setCategory('중식')} color="primary" />}
+                          label="중식"
+                        />
+                        <FormControlLabel
+                          control={<Checkbox checked={category === '일식'} onChange={() => setCategory('일식')} color="primary" />}
+                          label="일식"
+                        />
+                        <FormControlLabel
+                          control={<Checkbox checked={category === '양식'} onChange={() => setCategory('양식')} color="primary" />}
+                          label="양식"
+                        />
+                        <FormControlLabel
+                          control={<Checkbox checked={category === '패스트'} onChange={() => setCategory('패스트')} color="primary" />}
+                          label="패스트"
+                        />
+                        <FormControlLabel
+                          control={<Checkbox checked={category === '치킨'} onChange={() => setCategory('치킨')} color="primary" />}
+                          label="치킨"
+                        />
+                        <FormControlLabel
+                          control={<Checkbox checked={category === '분식'} onChange={() => setCategory('분식')} color="primary" />}
+                          label="분식"
+                        />
+                        <FormControlLabel
+                          control={<Checkbox checked={category === '디저트'} onChange={() => setCategory('디저트')} color="primary" />}
+                          label="디저트"
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      id="roadAddress"
+                      label="도로명 주소"
+                      value={roadAddress}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                    />
+                  </Grid>
+                  <Button
+                    type="button"
+                    onClick={handleFindPostcode}
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 1, mb: 2, ml: 2 }}
+                  >
+                    주소 찾기
+                  </Button>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      id="extraAddress"
+                      label="참고항목"
+                      value={extraAddress}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      id="detailAddress"
+                      label="상세주소"
+                      name="detailAddress"
+                      autoComplete="detailAddress"
+                      onChange={e => setDetailAddress(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="h6" gutterBottom>배달, 포장</Typography>
+                    <Grid container spacing={3}>
+                      <Grid item xs={12}>
+                        <FormControlLabel
+                          control={<Checkbox checked={type === 0} onChange={() => setType(0)} color="primary" />}
+                          label="배달"
+                        />
+                        <FormControlLabel
+                          control={<Checkbox checked={type === 1} onChange={() => setType(1)} color="primary" />}
+                          label="배달+포장"
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      autoComplete="given-name"
+                      name="minDeliveryPrice"
+                      required
+                      fullWidth
+                      id="minDeliveryPrice"
+                      label="최소 주문금액"
+                      onChange={e => setMinDeliveryPrice(e.target.value)}
+                      autoFocus
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      autoComplete="given-name"
+                      name="deliveryTip"
+                      required
+                      fullWidth
+                      id="deliveryTip"
+                      label="배달팁"
+                      autoFocus
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      autoComplete="given-name"
+                      name="minDeliveryTime"
+                      required
+                      fullWidth
+                      id="minDeliveryTime"
+                      label="최소 배달 예상 시간"
+                      autoFocus
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      autoComplete="given-name"
+                      name="maxDeliveryTime"
+                      required
+                      fullWidth
+                      id="maxDeliveryTime"
+                      label="최대 배달 예상 시간"
+                      autoFocus
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      autoComplete="given-name"
+                      name="operationHours"
+                      required
+                      fullWidth
+                      id="operationHours"
+                      label="운영 시간"
+                      autoFocus
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      autoComplete="given-name"
+                      name="closedDays"
+                      required
+                      fullWidth
+                      id="closedDays"
+                      label="휴무일"
+                      autoFocus
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      autoComplete="given-name"
+                      name="deliveryAddress"
+                      required
+                      fullWidth
+                      id="deliveryAddress"
+                      label="배달 지역"
+                      autoFocus
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      autoComplete="given-name"
+                      name="content"
+                      fullWidth
+                      id="content"
+                      label="가게 소개글"
+                      autoFocus
+                      multiline
+                      rows={4}
+                      variant='outlined'
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Typography variant="h6" gutterBottom>
+                      가게 사진
+                    </Typography>
+                    <input
+                      accept=".png, .jpeg, .jpg"
+                      id="upload-photo"
+                      type="file"
+                      style={{ display: 'none' }}
+                      onChange={handleFileUpload} multiple
+                    />
+
+                    <TextField
+                      autoComplete="given-name"
+                      name="storePictureName"
+                      value={storePictureName}
+                      fullWidth
+                      id="storePictureName"
+                      label="가게 사진"
+                      autoFocus
+                      onClick={(e) => {
+                        e.target.value = null;
+                      }}
+                    />
+                    {/* 아이콘 대신에 "사진 올리기" 텍스트를 사용하고 싶다면 아래 주석 처리된 라인을 사용하세요 */}
+                    {/* <span>사진 올리기</span> */}
+
+                    <Button
+                      type="button"
+                      variant="contained"
+                      onClick={() => document.getElementById('upload-photo').click()}
+                      sx={{ mt: 3, mb: 2, }}>
+                      사진 올리기
+                    </Button>
+                  </Grid>
+
                   <Grid item xs={12}>
                     <FormControlLabel
-                      control={<Checkbox checked={category === '한식'} onChange={() => setCategory('한식')} color="primary" />}
-                      label="한식"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '중식'} onChange={() => setCategory('중식')} color="primary" />}
-                      label="중식"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '일식'} onChange={() => setCategory('일식')} color="primary" />}
-                      label="일식"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '양식'} onChange={() => setCategory('양식')} color="primary" />}
-                      label="양식"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '패스트'} onChange={() => setCategory('패스트')} color="primary" />}
-                      label="패스트"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '치킨'} onChange={() => setCategory('치킨')} color="primary" />}
-                      label="치킨"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '분식'} onChange={() => setCategory('분식')} color="primary" />}
-                      label="분식"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '디저트'} onChange={() => setCategory('디저트')} color="primary" />}
-                      label="디저트"
+                      control={<Checkbox value="allowExtraEmails" color="primary" />}
+                      label="개인정보 수집 및 이용에 동의합니다"
                     />
                   </Grid>
                 </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="roadAddress"
-                  label="도로명 주소"
-                  value={roadAddress}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              </Grid>
-              <Button
-                type="button"
-                onClick={handleFindPostcode}
-                fullWidth
-                variant="contained"
-                sx={{ mt: 1, mb: 2, ml: 2 }}
-              >
-                주소 찾기
-              </Button>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="extraAddress"
-                  label="참고항목"
-                  value={extraAddress}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="detailAddress"
-                  label="상세주소"
-                  name="detailAddress"
-                  autoComplete="detailAddress"
-                  onChange={e => setDetailAddress(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="h6" gutterBottom>배달, 포장</Typography>
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={<Checkbox checked={type === 0} onChange={() => setType(0)} color="primary" />}
-                      label="배달"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={type === 1} onChange={() => setType(1)} color="primary" />}
-                      label="배달+포장"
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="minDeliveryPrice"
-                  required
-                  fullWidth
-                  id="minDeliveryPrice"
-                  label="최소 주문금액"
-                  onChange={e => setMinDeliveryPrice(e.target.value)}
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="deliveryTip"
-                  required
-                  fullWidth
-                  id="deliveryTip"
-                  label="배달팁"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="minDeliveryTime"
-                  required
-                  fullWidth
-                  id="minDeliveryTime"
-                  label="최소 배달 예상 시간"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="maxDeliveryTime"
-                  required
-                  fullWidth
-                  id="maxDeliveryTime"
-                  label="최대 배달 예상 시간"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="operationHours"
-                  required
-                  fullWidth
-                  id="operationHours"
-                  label="운영 시간"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="closedDays"
-                  required
-                  fullWidth
-                  id="closedDays"
-                  label="휴무일"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="deliveryAddress"
-                  required
-                  fullWidth
-                  id="deliveryAddress"
-                  label="배달 지역"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="content"
-                  fullWidth
-                  id="content"
-                  label="가게 소개글"
-                  autoFocus
-                  multiline
-                  rows={4}
-                  variant='outlined'
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <Typography variant="h6" gutterBottom>
-                  가게 사진
-                </Typography>
-                <input
-                  accept=".png, .jpeg, .jpg"
-                  id="upload-photo"
-                  type="file"
-                  style={{ display: 'none' }}
-                  onChange={handleFileUpload} multiple
-                />
-
-                <TextField
-                  autoComplete="given-name"
-                  name="storePictureName"
-                  value={storePictureName}
-                  fullWidth
-                  id="storePictureName"
-                  label="가게 사진"
-                  autoFocus
-                  onClick={(e) => {
-                    e.target.value = null;
-                  }}
-                />
-                {/* 아이콘 대신에 "사진 올리기" 텍스트를 사용하고 싶다면 아래 주석 처리된 라인을 사용하세요 */}
-                {/* <span>사진 올리기</span> */}
-
                 <Button
-                  type="button"
+                  type="submit"
+                  fullWidth
                   variant="contained"
-                  onClick={() => document.getElementById('upload-photo').click()}
-                  sx={{ mt: 3, mb: 2, }}>
-                  사진 올리기
+                  sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
+                  입점 신청하기
                 </Button>
-              </Grid>
-
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="개인정보 수집 및 이용에 동의합니다"
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
-              입점 신청하기
-            </Button>
-          </Box>
-        </Box>
-        <Footer sx={{ mt: 5 }} />
-      </Container>
+              </Box>
+            </Box>
+            <Footer sx={{ mt: 5 }} />
+          </Container>
+        </>
+      }
     </ThemeProvider>
   );
 }

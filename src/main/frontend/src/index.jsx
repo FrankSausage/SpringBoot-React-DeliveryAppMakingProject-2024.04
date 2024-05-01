@@ -33,7 +33,6 @@ const router = createBrowserRouter([
       { path: 'StoreInto', element: <StoreInto />,},
       { path: 'UserMain', element: <UserMain />,},
       { path: 'OwnerMain', element: <OwnerMain />},
-      
     ]
   }
 ]);
