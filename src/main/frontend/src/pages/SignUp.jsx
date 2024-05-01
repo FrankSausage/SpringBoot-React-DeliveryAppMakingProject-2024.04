@@ -22,7 +22,6 @@ export default function SignUp() {
   const [ phoneNumber, setPhoneNumber ] = useState('');
   const { setOutletAddress } = useOutletContext();
   const navigate = useNavigate();
-
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
       const script = document.createElement('script');

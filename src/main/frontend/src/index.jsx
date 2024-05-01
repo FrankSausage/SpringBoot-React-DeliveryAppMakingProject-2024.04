@@ -12,8 +12,9 @@ import ProtectedRoute from './pages/ProtectedRoute';
 import StoreRegister from './pages/StoreRegister';
 import StoreUpdate from './pages/StoreUpdate';
 import StoreDetail from './pages/StoreDetail';
-import StoreInfo from './pages/StoreInfo';
-
+import StoreInto from './pages/StoreInto';
+import UserMain from './components/UserMain';
+import OwnerMain from './components/OwnerMain';
 
 const router = createBrowserRouter([
   {
@@ -24,11 +25,14 @@ const router = createBrowserRouter([
       { path: 'Signin', element: <SignIn />},
       { path: 'SignUp', element: <SignUp />},
       { path: 'Store', element: <Store />},
+      { path: 'Store/:category', element: <Store />},
       { path: 'Update', element: <ProtectedRoute><Update /></ProtectedRoute>},
       { path: 'StoreRegister', element: <StoreRegister />},
       { path: 'StoreUpdate', element: <StoreUpdate />},
       { path: 'StoreDetail', element: <StoreDetail />},
-      { path: 'StoreInfo', element: <StoreInfo />,}
+      { path: 'StoreInto', element: <StoreInto />,},
+      { path: 'UserMain', element: <UserMain />,},
+      { path: 'OwnerMain', element: <OwnerMain />},
       
     ]
   }

@@ -1,14 +1,13 @@
-import React from 'react';
+import * as React from 'react';
+import SearchHeader from "../components/SearchHeader";
+import Footer from "../components/Footer";
 import { Stack, Box, Grid, InputBase, Button, } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
-import { Link } from 'react-router-dom';
-import OwnerHeader from './OwnerHeader';
 
-export default function OwnerMain() {     // 해더 부분 주소창 안뜨게 추가 할것 반드시!
-
+export default function StoreList() {
   return (
     <Box sx={{ margin: -1 }}>
-      <OwnerHeader />
+      <SearchHeader />
       <Grid container>
         <Grid item xs={12} sx={{border: 1}}>
           <Stack sx={{maxHeight: 200}}>
@@ -20,7 +19,7 @@ export default function OwnerMain() {     // 해더 부분 주소창 안뜨게 �
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-              }}>05
+              }}>
               </Box>
           </Stack>
         </Grid>              
@@ -42,29 +41,29 @@ export default function OwnerMain() {     // 해더 부분 주소창 안뜨게 �
         <Grid item xs/>
         <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
             <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2}} sx={gridStyle}>
+              
               <Box sx={{...boxStyle, position: 'relative', width: { xs: '100%', sm: '70%' }, height: '150px', marginX: 'auto'}}>
-                <Link to="/storedetail" style={{ textDecoration: 'none', color: 'black' }}>  
-                  <div>
-                    <img src={'/img/01.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
-                    <ul style={{ position: 'absolute', top: '50%', left: '30%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
-                      <li style={{ listStyleType: 'none' }}>가게 이름</li> 
-                    </ul>
-                  </div>
-                </Link>       
+                <div>
+                  <img src={'/img/01.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
+                  <ul style={{ position: 'absolute', top: '50%', left: '30%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
+                    <li style={{ listStyleType: 'none' }}>가게 이름</li> 
+                  </ul>
+                </div>         
               </Box>
             </Grid>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Button
                 type="submit"
                 variant="contained"
+                style={{textDecoration: 'none', color: 'black'}} 
                 sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem' }}>
-                <Link to='/StoreRegister'style={{textDecoration: 'none', color: 'white'}} >가게 추가하기</Link>
-
+                가게 추가하기
               </Button>
             </div>
         </Grid>
         <Grid item xs />
       </Grid>
+      <Footer/>
     </Box>
   );
 }

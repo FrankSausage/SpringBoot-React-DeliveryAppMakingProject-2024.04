@@ -1,5 +1,6 @@
 package com.team3.DeliveryProject.dto.response.user;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserSignInResponseDto {
-    private String currentAddress;
+public class UserSignInRoleOwnerResponseDto {
     private String role;
+    private List<UserSignInRoleOwnerInnerDto> storeList;
 }

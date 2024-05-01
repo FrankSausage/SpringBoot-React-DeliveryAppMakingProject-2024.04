@@ -12,17 +12,18 @@ import axios from 'axios';
 const defaultTheme = createTheme();
 
 export default function StoreRegister() {
-  const [category, setCategory] = useState('');
   const [roadAddress, setRoadAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
-  const [detailAddress, setDetailAddress] = useState('');
-  const [addressCode, setAddressCode] = useState('');
-  const [type, setType] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [ detailAddress, setDetailAddress ] = useState('');
+  const [category, setCategory] = useState('');
+  const [ type, setType] = useState('');
+  const [ phoneNumber, setPhoneNumber] = useState('');
+  const [ addressCode, setAddressCode ] = useState('');
+  const [ minDeliveryPrice, setMinDeliveryPrice] = useState('');
   const navigate = useNavigate();
   
 
-  useEffect(() => {
+  useEffect(() => {         // 주소 찾기 지금 기능에서 처음 검색한 주소가 저장도 되면서 그다음 주소도 추가 가능하고 이전 선택한 주소도 선택 삭제 가능하게
     const loadDaumPostcodeScript = () => {
       const script = document.createElement('script');
       script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
@@ -64,7 +65,7 @@ export default function StoreRegister() {
         .then(() => {
           alert('입점 신청이 완료되었습니다.');
           getCurrentUser();
-          navigate('/components/ownermain');
+          navigate('/');
         });
     }
   };
@@ -84,9 +85,10 @@ export default function StoreRegister() {
     try{
       data.append('currentAddress', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '') 
           + ',' + (detailAddress ? detailAddress : '')));
+      data.append('addressCode', addressCode.substring(0, 8));   // 여러개의 주소를 주소코드로 바꿔서 띄어쓰기로 구분해서 전달 // 배달 지역 부분
       data.append('category', category);
-      data.append('type', type);
-      data.append('addressCode', addressCode.substring(0,8));
+      data.append('type', type );
+      data.append('minDeliveryPrice', minDeliveryPrice);
       return await data;
     }
     catch (error) {
@@ -195,7 +197,7 @@ export default function StoreRegister() {
                   }}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12}>       
                 <TextField
                   required
                   fullWidth
@@ -261,7 +263,8 @@ export default function StoreRegister() {
                   fullWidth
                   id="minDeliveryPrice"
                   label="최소 주문금액"
-                  
+                  onChange={e => setMinDeliveryPrice(e.target.value)}
+                  autoFocus
                 />
               </Grid>
               <Grid item xs={12}>

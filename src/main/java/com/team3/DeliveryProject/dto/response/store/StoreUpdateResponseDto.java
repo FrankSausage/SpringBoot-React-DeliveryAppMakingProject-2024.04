@@ -27,6 +27,5 @@ public class StoreUpdateResponseDto {
     private int maxDeliveryTime;
     private String operationHours;
     private String closedDays;
-    private String deliveryAddress;
 
 }
