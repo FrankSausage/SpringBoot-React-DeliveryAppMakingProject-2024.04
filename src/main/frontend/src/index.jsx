@@ -9,8 +9,10 @@ import Home from './pages/Home';
 import Store from './pages/Store';
 import Update from './pages/Update';
 import ProtectedRoute from './pages/ProtectedRoute';
-import StoreSignUp from './pages/StoreSignUp';
-import StoreList from './pages/StoreList';
+import StoreRegister from './pages/StoreRegister';
+import StoreUpdate from './pages/StoreUpdate';
+import StoreDetail from './pages/StoreDetail';
+import StoreInto from './pages/StoreInto';
 
 
 const router = createBrowserRouter([
@@ -23,8 +25,11 @@ const router = createBrowserRouter([
       { path: 'SignUp', element: <SignUp />},
       { path: 'Store', element: <Store />},
       { path: 'Update', element: <ProtectedRoute><Update /></ProtectedRoute>},
-      { path: 'StoreSignUP', element: <StoreSignUp />},
-      { path: 'StoreList', element: <StoreList />,}
+      { path: 'StoreRegister', element: <StoreRegister />},
+      { path: 'StoreUpdate', element: <StoreUpdate />},
+      { path: 'StoreDetail', element: <StoreDetail />},
+      { path: 'StoreInto', element: <StoreInto />,}
+      
     ]
   }
 ]);

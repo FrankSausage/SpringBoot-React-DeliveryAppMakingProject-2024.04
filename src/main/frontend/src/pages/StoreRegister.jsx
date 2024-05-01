@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../utils/AddressUtil'; 
 import { getCurrentUser, register } from '../utils/firebase';
 import { extractDataFromFormData } from '../utils/userInfo';
-import { useMutation } from '@tanstack/react-query';
+
 import axios from 'axios';
 
 const defaultTheme = createTheme();
@@ -69,7 +69,7 @@ export default function StoreSignUp() {
         .then(() => {
           alert('입점 신청이 완료되었습니다.');
           getCurrentUser();
-          navigate('/signin');
+          navigate('/storelist');
         });
     }
   };
@@ -105,17 +105,6 @@ export default function StoreSignUp() {
       setStorePictureName(file.name);
       // 여기서 파일 업로드 처리를 수행할 수 있습니다.
     }
-  };
-
-  const uploadButtonStyle = {
-    display: 'inline-block',
-    width: '90px',
-    height: '90px',
-    background: 'url("src/assets/icon-add-photo.svg") no-repeat',
-    backgroundPosition: 'center',
-    border: '1px solid #ccc',
-    borderRadius: '10px',
-    cursor: 'pointer',
   };
   
   
@@ -416,7 +405,7 @@ export default function StoreSignUp() {
               <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="이메일을 통해 마케팅 프로모션, 업데이트를 받고 싶습니다.(선택)"
+                  label="개인정보 수집 및 이용에 동의합니다"
                 />
               </Grid>
             </Grid>

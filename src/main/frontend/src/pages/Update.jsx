@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 import axios from 'axios';
 import SearchHeader from '../components/SearchHeader';
 import { findPostcode } from '../utils/AddressUtil'; 
-import { extractDataFromFormData, useUserByEmail } from '../utils/userInfo';
+import { extractDataFromFormData, formatPhoneNumber, useUserByEmail } from '../utils/userInfo';
 import { getCurrentUser, logout, updateUser } from '../utils/firebase';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,6 +15,7 @@ const defaultTheme = createTheme();
 export default function Update() {
     const { email, displayName } = getCurrentUser();
     const { isLoading, error, user } = useUserByEmail(email);
+    const [ phoneNumber, setPhoneNumber] = useState();
     const [ passwordCheack, setPasswordCheack ] = useState('');
     const [ isPasswordMatch, setIsPasswordMatch ] = useState(true);
     const { roadAddress, extraAddress, detailAddress} = JSON.parse(localStorage.getItem("splitAddress"))
@@ -26,79 +27,83 @@ export default function Update() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const navigate = useNavigate();  
-
     useEffect(() => {
-        const loadDaumPostcodeScript = () => {
-          const script = document.createElement('script');
-          script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
-          script.async = true;
-          document.body.appendChild(script);
-          script.onload = () => {
-            console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
-          };
+      const loadDaumPostcodeScript = () => {
+        const script = document.createElement('script');
+        script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+        script.async = true;
+        document.body.appendChild(script);
+        script.onload = () => {
+          console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
         };
-    
-        loadDaumPostcodeScript();
-    
-        return () => {
-          // 언마운트 시 스크립트 제거 로직
-        };
-      }, []);
+      };
+  
+      loadDaumPostcodeScript();
+      
+      return () => {
+        // 언마운트 시 스크립트 제거 로직
+      };
+    }, []);
     
     const handleFindPostcode = () => {
-    findPostcode(setUpdateRoadAddress, setUpdateExtraAddress, setAddressCode); // use findPostcode from AddressUtil
+      findPostcode(setUpdateRoadAddress, setUpdateExtraAddress, setAddressCode); // use findPostcode from AddressUtil
+    };
+
+    const handlePhoneNumberChange = (event) => {
+      const formattedPhoneNumber = formatPhoneNumber(event.target.value);
+      setPhoneNumber(formattedPhoneNumber);
     };
 
     const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget)
-    if (data.get('password') !== passwordCheack) {      
-        setIsPasswordMatch(false);
-        return;
-    } else {
-        setIsPasswordMatch(true);
-        
-        if(setIsPasswordMatch) {
-        setFormData(data)
-            .then(res => {
-            updateUser(res);
-            extractDataFromFormData(res)
-                .then(resFormData => {
-                // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}} // 이미지 파일 첨부 대비 코드
-                axios.post(`/dp/user/update`, resFormData)
-                })
-            })
-            .then(() => {
-            alert('회원 정보 수정이 완료되었습니다.');
-            navigate('/signin');
-            });
-        }
-    }
+      event.preventDefault();
+      const data = new FormData(event.currentTarget)
+      if (data.get('password') !== passwordCheack) {      
+          setIsPasswordMatch(false);
+          return;
+      } else {
+          setIsPasswordMatch(true);
+          
+          if(setIsPasswordMatch) {
+          setFormData(data)
+              .then(res => {
+              updateUser(res);
+              extractDataFromFormData(res)
+                  .then(resFormData => {
+                  // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}} // 이미지 파일 첨부 대비 코드
+                  axios.post(`/dp/user/update`, resFormData)
+                  })
+              })
+              .then(() => {
+              alert('회원 정보 수정이 완료되었습니다.');
+              navigate('/signin');
+              });
+          }
+      }
     };
 
     const handleDelete = () => {
-        axios.post(`/dp/user/delete`, { email : email })
-            .then(() => {
-                handleClose();
-                logout();
-                alert('계정이 삭제되었습니다');
-                navigate('/');
-            })
-            .catch(console.error)
+      axios.post(`/dp/user/delete`, { email : email })
+          .then(() => {
+              handleClose();
+              logout();
+              alert('계정이 삭제되었습니다');
+              navigate('/');
+          })
+          .catch(console.error)
     }
 
     const setFormData = async (data) => {
-        try{
-          data.append('currentAddress', ((updateRoadAddress ? updateRoadAddress : '') + ',' 
-            + (updateExtraAddress ? updateExtraAddress : '') + ',' 
-            + (updateDetailAddress ? updateDetailAddress : '')
-          ));
-          data.append('addressCode', addressCode);
-          return await data;
-        }
-        catch (error) {
-          return ('setFormData Error!: ' + error);
-        }
+      try{
+        data.append('currentAddress', ((updateRoadAddress ? updateRoadAddress : '') + ',' 
+          + (updateExtraAddress ? updateExtraAddress : '') + ',' 
+          + (updateDetailAddress ? updateDetailAddress : '')
+        ));
+        data.append('addressCode', addressCode.substring(0,8));
+        return await data;
+      }
+      catch (error) {
+        return ('setFormData Error!: ' + error);
+      }
     }
 
     return (
@@ -176,7 +181,9 @@ export default function Update() {
                                     id="phone"
                                     name="phone"
                                     label="휴대전화"
-                                    defaultValue={user.phone} // 기존 휴대전화 정보 표시
+                                    defaultValue={user.phone}
+                                    value={phoneNumber}
+                                    onChange={handlePhoneNumberChange}
                                     inputProps={{
                                         maxLength: 13,
                                         inputMode: 'numeric',
