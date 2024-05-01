@@ -53,7 +53,6 @@ public class StoresDto {
                 .reviewCount(entity.getReviewCount())
                 .operationHours(entity.getOperationHours())
                 .closedDays(entity.getClosedDays())
-                .deliveryAddress(entity.getDeliveryAddress())
                 .createdDate(entity.getCreatedDate())
                 .modifiedDate(entity.getModifiedDate())
                 .status(entity.getStatus())

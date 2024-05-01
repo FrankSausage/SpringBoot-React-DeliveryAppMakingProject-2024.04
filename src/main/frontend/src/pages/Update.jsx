@@ -21,6 +21,7 @@ export default function Update() {
     const [ updateRoadAddress, setUpdateRoadAddress ] = useState(roadAddress);
     const [ updateExtraAddress, setUpdateExtraAddress ] = useState(extraAddress);
     const [ updateDetailAddress ,setUpdateDetailAddress ] = useState(detailAddress);
+    const [ addressCode, setAddressCode ] = useState('');
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -45,7 +46,7 @@ export default function Update() {
       }, []);
     
     const handleFindPostcode = () => {
-    findPostcode(setUpdateRoadAddress, setUpdateExtraAddress); // use findPostcode from AddressUtil
+    findPostcode(setUpdateRoadAddress, setUpdateExtraAddress, setAddressCode); // use findPostcode from AddressUtil
     };
 
     const handleSubmit = (event) => {
@@ -92,6 +93,7 @@ export default function Update() {
             + (updateExtraAddress ? updateExtraAddress : '') + ',' 
             + (updateDetailAddress ? updateDetailAddress : '')
           ));
+          data.append('addressCode', addressCode);
           return await data;
         }
         catch (error) {

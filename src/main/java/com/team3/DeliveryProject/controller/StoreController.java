@@ -2,6 +2,7 @@ package com.team3.DeliveryProject.controller;
 
 import com.team3.DeliveryProject.dto.request.store.StoreAddRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.store.StoreListRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateRequestDto;
 import com.team3.DeliveryProject.dto.request.user.UserSignUpRequestDto;
@@ -59,8 +60,12 @@ public class StoreController {
             .maxDeliveryTime(stores.getMaxDeliveryTime())
             .operationHours(stores.getOperationHours())
             .closedDays(stores.getClosedDays())
-            .deliveryAddress(stores.getDeliveryAddress())
             .build();
         return ResponseEntity.ok().body(responseDto);
     }
+    @GetMapping("/list/search")
+    public ResponseEntity<?> getStoreList(@RequestBody StoreListRequestDto requestDto) {
+        return ResponseEntity.ok().body("씨발");
+    }
+
 }
