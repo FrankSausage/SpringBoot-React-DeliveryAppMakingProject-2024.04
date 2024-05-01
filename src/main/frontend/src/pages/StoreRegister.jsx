@@ -264,7 +264,6 @@ export default function StoreRegister() {
                   id="minDeliveryPrice"
                   label="최소 주문금액"
                   onChange={e => setMinDeliveryPrice(e.target.value)}
-                  autoFocus
                 />
               </Grid>
               <Grid item xs={12}>

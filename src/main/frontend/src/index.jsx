@@ -12,7 +12,7 @@ import ProtectedRoute from './pages/ProtectedRoute';
 import StoreRegister from './pages/StoreRegister';
 import StoreUpdate from './pages/StoreUpdate';
 import StoreDetail from './pages/StoreDetail';
-import StoreInto from './pages/StoreInto';
+// import StoreInto from './pages/StoreInto';
 import UserMain from './components/UserMain';
 import OwnerMain from './components/OwnerMain';
 
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
       { path: 'StoreRegister', element: <StoreRegister />},
       { path: 'StoreUpdate', element: <StoreUpdate />},
       { path: 'StoreDetail', element: <StoreDetail />},
-      { path: 'StoreInto', element: <StoreInto />,},
+      // { path: 'StoreInto', element: <StoreInto />,},
       { path: 'UserMain', element: <UserMain />,},
       { path: 'OwnerMain', element: <OwnerMain />},
       
