@@ -330,6 +330,17 @@ export default function StoreRegister() {
                   
                 />
               </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete="given-name"
+                  name="deliveryAddress"
+                  required
+                  fullWidth
+                  id="deliveryAddress"
+                  label="배달 지역"
+                  autoFocus
+                />
+                </Grid>
               {/* <Grid item xs={12}>
                 <TextField
                   required
