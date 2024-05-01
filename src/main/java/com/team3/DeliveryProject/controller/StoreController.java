@@ -47,7 +47,7 @@ public class StoreController {
     }
 
     @GetMapping("/owner/update")
-    public ResponseEntity<?> updateStoreGet(@RequestBody StoreUpdateGetRequestDto requestDto) {
+    public ResponseEntity<?> updateStoreGet(@ModelAttribute StoreUpdateGetRequestDto requestDto) {
         Stores stores = storeService.getUpdateStore(requestDto.getStoreId()).orElseThrow(()
             -> new RuntimeException("Stores not found"));
         if(stores.getUserId() == usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()->
