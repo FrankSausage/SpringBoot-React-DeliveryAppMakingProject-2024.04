@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../utils/AddressUtil';
 import { getCurrentUser, register, } from '../utils/firebase';
-import { extractDataFromFormData, formatPhoneNumber, useUserByEmail} from '../utils/userInfo';
+import { extractDataFromFormData, useUserByEmail} from '../utils/storeInfo';
 import axios from 'axios';
 
 const defaultTheme = createTheme();
@@ -56,33 +56,53 @@ export default function StoreRegister() {
       return;
     } else {
       // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}}
-      setFormData(data)
-        .then(resFormData => {
-          register(resFormData);
-          extractDataFromFormData(resFormData)
-          .then((res) => {
-            axios.post(`/dp/store/owner/register`, res)
-              .then(() => {
-                alert('입점 신청이 완료되었습니다.');
-                getCurrentUser();
-                navigate('/');
-              })
-              // .catch((error) => {
-              //   console.error('Error occurred during store registration:', error);
-              //   alert('입점 신청 중 오류가 발생했습니다.');
-              // });
-          })
-          // .catch((error) => {
-          //   console.error('Error occurred while extracting form data:', error);
-          //   alert('입점 신청 중 오류가 발생했습니다.');
-          // });
-      // })
-      // .catch((error) => {
-      //   console.error('Error occurred while setting form data:', error);
-      //   alert('입점 신청 중 오류가 발생했습니다.');
+      extractDataFromFormData(data)
+      .then((res) => {
+        axios.post('/dp/store/owner/register', res)
+        .then(() => {
+          alert('입점 신청이 완료되었습니다.');
+          getCurrentUser();
+          navigate('/');
+        })
+        .catch((error) => {
+          console.error('Error occurred during store registration:', error);
+          alert('입점 신청 중 오류가 발생했습니다.');
+        });
+      })
+      .catch((error) => {
+        console.error('Error occurred while extracting form data:', error);
+        alert('입점 신청 중 오류가 발생했습니다.');
       });
   }
 };
+//       }
+//       setFormData(data)
+//         .then(resFormData => {
+//           register(resFormData);
+//           extractDataFromFormData(resFormData)
+//           .then((res) => {
+//             axios.post(`/dp/store/owner/register`, res)
+//               .then(() => {
+//                 alert('입점 신청이 완료되었습니다.');
+//                 getCurrentUser();
+//                 navigate('/');
+//               })
+//               // .catch((error) => {
+//               //   console.error('Error occurred during store registration:', error);
+//               //   alert('입점 신청 중 오류가 발생했습니다.');
+//               // });
+//           })
+//           // .catch((error) => {
+//           //   console.error('Error occurred while extracting form data:', error);
+//           //   alert('입점 신청 중 오류가 발생했습니다.');
+//           // });
+//       // })
+//       // .catch((error) => {
+//       //   console.error('Error occurred while setting form data:', error);
+//       //   alert('입점 신청 중 오류가 발생했습니다.');
+//       });
+//   }
+// };
 
   const formatPhoneNumber = (phoneNumberValue) => {
   const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
@@ -338,7 +358,6 @@ export default function StoreRegister() {
                   fullWidth
                   id="deliveryAddress"
                   label="배달 지역"
-                  autoFocus
                 />
                 </Grid>
               {/* <Grid item xs={12}>
