@@ -1,127 +1,131 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Avatar, Box, Button, Container, CssBaseline, Grid, 
-    TextField, Typography, } from "@mui/material";
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Footer from "./Footer";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { Box, Button,Divider, Grid, Input, Stack,  Typography, } from "@mui/material";
+import RoomIcon from '@mui/icons-material/Room';
+import { findPostcode } from "../utils/AddressUtil";
+import { extractDataFromFormData, useAddressListByEmail } from "../utils/userInfo";
+import { getCurrentUser } from "../utils/firebase";
+import axios from "axios";
 
-const defaultTheme = createTheme();
 
 export default function Address() {
-
+    const { email } = getCurrentUser();
+    const currentAddress = localStorage.getItem('address');
+    const { isLoading, error, address } = useAddressListByEmail(email);
+    const [roadAddress, setRoadAddress] = useState('');
+    const [extraAddress, setExtraAddress] = useState('');
+    const [detailAddress, setDetailAddress] = useState('');
+    const [addressCode, setAddressCode] = useState('');
+    const navigate = useNavigate();
     useEffect(() => {
-        const loadDaumPostcodeScript = () => {
-          const script = document.createElement('script');
-          script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
-          script.async = true;
-          document.body.appendChild(script);
-          script.onload = () => {
-            console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
-          };
+      const loadDaumPostcodeScript = () => {
+        const script = document.createElement('script');
+        script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+        script.async = true;
+        document.body.appendChild(script);
+        script.onload = () => {
+          console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
         };
-    
-        loadDaumPostcodeScript();
-        
-        return () => {
-          // 언마운트 시 스크립트 제거 로직
-        };
-      }, []);
+      };
+  
+      loadDaumPostcodeScript();
+      
+      return () => {
+        // 언마운트 시 스크립트 제거 로직
+      };
+    }, []);
 
     const handleFindPostcode = () => {
+      findPostcode(setRoadAddress, setExtraAddress, setAddressCode); // use findPostcode from AddressUtil
+    };
 
+    const handleSubmit = e => {
+      e.preventDefault();
+      const data = new FormData();
+      
+      setFormData(data)
+        .then(res => {
+          extractDataFromFormData(res)
+            .then(resFormData => {
+              console.log(resFormData);
+              axios.post(`/dp/address/add`, resFormData);
+            })
+        })
+        .then(() => {
+          alert('주소 등록이 완료 되었습니다.');
+          navigate('/');
+        })
     }
 
-    const handleSubmit = () => {
-
+    const setFormData = async (data) => {
+      try{
+        data.append('email', email);
+        data.append('address', ((roadAddress ? roadAddress : '') + ',' 
+          + (extraAddress ? extraAddress : '') + ',' + (detailAddress ? detailAddress : '')));
+        data.append('addressCode', addressCode);
+        return await data;
+      } catch(error) {
+        return ('setFormData Error!: ' + error);
+      }
     }
 
     return(
-        <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>    
-          </Typography>
-          <Typography component="h1" variant="h5">
-            주소 등록
-          </Typography>
-          <Box component="form" sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="currentAddress"
-                  label="현재 주소"
-                //   value={roadAddress}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              </Grid>
-                  <Button
-                    type="button"
-                    onClick={handleFindPostcode}
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 1, mb: 2, ml: 2}}
-                  >
-                    주소 찾기
-                  </Button>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  id="extraAddress"
-                  label="참고항목"
-                //   value={extraAddress}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="detailAddress"
-                  label="상세주소"
-                  name="detailAddress"
-                  autoComplete="detailAddress"
-                //   onChange={e => setDetailAddress(e.target.value)}
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              회원가입
-            </Button>
-            <Grid container justifyContent="flex-end">
+      <Box>
+        {isLoading && <Typography>로딩 중..</Typography>}
+        {error && <Typography>에러 발생!</Typography>}
+        {address && 
+        <Box>
+          <Grid container>
+            <Stack component='form' onSubmit={handleSubmit}>
               <Grid item>
-                <Link to="/SignIn" variant="body2" style={{ textDecoration: 'none', color: 'black'  }}>
-                  계정이 있으신가요? 로그인
-                </Link>
+                <Typography variant="h5"> 주소 목록 </Typography>
+                <Stack direction={"row"}  sx={{my: 1}}>
+                  <Input type="text" 
+                  value={roadAddress + extraAddress} 
+                  name='cuAddress'
+                  id='cuAddress'
+                  sx={{width: 400}} 
+                  placeholder="주소를 입력하세요..." required/>
+                  <Button sx={{border: 1, mx: 1}} onClick={handleFindPostcode}> 검색 </Button>
+                </Stack>
+                  <Input type="text" value={detailAddress} 
+                  onChange={e => setDetailAddress(e.target.value)} sx={{width: 200}} 
+                  placeholder="상세 주소"/>
               </Grid>
-            </Grid>
-          </Box>
+              <Grid item>
+                  { !roadAddress && !extraAddress && <Button type="submit" disabled>추가</Button> }
+                  { roadAddress && extraAddress && <Button type="submit">추가</Button> }
+              </Grid>
+            </Stack>
+          </Grid>
         </Box>
-        <Footer sx={{ mt: 5 }} />
-      </Container>
-    </ThemeProvider>
+        }
+        <Divider sx={{my: 5}} />
+        {address && (
+          address.map((data, idx) => (
+            <Stack key={idx} direction={"row"} sx={{my: 3}}>
+              {
+                data.address===currentAddress ? 
+                  <>
+                  <Input value={data.address} sx={{width: 400}}/>  
+                  <Button sx={{border: 1, mx: 1}}>수정</Button>
+                  <RoomIcon />
+                  </>
+                : 
+                  <>
+                  <Input value={data.address} sx={{width: 400}}/>
+                  <Button sx={{border: 1, mx: 1}}>수정</Button>
+                  </>
+              }
+              
+            </Stack>
+          ))
+        )}
+        {/* <Typography variant="h4"> 주소 정보 </Typography>
+        <Divider sx={{my: 3}} />
+        <Typography>현재 주소</Typography>
+        <TextField variant="outlined" value={currentAddress} />
+        <Button onClick={handleFindPostcode}>주소 추가</Button> */}
+      </Box>
     );
 }

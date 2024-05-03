@@ -17,7 +17,7 @@ export const useUserByEmail = email => {
 
 export const useAddressListByEmail = email => {
   const { isLoading, error, data: address } = useQuery({
-    queryKey: ['address', address],
+    queryKey: ['address'],
     queryFn: async () => {
       return axios.get(`/dp/address/getList`, { params: { email: email }})
         .then(res => res.data)

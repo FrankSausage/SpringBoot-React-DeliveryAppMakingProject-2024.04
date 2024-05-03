@@ -39,7 +39,7 @@ export default function SignIn() {
               .then(res => {
                 if(res.data.role !== '점주'){
                   setOutletAddress(res.data.currentAddress);
-                  localStorage.setItem("address", res.data.currentAddress);
+                  localStorage.setItem("address", res.data.currentAddress); // 세션 스토리지 리팩터
                   localStorage.setItem("splitAddress", JSON.stringify(splitAddressFromCurrentUserAddress(res.data.currentAddress)))
                 }
               })

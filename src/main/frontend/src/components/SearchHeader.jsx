@@ -35,6 +35,12 @@ export default function SearchHeader() {
     navigate('/');
   };
 
+  const handleNavigate = () => {
+    if(user)  {
+    navigate('address');
+    }
+  }
+
   const list = (
     <Box
       sx={{ width: 'auto' }}
@@ -79,12 +85,12 @@ export default function SearchHeader() {
             <GpsFixedIcon style={{ color: 'white' }} />&nbsp;
             <OutlinedInput
               value={address ? address : outletAddress}
-              placeholder="주소를 입력 하세요"
               startAdornment={
                 <InputAdornment position="start">
                 </InputAdornment>
               }
               sx={{ width: '100%', maxWidth: 400, mr: 1, backgroundColor: 'white' }} 
+              onClick={handleNavigate}
             />
           </Box> 
           <Grid item xs={3}>
