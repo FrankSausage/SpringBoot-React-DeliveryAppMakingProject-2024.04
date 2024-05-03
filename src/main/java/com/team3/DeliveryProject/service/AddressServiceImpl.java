@@ -54,6 +54,13 @@ public class AddressServiceImpl implements AddressService{
         address.setStatus("수정");
         address.setModifiedDate(LocalDateTime.now());
         addressRepository.save(address);
+
+        AddressChangeRequestDto addressChangeRequestDto = AddressChangeRequestDto.builder()
+            .email(requestDto.getEmail())
+            .address(requestDto.getAddress())
+            .addressCode(requestDto.getAddressCode())
+            .build();
+        changeCurrentAddress(addressChangeRequestDto);
         return Response.toResponseEntity(ADDRESS_MODIFY_SUCCESS);
     }
 
