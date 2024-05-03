@@ -1,31 +1,64 @@
-import * as React from 'react';
-import SearchHeader from "../components/SearchHeader";
+import React, {useState} from 'react';
 import Footer from "../components/Footer";
-import { Stack, Box, Grid, InputBase, Button, } from '@mui/material/';
+import { Stack, Box, Grid, InputBase, Button, Tab, Tabs, Typography } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
+import Ownerheader from '../components/OwnerHeader';
+import { Link, useLocation } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+function CustomTabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`tabpanel-${index}`}
+      aria-labelledby={`tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+CustomTabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
 
 export default function StoreList() {
+  const { state: category } = useLocation();
+  const [value, setValue] = useState(category);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  
   return (
     <Box sx={{ margin: -1 }}>
-      <SearchHeader />
-      <Grid container>
-        <Grid item xs={12} sx={{border: 1}}>
-          <Stack sx={{maxHeight: 200}}>
-            <Box 
-              sx={{
-                width: '100%', 
-                height: 200, 
-                backgroundImage: `url(https://source.unsplash.com/random?wallpapers)`,
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}>
-              </Box>
-          </Stack>
-        </Grid>              
-      </Grid>
-      <Grid container></Grid>
-      <Grid container justifyContent="center" alignItems="center" mt={2}>
+      <Ownerheader />
+      <Box sx={{ borderBottom: 1, borderColor: 'black'/*'divider'*/,  display: 'flex', justifyContent: 'center' }}>
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          <Tab label="메뉴 검색" component={Link} to="/StoreList" {...a11yProps(0)} autoFocus></Tab>
+          <Tab label="메뉴" component={Link} to="/StoreList" {...a11yProps(1)} />
+          <Tab label="가게 정보·원산지" component={Link} to="/StoreList" {...a11yProps(2)} autoFocus/>
+        </Tabs>
+      </Box>
+      
+      {/* <Grid container justifyContent="center" alignItems="center" mt={2}>
         <Grid item xs={6} md={4}>
           <Box sx={{ display: 'flex', alignItems: 'center', border: 1, borderColor: 'divider', borderRadius: 1 }}>
             <SearchIcon sx={{ m: 1 }} />
@@ -36,7 +69,7 @@ export default function StoreList() {
             />
           </Box>
         </Grid>
-      </Grid>
+      </Grid> */}
       <Grid container>
         <Grid item xs/>
         <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
@@ -46,7 +79,7 @@ export default function StoreList() {
                 <div>
                   <img src={'/img/01.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
                   <ul style={{ position: 'absolute', top: '50%', left: '30%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
-                    <li style={{ listStyleType: 'none' }}>가게 이름</li> 
+                    <li style={{ listStyleType: 'none' }}>음식 이름</li> 
                   </ul>
                 </div>         
               </Box>
@@ -55,9 +88,9 @@ export default function StoreList() {
               <Button
                 type="submit"
                 variant="contained"
-                style={{textDecoration: 'none', color: 'black'}} 
+                style={{textDecoration: 'none', color: 'white'}} 
                 sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem' }}>
-                가게 추가하기
+                메뉴 수정하기
               </Button>
             </div>
         </Grid>

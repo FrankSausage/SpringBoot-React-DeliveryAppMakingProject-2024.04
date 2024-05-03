@@ -1,13 +1,11 @@
-
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
-import { useState } from "react";
 
-export const useUserByEmail = email => {
+export const useUserByEmail = (email, storeId) => {
     const { isLoading, error, data: user } = useQuery({
-        queryKey: ['email', email],
+        queryKey: ['email', email, 'storeId', storeId],
         queryFn: async () => {
-            return axios.get(`/dp/store/register`, { params: { email: email }})
+            return axios.get(`/dp/store/owner/update`, { params: { email: email, storeId: storeId }})
             .then(res => res.data)
             .catch(console.error);
         }
@@ -26,7 +24,7 @@ export async function extractDataFromFormData(formData) {
 export const formatPhoneNumber = (phoneNumberValue) => {
   const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
   //  핸드폰 입력 formatting (e.g., XXX-XXXX-XXXX)
-  const formattedPhoneNumber = strippedPhoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+  const formattedPhoneNumber = strippedPhoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
   
   return formattedPhoneNumber;
   };

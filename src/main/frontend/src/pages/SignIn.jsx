@@ -35,15 +35,19 @@ export default function SignIn() {
             alert('계정이 존재하지 않습니다.')
             return false;
           } else {
-            axios.get(`dp/user/signin`, { params: { email: userInfo.email }})
-              .then(res => {
-                if(res.data.role !== '점주'){
-                  setOutletAddress(res.data.currentAddress);
-                  localStorage.setItem("address", res.data.currentAddress); // 세션 스토리지 리팩터
-                  localStorage.setItem("splitAddress", JSON.stringify(splitAddressFromCurrentUserAddress(res.data.currentAddress)))
-                }
-              })
-              .then(navigate('/'))
+            axios.get(`dp/user/signin`, { params: { email: userInfo.email}})
+            .then(res => {
+              if (res.data.role !== '점주') {
+                setOutletAddress(res.data.currentAddress);
+                localStorage.setItem('role', res.data.role);
+                localStorage.setItem("address", res.data.currentAddress);
+                localStorage.setItem("splitAddress", JSON.stringify(splitAddressFromCurrentUserAddress(res.data.currentAddress)));
+                navigate('/');
+              } else {
+                localStorage.setItem('role', res.data.role);
+                navigate('/'); // Redirect to ownerMain if the role is '점주' 
+              }
+            });
           }
         })
     }

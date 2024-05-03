@@ -5,9 +5,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../utils/AddressUtil';
-import { getCurrentUser, register, } from '../utils/firebase';
-import { extractDataFromFormData, useUserByEmail} from '../utils/storeInfo';
+import { getCurrentUser, register } from '../utils/firebase';
+import { extractDataFromFormData, formatPhoneNumber } from '../utils/storeInfo';
 import axios from 'axios';
+import Ownerheader from '../components/OwnerHeader';
 
 const defaultTheme = createTheme();
 
@@ -17,16 +18,36 @@ export default function StoreRegister() {
   const { isLoading, error, user } = useUserByEmail(email);
   const [roadAddress, setRoadAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
-  const [ detailAddress, setDetailAddress ] = useState('');
+  const [detailAddress, setDetailAddress] = useState('');
+  const [name, setName] = useState('');
   const [category, setCategory] = useState('');
-  const [ type, setType] = useState('');
-  const [ phoneNumber, setPhoneNumber] = useState('');
-  const [ addressCode, setAddressCode ] = useState('');
-  const [ minDeliveryPrice, setMinDeliveryPrice] = useState('');
+  const [type, setType] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [addressCode, setAddressCode] = useState('');
+  const [minDeliveryPrice, setMinDeliveryPrice] = useState('');
+  const [deliveryTip, setDeliveryTip] = useState('');
+  const [content, setContent] = useState('');
+  const [storePictureName, setStorePictureName] = useState('');
+  const [minDeliveryTime, setMinDeliveryTime] = useState('');
+  const [maxDeliveryTime, setMaxDeliveryTime] = useState('');
+  const [operationHours, setOperationHours] = useState('');
+  const [closedDays, setClosedDays] = useState('');
+  const [deliveryAddress, setDeliveryAddress] = useState('');
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  // const [userInfo, setUserInfo] = useState({email: '', password: '', })
+  // const [storeInfo, setStoreInfo] = useState({deliveryAddress: '', closedDays: '',}) // 나중에 이런식으로 이팩토리 할것 이유 업데이트 할때 정보 받기 편해지기 위해서
   
-
-  useEffect(() => {         // 주소 찾기 지금 기능에서 처음 검색한 주소가 저장도 되면서 그다음 주소도 추가 가능하고 이전 선택한 주소도 선택 삭제 가능하게
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const { email } = await getCurrentUser();
+      setEmail(email);
+    };
+    fetchUserData();
+  }, []);
+  console.log(email);
+  
+  useEffect(() => {
     const loadDaumPostcodeScript = () => {
       const script = document.createElement('script');
       script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
@@ -45,104 +66,72 @@ export default function StoreRegister() {
   }, []);
 
   const handleFindPostcode = () => {
-    findPostcode(setRoadAddress, setExtraAddress, setAddressCode); // use findPostcode from AddressUtil
+    findPostcode(setRoadAddress, setExtraAddress, setAddressCode);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget)
-    if (!data.get('name') || !data.get('phone') ) {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+
+    if (!data.get('name') || !data.get('phone')) {
       alert('필수 항목을 입력하세요.');
       return;
-    } else {
-      // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}}
-      extractDataFromFormData(data)
-      .then((res) => {
-        axios.post('/dp/store/owner/register', res)
-        .then(() => {
-          alert('입점 신청이 완료되었습니다.');
-          getCurrentUser();
-          navigate('/');
-        })
-        .catch((error) => {
-          console.error('Error occurred during store registration:', error);
-          alert('입점 신청 중 오류가 발생했습니다.');
-        });
-      })
-      .catch((error) => {
-        console.error('Error occurred while extracting form data:', error);
-        alert('입점 신청 중 오류가 발생했습니다.');
-      });
-  }
-};
-//       }
-//       setFormData(data)
-//         .then(resFormData => {
-//           register(resFormData);
-//           extractDataFromFormData(resFormData)
-//           .then((res) => {
-//             axios.post(`/dp/store/owner/register`, res)
-//               .then(() => {
-//                 alert('입점 신청이 완료되었습니다.');
-//                 getCurrentUser();
-//                 navigate('/');
-//               })
-//               // .catch((error) => {
-//               //   console.error('Error occurred during store registration:', error);
-//               //   alert('입점 신청 중 오류가 발생했습니다.');
-//               // });
-//           })
-//           // .catch((error) => {
-//           //   console.error('Error occurred while extracting form data:', error);
-//           //   alert('입점 신청 중 오류가 발생했습니다.');
-//           // });
-//       // })
-//       // .catch((error) => {
-//       //   console.error('Error occurred while setting form data:', error);
-//       //   alert('입점 신청 중 오류가 발생했습니다.');
-//       });
-//   }
-// };
+    }
 
-  const formatPhoneNumber = (phoneNumberValue) => {
-  const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
-    //  핸드폰 입력 formatting (e.g., XXX-XXXX-XXXX)
-    const formattedPhoneNumber = strippedPhoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
-    return formattedPhoneNumber;
+    
+      const formData = await setFormData(data);
+      extractDataFromFormData(formData)
+        .then(resFormData => axios.post(`/dp/store/owner/register`, resFormData));
+
+      alert('입점 신청이 완료되었습니다.');
+      navigate('/OwnerMain');
+    
   };
+
   const handlePhoneNumberChange = (event) => {
     const formattedPhoneNumber = formatPhoneNumber(event.target.value);
     setPhoneNumber(formattedPhoneNumber);
   };
 
   const setFormData = async (data) => {
-    try{
-      data.append('currentAddress', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '') 
-          + ',' + (detailAddress ? detailAddress : '')));
-      data.append('addressCode', addressCode.substring(0, 8));   // 여러개의 주소를 주소코드로 바꿔서 띄어쓰기로 구분해서 전달 // 배달 지역 부분
+    try {
+      data.append('address', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '')
+        + ',' + (detailAddress ? detailAddress : '')));
+      data.append('email', email);
+      data.append('addressCode', addressCode.substring(0, 8));
       data.append('category', category);
-      data.append('type', type );
+      data.append('type', type);
       data.append('minDeliveryPrice', minDeliveryPrice);
+      data.append('content', content);
+      data.append('name', name);
+      data.append('deliveryTip', deliveryTip);
+      data.append('minDeliveryTime', minDeliveryTime);
+      data.append('maxDeliveryTime', maxDeliveryTime);
+      data.append('operationHours', operationHours);
+      data.append('minDeliveryTime', minDeliveryTime);
+      data.append('closedDays', closedDays);
+      data.append('deliveryAddress', deliveryAddress);
       return await data;
     }
     catch (error) {
-      return ('setFormData Error!: ' + error);
-    }
-  }
-  
-  const [storePictureName, setStorePictureName] = useState('');
-
-  const handleFileUpload = (e) => {
-    const files = Array.from(e.target.files); // 선택된 파일들을 배열로 변환
-    if (files.length > 0) {
-      const fileNames = files.map(file => file.name);
-      setStorePictureName(fileNames);
-      // 여기서 파일 업로드 처리를 수행할 수 있습니다.
+      console.error('setFormData Error!: ', error);
+      return null;
     }
   };
 
+  const handleFileUpload = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length > 0) {
+      const fileNames = files.map(file => file.name);
+      setStorePictureName(fileNames);
+    }
+  };
+
+
+
   return (
     <ThemeProvider theme={defaultTheme}>
+      <Ownerheader />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -157,21 +146,39 @@ export default function StoreRegister() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>    
+            <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>
           </Typography>
           <Typography component="h1" variant="h5">
-           온라인 입점 신청서
+            온라인 입점 신청서
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-             <Grid item xs={12}>
+              <Grid item xs={12}>
                 <TextField
-                  name="name"
                   required
                   fullWidth
+                  autoComplete="given-name"
+                  name="name"
                   id="name"
+                  value={name}
                   label="가게 이름"
-                  autoFocus
+                  onChange={e => setName(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="phone"
+                  label="전화번호"
+                  name="phone"
+                  autoComplete="phone"
+                  value={phoneNumber}
+                  onChange={handlePhoneNumberChange}
+                  inputProps={{
+                    maxLength: 12,
+                    inputMode: 'numeric',
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -219,22 +226,6 @@ export default function StoreRegister() {
                 <TextField
                   required
                   fullWidth
-                  id="phone"
-                  label="전화번호"
-                  name="phone"
-                  autoComplete="phone"
-                  value={phoneNumber}
-                  onChange={handlePhoneNumberChange}
-                  inputProps={{
-                    maxLength: 12,
-                    inputMode: 'numeric',
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>       
-                <TextField
-                  required
-                  fullWidth
                   id="roadAddress"
                   label="도로명 주소"
                   value={roadAddress}
@@ -243,15 +234,15 @@ export default function StoreRegister() {
                   }}
                 />
               </Grid>
-                <Button
-                  type="button"
-                  onClick={handleFindPostcode}
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 1, mb: 2, ml: 2}}
-                >
-                  주소 찾기
-                </Button>
+              <Button
+                type="button"
+                onClick={handleFindPostcode}
+                fullWidth
+                variant="contained"
+                sx={{ mt: 1, mb: 2, ml: 2 }}
+              >
+                주소 찾기
+              </Button>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -302,12 +293,14 @@ export default function StoreRegister() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  autoComplete="given-name"  
                   name="deliveryTip"
                   required
                   fullWidth
                   id="deliveryTip"
                   label="배달팁"
-                  
+                  value={deliveryTip}
+                  onChange={e => setDeliveryTip(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -316,8 +309,9 @@ export default function StoreRegister() {
                   required
                   fullWidth
                   id="minDeliveryTime"
+                  value={minDeliveryTime}
                   label="최소 배달 예상 시간"
-                  
+                  onChange={e => setMinDeliveryTime(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -326,8 +320,9 @@ export default function StoreRegister() {
                   required
                   fullWidth
                   id="maxDeliveryTime"
+                  value={maxDeliveryTime}
                   label="최대 배달 예상 시간"
-                  
+                  onChange={e => setMaxDeliveryTime(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -336,8 +331,9 @@ export default function StoreRegister() {
                   required
                   fullWidth
                   id="operationHours"
+                  value={operationHours}
                   label="운영 시간"
-                  
+                  onChange={e => setOperationHours(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -346,8 +342,9 @@ export default function StoreRegister() {
                   required
                   fullWidth
                   id="closedDays"
+                  value={closedDays}
                   label="휴무일"
-                  
+                  onChange={e => setClosedDays(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -357,7 +354,9 @@ export default function StoreRegister() {
                   required
                   fullWidth
                   id="deliveryAddress"
+                  value={deliveryAddress}
                   label="배달 지역"
+                  onChange={e => setDeliveryAddress(e.target.value)}
                 />
                 </Grid>
               {/* <Grid item xs={12}>
@@ -390,44 +389,46 @@ export default function StoreRegister() {
                   multiline
                   rows={4}
                   variant='outlined'
+                  onChange={e => setContent(e.target.value)}
                 />
               </Grid>
-              
-                <Grid item xs={12}>
-                  <Typography variant="h6" gutterBottom>
-                    가게 사진
-                  </Typography>
-                    <input
-                      accept=".png, .jpeg, .jpg"
-                      id="upload-photo"
-                      type="file"
-                      style={{ display: 'none' }}
-                      onChange={handleFileUpload} multiple
-                    />
-                    
-                      <TextField
-                        autoComplete="given-name"
-                        name="storePictureName"
-                        value={storePictureName}
-                        fullWidth
-                        id="storePictureName"
-                        label="가게 사진"
-                        onClick={(e) => {
-                          e.target.value = null;
-                        }}
-                      />
-                      {/* 아이콘 대신에 "사진 올리기" 텍스트를 사용하고 싶다면 아래 주석 처리된 라인을 사용하세요 */}
-                      {/* <span>사진 올리기</span> */}
-                    
-                      <Button
-                        type="button"
-                        variant="contained"
-                        onClick={() => document.getElementById('upload-photo').click()}
-                        sx={{ mt: 3, mb: 2,}}>
-                        사진 올리기
-                      </Button>
-                  </Grid>
-              
+
+              <Grid item xs={12}>
+                <Typography variant="h6" gutterBottom>
+                  가게 사진
+                </Typography>
+                <input
+                  accept=".png, .jpeg, .jpg"
+                  id="upload-photo"
+                  type="file"
+                  style={{ display: 'none' }}
+                  onChange={handleFileUpload} multiple
+                />
+
+                <TextField
+                  autoComplete="given-name"
+                  name="storePictureName"
+                  value={storePictureName}
+                  fullWidth
+                  id="storePictureName"
+                  label="가게 사진"
+                  autoFocus
+                  onClick={(e) => {
+                    e.target.value = null;
+                  }}
+                />
+                {/* 아이콘 대신에 "사진 올리기" 텍스트를 사용하고 싶다면 아래 주석 처리된 라인을 사용하세요 */}
+                {/* <span>사진 올리기</span> */}
+
+                <Button
+                  type="button"
+                  variant="contained"
+                  onClick={() => document.getElementById('upload-photo').click()}
+                  sx={{ mt: 3, mb: 2, }}>
+                  사진 올리기
+                </Button>
+              </Grid>
+
               <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
@@ -439,7 +440,7 @@ export default function StoreRegister() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, fontSize: '1.1rem'}}>
+              sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
               입점 신청하기
             </Button>
           </Box>
