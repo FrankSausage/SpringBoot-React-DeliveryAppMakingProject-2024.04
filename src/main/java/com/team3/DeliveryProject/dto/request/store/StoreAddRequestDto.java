@@ -15,6 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class StoreAddRequestDto {
+    private String email;
     private String name;
     private int type;
     private String category;
@@ -28,5 +29,5 @@ public class StoreAddRequestDto {
     private int maxDeliveryTime;
     private String operationHours;
     private String closedDays;
-    private String deliveryAddress;
+    private String addressCode;
 }

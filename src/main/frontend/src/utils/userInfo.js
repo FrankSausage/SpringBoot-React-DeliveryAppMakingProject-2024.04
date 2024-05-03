@@ -44,7 +44,7 @@ export const formatPhoneNumber = (phoneNumberValue) => {
   };
 
 export function splitAddressFromCurrentUserAddress(currentAddress) {
-    const splitAddress = currentAddress.split(',')
+    const splitAddress = currentAddress.toString().split(',');
     const roadAddress = (splitAddress[0] || '');
     const extraAddress = (splitAddress[1] || '');
     const detailAddress = (splitAddress[2] || '');

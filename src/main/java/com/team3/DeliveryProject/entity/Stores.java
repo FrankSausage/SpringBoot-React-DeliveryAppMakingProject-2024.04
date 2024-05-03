@@ -17,6 +17,8 @@ public class Stores {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long storeId;
+    @Column(nullable = false)
+    private Long userId;
 
     @Column(nullable = false)
     private String name;
@@ -66,9 +68,6 @@ public class Stores {
     @Column(nullable = true)
     private String closedDays;
 
-    @Column(nullable = true)
-    private String deliveryAddress;
-
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdDate;
 
@@ -78,11 +77,13 @@ public class Stores {
     @Column(nullable = false)
     private String status;
 
-    public Stores(String name, int type, String category, String address, String storePictureName,
-        String phone, String content, int minDeliveryPrice, int deliveryTip, int minDeliveryTime,
-        int maxDeliveryTime, double rating, int dibsCount, int reviewCount, String operationHours,
-        String closedDays, String deliveryAddress, LocalDateTime createdDate,
+    public Stores(Long userId, String name, int type, String category, String address,
+        String storePictureName, String phone, String content, int minDeliveryPrice,
+        int deliveryTip,
+        int minDeliveryTime, int maxDeliveryTime, double rating, int dibsCount, int reviewCount,
+        String operationHours, String closedDays, LocalDateTime createdDate,
         LocalDateTime modifiedDate, String status) {
+        this.userId = userId;
         this.name = name;
         this.type = type;
         this.category = category;
@@ -99,28 +100,8 @@ public class Stores {
         this.reviewCount = reviewCount;
         this.operationHours = operationHours;
         this.closedDays = closedDays;
-        this.deliveryAddress = deliveryAddress;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
         this.status = status;
-    }
-
-    public Stores(String name, int type, String category, String address, String storePictureName,
-        String phone, String content, int minDeliveryPrice, int deliveryTip, int minDeliveryTime,
-        int maxDeliveryTime, String operationHours, String closedDays, String deliveryAddress) {
-        this.name = name;
-        this.type = type;
-        this.category = category;
-        this.address = address;
-        this.storePictureName = storePictureName;
-        this.phone = phone;
-        this.content = content;
-        this.minDeliveryPrice = minDeliveryPrice;
-        this.deliveryTip = deliveryTip;
-        this.minDeliveryTime = minDeliveryTime;
-        this.maxDeliveryTime = maxDeliveryTime;
-        this.operationHours = operationHours;
-        this.closedDays = closedDays;
-        this.deliveryAddress = deliveryAddress;
     }
 }

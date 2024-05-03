@@ -17,4 +17,5 @@ import lombok.ToString;
 public class AddressAddRequestDto {
     private Long userId;
     private String address;
+    private Long addressCode;
 }
