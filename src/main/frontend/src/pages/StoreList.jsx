@@ -90,7 +90,7 @@ export default function StoreList() {
                 variant="contained"
                 style={{textDecoration: 'none', color: 'white'}} 
                 sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem' }}>
-                가게 추가하기
+                메뉴 수정하기
               </Button>
             </div>
         </Grid>
