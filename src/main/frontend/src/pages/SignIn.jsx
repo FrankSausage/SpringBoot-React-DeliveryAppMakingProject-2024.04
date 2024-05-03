@@ -36,16 +36,14 @@ export default function SignIn() {
             return false;
           } else {
             axios.get(`dp/user/signin`, { params: { email: userInfo.email }})
-            .then(res => {
-              if (res.data.role !== '점주') {
-                setOutletAddress(res.data.currentAddress);
-                localStorage.setItem("address", res.data.currentAddress);
-                localStorage.setItem("splitAddress", JSON.stringify(splitAddressFromCurrentUserAddress(res.data.currentAddress)));
-                navigate('/');
-              } else {
-                navigate('/OwnerMain'); // Redirect to ownerMain if the role is '점주'
-              }
-            });
+              .then(res => {
+                if(res.data.role !== '점주'){
+                  setOutletAddress(res.data.currentAddress);
+                  localStorage.setItem("address", res.data.currentAddress); // 세션 스토리지 리팩터
+                  localStorage.setItem("splitAddress", JSON.stringify(splitAddressFromCurrentUserAddress(res.data.currentAddress)))
+                }
+              })
+              .then(navigate('/'))
           }
         })
     }

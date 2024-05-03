@@ -38,26 +38,11 @@ export default function SearchHeader() {
     navigate('/');
   };
 
-  useEffect(() => {
-    const loadDaumPostcodeScript = () => {
-      const script = document.createElement('script');
-      script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
-      script.async = true;
-      document.body.appendChild(script);
-      script.onload = () => {
-        console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
-      };
-    };
-
-    loadDaumPostcodeScript();
-
-    return () => {
-      // 언마운트 시 스크립트 제거 로직
-    };
-  }, []);
-  const handleFindPostcode = () => {
-    findPostcode(setRoadAddress, setExtraAddress, setAddressCode); // use findPostcode from AddressUtil
-  };
+  const handleNavigate = () => {
+    if(user)  {
+    navigate('address');
+    }
+  }
 
   const list = (
     <Box
@@ -103,13 +88,13 @@ export default function SearchHeader() {
             <OutlinedInput
               onClick={handleFindPostcode}
               value={address ? address : outletAddress}
-              placeholder="주소를 입력 하세요"
               startAdornment={
                 <InputAdornment position="start">
                   <GpsFixedIcon style={{ color: 'gray' }} />
                 </InputAdornment>
               }
               sx={{ width: '100%', maxWidth: 400, mr: 1, backgroundColor: 'white' }} 
+              onClick={handleNavigate}
             />
           </Box> 
           <Grid item xs={3}>

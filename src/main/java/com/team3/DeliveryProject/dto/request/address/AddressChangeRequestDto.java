@@ -1,6 +1,5 @@
 package com.team3.DeliveryProject.dto.request.address;
 
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,9 +13,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AddressModifyRequestDto {
-    private Long addressId;
+public class AddressChangeRequestDto {
+    private String email;
     private String address;
     private Long addressCode;
-    private String email;
 }
