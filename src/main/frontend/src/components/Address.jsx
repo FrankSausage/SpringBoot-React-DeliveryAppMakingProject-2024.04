@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useOutletContext } from "react-router";
 import { Box, Button,Divider, Grid, Input, Stack,  Typography, } from "@mui/material";
 import RoomIcon from '@mui/icons-material/Room';
+import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
 import { findPostcode } from "../utils/AddressUtil";
-import { extractDataFromFormData, useAddressListByEmail } from "../utils/userInfo";
+import { extractDataFromFormData, splitAddressFromCurrentUserAddress, useAddressListByEmail } from "../utils/userInfo";
 import { getCurrentUser } from "../utils/firebase";
 import axios from "axios";
+import AddressUpdate from "./AddressUpdate";
+import AddressDelete from "./AddressDelete";
 
 
 export default function Address() {
@@ -16,7 +19,9 @@ export default function Address() {
     const [extraAddress, setExtraAddress] = useState('');
     const [detailAddress, setDetailAddress] = useState('');
     const [addressCode, setAddressCode] = useState('');
+    const { setOutletAddress } = useOutletContext();
     const navigate = useNavigate();
+    console.log(address);
     useEffect(() => {
       const loadDaumPostcodeScript = () => {
         const script = document.createElement('script');
@@ -36,7 +41,7 @@ export default function Address() {
     }, []);
 
     const handleFindPostcode = () => {
-      findPostcode(setRoadAddress, setExtraAddress, setAddressCode); // use findPostcode from AddressUtil
+      findPostcode(setRoadAddress, setExtraAddress, setAddressCode);
     };
 
     const handleSubmit = e => {
@@ -47,14 +52,38 @@ export default function Address() {
         .then(res => {
           extractDataFromFormData(res)
             .then(resFormData => {
-              console.log(resFormData);
               axios.post(`/dp/address/add`, resFormData);
+              setOutletAddress(resFormData.address);
+              localStorage.setItem('address', resFormData.address)
+              localStorage.setItem('splitAddress', splitAddressFromCurrentUserAddress(resFormData.address))
             })
         })
         .then(() => {
           alert('주소 등록이 완료 되었습니다.');
           navigate('/');
         })
+        .catch(() => {
+          alert('주소 등록에 문제가 발생했습니다.');
+          navigate('/');
+        })
+    }
+
+    const handleCurrentChange = addressData => {
+      axios.post(`/dp/address/change`, {...addressData, ['email'] : email})
+      .then(() => {
+        setOutletAddress(addressData.address);
+        localStorage.setItem('address', addressData.address)
+        localStorage.setItem('splitAddress', splitAddressFromCurrentUserAddress(addressData.address));
+       })
+       .then(() => {
+        alert('현재 주소 변경에 성공하였습니다.')
+        navigate('/')
+       })
+       .catch(() => {
+        alert('현재 주소 변경에 실패하였습니다.')
+        navigate('/')
+       })
+
     }
 
     const setFormData = async (data) => {
@@ -62,7 +91,7 @@ export default function Address() {
         data.append('email', email);
         data.append('address', ((roadAddress ? roadAddress : '') + ',' 
           + (extraAddress ? extraAddress : '') + ',' + (detailAddress ? detailAddress : '')));
-        data.append('addressCode', addressCode);
+        data.append('addressCode', addressCode.substring(0,8));
         return await data;
       } catch(error) {
         return ('setFormData Error!: ' + error);
@@ -85,7 +114,9 @@ export default function Address() {
                   name='cuAddress'
                   id='cuAddress'
                   sx={{width: 400}} 
-                  placeholder="주소를 입력하세요..." required/>
+                  placeholder="주소를 입력하세요..." 
+                  required
+                  />
                   <Button sx={{border: 1, mx: 1}} onClick={handleFindPostcode}> 검색 </Button>
                 </Stack>
                   <Input type="text" value={detailAddress} 
@@ -93,7 +124,7 @@ export default function Address() {
                   placeholder="상세 주소"/>
               </Grid>
               <Grid item>
-                  { !roadAddress && !extraAddress && <Button type="submit" disabled>추가</Button> }
+                  { !roadAddress && !extraAddress && <Button disabled>추가</Button> }
                   { roadAddress && extraAddress && <Button type="submit">추가</Button> }
               </Grid>
             </Stack>
@@ -108,24 +139,21 @@ export default function Address() {
                 data.address===currentAddress ? 
                   <>
                   <Input value={data.address} sx={{width: 400}}/>  
-                  <Button sx={{border: 1, mx: 1}}>수정</Button>
-                  <RoomIcon />
+                  <AddressUpdate addressData={data.address} addressId={data.addressId} 
+                    email={email} currentAddress={currentAddress}/>
+                  <RoomIcon sx={{ml: 10}}/>
                   </>
                 : 
                   <>
                   <Input value={data.address} sx={{width: 400}}/>
-                  <Button sx={{border: 1, mx: 1}}>수정</Button>
+                  <AddressUpdate addressData={data.address} addressId={data.addressId} email={email}/>
+                  <AddressDelete addressData={data.address} addressId={data.addressId}/>
+                  <RoomOutlinedIcon onClick={() => handleCurrentChange(data)} sx={{cursor: "pointer"}}/>
                   </>
               }
-              
             </Stack>
           ))
         )}
-        {/* <Typography variant="h4"> 주소 정보 </Typography>
-        <Divider sx={{my: 3}} />
-        <Typography>현재 주소</Typography>
-        <TextField variant="outlined" value={currentAddress} />
-        <Button onClick={handleFindPostcode}>주소 추가</Button> */}
       </Box>
     );
 }
