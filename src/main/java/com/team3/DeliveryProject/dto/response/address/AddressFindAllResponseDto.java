@@ -20,6 +20,7 @@ public class AddressFindAllResponseDto {
     private Long addressId;
     private Long userId;
     private String address;
+    private Long addressCode;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private String status;
@@ -29,6 +30,7 @@ public class AddressFindAllResponseDto {
         this.addressId = address.getAddressId();
         this.userId = address.getUserId();
         this.address = address.getAddress();
+        this.addressCode = address.getAddressCode();
         this.createdDate = address.getCreatedDate();
         this.modifiedDate = address.getModifiedDate();
         this.status = address.getStatus();
