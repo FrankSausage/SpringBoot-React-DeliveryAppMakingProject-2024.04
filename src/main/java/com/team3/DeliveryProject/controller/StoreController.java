@@ -4,6 +4,7 @@ import com.team3.DeliveryProject.dto.request.store.StoreAddRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreListRequestDto;
+import com.team3.DeliveryProject.dto.request.store.StoreOwnerListRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateRequestDto;
 import com.team3.DeliveryProject.dto.request.user.UserSignUpRequestDto;
@@ -84,4 +85,8 @@ public class StoreController {
         return ResponseEntity.ok().body(storeService.getStoreDetail(requestDto));
     }
 
+    @GetMapping("/owner/list")
+    public ResponseEntity<?> getStoreListForOwner(@ModelAttribute StoreOwnerListRequestDto requestDto) {
+        return ResponseEntity.ok().body(storeService.getStoreListForOwner(requestDto));
+    }
 }
