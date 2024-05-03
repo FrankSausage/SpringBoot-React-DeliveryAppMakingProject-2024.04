@@ -55,7 +55,7 @@ export default function StoreList() {
               <Button
                 type="submit"
                 variant="contained"
-                style={{textDecoration: 'none', color: 'black'}} 
+                style={{textDecoration: 'none', color: 'white'}} 
                 sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem' }}>
                 가게 추가하기
               </Button>

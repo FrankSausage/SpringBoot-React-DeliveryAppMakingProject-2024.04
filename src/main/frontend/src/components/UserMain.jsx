@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import { Box, Grid, Stack, Typography, Button } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
+import SearchHeader from "./SearchHeader";
 
 export default function UserMain() {
 
@@ -13,6 +14,7 @@ export default function UserMain() {
     };
   return (
       <Box>
+        <SearchHeader />
         <Grid container>
           <Grid item xs={12} sx={{ border: 1 }}>
             <Stack sx={{ maxHeight: 200 }}>

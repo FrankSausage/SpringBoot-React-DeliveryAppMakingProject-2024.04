@@ -23,7 +23,7 @@ export default function Update() {
     const [ updateExtraAddress, setUpdateExtraAddress ] = useState(extraAddress);
     const [ updateDetailAddress ,setUpdateDetailAddress ] = useState(detailAddress);
     const [ addressCode, setAddressCode ] = useState('');
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const navigate = useNavigate();  
