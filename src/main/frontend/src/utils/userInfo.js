@@ -5,21 +5,33 @@ import { useState } from "react";
 
 export const useUserByEmail = email => {
     const { isLoading, error, data: user } = useQuery({
-        queryKey: ['email', email],
-        queryFn: async () => {
-            return axios.get(`/dp/user/update`, { params: { email: email }})
-            .then(res => res.data)
-            .catch(console.error);
-        }
-    })        
+      queryKey: ['email', email],
+      queryFn: async () => {
+        return axios.get(`/dp/user/update`, { params: { email: email }})
+        .then(res => res.data)
+        .catch(console.error);
+      }
+    });     
     return { isLoading, error, user };
+}
+
+export const useAddressListByEmail = email => {
+  const { isLoading, error, data: address } = useQuery({
+    queryKey: ['email', email],
+    queryFn: async () => {
+      return axios.get(`/dp/address/getList`, { params: { email: email }})
+        .then(res => res.data)
+        .catch(console.error);
+    }
+  });
+  return { isLoading, error, address };
 }
 
 export async function extractDataFromFormData(formData) {
     const data = {};
     for (const [key, value] of formData.entries()) {
       data[key] = value;
-    }
+    };
     return await data;
   }
 
