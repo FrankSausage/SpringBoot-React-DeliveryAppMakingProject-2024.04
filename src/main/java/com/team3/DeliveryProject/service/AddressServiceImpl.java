@@ -1,13 +1,11 @@
 package com.team3.DeliveryProject.service;
 
 import static com.team3.DeliveryProject.responseCode.ResponseCode.ADDRESS_ADD_SUCCESS;
-import static com.team3.DeliveryProject.responseCode.ResponseCode.ADDRESS_CHANGE_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.ADDRESS_DELETE_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.ADDRESS_MODIFY_SUCCESS;
 
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.address.AddressAddRequestDto;
-import com.team3.DeliveryProject.dto.request.address.AddressChangeRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressFindAllRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressModifyRequestDto;
@@ -31,17 +29,10 @@ public class AddressServiceImpl implements AddressService{
     private final AddressRepository addressRepository;
     @Override
     public ResponseEntity<Response> addAddress(AddressAddRequestDto requestDto) {
-        Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()->new RuntimeException("User not found"));
 
-        Address address = new Address(user.getUserId(), requestDto.getAddress(), requestDto.getAddressCode(),
+        Address address = new Address(requestDto.getUserId(), requestDto.getAddress(), requestDto.getAddressCode(),
             LocalDateTime.now(), LocalDateTime.now(),"일반");
         addressRepository.save(address);
-        AddressChangeRequestDto addressChangeRequestDto = AddressChangeRequestDto.builder()
-            .email(requestDto.getEmail())
-            .address(requestDto.getAddress())
-            .addressCode(requestDto.getAddressCode())
-            .build();
-        changeCurrentAddress(addressChangeRequestDto);
 
         return Response.toResponseEntity(ADDRESS_ADD_SUCCESS);
     }
@@ -54,13 +45,6 @@ public class AddressServiceImpl implements AddressService{
         address.setStatus("수정");
         address.setModifiedDate(LocalDateTime.now());
         addressRepository.save(address);
-
-        AddressChangeRequestDto addressChangeRequestDto = AddressChangeRequestDto.builder()
-            .email(requestDto.getEmail())
-            .address(requestDto.getAddress())
-            .addressCode(requestDto.getAddressCode())
-            .build();
-        changeCurrentAddress(addressChangeRequestDto);
         return Response.toResponseEntity(ADDRESS_MODIFY_SUCCESS);
     }
 
@@ -82,15 +66,6 @@ public class AddressServiceImpl implements AddressService{
             .collect(Collectors.toList());
 
         return responseDtos;
-    }
-
-    @Override
-    public ResponseEntity<Response> changeCurrentAddress(AddressChangeRequestDto requestDto) {
-        Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()->new RuntimeException("User not found"));
-        user.setCurrentAddress(requestDto.getAddress());
-        user.setAddressCode(requestDto.getAddressCode());
-        usersRepository.save(user);
-        return Response.toResponseEntity(ADDRESS_CHANGE_SUCCESS);
     }
 
 }

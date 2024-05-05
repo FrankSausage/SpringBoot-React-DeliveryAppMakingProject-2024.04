@@ -1,7 +1,6 @@
 package com.team3.DeliveryProject.controller;
 
 import com.team3.DeliveryProject.dto.request.address.AddressAddRequestDto;
-import com.team3.DeliveryProject.dto.request.address.AddressChangeRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressFindAllRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressModifyRequestDto;
@@ -51,10 +50,4 @@ public class AddressController {
     public ResponseEntity<?> getListAddress(@ModelAttribute AddressFindAllRequestDto requestDto) {
         return ResponseEntity.ok().body(addressService.findAllAddress(requestDto));
     }
-
-    @PostMapping("/change")
-    public ResponseEntity<?> changeAddress(@RequestBody AddressChangeRequestDto requestDto) {
-        return ResponseEntity.ok().body(addressService.changeCurrentAddress(requestDto));
-    }
-
 }

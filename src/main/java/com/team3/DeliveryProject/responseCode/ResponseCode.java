@@ -16,7 +16,6 @@ public enum ResponseCode {
     STORE_DELETE_SUCCESS(HttpStatus.OK,"가게 삭제 성공"),
     ADDRESS_MODIFY_SUCCESS(HttpStatus.OK,"주소 수정 성공"),
     ADDRESS_DELETE_SUCCESS(HttpStatus.OK,"주소 삭제 성공"),
-    ADDRESS_CHANGE_SUCCESS(HttpStatus.OK, "주소 변경 성공"),
     USER_INFO_UPDATE_SUCCESS(HttpStatus.OK, "계정정보 변경 성공"),
     ACCESS_TOKEN_IS_VALID(HttpStatus.OK, "유효한 토큰입니다"),
     COMPANY_CREATE_SUCCESS(HttpStatus.OK, "회사정보 생성 성공"),
