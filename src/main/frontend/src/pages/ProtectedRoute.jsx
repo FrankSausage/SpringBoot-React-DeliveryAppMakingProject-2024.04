@@ -4,8 +4,10 @@ import { useAuthContext } from "../context/AuthContext";
 
 export default function ProtectedRoute({ children }) {
   const { user } = useAuthContext();
-  if (!user)
-    return <Navigate to='/' replace={true} />
+  if (!user){
+    alert('로그인이 필요합니다.')
+    return <Navigate to='/signIn' replace={true} />
+  }
 
   return children;
 }

@@ -54,8 +54,8 @@ export default function Address() {
             .then(resFormData => {
               axios.post(`/dp/address/add`, resFormData);
               setOutletAddress(resFormData.address);
-              localStorage.setItem('address', resFormData.address)
-              localStorage.setItem('splitAddress', splitAddressFromCurrentUserAddress(resFormData.address))
+              localStorage.setItem('address', resFormData.address);
+              localStorage.setItem('splitAddress', JSON.stringify(splitAddressFromCurrentUserAddress(resFormData.address)));
             })
         })
         .then(() => {
@@ -73,7 +73,7 @@ export default function Address() {
       .then(() => {
         setOutletAddress(addressData.address);
         localStorage.setItem('address', addressData.address)
-        localStorage.setItem('splitAddress', splitAddressFromCurrentUserAddress(addressData.address));
+        localStorage.setItem('splitAddress', JSON.stringify(splitAddressFromCurrentUserAddress(addressData.address)));
        })
        .then(() => {
         alert('현재 주소 변경에 성공하였습니다.')
@@ -124,8 +124,8 @@ export default function Address() {
                   placeholder="상세 주소"/>
               </Grid>
               <Grid item>
-                  { !roadAddress && !extraAddress && <Button disabled>추가</Button> }
-                  { roadAddress && extraAddress && <Button type="submit">추가</Button> }
+                  { !roadAddress && <Button disabled>추가</Button> }
+                  { roadAddress && <Button type="submit">추가</Button> }
               </Grid>
             </Stack>
           </Grid>
