@@ -24,9 +24,6 @@ public class MenuOption {
     private String menuOption;
 
     @Column(nullable = false)
-    private String content;
-
-    @Column(nullable = false)
     private int price;
 
     @Temporal(TemporalType.TIMESTAMP)
