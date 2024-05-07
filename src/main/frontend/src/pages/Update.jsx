@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container, Modal } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -18,10 +18,11 @@ export default function Update() {
     const [ phoneNumber, setPhoneNumber] = useState();
     const [ passwordCheack, setPasswordCheack ] = useState('');
     const [ isPasswordMatch, setIsPasswordMatch ] = useState(true);
-    const { roadAddress, extraAddress, detailAddress} = JSON.parse(localStorage.getItem("splitAddress"))
-    const [ updateRoadAddress, setUpdateRoadAddress ] = useState(roadAddress);
-    const [ updateExtraAddress, setUpdateExtraAddress ] = useState(extraAddress);
-    const [ updateDetailAddress ,setUpdateDetailAddress ] = useState(detailAddress);
+    const { roadAddress, extraAddress, detailAddress} = (localStorage.getItem("splitAddress") ? 
+        JSON.parse(localStorage.getItem("splitAddress")) : ({roadAddress: '', extraAddress: '', detailAddress : ''}));
+    const [ updateRoadAddress, setUpdateRoadAddress ] = useState(roadAddress ? roadAddress : '');
+    const [ updateExtraAddress, setUpdateExtraAddress ] = useState(extraAddress ? extraAddress : '');
+    const [ updateDetailAddress ,setUpdateDetailAddress ] = useState(detailAddress ? detailAddress : '');
     const [ addressCode, setAddressCode ] = useState('');
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -65,7 +66,7 @@ export default function Update() {
           setIsPasswordMatch(true);
           
           if(setIsPasswordMatch) {
-          setFormData(data)
+            setFormData(data)
               .then(res => {
               updateUser(res);
               extractDataFromFormData(res)
@@ -96,8 +97,8 @@ export default function Update() {
     const setFormData = async (data) => {
       try{
         data.append('currentAddress', ((updateRoadAddress ? updateRoadAddress : '') + ',' 
-          + (updateExtraAddress ? updateExtraAddress : '') + ',' 
-          + (updateDetailAddress ? updateDetailAddress : '')
+        + (updateExtraAddress ? updateExtraAddress : '') + ',' 
+        + (updateDetailAddress ? updateDetailAddress : '')
         ));
         data.append('addressCode', addressCode.substring(0,8));
         return await data;
@@ -190,7 +191,7 @@ export default function Update() {
                                         inputMode: 'numeric',
                                     }}
                                 />
-                            </Grid>
+                            </Grid>                            
                             <Grid item xs={12}>
                                 <TextField
                                     required
