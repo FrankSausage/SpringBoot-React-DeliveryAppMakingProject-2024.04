@@ -20,7 +20,7 @@ export default function OwnerMain() {     // 해더 부분 주소창 안뜨게 �
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-              }}>05
+              }}>
               </Box>
           </Stack>
         </Grid>              
