@@ -39,7 +39,7 @@ public class Menu {
     private String menuPictureName;
 
     @Column(nullable = false)
-    private int popularity;
+    private byte popularity;
 
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdDate;
@@ -51,7 +51,7 @@ public class Menu {
     private String status;
 
     public Menu(Long storeId, String category, String name, String content, int price,
-        String menuPictureName, int popularity, LocalDateTime createdDate,
+        String menuPictureName, byte popularity, LocalDateTime createdDate,
         LocalDateTime modifiedDate,
         String status) {
         this.storeId = storeId;
