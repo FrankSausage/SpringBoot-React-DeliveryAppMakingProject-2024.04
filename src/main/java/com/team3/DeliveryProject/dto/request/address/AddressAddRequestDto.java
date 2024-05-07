@@ -15,6 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class AddressAddRequestDto {
-    private Long userId;
+    private String email;
     private String address;
+    private Long addressCode;
 }

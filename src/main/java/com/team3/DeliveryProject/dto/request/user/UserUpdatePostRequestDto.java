@@ -19,4 +19,5 @@ public class UserUpdatePostRequestDto {
     private String name;
     private String password;
     private String phone;
+    private Long addressCode;
 }

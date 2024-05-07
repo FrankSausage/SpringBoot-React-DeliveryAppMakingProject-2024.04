@@ -32,9 +32,20 @@ public class Address {
         this.status = status;
     }
 
+    public Address(Long userId, String address, Long addressCode, LocalDateTime createdDate,
+        LocalDateTime modifiedDate, String status) {
+        this.userId = userId;
+        this.address = address;
+        this.addressCode = addressCode;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.status = status;
+    }
+
     @Column(nullable = false)
     private String address;
-
+    @Column(nullable = false)
+    private Long addressCode;
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdDate;
 
