@@ -10,13 +10,15 @@ import Store from './pages/Store';
 import Update from './pages/Update';
 import ProtectedRoute from './pages/ProtectedRoute';
 import StoreRegister from './pages/StoreRegister';
-import StoreList from './pages/StoreList';
 import StoreUpdate from './pages/StoreUpdate';
 import StoreDetail from './pages/StoreDetail';
 import StoreInto from './pages/StoreInto';
-import Address from './components/Address';
 import UserMain from './components/UserMain';
 import OwnerMain from './components/OwnerMain';
+import StoreList from './pages/StoreList';
+import Address from './components/Address';
+import MenuRegister from './pages/MenuRegister';
+import MenuUpdate from './pages/MenuUpdate';
 
 const router = createBrowserRouter([
   {
@@ -27,15 +29,17 @@ const router = createBrowserRouter([
       { path: 'Signin', element: <SignIn />},
       { path: 'SignUp', element: <SignUp />},
       { path: 'Store', element: <Store />},
-      { path: 'StoreRegister', element: <StoreRegister />},
-      { path: 'StoreList', element: <StoreList />},
+      { path: 'Store/:category', element: <Store />},
       { path: 'Update', element: <ProtectedRoute><Update /></ProtectedRoute>},
-      { path: 'Address', element: <ProtectedRoute><Address /></ProtectedRoute>},
+      { path: 'Address', element: <Address />},
+      { path: 'Store', element: <Store />},
+      { path: 'StoreRegister', element: <StoreRegister />},
       { path: 'StoreUpdate', element: <StoreUpdate />},
       { path: 'StoreDetail', element: <StoreDetail />},
-      // { path: 'StoreInto', element: <StoreInto />,},
       { path: 'StoreInto', element: <StoreInto />,},
       { path: 'StoreList', element: <StoreList />,},
+      { path: 'MenuRegister', element: <MenuRegister />},
+      { path: 'MenuUpdate', element: <MenuUpdate />},
       { path: 'UserMain', element: <UserMain />,},
       { path: 'OwnerMain', element: <OwnerMain />},
     ]

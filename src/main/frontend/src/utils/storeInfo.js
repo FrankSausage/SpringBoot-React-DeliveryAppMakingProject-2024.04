@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
-export const useUserByEmail = (email, storeId) => {
+export const useUserByEmail = (storeId) => {
     const { isLoading, error, data: user } = useQuery({
-        queryKey: ['email', email, 'storeId', storeId],
+        queryKey: ['storeId', storeId],
         queryFn: async () => {
-            return axios.get(`/dp/store/owner/update`, { params: { email: email, storeId: storeId }})
+            return axios.get(`/dp/store/owner/update`, { params: { storeId: storeId }})
             .then(res => res.data)
             .catch(console.error);
         }

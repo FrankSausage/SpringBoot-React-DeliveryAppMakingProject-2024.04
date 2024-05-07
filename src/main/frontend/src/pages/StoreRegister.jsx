@@ -13,9 +13,6 @@ import Ownerheader from '../components/OwnerHeader';
 const defaultTheme = createTheme();
 
 export default function StoreRegister() {
-
-  const { email } = getCurrentUser();
-  const { isLoading, error, user } = useUserByEmail(email);
   const [roadAddress, setRoadAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
@@ -289,6 +286,7 @@ export default function StoreRegister() {
                   id="minDeliveryPrice"
                   label="최소 주문금액"
                   onChange={e => setMinDeliveryPrice(e.target.value)}
+                  autoFocus
                 />
               </Grid>
               <Grid item xs={12}>
