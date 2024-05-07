@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Footer from '../components/Footer';
+import Footer from '../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
-import { findPostcode } from '../utils/AddressUtil';
-import { getCurrentUser, register } from '../utils/firebase';
-import { extractDataFromFormData, formatPhoneNumber } from '../utils/storeInfo';
+import { findPostcode } from '../../utils/AddressUtil';
+import { getCurrentUser, register } from '../../utils/firebase';
+import { extractDataFromFormData, formatPhoneNumber } from '../../utils/storeInfo';
 import axios from 'axios';
-import Ownerheader from '../components/OwnerHeader';
+import Ownerheader from '../../components/OwnerHeader';
 
 const defaultTheme = createTheme();
 

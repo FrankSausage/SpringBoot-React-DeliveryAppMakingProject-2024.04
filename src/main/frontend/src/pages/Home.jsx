@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import Footer from "../components/Footer"
-import UserMain from "../components/UserMain";
-import OwnerMain from "../components/OwnerMain";
+import UserMain from "./Users/View/UserMain";
+import OwnerMain from "./Users/View/OwnerMain"; 
 
 //주소: http://localhost:3000
 

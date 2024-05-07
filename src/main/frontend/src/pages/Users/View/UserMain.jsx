@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { Box, Grid, Stack, Typography, Button } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
-import SearchHeader from "./SearchHeader";
+import SearchHeader from "../../../components/SearchHeader";
 
 export default function UserMain() {
 

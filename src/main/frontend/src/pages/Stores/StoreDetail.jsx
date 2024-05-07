@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import Footer from "../components/Footer";
+import Footer from "../../components/Footer";
 import { Stack, Box, Grid, InputBase, Button, Tab, Tabs, Typography, FormControlLabel, Checkbox } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
-import Ownerheader from '../components/OwnerHeader';
+import Ownerheader from '../../components/OwnerHeader';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import StoreInfo from './StoreInfo';
+import StoreMenuList from './StoreMenuList';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -39,10 +41,10 @@ function a11yProps(index) {
   };
 }
 
-export default function StoreList() {
+export default function StoreDetail() {
   const { state: category } = useLocation();
-  const [value, setValue] = useState(category);
-  const { popularity, setPopularity } = useState('');
+  const [value, setValue] = useState(category ? category : 1);
+  const [ popularity, setPopularity ] = useState('');
   const [searchOpen, setSearchOpen] = useState(false); // 검색 창의 상태를 추적하는 state
   const navigate = useNavigate();
 
@@ -55,8 +57,6 @@ export default function StoreList() {
   const handleLinkClick = () => {
     navigate('/MenuUpdate');
   };
-
-
 
   const handleSearchTabClick = () => {
     setSearchOpen(!searchOpen); // 메뉴 검색 탭을 클릭할 때마다 검색 창 열기/닫기
@@ -98,11 +98,17 @@ export default function StoreList() {
               </Box>
             </Grid>
           </Box>
-          <Tab label="메뉴" component={Link} to="/StoreList" {...a11yProps(1)} sx={{ marginLeft: 2, marginRight: 2 }} />
-          <Tab label="가게 정보·원산지" component={Link} to="/StoreList" {...a11yProps(2)} autoFocus sx={{ marginLeft: 2, marginRight: 2 }} />
+          <Tab label="메뉴" {...a11yProps(1)} sx={{ marginLeft: 2, marginRight: 2 }} />
+          <Tab label="가게 정보·원산지" {...a11yProps(2)} autoFocus sx={{ marginLeft: 2, marginRight: 2 }} />
         </Tabs>
       </Box>
-      <Grid container>
+      <CustomTabPanel value={value} index={1}>
+        <StoreMenuList menuNumber={'123'} />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+        <StoreInfo />
+      </CustomTabPanel>
+      {/* <Grid container>
         <Grid item xs />
         <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
           <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
@@ -139,7 +145,7 @@ export default function StoreList() {
           </div>
         </Grid>
         <Grid item xs />
-      </Grid>
+      </Grid> */}
       <Footer />
     </Box>
   );
