@@ -6,8 +6,19 @@ import reportWebVitals from './reportWebVitals';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
+import Store from './pages/Store';
 import Update from './pages/Update';
 import ProtectedRoute from './pages/ProtectedRoute';
+import StoreRegister from './pages/StoreRegister';
+import StoreUpdate from './pages/StoreUpdate';
+import StoreDetail from './pages/StoreDetail';
+import StoreInto from './pages/StoreInto';
+import UserMain from './components/UserMain';
+import OwnerMain from './components/OwnerMain';
+import StoreList from './pages/StoreList';
+import Address from './components/Address';
+import MenuRegister from './pages/MenuRegister';
+import MenuUpdate from './pages/MenuUpdate';
 
 const router = createBrowserRouter([
   {
@@ -17,12 +28,23 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'Signin', element: <SignIn />},
       { path: 'SignUp', element: <SignUp />},
-      { path: 'Update', 
-      element: <ProtectedRoute><Update /></ProtectedRoute>},
+      { path: 'Store', element: <Store />},
+      { path: 'Store/:category', element: <Store />},
+      { path: 'Update', element: <ProtectedRoute><Update /></ProtectedRoute>},
+      { path: 'Address', element: <Address />},
+      { path: 'Store', element: <Store />},
+      { path: 'StoreRegister', element: <StoreRegister />},
+      { path: 'StoreUpdate', element: <StoreUpdate />},
+      { path: 'StoreDetail', element: <StoreDetail />},
+      { path: 'StoreInto', element: <StoreInto />,},
+      { path: 'StoreList', element: <StoreList />,},
+      { path: 'MenuRegister', element: <MenuRegister />},
+      { path: 'MenuUpdate', element: <MenuUpdate />},
+      { path: 'UserMain', element: <UserMain />,},
+      { path: 'OwnerMain', element: <OwnerMain />},
     ]
   }
 ]);
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

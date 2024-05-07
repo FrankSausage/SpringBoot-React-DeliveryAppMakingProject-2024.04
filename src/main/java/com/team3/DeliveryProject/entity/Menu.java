@@ -30,7 +30,8 @@ public class Menu {
 
     @Column(nullable = false)
     private String name;
-
+    @Column(nullable = true)
+    private String content;
     @Column(nullable = false)
     private int price;
 
@@ -49,4 +50,19 @@ public class Menu {
     @Column(nullable = false)
     private String status;
 
+    public Menu(Long storeId, String category, String name, String content, int price,
+        String menuPictureName, int popularity, LocalDateTime createdDate,
+        LocalDateTime modifiedDate,
+        String status) {
+        this.storeId = storeId;
+        this.category = category;
+        this.name = name;
+        this.content = content;
+        this.price = price;
+        this.menuPictureName = menuPictureName;
+        this.popularity = popularity;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.status = status;
+    }
 }
