@@ -34,6 +34,11 @@ export default function StoreRegister() {
   const [email, setEmail] = useState('');
   const { isLoading, error, user } = useUserByEmail(email);
 
+    // 현재 사용자의 이메일을 설정합니다.가 현재 사용자의 이메일 정보를 보냅니다로 바뀌게
+    useEffect(() => {
+      const { email } = getCurrentUser();
+      setEmail(email);
+    }, []);
 
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
@@ -69,7 +74,11 @@ export default function StoreRegister() {
 
     const formData = await setFormData(data);
     extractDataFromFormData(formData)
-      .then(resFormData => axios.post(`/dp/store/owner/update`, resFormData));
+      .then(resFormData => {
+        // axios.post(`/dp/store/owner/update`, resFormData)
+        console.log(resFormData);
+      }
+    );
 
     alert('입점 신청이 완료되었습니다.');
     navigate('/OwnerMain');
