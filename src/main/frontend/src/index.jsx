@@ -14,9 +14,6 @@ import StoreList from './pages/StoreList';
 import StoreUpdate from './pages/StoreUpdate';
 import StoreDetail from './pages/StoreDetail';
 import StoreInto from './pages/StoreInto';
-import StoreUpdate from './pages/StoreUpdate';
-import StoreDetail from './pages/StoreDetail';
-import StoreInto from './pages/StoreInto';
 import Address from './components/Address';
 
 
