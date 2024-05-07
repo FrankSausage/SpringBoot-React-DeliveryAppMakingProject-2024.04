@@ -8,21 +8,22 @@ import com.team3.DeliveryProject.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/menu")
+@RequestMapping("/store")
 public class MenuController {
     @Autowired
     private MenuService menuService;
-    @PostMapping("/register")
+    @PostMapping("/menu/register")
     public ResponseEntity<?> addMenu(@RequestBody MenuAddRequestDto requestDto) {
         return ResponseEntity.ok().body(menuService.addMenu(requestDto).getBody());
     }
 
-    @PostMapping("/option/register")
+    @PostMapping("/munuoption/register")
     public ResponseEntity<?> addMenuOption(@RequestBody MenuOptionAddRequestDto requestDto) {
         return ResponseEntity.ok().body(menuService.addMenuOption(requestDto).getBody());
     }
