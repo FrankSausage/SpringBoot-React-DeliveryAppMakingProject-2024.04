@@ -79,10 +79,10 @@ export default function SignUp() {
 
   const setFormData = async (data) => {
     try{
-      data.append('currentAddress', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '') 
-          + ',' + (detailAddress ? detailAddress : '')));
-      data.append('role', role);
-      data.append('addressCode', addressCode.substring(0,8));
+        data.append('currentAddress', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '') 
+            + ',' + (detailAddress ? detailAddress : '')));
+        data.append('role', role);
+        data.append('addressCode', role==='회원' ? addressCode.substring(0,8) : '00000000');
       return await data;
     }
     catch (error) {

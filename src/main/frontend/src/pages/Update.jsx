@@ -25,10 +25,10 @@ export default function Update() {
     const [ updateDetailAddress ,setUpdateDetailAddress ] = useState(detailAddress ? detailAddress : '');
     const [ addressCode, setAddressCode ] = useState('');
     const [open, setOpen] = React.useState(false);
+    const role = localStorage.getItem('role');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const navigate = useNavigate();  
-
     useEffect(() => {
       const loadDaumPostcodeScript = () => {
         const script = document.createElement('script');
@@ -100,7 +100,7 @@ export default function Update() {
         + (updateExtraAddress ? updateExtraAddress : '') + ',' 
         + (updateDetailAddress ? updateDetailAddress : '')
         ));
-        data.append('addressCode', addressCode.substring(0,8));
+        data.append('addressCode', user.role==='회원' ? addressCode.substring(0,8) : '00000000');
         return await data;
       }
       catch (error) {
@@ -191,50 +191,54 @@ export default function Update() {
                                         inputMode: 'numeric',
                                     }}
                                 />
-                            </Grid>                            
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="roadAddress"
-                                    label="도로명주소"
-                                    value={updateRoadAddress}
-                                    InputProps={{
-                                        readOnly: true, // 도로명주소도 수정되지 않도록 설정되어 있습니다.
-                                    }}
-                                />
-                            </Grid>
-                            <Button
-                                type="button"
-                                onClick={handleFindPostcode}
-                                fullWidth
-                                variant="contained"
-                                sx={{ mt: 1, mb: 2, ml: 2}}
-                            >
-                                주소 찾기
-                            </Button>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="extraAddress"
-                                    label="참고항목"
-                                    value={updateExtraAddress}
-                                    InputProps={{
-                                        readOnly: true, // 참고항목도 수정되지 않도록 설정되어 있습니다.
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="detailAddress"
-                                    label="상세주소"
-                                    value={updateDetailAddress}
-                                    onChange={e => setUpdateDetailAddress(e.target.value)}
-                                />
-                            </Grid>
+                            </Grid>    
+                            {role==='회원' &&
+                            <Fragment>
+                              <Grid item xs={12}>
+                                  <TextField
+                                      required
+                                      fullWidth
+                                      id="roadAddress"
+                                      label="도로명주소"
+                                      value={updateRoadAddress}
+                                      InputProps={{
+                                          readOnly: true, // 도로명주소도 수정되지 않도록 설정되어 있습니다.
+                                      }}
+                                  />
+                              </Grid>
+                              <Button
+                                  type="button"
+                                  onClick={handleFindPostcode}
+                                  fullWidth
+                                  variant="contained"
+                                  sx={{ mt: 1, mb: 2, ml: 2}}
+                              >
+                                  주소 찾기
+                              </Button>
+                              <Grid item xs={12}>
+                                  <TextField
+                                      required
+                                      fullWidth
+                                      id="extraAddress"
+                                      label="참고항목"
+                                      value={updateExtraAddress}
+                                      InputProps={{
+                                          readOnly: true, // 참고항목도 수정되지 않도록 설정되어 있습니다.
+                                      }}
+                                  />
+                              </Grid>
+                              <Grid item xs={12}>
+                                  <TextField
+                                      required
+                                      fullWidth
+                                      id="detailAddress"
+                                      label="상세주소"
+                                      value={updateDetailAddress}
+                                      onChange={e => setUpdateDetailAddress(e.target.value)}
+                                  />
+                              </Grid>
+                            </Fragment>
+                            }                        
                             <Grid item xs={12}>
                                 <Button 
                                     fullWidth 
