@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class MenuOptionDto {
     private Long menuOptionId;
     private Long menuId;
-    private String menuOption;
+    private String options;
     private String content;
     private int price;
     private LocalDateTime createdDate;
@@ -25,8 +25,7 @@ public class MenuOptionDto {
         return MenuOptionDto.builder()
                 .menuOptionId(entity.getMenuOptionId())
                 .menuId(entity.getMenuId())
-                .menuOption(entity.getMenuOption())
-                .content(entity.getContent())
+                .options(entity.getOptions())
                 .price(entity.getPrice())
                 .createdDate(entity.getCreatedDate())
                 .modifiedDate(entity.getModifiedDate())
