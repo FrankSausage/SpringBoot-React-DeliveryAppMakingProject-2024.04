@@ -29,7 +29,7 @@ const router = createBrowserRouter([
       { path: 'StoreRegister', element: <StoreRegister />},
       { path: 'StoreList', element: <StoreList />},
       { path: 'Update', element: <ProtectedRoute><Update /></ProtectedRoute>},
-      { path: 'Address', element: <Address />},
+      { path: 'Address', element: <ProtectedRoute><Address /></ProtectedRoute>},
       { path: 'StoreUpdate', element: <StoreUpdate />},
       { path: 'StoreDetail', element: <StoreDetail />},
       { path: 'StoreInto', element: <StoreInto />,}

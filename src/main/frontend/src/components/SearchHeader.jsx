@@ -15,7 +15,7 @@ import { logout } from '../utils/firebase';
 export default function SearchHeader() {
   const [ state, setState ] = useState({ left: false, });
   const { user } = useAuthContext();
-  const { outletAddress } = useOutletContext();
+  const { outletAddress, setOutletAddress } = useOutletContext();
   const address = localStorage.getItem("address") && localStorage.getItem("address");
   const navigate = useNavigate();
 
@@ -32,12 +32,16 @@ export default function SearchHeader() {
 
   const handleLogout = () => {
     logout();
+    setOutletAddress('');
     navigate('/');
   };
 
   const handleNavigate = () => {
     if(user)  {
     navigate('address');
+    } else {
+      alert('로그인이 필요합니다.');
+      navigate('signIn');
     }
   }
 
