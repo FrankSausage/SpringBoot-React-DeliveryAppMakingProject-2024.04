@@ -8,7 +8,7 @@ import OwnerMain from "../components/OwnerMain";
 
 export default function Home() {
     // const role = '회원'
-    const role = localStorage.getItem('role') ? localStorage.setItem('role') : '점주';
+    const role = localStorage.getItem('role') ? localStorage.setItem('role') : '회원';
     return(
         <Box sx={{ margin: -1 }}>
             {role==='회원' && <UserMain />}
