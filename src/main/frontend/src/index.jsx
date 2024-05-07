@@ -15,10 +15,8 @@ import StoreUpdate from './pages/StoreUpdate';
 import StoreDetail from './pages/StoreDetail';
 import StoreInto from './pages/StoreInto';
 import Address from './components/Address';
-
 import UserMain from './components/UserMain';
 import OwnerMain from './components/OwnerMain';
-import StoreList from './pages/StoreList';
 
 const router = createBrowserRouter([
   {
