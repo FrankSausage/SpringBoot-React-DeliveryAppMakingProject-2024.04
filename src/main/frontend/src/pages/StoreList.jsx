@@ -51,7 +51,7 @@ export default function StoreList() {
     setSearchOpen(false); // 다른 탭을 클릭할 때 검색 창 닫기
   };
 
- 
+
   const handleLinkClick = () => {
     navigate('/MenuUpdate');
   };
@@ -66,42 +66,42 @@ export default function StoreList() {
     <Box sx={{ margin: -1 }}>
       <Ownerheader />
       <Box sx={{ borderBottom: 1, borderColor: 'black', display: 'flex', justifyContent: 'center' }}>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        aria-label="basic tabs example"
-        sx={{ transition: 'margin-left 0.5s' }} // 탭 이동 애니메이션을 위한 CSS transition
-        style={{ marginLeft: searchOpen ? '-150px' : '0' }} // 검색 창이 열린 경우 왼쪽으로 이동
-      >
-        <Tab label="메뉴 검색" onClick={handleSearchTabClick} {...a11yProps(0)} autoFocus>
-          {searchOpen && (
-            <Box sx={{ display: 'flex', alignItems: 'center', border: 1, borderColor: 'divider', borderRadius: 1 }}>
-              <SearchIcon sx={{ m: 1 }} />
-              <InputBase
-                placeholder="검색"
-                inputProps={{ 'aria-label': 'search' }}
-                fullWidth
-              />
-            </Box>
-          )}
-        </Tab>
-        <Tab label="메뉴" component={Link} to="/StoreList" {...a11yProps(1)} />
-        <Tab label="가게 정보·원산지" component={Link} to="/StoreList" {...a11yProps(2)} autoFocus />
-      </Tabs>
-    </Box>
-
-      {/* <Grid container justifyContent="center" alignItems="center" mt={2}>
-        <Grid item xs={6} md={4}>
-          <Box sx={{ display: 'flex', alignItems: 'center', border: 1, borderColor: 'divider', borderRadius: 1 }}>
-            <SearchIcon sx={{ m: 1 }} />
-            <InputBase
-              placeholder="검색"
-              inputProps={{ 'aria-label': 'search' }}
-              fullWidth
-            />
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', mt: 0 }}>
+            <Tab label="메뉴 검색" onClick={handleSearchTabClick} autoFocus sx={{
+              borderBottom: searchOpen ? '1px solid black' : 'none',
+              marginRight: 2,
+            }} />
+            <Grid item xs={searchOpen ? 6 : 0} md={4}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  border: searchOpen ? '1px solid black' : 'none',
+                  borderRadius: 1,
+                  transition: 'width 0.3s ease-in-out', // 애니메이션 효과 추가
+                  width: searchOpen ? 'auto' : 0, // 검색창이 열릴 때만 너비 적용
+                  overflow: 'hidden', // 컨텐츠가 넘치면 숨김
+                }}
+              >
+                <SearchIcon sx={{ m: 1 }} />
+                <InputBase
+                  placeholder="검색"
+                  inputProps={{ 'aria-label': 'search' }}
+                  fullWidth
+                  autoFocus={searchOpen} // 검색창이 열릴 때 자동 포커스
+                />
+              </Box>
+            </Grid>
           </Box>
-        </Grid>
-      </Grid> */}
+          <Tab label="메뉴" component={Link} to="/StoreList" {...a11yProps(1)} sx={{ marginLeft: 2, marginRight: 2 }} />
+          <Tab label="가게 정보·원산지" component={Link} to="/StoreList" {...a11yProps(2)} autoFocus sx={{ marginLeft: 2, marginRight: 2 }} />
+        </Tabs>
+      </Box>
       <Grid container>
         <Grid item xs />
         <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
@@ -127,50 +127,7 @@ export default function StoreList() {
               </div>
             </Box>
           </Grid>
-          <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
-            <Box sx={{ ...boxStyle, position: 'relative', width: { xs: '100%', sm: '70%' }, height: '150px', marginX: 'auto' }}>
-              <div>
-                <img src={'/img/01.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
-                <ul style={{ position: 'absolute', top: '50%', left: '30%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
-                  <li style={{ listStyleType: 'none' }}>음식 이름</li>
-                  <li style={{ listStyleType: 'none' }}>가격</li>
-                </ul>
-              </div>
-            </Box>
-          </Grid>
-          <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
-            <Box sx={{ ...boxStyle, position: 'relative', width: { xs: '100%', sm: '70%' }, height: '150px', marginX: 'auto' }}>
-              <div>
-                <img src={'/img/01.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
-                <ul style={{ position: 'absolute', top: '50%', left: '30%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
-                  <li style={{ listStyleType: 'none' }}>음식 이름</li>
-                  <li style={{ listStyleType: 'none' }}>가격</li>
-                </ul>
-              </div>
-            </Box>
-          </Grid>
-          <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
-            <Box sx={{ ...boxStyle, position: 'relative', width: { xs: '100%', sm: '70%' }, height: '150px', marginX: 'auto' }}>
-              <div>
-                <img src={'/img/01.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
-                <ul style={{ position: 'absolute', top: '50%', left: '30%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
-                  <li style={{ listStyleType: 'none' }}>음식 이름</li>
-                  <li style={{ listStyleType: 'none' }}>가격</li>
-                </ul>
-              </div>
-            </Box>
-          </Grid>
-          <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
-            <Box sx={{ ...boxStyle, position: 'relative', width: { xs: '100%', sm: '70%' }, height: '150px', marginX: 'auto' }}>
-              <div>
-                <img src={'/img/01.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
-                <ul style={{ position: 'absolute', top: '50%', left: '30%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
-                  <li style={{ listStyleType: 'none' }}>음식 이름</li>
-                  <li style={{ listStyleType: 'none' }}>가격</li>
-                </ul>
-              </div>
-            </Box>
-          </Grid>
+
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Button
               type="submit"
