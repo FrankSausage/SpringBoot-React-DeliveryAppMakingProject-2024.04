@@ -1,9 +1,9 @@
 import { Button, Dialog, DialogActions, DialogContent, 
   DialogContentText, DialogTitle, Divider, Input, Stack, Typography } from "@mui/material";
 import React, { Fragment, useEffect, useState } from "react";
-import { findPostcode } from "../utils/AddressUtil";
+import { findPostcode } from "../../utils/AddressUtil";
 import axios from "axios";
-import { extractDataFromFormData, splitAddressFromCurrentUserAddress } from "../utils/userInfo";
+import { extractDataFromFormData, splitAddressFromCurrentUserAddress } from "../../utils/userInfo";
 import { useNavigate, useOutletContext } from "react-router";
 
 

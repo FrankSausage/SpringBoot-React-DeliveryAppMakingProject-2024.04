@@ -2,11 +2,10 @@ import React from 'react';
 import { Stack, Box, Grid, InputBase, Button, } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom';
-import OwnerHeader from './OwnerHeader';
+import OwnerHeader from '../../../components/OwnerHeader';
 
 export default function OwnerMain() {     // 해더 부분 주소창 안뜨게 추가 할것 반드시!
-
-  return (
+  return (  
     <Box sx={{ margin: -1 }}>
       <OwnerHeader />
       <Grid container>
@@ -43,7 +42,7 @@ export default function OwnerMain() {     // 해더 부분 주소창 안뜨게 �
         <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
             <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2}} sx={gridStyle}>
               <Box sx={{...boxStyle, position: 'relative', width: { xs: '100%', sm: '70%' }, height: '150px', marginX: 'auto'}}>
-              <Link to='/StoreList'style={{textDecoration: 'none', color: 'black'}} >
+              <Link to='/StoreDetail' style={{textDecoration: 'none', color: 'black'}} >
                 <div>
                   <img src={'/img/01.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
                   <ul style={{ position: 'absolute', top: '50%', left: '30%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
