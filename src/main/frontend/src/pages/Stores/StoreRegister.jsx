@@ -143,6 +143,7 @@ export default function StoreRegister() {
                   id="name"
                   value={name}
                   label="가게 이름"
+                  autoFocus
                   onChange={e => setName(e.target.value)}
                 />
               </Grid>
@@ -273,7 +274,6 @@ export default function StoreRegister() {
                   id="minDeliveryPrice"
                   label="최소 주문금액"
                   onChange={e => setMinDeliveryPrice(e.target.value)}
-                  autoFocus
                 />
               </Grid>
               <Grid item xs={12}>
@@ -381,7 +381,6 @@ export default function StoreRegister() {
                   fullWidth
                   id="storePictureName"
                   label="가게 사진"
-                  autoFocus
                   onClick={(e) => {
                     e.target.value = null;
                   }}
