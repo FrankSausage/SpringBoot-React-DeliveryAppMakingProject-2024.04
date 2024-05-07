@@ -15,5 +15,5 @@ public interface AddressService {
     public ResponseEntity<Response> modifyAddress(AddressModifyRequestDto requestDto);
     public ResponseEntity<Response> deleteAddress(AddressDeleteRequestDto requestDto);
     public List<AddressFindAllResponseDto> findAllAddress(AddressFindAllRequestDto requestDto);
-
+    public ResponseEntity<Response> changeCurrentAddress(AddressChangeRequestDto requestDto);
 }

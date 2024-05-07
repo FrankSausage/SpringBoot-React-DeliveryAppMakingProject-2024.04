@@ -23,10 +23,11 @@ export default function Update() {
     const [ updateExtraAddress, setUpdateExtraAddress ] = useState(extraAddress);
     const [ updateDetailAddress ,setUpdateDetailAddress ] = useState(detailAddress);
     const [ addressCode, setAddressCode ] = useState('');
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const navigate = useNavigate();  
+
     useEffect(() => {
       const loadDaumPostcodeScript = () => {
         const script = document.createElement('script');

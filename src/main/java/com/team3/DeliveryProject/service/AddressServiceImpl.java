@@ -30,7 +30,7 @@ public class AddressServiceImpl implements AddressService{
     @Override
     public ResponseEntity<Response> addAddress(AddressAddRequestDto requestDto) {
 
-        Address address = new Address(requestDto.getUserId(), requestDto.getAddress(), requestDto.getAddressCode(),
+        Address address = new Address(user.getUserId(), requestDto.getAddress(), requestDto.getAddressCode(),
             LocalDateTime.now(), LocalDateTime.now(),"일반");
         addressRepository.save(address);
 
@@ -66,6 +66,15 @@ public class AddressServiceImpl implements AddressService{
             .collect(Collectors.toList());
         System.out.println(responseDtos);
         return responseDtos;
+    }
+
+    @Override
+    public ResponseEntity<Response> changeCurrentAddress(AddressChangeRequestDto requestDto) {
+        Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()->new RuntimeException("User not found"));
+        user.setCurrentAddress(requestDto.getAddress());
+        user.setAddressCode(requestDto.getAddressCode());
+        usersRepository.save(user);
+        return Response.toResponseEntity(ADDRESS_CHANGE_SUCCESS);
     }
 
 }

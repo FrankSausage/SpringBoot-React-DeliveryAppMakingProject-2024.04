@@ -63,7 +63,7 @@ export default function AddressUpdate({addressData, email, currentAddress, addre
                 if(!currentAddress) {
                   setOutletAddress(resFormData.address);
                   localStorage.setItem('address', resFormData.address)
-                  localStorage.setItem('splitAddress', splitAddressFromCurrentUserAddress(resFormData.address))
+                  localStorage.setItem('splitAddress', JSON.stringify(splitAddressFromCurrentUserAddress(resFormData.address)))
                 }
               })
           })

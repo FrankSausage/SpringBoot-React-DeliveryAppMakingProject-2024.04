@@ -5,7 +5,6 @@ import { useState } from 'react';
 
 const queryClient = new QueryClient();
 function App() {
-  
   const [ outletAddress, setOutletAddress ] = useState(''); // 주소 표시 비동기 임시 처리
   return (
     <AuthContextProvider>
