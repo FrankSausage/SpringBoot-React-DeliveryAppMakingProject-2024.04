@@ -115,8 +115,6 @@ export default function StoreRegister() {
     }
   };
 
-
-
   return (
     <ThemeProvider theme={defaultTheme}>
       {isLoading && <Typography>Loading...</Typography>}

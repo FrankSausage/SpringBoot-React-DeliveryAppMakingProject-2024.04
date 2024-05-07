@@ -38,7 +38,7 @@ export default function SearchHeader() {
 
   const handleNavigate = () => {
     if(user)  {
-    navigate('address');
+    navigate('/Address');
     } else {
       alert('로그인이 필요합니다.');
       navigate('/SignIn');
