@@ -13,12 +13,11 @@ import { useAuthContext } from '../context/AuthContext';
 import { logout } from '../utils/firebase';
 
 export default function SearchHeader() {
-  const [state, setState] = useState({ left: false, });
+  const [ state, setState ] = useState({ left: false, });
   const { user } = useAuthContext();
   const { outletAddress } = useOutletContext();
   const address = localStorage.getItem("address") && localStorage.getItem("address");
   const navigate = useNavigate();
-
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -28,7 +27,6 @@ export default function SearchHeader() {
     ) {
       return;
     }
-
     setState({ left: open });
   };
 
@@ -36,6 +34,12 @@ export default function SearchHeader() {
     logout();
     navigate('/');
   };
+
+  const handleNavigate = () => {
+    if(user)  {
+    navigate('address');
+    }
+  }
 
   const list = (
     <Box
@@ -81,12 +85,12 @@ export default function SearchHeader() {
             <GpsFixedIcon style={{ color: 'white' }} />&nbsp;
             <OutlinedInput
               value={address ? address : outletAddress}
-              placeholder="주소를 입력 하세요"
               startAdornment={
                 <InputAdornment position="start">
                 </InputAdornment>
               }
               sx={{ width: '100%', maxWidth: 400, mr: 1, backgroundColor: 'white' }} 
+              onClick={handleNavigate}
             />
           </Box> 
           <Grid item xs={3}>

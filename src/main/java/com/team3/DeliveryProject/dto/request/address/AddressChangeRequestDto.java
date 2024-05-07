@@ -1,4 +1,4 @@
-package com.team3.DeliveryProject.dto.request.store;
+package com.team3.DeliveryProject.dto.request.address;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +13,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StoreDeleteRequestDto {
-    private Long storeId;
+public class AddressChangeRequestDto {
     private String email;
+    private String address;
+    private Long addressCode;
 }

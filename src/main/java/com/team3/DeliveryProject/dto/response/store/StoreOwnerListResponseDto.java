@@ -1,5 +1,6 @@
-package com.team3.DeliveryProject.dto.request.store;
+package com.team3.DeliveryProject.dto.response.store;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +14,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StoreDeleteRequestDto {
-    private Long storeId;
-    private String email;
+public class StoreOwnerListResponseDto {
+    private List<StoreOwnerListInnerResponseDto> storeList;
 }

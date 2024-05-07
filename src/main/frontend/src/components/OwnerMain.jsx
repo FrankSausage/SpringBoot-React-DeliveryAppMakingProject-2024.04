@@ -1,6 +1,5 @@
-import * as React from 'react';
-import SearchHeader from "../components/SearchHeader";
-import Footer from "../components/Footer";
+
+import React from 'react';
 import { Stack, Box, Grid, InputBase, Button, } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 

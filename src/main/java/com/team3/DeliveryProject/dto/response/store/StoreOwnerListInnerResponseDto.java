@@ -1,4 +1,4 @@
-package com.team3.DeliveryProject.dto.request.store;
+package com.team3.DeliveryProject.dto.response.store;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +13,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StoreDeleteRequestDto {
+public class StoreOwnerListInnerResponseDto {
     private Long storeId;
-    private String email;
+    private String name;
+    private String storePictureName;
+    private Double rating;
+    private int dibsCount;
+    private int reviewCount;
 }

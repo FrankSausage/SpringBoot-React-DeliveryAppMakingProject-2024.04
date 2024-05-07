@@ -13,7 +13,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StoreDeleteRequestDto {
-    private Long storeId;
+public class StoreOwnerListRequestDto {
     private String email;
 }

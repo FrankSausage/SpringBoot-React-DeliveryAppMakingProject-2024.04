@@ -1,5 +1,7 @@
 package com.team3.DeliveryProject.dto.response.store;
 
+import java.time.LocalDateTime;
+import java.util.random.RandomGenerator.StreamableGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +15,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StoreUpdateResponseDto {
+public class StoreDetailResponseDto {
+    private String role;
     private String name;
     private int type;
     private String category;
@@ -25,7 +28,12 @@ public class StoreUpdateResponseDto {
     private int deliveryTip;
     private int minDeliveryTime;
     private int maxDeliveryTime;
+    private Double rating;
+    private int dibsCount;
+    private int reviewCount;
     private String operationHours;
     private String closedDays;
+    private LocalDateTime createdDate;
+    private LocalDateTime modifiedDate;
 
 }
