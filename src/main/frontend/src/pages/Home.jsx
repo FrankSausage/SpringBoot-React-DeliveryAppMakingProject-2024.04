@@ -1,5 +1,4 @@
 import { Box } from "@mui/material";
-import SearchHeader from "../components/SearchHeader"
 import Footer from "../components/Footer"
 import UserMain from "../components/UserMain";
 import OwnerMain from "../components/OwnerMain";
@@ -10,10 +9,9 @@ export default function Home() {
     const role = localStorage.getItem('role') ? localStorage.getItem('role') : '회원';
     return(
         <Box sx={{ margin: -1 }}>
-          <SearchHeader />
             {role==='회원' && <UserMain />}
             {role==='점주' && <OwnerMain />}
-          <Footer />
+            <Footer />
         </Box>       
   )
 }
