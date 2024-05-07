@@ -3,11 +3,11 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox,
     Paper, Grid, Box, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { login, } from '../utils/firebase';
+import { login, } from '../../utils/firebase';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
-import Footer from '../components/Footer';
+import Footer from '../../components/Footer';
 import axios from 'axios';
-import { splitAddressFromCurrentUserAddress } from '../utils/userInfo';
+import { splitAddressFromCurrentUserAddress } from '../../utils/userInfo';
 
 
 

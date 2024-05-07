@@ -2,12 +2,12 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container, Modal } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Footer from '../components/Footer';
+import Footer from '../../components/Footer';
 import axios from 'axios';
-import SearchHeader from '../components/SearchHeader';
-import { findPostcode } from '../utils/AddressUtil'; 
-import { extractDataFromFormData, formatPhoneNumber, useUserByEmail } from '../utils/userInfo';
-import { getCurrentUser, logout, updateUser } from '../utils/firebase';
+import SearchHeader from '../../components/SearchHeader';
+import { findPostcode } from '../../utils/AddressUtil'; 
+import { extractDataFromFormData, formatPhoneNumber, useUserByEmail } from '../../utils/userInfo';
+import { getCurrentUser, logout, updateUser } from '../../utils/firebase';
 import { useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();
