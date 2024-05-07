@@ -107,10 +107,6 @@ export default function StoreSignUp() {
     }
   };
 
-  
-  
-  
-
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">

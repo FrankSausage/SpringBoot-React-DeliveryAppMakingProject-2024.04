@@ -37,6 +37,7 @@ export default function SignIn() {
           } else {
             axios.get(`dp/user/signin`, { params: { email: userInfo.email }})
               .then(res => {
+                localStorage.setItem('role', res.data.role);
                 if(res.data.role !== '점주'){
                   setOutletAddress(res.data.currentAddress);
                   localStorage.setItem("address", res.data.currentAddress); // 세션 스토리지 리팩터

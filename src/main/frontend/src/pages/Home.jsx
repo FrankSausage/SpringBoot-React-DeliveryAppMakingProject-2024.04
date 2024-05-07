@@ -7,7 +7,7 @@ import OwnerMain from "../components/OwnerMain";
 //주소: http://localhost:3000
 
 export default function Home() {
-    const role = '회원'
+    const role = localStorage.getItem('role') ? localStorage.getItem('role') : '회원';
     return(
         <Box sx={{ margin: -1 }}>
           <SearchHeader />
