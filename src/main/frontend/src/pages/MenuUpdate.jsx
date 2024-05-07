@@ -12,7 +12,7 @@ import Ownerheader from '../components/OwnerHeader';
 
 const defaultTheme = createTheme();
 
-export default function StoreRegister() {
+export default function MenuUpdate() {
   const [roadAddress, setRoadAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
@@ -114,6 +114,8 @@ export default function StoreRegister() {
       setStorePictureName(fileNames);
     }
   };
+
+
 
   return (
     <ThemeProvider theme={defaultTheme}>

@@ -12,24 +12,13 @@ import Ownerheader from '../components/OwnerHeader';
 
 const defaultTheme = createTheme();
 
-export default function StoreRegister() {
-  const [roadAddress, setRoadAddress] = useState('');
-  const [extraAddress, setExtraAddress] = useState('');
-  const [detailAddress, setDetailAddress] = useState('');
+export default function MenuRegister() {
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
-  const [type, setType] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [addressCode, setAddressCode] = useState('');
-  const [minDeliveryPrice, setMinDeliveryPrice] = useState('');
+  const [price, setPrice] = useState('');
   const [deliveryTip, setDeliveryTip] = useState('');
   const [content, setContent] = useState('');
   const [storePictureName, setStorePictureName] = useState('');
-  const [minDeliveryTime, setMinDeliveryTime] = useState('');
-  const [maxDeliveryTime, setMaxDeliveryTime] = useState('');
-  const [operationHours, setOperationHours] = useState('');
-  const [closedDays, setClosedDays] = useState('');
-  const [deliveryAddress, setDeliveryAddress] = useState('');
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   // const [userInfo, setUserInfo] = useState({email: '', password: '', })
@@ -44,27 +33,8 @@ export default function StoreRegister() {
   }, []);
   console.log(email);
   
-  useEffect(() => {
-    const loadDaumPostcodeScript = () => {
-      const script = document.createElement('script');
-      script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
-      script.async = true;
-      document.body.appendChild(script);
-      script.onload = () => {
-        console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
-      };
-    };
 
-    loadDaumPostcodeScript();
-
-    return () => {
-      // 언마운트 시 스크립트 제거 로직
-    };
-  }, []);
-
-  const handleFindPostcode = () => {
-    findPostcode(setRoadAddress, setExtraAddress, setAddressCode);
-  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,36 +48,23 @@ export default function StoreRegister() {
     
       const formData = await setFormData(data);
       extractDataFromFormData(formData)
-        .then(resFormData => axios.post(`/dp/store/owner/register`, resFormData));
+        .then(resFormData => axios.post(`/dp/store/menu/register`, resFormData));
 
-      alert('입점 신청이 완료되었습니다.');
+      alert('음식 등록이 완료되었습니다.');
       navigate('/OwnerMain');
     
   };
 
-  const handlePhoneNumberChange = (event) => {
-    const formattedPhoneNumber = formatPhoneNumber(event.target.value);
-    setPhoneNumber(formattedPhoneNumber);
-  };
+  
 
   const setFormData = async (data) => {
     try {
-      data.append('address', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '')
-        + ',' + (detailAddress ? detailAddress : '')));
       data.append('email', email);
-      data.append('addressCode', addressCode.substring(0, 8));
       data.append('category', category);
-      data.append('type', type);
-      data.append('minDeliveryPrice', minDeliveryPrice);
       data.append('content', content);
       data.append('name', name);
       data.append('deliveryTip', deliveryTip);
-      data.append('minDeliveryTime', minDeliveryTime);
-      data.append('maxDeliveryTime', maxDeliveryTime);
-      data.append('operationHours', operationHours);
-      data.append('minDeliveryTime', minDeliveryTime);
-      data.append('closedDays', closedDays);
-      data.append('deliveryAddress', deliveryAddress);
+      data.append('price', price);
       return await data;
     }
     catch (error) {
@@ -143,10 +100,10 @@ export default function StoreRegister() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>
+            <Link to="/StoreList" style={{ textDecoration: 'none', color: 'black' }}>가게 이동</Link>
           </Typography>
           <Typography component="h1" variant="h5">
-            온라인 입점 신청서
+            메뉴 등록(단건)
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -158,7 +115,7 @@ export default function StoreRegister() {
                   name="name"
                   id="name"
                   value={name}
-                  label="가게 이름"
+                  label="음식 이름"
                   onChange={e => setName(e.target.value)}
                 />
               </Grid>
@@ -166,16 +123,12 @@ export default function StoreRegister() {
                 <TextField
                   required
                   fullWidth
-                  id="phone"
-                  label="전화번호"
-                  name="phone"
-                  autoComplete="phone"
-                  value={phoneNumber}
-                  onChange={handlePhoneNumberChange}
-                  inputProps={{
-                    maxLength: 12,
-                    inputMode: 'numeric',
-                  }}
+                  id="price"
+                  label="음식 가격"
+                  name="price"
+                  autoComplete="price"
+                  value={price}
+                  onChange={e => setName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -221,154 +174,11 @@ export default function StoreRegister() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
-                  fullWidth
-                  id="roadAddress"
-                  label="도로명 주소"
-                  value={roadAddress}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              </Grid>
-              <Button
-                type="button"
-                onClick={handleFindPostcode}
-                fullWidth
-                variant="contained"
-                sx={{ mt: 1, mb: 2, ml: 2 }}
-              >
-                주소 찾기
-              </Button>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="extraAddress"
-                  label="참고항목"
-                  value={extraAddress}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="detailAddress"
-                  label="상세주소"
-                  name="detailAddress"
-                  autoComplete="detailAddress"
-                  onChange={e => setDetailAddress(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="h6" gutterBottom>배달, 포장</Typography>
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={<Checkbox checked={type === 0} onChange={() => setType(0)} color="primary" />}
-                      label="배달"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={type === 1} onChange={() => setType(1)} color="primary" />}
-                      label="배달+포장"
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="minDeliveryPrice"
-                  required
-                  fullWidth
-                  id="minDeliveryPrice"
-                  label="최소 주문금액"
-                  onChange={e => setMinDeliveryPrice(e.target.value)}
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"  
-                  name="deliveryTip"
-                  required
-                  fullWidth
-                  id="deliveryTip"
-                  label="배달팁"
-                  value={deliveryTip}
-                  onChange={e => setDeliveryTip(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="minDeliveryTime"
-                  required
-                  fullWidth
-                  id="minDeliveryTime"
-                  value={minDeliveryTime}
-                  label="최소 배달 예상 시간"
-                  onChange={e => setMinDeliveryTime(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="maxDeliveryTime"
-                  required
-                  fullWidth
-                  id="maxDeliveryTime"
-                  value={maxDeliveryTime}
-                  label="최대 배달 예상 시간"
-                  onChange={e => setMaxDeliveryTime(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="operationHours"
-                  required
-                  fullWidth
-                  id="operationHours"
-                  value={operationHours}
-                  label="운영 시간"
-                  onChange={e => setOperationHours(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="closedDays"
-                  required
-                  fullWidth
-                  id="closedDays"
-                  value={closedDays}
-                  label="휴무일"
-                  onChange={e => setClosedDays(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="deliveryAddress"
-                  required
-                  fullWidth
-                  id="deliveryAddress"
-                  value={deliveryAddress}
-                  label="배달 지역"
-                  onChange={e => setDeliveryAddress(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
                   autoComplete="given-name"
                   name="content"
                   fullWidth
                   id="content"
-                  label="가게 소개글"
+                  label="음식 소개"
                   multiline
                   rows={4}
                   variant='outlined'
@@ -378,7 +188,7 @@ export default function StoreRegister() {
 
               <Grid item xs={12}>
                 <Typography variant="h6" gutterBottom>
-                  가게 사진
+                  음식 사진
                 </Typography>
                 <input
                   accept=".png, .jpeg, .jpg"
@@ -394,7 +204,7 @@ export default function StoreRegister() {
                   value={storePictureName}
                   fullWidth
                   id="storePictureName"
-                  label="가게 사진"
+                  label="음식 사진"
                   autoFocus
                   onClick={(e) => {
                     e.target.value = null;
@@ -424,7 +234,7 @@ export default function StoreRegister() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
-              입점 신청하기
+               음식 등록 하기
             </Button>
           </Box>
         </Box>
