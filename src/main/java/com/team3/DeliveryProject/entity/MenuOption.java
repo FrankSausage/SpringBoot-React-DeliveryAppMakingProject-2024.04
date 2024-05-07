@@ -21,7 +21,7 @@ public class MenuOption {
     private Long menuId;
 
     @Column(nullable = false)
-    private String menuOption;
+    private String options;
 
     @Column(nullable = false)
     private int price;
@@ -34,4 +34,14 @@ public class MenuOption {
 
     @Column(nullable = false)
     private String status;
+
+    public MenuOption(Long menuId, String option, int price, LocalDateTime createdDate,
+        LocalDateTime modifiedDate, String status) {
+        this.menuId = menuId;
+        this.options = option;
+        this.price = price;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.status = status;
+    }
 }
