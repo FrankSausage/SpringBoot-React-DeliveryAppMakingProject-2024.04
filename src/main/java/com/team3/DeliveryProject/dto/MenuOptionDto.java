@@ -26,7 +26,6 @@ public class MenuOptionDto {
                 .menuOptionId(entity.getMenuOptionId())
                 .menuId(entity.getMenuId())
                 .menuOption(entity.getMenuOption())
-                .content(entity.getContent())
                 .price(entity.getPrice())
                 .createdDate(entity.getCreatedDate())
                 .modifiedDate(entity.getModifiedDate())
