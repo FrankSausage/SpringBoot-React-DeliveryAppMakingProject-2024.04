@@ -41,7 +41,7 @@ export default function SearchHeader() {
     navigate('/Address');
     } else {
       alert('로그인이 필요합니다.');
-      navigate('/signIn');
+      navigate('/SignIn');
     }
   }
 
@@ -86,14 +86,14 @@ export default function SearchHeader() {
             <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>휴먼 딜리버리</Link>    
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
-            <GpsFixedIcon style={{ color: 'white' }} />&nbsp;
             <OutlinedInput
               value={address ? address : outletAddress}
               startAdornment={
                 <InputAdornment position="start">
+                  <GpsFixedIcon style={{ color: 'gray' }} />&nbsp;
                 </InputAdornment>
               }
-              sx={{ width: '100%', maxWidth: 400, mr: 1, backgroundColor: 'white' }} 
+              sx={{ width: '100%', maxWidth: 400, mr: 25, backgroundColor: 'white' }} 
               onClick={handleNavigate}
             />
           </Box> 
