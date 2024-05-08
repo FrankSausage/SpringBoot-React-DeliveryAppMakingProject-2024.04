@@ -6,6 +6,7 @@ import com.team3.DeliveryProject.dto.request.menu.MenuUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdatePostRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdateStatusRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionAddRequestDto;
+import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionUpdateRequestDto;
 import com.team3.DeliveryProject.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,10 @@ public class MenuController {
     @PostMapping("/menu/delete")
     public ResponseEntity<?> deleteMenu(@RequestBody MenuDeleteRequestDto requestDto) {
         return ResponseEntity.ok().body(menuService.deleteMenu(requestDto).getBody());
+    }
+    @PostMapping("/menuoption/delete")
+    public ResponseEntity<?> deleteMenuOption(@RequestBody MenuOptionDeleteRequestDto requestDto) {
+        return ResponseEntity.ok().body(menuService.deleteMenuOption(requestDto).getBody());
     }
 
 

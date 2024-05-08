@@ -1,6 +1,7 @@
 package com.team3.DeliveryProject.service;
 
 import static com.team3.DeliveryProject.responseCode.ResponseCode.MENUOPTION_ADD_SUCCESS;
+import static com.team3.DeliveryProject.responseCode.ResponseCode.MENUOPTION_DELETE_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.MENUOPTION_UPDATE_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.MENUSTATUS_UPDATE_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.MENU_ADD_SUCCESS;
@@ -14,6 +15,7 @@ import com.team3.DeliveryProject.dto.request.menu.MenuUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdatePostRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdateStatusRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionAddRequestDto;
+import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionUpdateRequestDto;
 import com.team3.DeliveryProject.dto.response.menu.MenuUpdateGetResponseDto;
 import com.team3.DeliveryProject.dto.response.menu.MenuUpdateInnerMenusResponseDto;
@@ -120,5 +122,13 @@ public class MenuServiceImpl implements MenuService{
         menu.setStatus("삭제");
         menuRepository.save(menu);
         return Response.toResponseEntity(MENU_DELETE_SUCCESS);
+    }
+
+    @Override
+    public ResponseEntity<Response> deleteMenuOption(MenuOptionDeleteRequestDto requestDto) {
+        MenuOption menuOption = menuOptionRepository.findById(requestDto.getMenuOptionId()).orElseThrow(()->new RuntimeException("MenuOption not found"));
+        menuOption.setStatus("삭제");
+        menuOptionRepository.save(menuOption);
+        return Response.toResponseEntity(MENUOPTION_DELETE_SUCCESS);
     }
 }
