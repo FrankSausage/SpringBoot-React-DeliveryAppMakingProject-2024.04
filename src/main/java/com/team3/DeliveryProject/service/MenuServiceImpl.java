@@ -2,6 +2,7 @@ package com.team3.DeliveryProject.service;
 
 import static com.team3.DeliveryProject.responseCode.ResponseCode.MENUOPTION_ADD_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.MENUOPTION_UPDATE_SUCCESS;
+import static com.team3.DeliveryProject.responseCode.ResponseCode.MENUSTATUS_UPDATE_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.MENU_ADD_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.MENU_UPDATE_SUCCESS;
 
@@ -9,6 +10,7 @@ import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.menu.MenuAddRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdatePostRequestDto;
+import com.team3.DeliveryProject.dto.request.menu.MenuUpdateStatusRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionAddRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionUpdateRequestDto;
 import com.team3.DeliveryProject.dto.response.menu.MenuUpdateGetResponseDto;
@@ -100,5 +102,13 @@ public class MenuServiceImpl implements MenuService{
         menuOption.setPrice(requestDto.getPrice());
         menuOptionRepository.save(menuOption);
         return Response.toResponseEntity(MENUOPTION_UPDATE_SUCCESS);
+    }
+
+    @Override
+    public ResponseEntity<Response> updateMenuStatus(MenuUpdateStatusRequestDto requestDto) {
+        Menu menu = menuRepository.findById(requestDto.getMenuId()).orElseThrow(()->new RuntimeException("Menu not found"));
+        menu.setStatus(requestDto.getStatus());
+        menuRepository.save(menu);
+        return Response.toResponseEntity(MENUSTATUS_UPDATE_SUCCESS);
     }
 }

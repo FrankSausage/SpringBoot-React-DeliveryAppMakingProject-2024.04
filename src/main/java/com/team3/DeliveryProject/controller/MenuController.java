@@ -3,6 +3,7 @@ package com.team3.DeliveryProject.controller;
 import com.team3.DeliveryProject.dto.request.menu.MenuAddRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdatePostRequestDto;
+import com.team3.DeliveryProject.dto.request.menu.MenuUpdateStatusRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionAddRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionUpdateRequestDto;
 import com.team3.DeliveryProject.service.MenuService;
@@ -41,5 +42,10 @@ public class MenuController {
     public ResponseEntity<?> updateMenuOption(@RequestBody MenuOptionUpdateRequestDto requestDto) {
         return ResponseEntity.ok().body(menuService.updateMenuOption(requestDto).getBody());
     }
+    @PostMapping("/menu/status")
+    public ResponseEntity<?> updateMenuStatus(@RequestBody MenuUpdateStatusRequestDto requestDto) {
+        return ResponseEntity.ok().body(menuService.updateMenuStatus(requestDto).getBody());
+    }
+
 
 }
