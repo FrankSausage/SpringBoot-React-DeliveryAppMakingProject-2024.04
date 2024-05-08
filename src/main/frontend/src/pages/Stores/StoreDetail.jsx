@@ -3,14 +3,14 @@ import Footer from "../../components/Footer";
 import { Stack, Box, Grid, InputBase, Button, Tab, Tabs, Typography, FormControlLabel, Checkbox } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 import Ownerheader from '../../components/OwnerHeader';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import StoreInfo from './StoreInfo';
 import StoreMenuList from './StoreMenuList';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
-
+  
   return (
     <div
       role="tabpanel"
@@ -42,12 +42,14 @@ function a11yProps(index) {
 }
 
 export default function StoreDetail() {
+  const { storeId } = useParams();
   const { state: category } = useLocation();
   const [value, setValue] = useState(category ? category : 1);
   const [ popularity, setPopularity ] = useState('');
   const [searchOpen, setSearchOpen] = useState(false); // 검색 창의 상태를 추적하는 state
   const navigate = useNavigate();
 
+  console.log(storeId)
   const handleChange = (e, newValue) => {
     setValue(newValue);
     setSearchOpen(false); // 다른 탭을 클릭할 때 검색 창 닫기
@@ -124,8 +126,8 @@ export default function StoreDetail() {
                   <Grid container spacing={3} >
                     <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                       <FormControlLabel
-                        control={<Checkbox checked={popularity === '품절'} onChange={() => setPopularity('품절')} color="primary" />}
-                        label="품절"
+                        control={<Checkbox checked={popularity === 0} onChange={() => setPopularity(0)} color="primary" />}
+                        label="인기도"
                       />
                     </Grid>
                   </Grid>
