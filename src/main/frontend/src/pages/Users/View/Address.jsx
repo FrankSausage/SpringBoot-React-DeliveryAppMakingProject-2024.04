@@ -99,61 +99,72 @@ export default function Address() {
     }
 
     return(
-      <Box>
-        {isLoading && <Typography>로딩 중..</Typography>}
-        {error && <Typography>에러 발생!</Typography>}
-        {address && 
-        <Box>
-          <Grid container>
-            <Stack component='form' onSubmit={handleSubmit}>
-              <Grid item>
-                <Typography variant="h5"> 주소 목록 </Typography>
-                <Stack direction={"row"}  sx={{my: 1}}>
-                  <Input type="text" 
-                  value={roadAddress + extraAddress} 
-                  name='cuAddress'
-                  id='cuAddress'
-                  sx={{width: 400}} 
-                  placeholder="주소를 입력하세요..." 
-                  required
-                  />
-                  <Button sx={{border: 1, mx: 1}} onClick={handleFindPostcode}> 검색 </Button>
-                </Stack>
-                  <Input type="text" value={detailAddress} 
-                  onChange={e => setDetailAddress(e.target.value)} sx={{width: 200}} 
-                  placeholder="상세 주소"/>
-              </Grid>
-              <Grid item>
-                  { !roadAddress && <Button disabled>추가</Button> }
-                  { roadAddress && <Button type="submit">추가</Button> }
-              </Grid>
-            </Stack>
-          </Grid>
-        </Box>
-        }
-        <Divider sx={{my: 5}} />
-        {address && (
-          address.map((data, idx) => (
-            <Stack key={idx} direction={"row"} sx={{my: 3}}>
-              {
-                data.address===currentAddress ? 
-                  <>
-                  <Input value={data.address} sx={{width: 400}}/>  
-                  <AddressUpdate addressData={data.address} addressId={data.addressId} 
-                    email={email} currentAddress={currentAddress}/>
-                  <RoomIcon sx={{ml: 10}}/>
-                  </>
-                : 
-                  <>
-                  <Input value={data.address} sx={{width: 400}}/>
-                  <AddressUpdate addressData={data.address} addressId={data.addressId} email={email}/>
-                  <AddressDelete addressData={data.address} addressId={data.addressId}/>
-                  <RoomOutlinedIcon onClick={() => handleCurrentChange(data)} sx={{cursor: "pointer"}}/>
-                  </>
-              }
-            </Stack>
-          ))
-        )}
+      <Box sx={{  marginTop: 8,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                  width: '100%',
+                  }}>
+        <Stack sx={{ maxWidth:'600px', width:'100%', textAlign: 'center' }}>
+          {isLoading && <Typography>로딩 중..</Typography>}
+          {error && <Typography>에러 발생!</Typography>}
+          {address && 
+          <Box>
+            <Grid container>
+              <Stack component='form' onSubmit={handleSubmit}>
+                <Grid item sx={{mb: 3}}>
+                  <Typography variant="h5"> 주소 목록 </Typography>
+                  <Stack direction={"row"}  sx={{my: 4}}>
+                    <Input type="text" 
+                    value={roadAddress + extraAddress} 
+                    name='cuAddress'
+                    id='cuAddress'
+                    sx={{width: 480}} 
+                    placeholder="주소를 입력하세요..." 
+                    required
+                    />
+                    <Button sx={{border: 1, mx: 1}} onClick={handleFindPostcode}> 검색 </Button>
+                  </Stack>
+                  <Stack direction={"row"}  sx={{my: 4}}>
+                    <Input type="text" value={detailAddress} 
+                    onChange={e => setDetailAddress(e.target.value)} sx={{width: 480}} 
+                    placeholder="상세 주소"/>
+                  </Stack>
+                </Grid>
+                <Grid item>
+                    { !roadAddress && <Button disabled>추가</Button> }
+                    { roadAddress && <Button sx={{border: 0, mx: 1}} type="submit" variant="contained" >주소 추가</Button> }
+                </Grid>
+              </Stack>
+            </Grid>
+          </Box>
+          }
+          <Divider sx={{my: 5}} />
+          {address && (
+            address.map((data, idx) => (
+              <Stack key={idx} direction={"row"} sx={{my: 3}}>
+                {
+                  data.address===currentAddress ? 
+                    <>
+                    <Input value={data.address} sx={{width: 400}}/>  
+                    <AddressUpdate addressData={data.address} addressId={data.addressId} 
+                      email={email} currentAddress={currentAddress}/>
+                    <RoomIcon sx={{ml: 10}}/>
+                    </>
+                  : 
+                    <>
+                    <Input value={data.address} sx={{width: 400}}/>
+                    <AddressUpdate addressData={data.address} addressId={data.addressId} email={email}/>
+                    <AddressDelete addressData={data.address} addressId={data.addressId}/>
+                    <RoomOutlinedIcon onClick={() => handleCurrentChange(data)} sx={{cursor: "pointer"}}/>
+                    </>
+                }
+              </Stack>
+            ))
+          )}
+        </Stack>
       </Box>
     );
 }
