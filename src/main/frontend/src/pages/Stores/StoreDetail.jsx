@@ -108,7 +108,7 @@ export default function StoreDetail() {
       <CustomTabPanel value={value} index={2}>
         <StoreInfo />
       </CustomTabPanel>
-      {/* <Grid container>
+      <Grid container>
         <Grid item xs />
         <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
           <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
@@ -145,7 +145,7 @@ export default function StoreDetail() {
           </div>
         </Grid>
         <Grid item xs />
-      </Grid> */}
+      </Grid>
       <Footer />
     </Box>
   );

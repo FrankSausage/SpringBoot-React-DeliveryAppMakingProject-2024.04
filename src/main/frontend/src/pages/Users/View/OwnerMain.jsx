@@ -4,7 +4,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom';
 import OwnerHeader from '../../../components/OwnerHeader';
 
-export default function OwnerMain() {     // 해더 부분 주소창 안뜨게 추가 할것 반드시!
+export default function OwnerMain() {     
   return (  
     <Box sx={{ margin: -1 }}>
       <OwnerHeader />

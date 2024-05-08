@@ -10,7 +10,7 @@ import { extractDataFromFormData, formatPhoneNumber } from '../../utils/storeInf
 import axios from 'axios';
 import Ownerheader from '../../components/OwnerHeader';
 
-const defaultTheme = createTheme();
+const defaultTheme = createTheme();         // 카테고리 추가 버튼이나 (직접 입력 박스)
 
 export default function MenuRegister() {
   const [name, setName] = useState('');
@@ -138,37 +138,18 @@ export default function MenuRegister() {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <FormControlLabel
-                      control={<Checkbox checked={category === '한식'} onChange={() => setCategory('한식')} color="primary" />}
-                      label="한식"
+                      control={<Checkbox checked={category === '메인 메뉴'} onChange={() => setCategory('메인 메뉴')} color="primary" />}
+                      label="메인 메뉴"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={category === '중식'} onChange={() => setCategory('중식')} color="primary" />}
-                      label="중식"
+                      control={<Checkbox checked={category === '사이드 메뉴'} onChange={() => setCategory('사이드 메뉴')} color="primary" />}
+                      label="사이드 메뉴"
                     />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '일식'} onChange={() => setCategory('일식')} color="primary" />}
-                      label="일식"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '양식'} onChange={() => setCategory('양식')} color="primary" />}
-                      label="양식"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '패스트'} onChange={() => setCategory('패스트')} color="primary" />}
-                      label="패스트"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '치킨'} onChange={() => setCategory('치킨')} color="primary" />}
-                      label="치킨"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '분식'} onChange={() => setCategory('분식')} color="primary" />}
-                      label="분식"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '디저트'} onChange={() => setCategory('디저트')} color="primary" />}
-                      label="디저트"
-                    />
+                    {/* <FormControlLabel
+                      control={<Checkbox checked={category === '세트 메뉴'} onChange={() => setCategory('세트 메뉴')} color="primary" />}
+                      label="세트 메뉴"
+                    /> */}
+                   
                   </Grid>
                 </Grid>
               </Grid>
