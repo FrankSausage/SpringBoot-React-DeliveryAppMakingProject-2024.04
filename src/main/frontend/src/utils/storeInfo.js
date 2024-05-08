@@ -13,6 +13,17 @@ export const useUserByEmail = (storeId, email) => {
     return { isLoading, error, user };
 }
 
+export const useStoreListByEmail = email => {
+  const { isLoading, error, data: storeData } = useQuery({
+    queryKey: ['ownerStore', email ],
+    queryFn: async () => {
+        return axios.get(`/dp/store/list`, { params : { email : email }})
+          .then(res => res.data)
+          .catch(console.error);
+    }
+  })
+  return { isLoading, error, storeData };
+}
 
 export async function extractDataFromFormData(formData) {
     const data = {};

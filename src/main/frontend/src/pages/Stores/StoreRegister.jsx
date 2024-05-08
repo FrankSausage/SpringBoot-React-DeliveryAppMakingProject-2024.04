@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../../utils/AddressUtil';
-import { getCurrentUser, register } from '../../utils/firebase';
+import { getCurrentUser } from '../../utils/firebase';
 import { extractDataFromFormData, formatPhoneNumber } from '../../utils/storeInfo';
 import axios from 'axios';
 import Ownerheader from '../../components/OwnerHeader';

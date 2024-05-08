@@ -1,14 +1,16 @@
 package com.team3.DeliveryProject.controller;
 
 import com.team3.DeliveryProject.dto.request.menu.MenuAddRequestDto;
+import com.team3.DeliveryProject.dto.request.menu.MenuUpdateGetRequestDto;
+import com.team3.DeliveryProject.dto.request.menu.MenuUpdatePostRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionAddRequestDto;
-import com.team3.DeliveryProject.dto.request.store.StoreAddRequestDto;
+import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionUpdateRequestDto;
 import com.team3.DeliveryProject.service.MenuService;
-import com.team3.DeliveryProject.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +25,21 @@ public class MenuController {
         return ResponseEntity.ok().body(menuService.addMenu(requestDto).getBody());
     }
 
-    @PostMapping("/munuoption/register")
+    @PostMapping("/menuoption/register")
     public ResponseEntity<?> addMenuOption(@RequestBody MenuOptionAddRequestDto requestDto) {
         return ResponseEntity.ok().body(menuService.addMenuOption(requestDto).getBody());
+    }
+    @GetMapping("/menu/update")
+    public ResponseEntity<?> updateMenuOption(@ModelAttribute MenuUpdateGetRequestDto requestDto) {
+        return ResponseEntity.ok().body(menuService.updateGetMenu(requestDto));
+    }
+    @PostMapping("/menu/update")
+    public ResponseEntity<?> updateMenu(@RequestBody MenuUpdatePostRequestDto requestDto) {
+        return ResponseEntity.ok().body(menuService.updateMenu(requestDto).getBody());
+    }
+    @PostMapping("/menuoption/update")
+    public ResponseEntity<?> updateMenuOption(@RequestBody MenuOptionUpdateRequestDto requestDto) {
+        return ResponseEntity.ok().body(menuService.updateMenuOption(requestDto).getBody());
     }
 
 }

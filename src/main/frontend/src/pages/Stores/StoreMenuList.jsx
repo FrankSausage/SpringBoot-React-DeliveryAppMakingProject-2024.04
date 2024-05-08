@@ -3,7 +3,7 @@ import { Box, Grid,} from '@mui/material';
 
 
 export default function StoreMenuList() {
-    
+  const minOrderPrice = '3000'
   return (
     <Box sx={{ margin: -1 }}>
 
@@ -17,7 +17,7 @@ export default function StoreMenuList() {
                   <ul style={{ position: 'absolute', top: '50%', left: '40%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
                     <li style={{ listStyleType: 'none' }}>가게 주소</li>
                     <li style={{ listStyleType: 'none' }}>찜순</li>
-                    <li style={{ listStyleType: 'none' }}>최소 주문 금액</li>
+                    <li style={{ listStyleType: 'none' }}>최소 주문 금액 {minOrderPrice} 원</li>
                     <li style={{ listStyleType: 'none' }}>평점순</li>
                     <li style={{ listStyleType: 'none' }}>리뷰순</li>
                   </ul>
