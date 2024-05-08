@@ -112,7 +112,7 @@ export default function Address() {
           {address && 
           <Box>
             <Grid container>
-              <Stack component='form' onSubmit={handleSubmit}>
+              <Stack component='form' onSubmit={handleSubmit} sx={{my: 3}}>
                 <Grid item sx={{mb: 3}}>
                   <Typography variant="h5"> 주소 목록 </Typography>
                   <Stack direction={"row"}  sx={{my: 4}}>
@@ -120,7 +120,7 @@ export default function Address() {
                     value={roadAddress + extraAddress} 
                     name='cuAddress'
                     id='cuAddress'
-                    sx={{width: 480}} 
+                    sx={{width: 400}} 
                     placeholder="주소를 입력하세요..." 
                     required
                     />
@@ -128,7 +128,7 @@ export default function Address() {
                   </Stack>
                   <Stack direction={"row"}  sx={{my: 4}}>
                     <Input type="text" value={detailAddress} 
-                    onChange={e => setDetailAddress(e.target.value)} sx={{width: 480}} 
+                    onChange={e => setDetailAddress(e.target.value)} sx={{width: 400}} 
                     placeholder="상세 주소"/>
                   </Stack>
                 </Grid>
