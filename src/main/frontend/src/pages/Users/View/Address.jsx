@@ -21,7 +21,6 @@ export default function Address() {
     const [addressCode, setAddressCode] = useState('');
     const { setOutletAddress } = useOutletContext();
     const navigate = useNavigate();
-    console.log(address);
     useEffect(() => {
       const loadDaumPostcodeScript = () => {
         const script = document.createElement('script');
