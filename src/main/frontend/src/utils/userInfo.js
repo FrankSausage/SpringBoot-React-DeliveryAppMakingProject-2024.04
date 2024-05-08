@@ -1,5 +1,5 @@
 
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import axios from "axios"
 import { useState } from "react";
 
@@ -14,6 +14,18 @@ export const useUserByEmail = email => {
     });     
     return { isLoading, error, user };
 }
+
+// export const useNewUserByEmail = email => {
+//   const { isLoading, error, data: user } = useQuery({
+//     queryKey: ['email', email],
+//     queryFn: async () => {
+//       return axios.post(`/dp/user/update/new`, {email: email})
+//       .then(res => res.data)
+//       .catch(console.error);
+//     }
+//   });     
+//   return { isLoading, error, user };
+// }
 
 export const useAddressListByEmail = email => {
   const { isLoading, error, data: address } = useQuery({

@@ -5,7 +5,8 @@ import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 import { logout } from '../utils/firebase';
 import { AppBar, Box, Toolbar, Typography, SwipeableDrawer, IconButton, List, ListItem, 
-  ListItemButton, ListItemIcon, ListItemText, InputAdornment, OutlinedInput, Divider, Stack, Grid} from '@mui/material';
+  ListItemButton, ListItemIcon, ListItemText, InputAdornment, OutlinedInput, Divider, Stack, Grid,
+  Button} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ReceiptIcon from '@mui/icons-material/Receipt'; 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; 
