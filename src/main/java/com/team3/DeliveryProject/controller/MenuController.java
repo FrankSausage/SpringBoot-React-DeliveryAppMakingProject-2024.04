@@ -23,13 +23,13 @@ public class MenuController {
         return ResponseEntity.ok().body(menuService.addMenu(requestDto).getBody());
     }
 
-    @PostMapping("/munuoption/register")
+    @PostMapping("/menuoption/register")
     public ResponseEntity<?> addMenuOption(@RequestBody MenuOptionAddRequestDto requestDto) {
         return ResponseEntity.ok().body(menuService.addMenuOption(requestDto).getBody());
     }
     @GetMapping("/menu/update")
     public ResponseEntity<?> updateMenuOption(@ModelAttribute MenuUpdateGetRequestDto requestDto) {
-        return ResponseEntity.ok().body(menuService.updateGetMenuOption(requestDto));
+        return ResponseEntity.ok().body(menuService.updateGetMenu(requestDto));
     }
 
 }
