@@ -1,4 +1,4 @@
-package com.team3.DeliveryProject.dto.response.user;
+package com.team3.DeliveryProject.dto.response.menu;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +13,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserSignInRoleOwnerInnerDto {
-    private Long storeId;
-    private String storePictureName;
-    private String name;
+public class MenuUpdateInnerOptionsResponseDto {
+    private Long menuOptionId;
+    private String options;
+    private int price;
 }
