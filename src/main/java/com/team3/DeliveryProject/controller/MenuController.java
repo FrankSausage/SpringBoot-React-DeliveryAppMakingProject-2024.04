@@ -1,6 +1,7 @@
 package com.team3.DeliveryProject.controller;
 
 import com.team3.DeliveryProject.dto.request.menu.MenuAddRequestDto;
+import com.team3.DeliveryProject.dto.request.menu.MenuDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdatePostRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdateStatusRequestDto;
@@ -45,6 +46,10 @@ public class MenuController {
     @PostMapping("/menu/status")
     public ResponseEntity<?> updateMenuStatus(@RequestBody MenuUpdateStatusRequestDto requestDto) {
         return ResponseEntity.ok().body(menuService.updateMenuStatus(requestDto).getBody());
+    }
+    @PostMapping("/menu/delete")
+    public ResponseEntity<?> deleteMenu(@RequestBody MenuDeleteRequestDto requestDto) {
+        return ResponseEntity.ok().body(menuService.deleteMenu(requestDto).getBody());
     }
 
 

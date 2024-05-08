@@ -2,6 +2,7 @@ package com.team3.DeliveryProject.service;
 
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.menu.MenuAddRequestDto;
+import com.team3.DeliveryProject.dto.request.menu.MenuDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdatePostRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdateStatusRequestDto;
@@ -18,4 +19,5 @@ public interface MenuService {
     public MenuUpdateGetResponseDto updateGetMenu(MenuUpdateGetRequestDto requestDto);
     public ResponseEntity<Response> updateMenuOption(MenuOptionUpdateRequestDto requestDto);
     public ResponseEntity<Response> updateMenuStatus(MenuUpdateStatusRequestDto requestDto);
+    public ResponseEntity<Response> deleteMenu(MenuDeleteRequestDto requestDto);
 }
