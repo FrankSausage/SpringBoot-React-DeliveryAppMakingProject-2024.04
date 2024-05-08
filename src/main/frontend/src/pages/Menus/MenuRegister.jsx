@@ -32,10 +32,15 @@ export default function MenuRegister(props) {
 
     const formData = await setFormData(data);
     extractDataFromFormData(formData)
-      .then(resFormData => axios.post(`/dp/store/menu/register`, resFormData))
+      .then(resFormData => {
+        console.log(resFormData)
+        // axios.post(`/dp/store/menu/register`, resFormData)
+        
+       }
+      )
       .then(() => {
         alert('음식 등록이 완료되었습니다.');
-        navigate(`/StoreDetail`);
+        // navigate(`/StoreDetail`);
       })
       .catch(error => console.error('음식 등록 실패: ', error));
   };
