@@ -41,7 +41,7 @@ function a11yProps(index) {
   };
 }
 
-export default function StoreDetail() {
+export default function StoreDetail(data) {
   const { storeId } = useParams();
   const { state: category } = useLocation();
   const [value, setValue] = useState(category ? category : 1);
@@ -142,7 +142,7 @@ export default function StoreDetail() {
               variant="contained"
               style={{ textDecoration: 'none', color: 'white' }}
               sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem' }}>
-              <Link to="/MenuRegister" style={{ textDecoration: 'none', color: 'white' }}>메뉴 추가하기</Link>
+              <Link Link to={`/MenuRegister/`} state={data.storeId} style={{ textDecoration: 'none', color: 'white' }}>메뉴 추가하기</Link>
             </Button>
           </div>
         </Grid>
