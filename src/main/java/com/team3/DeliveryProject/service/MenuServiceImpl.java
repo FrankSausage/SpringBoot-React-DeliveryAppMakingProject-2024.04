@@ -1,6 +1,7 @@
 package com.team3.DeliveryProject.service;
 
 import static com.team3.DeliveryProject.responseCode.ResponseCode.MENUOPTION_ADD_SUCCESS;
+import static com.team3.DeliveryProject.responseCode.ResponseCode.MENUOPTION_UPDATE_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.MENU_ADD_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.MENU_UPDATE_SUCCESS;
 
@@ -9,6 +10,7 @@ import com.team3.DeliveryProject.dto.request.menu.MenuAddRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdatePostRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionAddRequestDto;
+import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionUpdateRequestDto;
 import com.team3.DeliveryProject.dto.response.menu.MenuUpdateGetResponseDto;
 import com.team3.DeliveryProject.dto.response.menu.MenuUpdateInnerMenusResponseDto;
 import com.team3.DeliveryProject.dto.response.menu.MenuUpdateInnerOptionsResponseDto;
@@ -54,6 +56,7 @@ public class MenuServiceImpl implements MenuService{
         menu.setPrice(requestDto.getPrice());
         menu.setMenuPictureName(requestDto.getMenuPictureName());
         menu.setPopularity(requestDto.getPopularity());
+        menu.setContent(requestDto.getContent());
         menuRepository.save(menu);
         return Response.toResponseEntity(MENU_UPDATE_SUCCESS);
     }
@@ -88,5 +91,14 @@ public class MenuServiceImpl implements MenuService{
             .menus(menusResponseDtos)
             .build();
         return responseDto;
+    }
+
+    @Override
+    public ResponseEntity<Response> updateMenuOption(MenuOptionUpdateRequestDto requestDto) {
+        MenuOption menuOption = menuOptionRepository.findById(requestDto.getMenuOptionId()).orElseThrow(()->new RuntimeException("MenuOption not found"));
+        menuOption.setOptions(requestDto.getOptions());
+        menuOption.setPrice(requestDto.getPrice());
+        menuOptionRepository.save(menuOption);
+        return Response.toResponseEntity(MENUOPTION_UPDATE_SUCCESS);
     }
 }
