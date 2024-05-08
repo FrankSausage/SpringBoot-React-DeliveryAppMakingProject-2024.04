@@ -13,6 +13,31 @@ export const useUserByEmail = (storeId, email) => {
     return { isLoading, error, user };
 }
 
+export const useMenuByEmail =  email => {
+  const { isLoading, error, data: storeData } = useQuery({
+    queryKey: ['menuId', email ],
+    queryFn: async () => {
+        return axios.get(`/dp/store/menu/register`, { params: {email: email }})
+          .then(res => res.data)
+          .catch(console.error);
+    }
+  })
+  return { isLoading, error, storeData };
+}
+
+export const useMenuListByEmail = email => {
+  const { isLoading, error, data: storeData } = useQuery({
+    queryKey: ['StoreMenu', email ],
+    queryFn: async () => {
+        return axios.get(`/dp/store/menu/list`, { params : { email : email }})
+          .then(res => res.data)
+          .catch(console.error);
+    }
+  })
+  return { isLoading, error, storeData };
+}
+
+
 export const useStoreListByEmail = email => {
   const { isLoading, error, data: storeData } = useQuery({
     queryKey: ['ownerStore', email ],

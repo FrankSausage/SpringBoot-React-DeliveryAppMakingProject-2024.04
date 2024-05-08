@@ -35,27 +35,44 @@ export default function OwnerMain() {
       {error && <Typography> 에러 발생! </Typography>}
       {storeData && (
         storeData.storeList.map((data, idx) => (
-          <Box key={idx}  sx={{...boxStyle, position: 'relative', width: { xs: '100%', sm: '70%' }, height: '150px', marginX: 'auto'}}>
-            <Link to={`/StoreDetail/${data.storeId}`}  style={{textDecoration: 'none', color: 'black'}} >
-            <Typography>{idx}</Typography>
-            <div>
-                  <img src={'/img/01.jpg'}  style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
-                  {/* <img src={ data.storePictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} /> */}
-                  <ul style={{ position: 'absolute', top: '50%', left: '30%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
-                    <li style={{ listStyleType: 'none' }}>가게이름: {data.name}</li>
-                    <li style={{ listStyleType: 'none' }}>별점: {data.rateing}</li>
-                    <li style={{ listStyleType: 'none' }}>리뷰: {data.reviewCount}</li>
-                    <li style={{ listStyleType: 'none' }}>조회수: {data.dibsCount}</li> 
-                  </ul>
-            </div>  
-            </Link>
-          </Box>
-        ))
-      )}
-    </Box>
+          <Grid container>
+            <Grid item xs />
+            <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
+              <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
+                <Box key={idx} sx={{ ...boxStyle, position: 'relative', width: { xs: '100%', sm: '70%' }, height: '150px', marginX: 'auto' }}>
+                  <Link to={`/StoreDetail/${data.storeId}`} style={{ textDecoration: 'none', color: 'black' }} >
+                    <Typography>{idx}</Typography>
+                    <div>
+                      <img src={'/img/01.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
+                      {/* <img src={ data.storePictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} /> */}
+                      <ul style={{ position: 'absolute', top: '50%', left: '30%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
+                        <li style={{ listStyleType: 'none' }}>{data.name}</li>
+                        <li style={{ listStyleType: 'none' }}>별점: {data.rateing}</li>
+                        <li style={{ listStyleType: 'none' }}>리뷰: {data.reviewCount}</li>
+                        <li style={{ listStyleType: 'none' }}>조회수: {data.dibsCount}</li>
+                      </ul>
+                    </div>
+                  </Link>
+                </Box>
+              </Grid>
+            </Grid>
+            <Grid item xs />
+          </Grid>
+                  ))
+          )}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem' }}>
+                  <Link to='/StoreRegister' style={{ textDecoration: 'none', color: 'white' }} >가게 추가하기</Link>
+
+                </Button>
+              </div>
+        </Box>
   );
 }
-{/* <StoreDetail storeList={data} /> */}
+{/* <StoreDetail storeList={data} /> */ }
 
 let boxStyle = {
   width: 200,
