@@ -11,6 +11,7 @@ import static com.team3.DeliveryProject.responseCode.ResponseCode.MENU_UPDATE_SU
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.menu.MenuAddRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.menu.MenuDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuListGetRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdatePostRequestDto;
@@ -19,6 +20,9 @@ import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionAddRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionUpdateRequestDto;
 import com.team3.DeliveryProject.dto.response.address.AddressFindAllResponseDto;
+import com.team3.DeliveryProject.dto.response.menu.MenuDetailInnerMenusResponseDto;
+import com.team3.DeliveryProject.dto.response.menu.MenuDetailInnerOptionsResponseDto;
+import com.team3.DeliveryProject.dto.response.menu.MenuDetailResponseDto;
 import com.team3.DeliveryProject.dto.response.menu.MenuListGetInnerCategoriesResponseDto;
 import com.team3.DeliveryProject.dto.response.menu.MenuListGetInnerMenusResponseDto;
 import com.team3.DeliveryProject.dto.response.menu.MenuListGetResponseDto;
@@ -169,6 +173,31 @@ public class MenuServiceImpl implements MenuService{
         // 전체 응답 DTO에 카테고리 DTO 리스트 설정
         responseDto.setCategories(categoriesResponseDtos);
 
+        return responseDto;
+    }
+
+    @Override
+    public MenuDetailResponseDto getMenuDetail(MenuDetailRequestDto requestDto) {
+        List<MenuOption> menuOptions = menuOptionRepository.findAllByMenuId(requestDto.getMenuId());
+        List<MenuDetailInnerOptionsResponseDto> menuDetailInnerOptionsResponseDtos = menuOptions.stream()
+            .filter(menu -> !menu.getStatus().equals("삭제"))
+            .map(MenuDetailInnerOptionsResponseDto::new)
+            .collect(Collectors.toList());
+        Menu menu = menuRepository.findById(requestDto.getMenuId()).orElseThrow(()->new RuntimeException("Menu not found"));
+        MenuDetailInnerMenusResponseDto menusResponseDto = MenuDetailInnerMenusResponseDto.builder()
+            .menuId(requestDto.getMenuId())
+            .category(menu.getCategory())
+            .name(menu.getName())
+            .price(menu.getPrice())
+            .menuPictureName(menu.getMenuPictureName())
+            .popularity(menu.getPopularity())
+            .content(menu.getContent())
+            .status(menu.getStatus())
+            .options(menuDetailInnerOptionsResponseDtos)
+            .build();
+        MenuDetailResponseDto responseDto = MenuDetailResponseDto.builder()
+            .menus(menusResponseDto)
+            .build();
         return responseDto;
     }
 

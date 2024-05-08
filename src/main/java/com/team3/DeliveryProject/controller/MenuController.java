@@ -2,6 +2,7 @@ package com.team3.DeliveryProject.controller;
 
 import com.team3.DeliveryProject.dto.request.menu.MenuAddRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.menu.MenuDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuListGetRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdatePostRequestDto;
@@ -60,6 +61,10 @@ public class MenuController {
     @GetMapping("/menu/list")
     public ResponseEntity<?> getMenuList(@ModelAttribute MenuListGetRequestDto requestDto) {
         return ResponseEntity.ok().body(menuService.getMenuList(requestDto));
+    }
+    @GetMapping("/menu/detail")
+    public ResponseEntity<?> getMenuDetail(@ModelAttribute MenuDetailRequestDto requestDto) {
+        return ResponseEntity.ok().body(menuService.getMenuDetail(requestDto));
     }
 
 }
