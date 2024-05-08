@@ -99,6 +99,7 @@ public class UserController {
             List<Stores> storesList = storesRepository.findAllByUserId(user.getUserId());
             List<UserSignInRoleOwnerInnerDto> innerDtoList = storesList.stream()
                 .map(store -> UserSignInRoleOwnerInnerDto.builder()
+                    .storeId(store.getStoreId())
                     .storePictureName(store.getStorePictureName())
                     .name(store.getName())
                     .build())

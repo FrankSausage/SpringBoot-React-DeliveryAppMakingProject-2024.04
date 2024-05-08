@@ -15,6 +15,8 @@ public enum ResponseCode {
     STORE_UPDATE_SUCCESS(HttpStatus.OK,"가게 수정 성공"),
     STORE_DELETE_SUCCESS(HttpStatus.OK,"가게 삭제 성공"),
     MENU_ADD_SUCCESS(HttpStatus.OK,"메뉴 추가 성공"),
+    MENU_UPDATE_SUCCESS(HttpStatus.OK,"메뉴 수정 성공"),
+    MENUOPTION_UPDATE_SUCCESS(HttpStatus.OK,"메뉴옵션 수정 성공"),
     MENUOPTION_ADD_SUCCESS(HttpStatus.OK,"메뉴옵션 추가 성공"),
     ADDRESS_MODIFY_SUCCESS(HttpStatus.OK,"주소 수정 성공"),
     ADDRESS_DELETE_SUCCESS(HttpStatus.OK,"주소 삭제 성공"),
