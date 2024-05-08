@@ -2,6 +2,7 @@ package com.team3.DeliveryProject.controller;
 
 import com.team3.DeliveryProject.dto.request.menu.MenuAddRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdateGetRequestDto;
+import com.team3.DeliveryProject.dto.request.menu.MenuUpdatePostRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionAddRequestDto;
 import com.team3.DeliveryProject.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,10 @@ public class MenuController {
     @GetMapping("/menu/update")
     public ResponseEntity<?> updateMenuOption(@ModelAttribute MenuUpdateGetRequestDto requestDto) {
         return ResponseEntity.ok().body(menuService.updateGetMenu(requestDto));
+    }
+    @PostMapping("/menu/update")
+    public ResponseEntity<?> updateMenu(@RequestBody MenuUpdatePostRequestDto requestDto) {
+        return ResponseEntity.ok().body(menuService.updateMenu(requestDto).getBody());
     }
 
 }
