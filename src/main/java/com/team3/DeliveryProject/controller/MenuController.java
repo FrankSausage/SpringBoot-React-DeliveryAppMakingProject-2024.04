@@ -2,6 +2,7 @@ package com.team3.DeliveryProject.controller;
 
 import com.team3.DeliveryProject.dto.request.menu.MenuAddRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.menu.MenuListGetRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdatePostRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdateStatusRequestDto;
@@ -56,6 +57,9 @@ public class MenuController {
     public ResponseEntity<?> deleteMenuOption(@RequestBody MenuOptionDeleteRequestDto requestDto) {
         return ResponseEntity.ok().body(menuService.deleteMenuOption(requestDto).getBody());
     }
-
+    @GetMapping("/menu/list")
+    public ResponseEntity<?> getMenuList(@ModelAttribute MenuListGetRequestDto requestDto) {
+        return ResponseEntity.ok().body(menuService.getMenuList(requestDto));
+    }
 
 }

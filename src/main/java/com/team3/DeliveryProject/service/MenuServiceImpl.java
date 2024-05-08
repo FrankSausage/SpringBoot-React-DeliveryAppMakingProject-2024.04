@@ -11,22 +11,31 @@ import static com.team3.DeliveryProject.responseCode.ResponseCode.MENU_UPDATE_SU
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.menu.MenuAddRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.menu.MenuListGetRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdatePostRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuUpdateStatusRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionAddRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionUpdateRequestDto;
+import com.team3.DeliveryProject.dto.response.address.AddressFindAllResponseDto;
+import com.team3.DeliveryProject.dto.response.menu.MenuListGetInnerCategoriesResponseDto;
+import com.team3.DeliveryProject.dto.response.menu.MenuListGetInnerMenusResponseDto;
+import com.team3.DeliveryProject.dto.response.menu.MenuListGetResponseDto;
 import com.team3.DeliveryProject.dto.response.menu.MenuUpdateGetResponseDto;
 import com.team3.DeliveryProject.dto.response.menu.MenuUpdateInnerMenusResponseDto;
 import com.team3.DeliveryProject.dto.response.menu.MenuUpdateInnerOptionsResponseDto;
+import com.team3.DeliveryProject.entity.Address;
 import com.team3.DeliveryProject.entity.Menu;
 import com.team3.DeliveryProject.entity.MenuOption;
+import com.team3.DeliveryProject.entity.Users;
 import com.team3.DeliveryProject.repository.MenuOptionRepository;
 import com.team3.DeliveryProject.repository.MenuRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -131,4 +140,36 @@ public class MenuServiceImpl implements MenuService{
         menuOptionRepository.save(menuOption);
         return Response.toResponseEntity(MENUOPTION_DELETE_SUCCESS);
     }
+
+    @Override
+    public MenuListGetResponseDto getMenuList(MenuListGetRequestDto requestDto) {
+        MenuListGetResponseDto responseDto = new MenuListGetResponseDto();
+        List<Menu> menuList = menuRepository.findAllByStoreId(requestDto.getStoreId());
+
+        // 메뉴를 카테고리별로 그룹화
+        Map<String, List<Menu>> groupedByCategory = menuList.stream()
+            .filter(menu -> !menu.getStatus().equals("삭제"))
+            .collect(Collectors.groupingBy(Menu::getCategory));
+
+        List<MenuListGetInnerCategoriesResponseDto> categoriesResponseDtos = new ArrayList<>();
+
+        // 각 카테고리별로 DTO 생성
+        for (Map.Entry<String, List<Menu>> entry : groupedByCategory.entrySet()) {
+            String category = entry.getKey();
+            List<MenuListGetInnerMenusResponseDto> menusResponseDtos = entry.getValue().stream()
+                .map(MenuListGetInnerMenusResponseDto::new)
+                .collect(Collectors.toList());
+
+            MenuListGetInnerCategoriesResponseDto categoriesResponseDto = new MenuListGetInnerCategoriesResponseDto();
+            categoriesResponseDto.setCategory(category);
+            categoriesResponseDto.setMenus(menusResponseDtos);
+            categoriesResponseDtos.add(categoriesResponseDto);
+        }
+
+        // 전체 응답 DTO에 카테고리 DTO 리스트 설정
+        responseDto.setCategories(categoriesResponseDtos);
+
+        return responseDto;
+    }
+
 }
