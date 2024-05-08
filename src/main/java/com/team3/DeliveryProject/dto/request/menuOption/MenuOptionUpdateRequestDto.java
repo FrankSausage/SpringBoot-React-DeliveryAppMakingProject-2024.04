@@ -1,4 +1,4 @@
-package com.team3.DeliveryProject.dto.request.menu;
+package com.team3.DeliveryProject.dto.request.menuOption;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,12 +13,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MenuUpdatePostRequestDto {
-    private Long menuId;
-    private String category;
-    private String name;
-    private int price;
-    private String menuPictureName;
+public class MenuOptionUpdateRequestDto {
+    private Long menuOptionId;
+    private String options;
     private String content;
-    private byte popularity;
+    private int price;
+    private String email;
 }
