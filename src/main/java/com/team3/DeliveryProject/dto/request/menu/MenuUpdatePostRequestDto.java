@@ -19,5 +19,6 @@ public class MenuUpdatePostRequestDto {
     private String name;
     private int price;
     private String menuPictureName;
+    private String content;
     private byte popularity;
 }
