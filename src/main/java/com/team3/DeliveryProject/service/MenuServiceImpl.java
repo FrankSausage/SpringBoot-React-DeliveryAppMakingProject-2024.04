@@ -1,20 +1,22 @@
 package com.team3.DeliveryProject.service;
 
-import static com.team3.DeliveryProject.responseCode.ResponseCode.ADDRESS_ADD_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.MENUOPTION_ADD_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.MENU_ADD_SUCCESS;
 
 import com.team3.DeliveryProject.dto.common.Response;
-import com.team3.DeliveryProject.dto.request.address.AddressAddRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuAddRequestDto;
+import com.team3.DeliveryProject.dto.request.menu.MenuUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionAddRequestDto;
+import com.team3.DeliveryProject.dto.response.menu.MenuUpdateGetResponseDto;
+import com.team3.DeliveryProject.dto.response.menu.MenuUpdateInnerMenusResponseDto;
+import com.team3.DeliveryProject.dto.response.menu.MenuUpdateInnerOptionsResponseDto;
 import com.team3.DeliveryProject.entity.Menu;
 import com.team3.DeliveryProject.entity.MenuOption;
-import com.team3.DeliveryProject.repository.AddressRepository;
 import com.team3.DeliveryProject.repository.MenuOptionRepository;
 import com.team3.DeliveryProject.repository.MenuRepository;
-import com.team3.DeliveryProject.repository.UsersRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -40,5 +42,37 @@ public class MenuServiceImpl implements MenuService{
         System.out.println(menuOption);
         menuOptionRepository.save(menuOption);
         return Response.toResponseEntity(MENUOPTION_ADD_SUCCESS);
+    }
+
+    @Override
+    public MenuUpdateGetResponseDto updateGetMenuOption(MenuUpdateGetRequestDto requestDto) {
+        Menu menu = menuRepository.findById(requestDto.getMenuId()).orElseThrow(()->new RuntimeException("Menu not found"));
+        List<MenuOption> menuOptionList = menuOptionRepository.findAllByMenuId(
+            requestDto.getMenuId());
+        List<MenuUpdateInnerMenusResponseDto> menusResponseDtos = new ArrayList<>();
+        List<MenuUpdateInnerOptionsResponseDto> optionsResponseDtos = new ArrayList<>();
+        for (MenuOption menuOption : menuOptionList){
+            MenuUpdateInnerOptionsResponseDto optionsResponseDto = MenuUpdateInnerOptionsResponseDto.builder()
+                .menuOptionId(menuOption.getMenuOptionId())
+                .options(menuOption.getOptions())
+                .price(menuOption.getPrice())
+                .build();
+            optionsResponseDtos.add(optionsResponseDto);
+        }
+        MenuUpdateInnerMenusResponseDto menusResponseDto = MenuUpdateInnerMenusResponseDto.builder()
+            .menuId(menu.getMenuId())
+            .category(menu.getCategory())
+            .name(menu.getName())
+            .price(menu.getPrice())
+            .menuPictureName(menu.getMenuPictureName())
+            .popularity(menu.getPopularity())
+            .content(menu.getContent())
+            .options(optionsResponseDtos)
+            .build();
+        menusResponseDtos.add(menusResponseDto);
+        MenuUpdateGetResponseDto responseDto = MenuUpdateGetResponseDto.builder()
+            .menus(menusResponseDtos)
+            .build();
+        return responseDto;
     }
 }
