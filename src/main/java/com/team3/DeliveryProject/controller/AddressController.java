@@ -5,13 +5,7 @@ import com.team3.DeliveryProject.dto.request.address.AddressChangeRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressFindAllRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressModifyRequestDto;
-import com.team3.DeliveryProject.dto.request.user.UserSignUpRequestDto;
-import com.team3.DeliveryProject.dto.response.address.AddressFindAllResponseDto;
-import com.team3.DeliveryProject.entity.Address;
-import com.team3.DeliveryProject.entity.Users;
-import com.team3.DeliveryProject.repository.UsersRepository;
 import com.team3.DeliveryProject.service.AddressService;
-import com.team3.DeliveryProject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/address")
 public class AddressController {
+
     @Autowired
     private AddressService addressService;
 
@@ -40,6 +35,7 @@ public class AddressController {
         addressService.deleteAddress(requestDto);
         return ResponseEntity.ok().body("Address deleted successfully");
     }
+
     @PostMapping("/modify")
     public ResponseEntity<?> modifyAddress(@RequestBody AddressModifyRequestDto requestDto) {
 
