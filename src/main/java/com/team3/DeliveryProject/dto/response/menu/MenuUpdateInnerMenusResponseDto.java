@@ -15,6 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class MenuUpdateInnerMenusResponseDto {
+
     private Long menuId;
     private String category;
     private String name;

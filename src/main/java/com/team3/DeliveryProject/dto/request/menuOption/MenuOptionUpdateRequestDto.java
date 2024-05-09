@@ -14,6 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class MenuOptionUpdateRequestDto {
+
     private Long menuOptionId;
     private String options;
     private String content;

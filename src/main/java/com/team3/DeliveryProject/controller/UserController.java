@@ -77,7 +77,8 @@ public class UserController {
 
     @PostMapping("/delete")
     public ResponseEntity<?> deleteUser(@RequestBody UserDeleteRequestDto requestDto) {
-        Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+        Users user = usersRepository.findUsersByEmail(requestDto.getEmail())
+            .orElseThrow(() -> new RuntimeException("User not found"));
 
         userService.deleteUser(user);
         return ResponseEntity.ok().body("User delete successfully");
@@ -89,7 +90,7 @@ public class UserController {
         System.out.println(requestDto.getEmail());
         Users user = usersRepository.findUsersByEmail(requestDto.getEmail())
             .orElseThrow(() -> new RuntimeException("User not found"));
-        if(user.getRole().equals("회원")){
+        if (user.getRole().equals("회원")) {
             UserSignInRoleUserResponseDto responseDto = UserSignInRoleUserResponseDto.builder()
                 .currentAddress(user.getCurrentAddress())
                 .role(user.getRole())

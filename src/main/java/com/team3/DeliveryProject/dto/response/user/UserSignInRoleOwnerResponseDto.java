@@ -15,6 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class UserSignInRoleOwnerResponseDto {
+
     private String role;
     private List<UserSignInRoleOwnerInnerDto> storeList;
 }

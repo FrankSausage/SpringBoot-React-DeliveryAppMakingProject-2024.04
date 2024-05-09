@@ -1,6 +1,5 @@
 package com.team3.DeliveryProject.dto.response.menu;
 
-import com.team3.DeliveryProject.entity.Address;
 import com.team3.DeliveryProject.entity.Menu;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class MenuListGetInnerMenusResponseDto {
+
     private Long menuId;
     private String category;
     private String name;

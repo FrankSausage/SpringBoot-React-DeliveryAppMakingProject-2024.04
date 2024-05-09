@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AddressCodeRepository extends JpaRepository<AddressCode, Long> {
+
     Optional<List<AddressCode>> findAllByStoreId(Long storeId);
 
 }
