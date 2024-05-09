@@ -3,13 +3,14 @@ import { Stack, Box, Grid, InputBase, Button, Typography, } from '@mui/material/
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom';
 import OwnerHeader from '../../../components/OwnerHeader';
-import { useStoreListByEmail } from '../../../utils/storeInfo';
+import { useStore, useStoreListByEmail } from '../../../utils/storeInfo';
 import { getCurrentUser } from '../../../utils/firebase';
 import StoreDetail from '../../Stores/StoreDetail';
 
 export default function OwnerMain() {
   const { email } = getCurrentUser();     // { Key : Value } , { name : '제임스' }
   const { isLoading, error, storeData } = useStoreListByEmail(email);
+  
   // console.log(storeData)  // {storeList : Array(2)}
 
   // console.log(storeData.storeList)  // {0번 데이터}, {1번 데이터}
@@ -17,7 +18,7 @@ export default function OwnerMain() {
   // Map<Key:Value> <- Map 형태(배열) 
   // 즉, 이 데이터를 건들이려면 Array, List 에서 쓰는 함수가 아닌 "Map" 관련 함수로 건들여야 한다
   return (
-    <Box>
+    <Box sx={{margin: -1}}>
       <OwnerHeader />
       <Grid container justifyContent="center" alignItems="center" mt={2}>
         <Grid item xs={6} md={4}>

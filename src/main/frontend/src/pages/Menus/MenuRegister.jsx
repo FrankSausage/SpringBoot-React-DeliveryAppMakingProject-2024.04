@@ -3,7 +3,7 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Gri
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
 import { getCurrentUser } from '../../utils/firebase';
 import { extractDataFromFormData } from '../../utils/storeInfo';
 import axios from 'axios';
@@ -11,8 +11,9 @@ import Ownerheader from '../../components/OwnerHeader';
 
 const defaultTheme = createTheme();
 
-export default function MenuRegister(props) {
-  const { storeId } = props;
+export default function MenuRegister() {
+  const location = useLocation()
+  const { storeId } = location.state;
   const { email } = getCurrentUser();
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
@@ -20,7 +21,8 @@ export default function MenuRegister(props) {
   const [content, setContent] = useState('');
   const [menuPictureName, setMenuPictureName] = useState('');
   const navigate = useNavigate();
-
+  
+  console.log(storeId)
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -34,13 +36,13 @@ export default function MenuRegister(props) {
     extractDataFromFormData(formData)
       .then(resFormData => {
         console.log(resFormData)
-        // axios.post(`/dp/store/menu/register`, resFormData)
+        axios.post(`/dp/store/menu/register`, resFormData)
         
        }
       )
       .then(() => {
         alert('음식 등록이 완료되었습니다.');
-        // navigate(`/StoreDetail`);
+        navigate(`/StoreDetail/:storeId, state:{storeId: storeId}` );
       })
       .catch(error => console.error('음식 등록 실패: ', error));
   };

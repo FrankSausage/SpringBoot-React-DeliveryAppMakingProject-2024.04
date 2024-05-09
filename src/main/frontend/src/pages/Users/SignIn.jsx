@@ -47,7 +47,6 @@ export default function SignIn() {
               })
               .then(()=>{
                 navigate('/')
-                window.location.reload();
               })
           }
         })
