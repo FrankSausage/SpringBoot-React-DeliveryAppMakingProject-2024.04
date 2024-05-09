@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 import { getCurrentUser } from "./firebase";
 
-export const useUserByEmail = (storeId, email) => {
+export const useOwnerByEmail = (storeId, email) => {
     const { isLoading, error, data: user } = useQuery({
         queryKey: ['storeId', storeId, 'email', email],
         queryFn: async () => {
@@ -26,19 +26,6 @@ export const useMenuByEmail =  email => {
   return { isLoading, error, storeData };
 }
 
-export const useMenuListByEmail = (storeId, menuId) => {
-  const { isLoading, error, data: menuData } = useQuery({
-    queryKey: ['StoreMenu', storeId ],
-    queryFn: async () => {
-        return axios.get(`/dp/store/menu/list`, { params: { storeId: storeId, menuId: menuId }})
-          .then(res => res.data)
-          .catch(console.error);
-    }
-  })
-  return { isLoading, error, menuData };
-}
-
-
 export const useStoreListByEmail = email => {
   const { isLoading, error, data: storeData } = useQuery({
     queryKey: ['ownerStore', email ],
@@ -60,6 +47,18 @@ export function useStore (email) {
   })
 
   return { getStoreList }
+}
+
+export const useMenuListByStoreId = storeId => {
+  const { isLoading, error, data: menuData } = useQuery({
+    queryKey: ['StoreMenu', storeId ],
+    queryFn: async () => {
+        return axios.get(`/dp/store/menu/list`, { params: { storeId: storeId }})
+          .then(res => res.data)
+          .catch(console.error);
+    }
+  })
+  return { isLoading, error, menuData };
 }
 
 export async function extractDataFromFormData(formData) {

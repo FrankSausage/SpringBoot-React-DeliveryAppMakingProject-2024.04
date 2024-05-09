@@ -6,7 +6,7 @@ import Footer from '../../components/Footer';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../../utils/AddressUtil';
 import { getCurrentUser, register } from '../../utils/firebase';
-import { extractDataFromFormData, useUserByEmail } from '../../utils/storeInfo';
+import { extractDataFromFormData, useOwnerByEmail } from '../../utils/storeInfo';
 import axios from 'axios';
 import Ownerheader from '../../components/OwnerHeader';
 
@@ -22,7 +22,7 @@ export default function MenuUpdate() {
 
   const navigate = useNavigate();
   const { email } = getCurrentUser();
-  const { isLoading, error, MenuData } = useUserByEmail(email);
+  const { isLoading, error, MenuData } = useOwnerByEmail(email);
   const location = useLocation();
   const { menuId } = location.state;
 
