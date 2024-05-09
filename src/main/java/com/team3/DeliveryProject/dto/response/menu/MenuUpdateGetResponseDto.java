@@ -15,5 +15,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class MenuUpdateGetResponseDto {
+
     private List<MenuUpdateInnerMenusResponseDto> menus;
 }

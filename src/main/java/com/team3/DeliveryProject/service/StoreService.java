@@ -8,14 +8,11 @@ import com.team3.DeliveryProject.dto.request.store.StoreListRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreOwnerListRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateRequestDto;
 import com.team3.DeliveryProject.dto.response.store.StoreDetailResponseDto;
-import com.team3.DeliveryProject.dto.response.store.StoreListInnerResponseDto;
 import com.team3.DeliveryProject.dto.response.store.StoreListResponseDto;
 import com.team3.DeliveryProject.dto.response.store.StoreOwnerListResponseDto;
 import com.team3.DeliveryProject.entity.Stores;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 
 public interface StoreService {
 

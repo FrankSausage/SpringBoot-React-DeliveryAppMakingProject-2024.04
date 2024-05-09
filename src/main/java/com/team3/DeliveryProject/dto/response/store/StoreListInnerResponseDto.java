@@ -14,6 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class StoreListInnerResponseDto {
+
     private Long storeId;
     private String name;
     private String storePictureName;

@@ -14,6 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class UserUpdatePostRequestDto {
+
     private String currentAddress;
     private String email;
     private String name;

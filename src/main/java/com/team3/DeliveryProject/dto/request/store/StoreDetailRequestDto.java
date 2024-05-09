@@ -14,6 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class StoreDetailRequestDto {
+
     private Long storeId;
     private String email;
 
