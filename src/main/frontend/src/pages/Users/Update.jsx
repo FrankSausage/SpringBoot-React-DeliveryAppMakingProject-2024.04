@@ -9,12 +9,14 @@ import { findPostcode } from '../../utils/AddressUtil';
 import { extractDataFromFormData, formatPhoneNumber, useUserByEmail } from '../../utils/userInfo';
 import { getCurrentUser, logout, updateUser } from '../../utils/firebase';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from './useUser';
 
 const defaultTheme = createTheme();
 
 export default function Update() {
     const { email, displayName } = getCurrentUser();
-    const { isLoading, error, user } = useUserByEmail(email);
+    // const { isLoading, error, user } = useUserByEmail(email);
+    const { getUserByEmail: {isLoading, error, data: user} } = useUser(email);
     const [ phoneNumber, setPhoneNumber] = useState();
     const [ passwordCheack, setPasswordCheack ] = useState('');
     const [ isPasswordMatch, setIsPasswordMatch ] = useState(true);

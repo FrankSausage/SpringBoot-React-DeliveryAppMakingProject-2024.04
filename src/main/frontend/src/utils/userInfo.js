@@ -39,7 +39,7 @@ export const useAddressListByEmail = email => {
   return { isLoading, error, address };
 }
 
-export async function extractDataFromFormData(formData) {
+export const extractDataFromFormData = async (formData) => {
     const data = {};
     for (const [key, value] of formData.entries()) {
       data[key] = value;
@@ -55,7 +55,7 @@ export const formatPhoneNumber = (phoneNumberValue) => {
   return formattedPhoneNumber;
   };
 
-export function splitAddressFromCurrentUserAddress(currentAddress) {
+export const splitAddressFromCurrentUserAddress = (currentAddress) => {
     const splitAddress = currentAddress.toString().split(',');
     const roadAddress = (splitAddress[0] || '');
     const extraAddress = (splitAddress[1] || '');
