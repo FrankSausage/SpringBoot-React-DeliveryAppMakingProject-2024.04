@@ -67,6 +67,7 @@ export function getCurrentUser() {
 
 export function logout() {
   signOut(auth).catch(console.error);
+  window.location.reload();   // 화면 새로고침 하는 코드
   localStorage.clear();
 }
 

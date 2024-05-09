@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
+import { getCurrentUser } from "./firebase";
 
 export const useUserByEmail = (storeId, email) => {
     const { isLoading, error, data: user } = useQuery({
@@ -47,7 +48,18 @@ export const useStoreListByEmail = email => {
           .catch(console.error);
     }
   })
+  console.log(storeData)
   return { isLoading, error, storeData };
+}
+
+export function useStore (email) {
+  console.log(email)
+  const getStoreList = useQuery({
+    queryKey: ['ownerList'],
+    queryFn: () => {return axios.get(`/dp/store/list`, {params : { 'email' : email }})}
+  })
+
+  return { getStoreList }
 }
 
 export async function extractDataFromFormData(formData) {

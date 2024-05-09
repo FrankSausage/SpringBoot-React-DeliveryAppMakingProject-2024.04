@@ -3,59 +3,31 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Gri
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../../utils/AddressUtil';
 import { getCurrentUser, register } from '../../utils/firebase';
-import { extractDataFromFormData, formatPhoneNumber, useUserByEmail } from '../../utils/storeInfo';
+import { extractDataFromFormData, useUserByEmail } from '../../utils/storeInfo';
 import axios from 'axios';
 import Ownerheader from '../../components/OwnerHeader';
 
 const defaultTheme = createTheme();
 
 export default function MenuUpdate() {
-  const [roadAddress, setRoadAddress] = useState('');
-  const [extraAddress, setExtraAddress] = useState('');
-  const [detailAddress, setDetailAddress] = useState('');
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [type, setType] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [addressCode, setAddressCode] = useState('');
-  const [minDeliveryPrice, setMinDeliveryPrice] = useState('');
-  const [deliveryTip, setDeliveryTip] = useState('');
+  const [price, setPrice] = useState('');
   const [content, setContent] = useState('');
   const [storePictureName, setStorePictureName] = useState('');
-  const [minDeliveryTime, setMinDeliveryTime] = useState('');
-  const [maxDeliveryTime, setMaxDeliveryTime] = useState('');
-  const [operationHours, setOperationHours] = useState('');
-  const [closedDays, setClosedDays] = useState('');
-  const [deliveryAddress, setDeliveryAddress] = useState('');
+
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const { email } = getCurrentUser();
   const { isLoading, error, user } = useUserByEmail(email);
+  const location = useLocation();
+  const { storeId, menuId } = location.state;
 
 
-  useEffect(() => {
-    const loadDaumPostcodeScript = () => {
-      const script = document.createElement('script');
-      script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
-      script.async = true;
-      document.body.appendChild(script);
-      script.onload = () => {
-        console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
-      };
-    };
 
-    loadDaumPostcodeScript();
-
-    return () => {
-      // 언마운트 시 스크립트 제거 로직
-    };
-  }, []);
-
-  const handleFindPostcode = () => {
-    findPostcode(setRoadAddress, setExtraAddress, setAddressCode);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -76,29 +48,17 @@ export default function MenuUpdate() {
 
   };
 
-  const handlePhoneNumberChange = (event) => {
-    const formattedPhoneNumber = formatPhoneNumber(event.target.value);
-    setPhoneNumber(formattedPhoneNumber);
-  };
 
   const setFormData = async (data) => {
     try {
-      data.append('address', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '')
-        + ',' + (detailAddress ? detailAddress : '')));
+      data.appen('storeId', storeId);
+      data.append('menuId', menuId);
       data.append('email', email);
-      data.append('addressCode', addressCode.substring(0, 8));
-      data.append('category', category);
+      data.append('category', category + (','));
       data.append('type', type);
-      data.append('minDeliveryPrice', minDeliveryPrice);
       data.append('content', content);
       data.append('name', name);
-      data.append('deliveryTip', deliveryTip);
-      data.append('minDeliveryTime', minDeliveryTime);
-      data.append('maxDeliveryTime', maxDeliveryTime);
-      data.append('operationHours', operationHours);
-      data.append('minDeliveryTime', minDeliveryTime);
-      data.append('closedDays', closedDays);
-      data.append('deliveryAddress', deliveryAddress);
+      data.append('price', price);
       return await data;
     }
     catch (error) {
@@ -161,18 +121,15 @@ export default function MenuUpdate() {
                     <TextField
                       required
                       fullWidth
-                      id="phone"
-                      label="전화번호"
-                      name="phone"
-                      autoComplete="phone"
-                      value={phoneNumber}
-                      onChange={handlePhoneNumberChange}
-                      inputProps={{
-                        maxLength: 12,
-                        inputMode: 'numeric',
-                      }}
+                      autoComplete="given-name"
+                      name="price"
+                      id="price"
+                      defaultValuevalue={name}
+                      label="가게 이름"
+                      onChange={e => setPrice(e.target.value)}
                     />
                   </Grid>
+
                   <Grid item xs={12}>
                     <Typography variant="h6" gutterBottom>
                       카테고리
@@ -180,182 +137,15 @@ export default function MenuUpdate() {
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
                         <FormControlLabel
-                          control={<Checkbox checked={category === '한식'} onChange={() => setCategory('한식')} color="primary" />}
-                          label="한식"
+                          control={<Checkbox checked={category === '메인 메뉴'} onChange={() => setCategory('메인 메뉴')} color="primary" />}
+                          label="메인 메뉴"
                         />
                         <FormControlLabel
-                          control={<Checkbox checked={category === '중식'} onChange={() => setCategory('중식')} color="primary" />}
-                          label="중식"
-                        />
-                        <FormControlLabel
-                          control={<Checkbox checked={category === '일식'} onChange={() => setCategory('일식')} color="primary" />}
-                          label="일식"
-                        />
-                        <FormControlLabel
-                          control={<Checkbox checked={category === '양식'} onChange={() => setCategory('양식')} color="primary" />}
-                          label="양식"
-                        />
-                        <FormControlLabel
-                          control={<Checkbox checked={category === '패스트'} onChange={() => setCategory('패스트')} color="primary" />}
-                          label="패스트"
-                        />
-                        <FormControlLabel
-                          control={<Checkbox checked={category === '치킨'} onChange={() => setCategory('치킨')} color="primary" />}
-                          label="치킨"
-                        />
-                        <FormControlLabel
-                          control={<Checkbox checked={category === '분식'} onChange={() => setCategory('분식')} color="primary" />}
-                          label="분식"
-                        />
-                        <FormControlLabel
-                          control={<Checkbox checked={category === '디저트'} onChange={() => setCategory('디저트')} color="primary" />}
-                          label="디저트"
+                          control={<Checkbox checked={category === '사이드 메뉴'} onChange={() => setCategory('사이드 메뉴')} color="primary" />}
+                          label="사이드 메뉴"
                         />
                       </Grid>
                     </Grid>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="roadAddress"
-                      label="도로명 주소"
-                      value={roadAddress}
-                      InputProps={{
-                        readOnly: true,
-                      }}
-                    />
-                  </Grid>
-                  <Button
-                    type="button"
-                    onClick={handleFindPostcode}
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 1, mb: 2, ml: 2 }}
-                  >
-                    주소 찾기
-                  </Button>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="extraAddress"
-                      label="참고항목"
-                      value={extraAddress}
-                      InputProps={{
-                        readOnly: true,
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="detailAddress"
-                      label="상세주소"
-                      name="detailAddress"
-                      autoComplete="detailAddress"
-                      onChange={e => setDetailAddress(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="h6" gutterBottom>배달, 포장</Typography>
-                    <Grid container spacing={3}>
-                      <Grid item xs={12}>
-                        <FormControlLabel
-                          control={<Checkbox checked={type === 0} onChange={() => setType(0)} color="primary" />}
-                          label="배달"
-                        />
-                        <FormControlLabel
-                          control={<Checkbox checked={type === 1} onChange={() => setType(1)} color="primary" />}
-                          label="배달+포장"
-                        />
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      autoComplete="given-name"
-                      name="minDeliveryPrice"
-                      required
-                      fullWidth
-                      id="minDeliveryPrice"
-                      label="최소 주문금액"
-                      onChange={e => setMinDeliveryPrice(e.target.value)}
-                      autoFocus
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      autoComplete="given-name"
-                      name="deliveryTip"
-                      required
-                      fullWidth
-                      id="deliveryTip"
-                      label="배달팁"
-                      value={deliveryTip}
-                      onChange={e => setDeliveryTip(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      autoComplete="given-name"
-                      name="minDeliveryTime"
-                      required
-                      fullWidth
-                      id="minDeliveryTime"
-                      value={minDeliveryTime}
-                      label="최소 배달 예상 시간"
-                      onChange={e => setMinDeliveryTime(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      autoComplete="given-name"
-                      name="maxDeliveryTime"
-                      required
-                      fullWidth
-                      id="maxDeliveryTime"
-                      value={maxDeliveryTime}
-                      label="최대 배달 예상 시간"
-                      onChange={e => setMaxDeliveryTime(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      autoComplete="given-name"
-                      name="operationHours"
-                      required
-                      fullWidth
-                      id="operationHours"
-                      value={operationHours}
-                      label="운영 시간"
-                      onChange={e => setOperationHours(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      autoComplete="given-name"
-                      name="closedDays"
-                      required
-                      fullWidth
-                      id="closedDays"
-                      value={closedDays}
-                      label="휴무일"
-                      onChange={e => setClosedDays(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      autoComplete="given-name"
-                      name="deliveryAddress"
-                      required
-                      fullWidth
-                      id="deliveryAddress"
-                      value={deliveryAddress}
-                      label="배달 지역"
-                      onChange={e => setDeliveryAddress(e.target.value)}
-                    />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
@@ -363,7 +153,7 @@ export default function MenuUpdate() {
                       name="content"
                       fullWidth
                       id="content"
-                      label="가게 소개글"
+                      label="음식 소개글"
                       multiline
                       rows={4}
                       variant='outlined'
@@ -373,7 +163,7 @@ export default function MenuUpdate() {
 
                   <Grid item xs={12}>
                     <Typography variant="h6" gutterBottom>
-                      가게 사진
+                      음식 사진
                     </Typography>
                     <input
                       accept=".png, .jpeg, .jpg"
@@ -423,10 +213,10 @@ export default function MenuUpdate() {
                 </Button>
               </Box>
             </Box>
-          <Footer sx={{ mt: 5 }} />
-        </Container>
-          </>
-            }
+            <Footer sx={{ mt: 5 }} />
+          </Container>
+        </>
+      }
     </ThemeProvider>
   );
 }
