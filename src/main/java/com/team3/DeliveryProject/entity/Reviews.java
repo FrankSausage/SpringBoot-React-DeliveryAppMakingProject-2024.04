@@ -40,4 +40,15 @@ public class Reviews {
     @Column(nullable = false)
     private String status;
 
+    public Reviews(Long storeId, Long userId, Long menuId, int rating, String content, String reviewPictureName, LocalDateTime createdDate, LocalDateTime modifiedDate, String status) {
+        this.storeId = storeId;
+        this.userId = userId;
+        this.menuId = menuId;
+        this.rating = rating;
+        this.content = content;
+        this.reviewPictureName = reviewPictureName;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.status = status;
+    }
 }

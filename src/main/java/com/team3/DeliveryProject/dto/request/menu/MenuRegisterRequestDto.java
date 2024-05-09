@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class MenuRegisterRequestDto {
-2
+
     private Long storeId;
     private String category;
     private String name;
