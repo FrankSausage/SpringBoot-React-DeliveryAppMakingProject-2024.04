@@ -1,11 +1,25 @@
 import * as React from 'react';
-import { Box, Grid, } from '@mui/material';
+import { Box, Grid, createTheme, } from '@mui/material';
+import { getCurrentUser } from '../../utils/firebase';
+import { useOwnerByEmail } from '../../utils/storeInfo';
 
-export default function StoreInfo() {
-  
+// const defaultTheme = createTheme();
+
+export default function StoreInfo(data) {
+  // const {email} = getCurrentUser();
+  // const { isLoading, error, user} = useOwnerByEmail(email);
+
   return (
+    // <ThemeProvider theme={defaultTheme}>
+    // {isLoading && <Typography>Loading...</Typography>}
+    // {error && <Typography>에러 발생!</Typography>}
+    // {user && (
+    //   user.data.map => (
+
+    //   )
+    // )}
     <Box sx={{ margin: 1 }}>
-        Item 정보
+        가게·원산지 정보
         <Grid container>
           <Grid item xs/>
           <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
@@ -41,6 +55,7 @@ export default function StoreInfo() {
           <Grid item xs />
         </Grid>
     </Box>
+  // </ThemeProvider>
   );
 }
 

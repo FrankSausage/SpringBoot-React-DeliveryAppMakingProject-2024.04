@@ -77,7 +77,8 @@ public class UserController {
 
     @PostMapping("/delete")
     public ResponseEntity<?> deleteUser(@RequestBody UserDeleteRequestDto requestDto) {
-        Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+        Users user = usersRepository.findUsersByEmail(requestDto.getEmail())
+            .orElseThrow(() -> new RuntimeException("User not found"));
 
         userService.deleteUser(user);
         return ResponseEntity.ok().body("User delete successfully");
@@ -89,7 +90,7 @@ public class UserController {
         System.out.println(requestDto.getEmail());
         Users user = usersRepository.findUsersByEmail(requestDto.getEmail())
             .orElseThrow(() -> new RuntimeException("User not found"));
-        if(user.getRole().equals("회원")){
+        if (user.getRole().equals("회원")) {
             UserSignInRoleUserResponseDto responseDto = UserSignInRoleUserResponseDto.builder()
                 .currentAddress(user.getCurrentAddress())
                 .role(user.getRole())
@@ -115,4 +116,17 @@ public class UserController {
         // 대응되는 role이 없는 경우
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid user role");
     }
+//    @PostMapping("/update/new")
+//    public ResponseEntity<?> updateUsers(@RequestBody UserUpdateGetRequestDto requestDto) {
+//        System.out.println("진입");
+//        Users user = usersRepository.findUsersByEmail(requestDto.getEmail())
+//            .orElseThrow(() -> new RuntimeException("User not found"));
+//        System.out.println(user);
+//        UserUpdateResponseDto responseDto = UserUpdateResponseDto.builder()
+//            .phone(user.getPhone())
+//            .currentAddress(user.getCurrentAddress())
+//            .build();
+//        System.out.println(responseDto);
+//        return ResponseEntity.ok().body(responseDto);
+//    }
 }

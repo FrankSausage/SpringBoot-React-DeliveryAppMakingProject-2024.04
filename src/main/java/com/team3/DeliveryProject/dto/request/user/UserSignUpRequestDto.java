@@ -14,6 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class UserSignUpRequestDto {
+
     private Long userId;
     private String password;
     private String name;

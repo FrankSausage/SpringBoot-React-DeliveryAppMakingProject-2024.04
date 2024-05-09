@@ -1,6 +1,5 @@
 package com.team3.DeliveryProject.dto.request.store;
 
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class StoreAddRequestDto {
+
     private String email;
     private String name;
     private int type;
