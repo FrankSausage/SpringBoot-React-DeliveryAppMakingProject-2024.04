@@ -22,9 +22,9 @@ export default function MenuUpdate() {
 
   const navigate = useNavigate();
   const { email } = getCurrentUser();
-  const { isLoading, error, user } = useUserByEmail(email);
+  const { isLoading, error, MenuData } = useUserByEmail(email);
   const location = useLocation();
-  const { storeId, menuId } = location.state;
+  const { menuId } = location.state;
 
 
 
@@ -51,7 +51,6 @@ export default function MenuUpdate() {
 
   const setFormData = async (data) => {
     try {
-      data.appen('storeId', storeId);
       data.append('menuId', menuId);
       data.append('email', email);
       data.append('category', category + (','));
@@ -81,7 +80,7 @@ export default function MenuUpdate() {
     <ThemeProvider theme={defaultTheme}>
       {isLoading && <Typography>Loading...</Typography>}
       {error && <Typography>에러 발생!</Typography>}
-      {user &&
+      {MenuData &&
         <>
           <Ownerheader />
           <Container component="main" maxWidth="xs">

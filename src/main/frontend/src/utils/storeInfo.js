@@ -26,16 +26,16 @@ export const useMenuByEmail =  email => {
   return { isLoading, error, storeData };
 }
 
-export const useMenuListByEmail = email => {
-  const { isLoading, error, data: storeData } = useQuery({
-    queryKey: ['StoreMenu', email ],
+export const useMenuListByEmail = (storeId, menuId) => {
+  const { isLoading, error, data: menuData } = useQuery({
+    queryKey: ['StoreMenu', storeId ],
     queryFn: async () => {
-        return axios.get(`/dp/store/menu/list`, { params : { email : email }})
+        return axios.get(`/dp/store/menu/list`, { params: { storeId: storeId, menuId: menuId }})
           .then(res => res.data)
           .catch(console.error);
     }
   })
-  return { isLoading, error, storeData };
+  return { isLoading, error, menuData };
 }
 
 
