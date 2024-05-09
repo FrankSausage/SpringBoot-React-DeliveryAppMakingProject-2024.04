@@ -5,7 +5,7 @@ export default function StoreInfo() {
   
   return (
     <Box sx={{ margin: 1 }}>
-        Item 정보
+        가게·원산지 정보
         <Grid container>
           <Grid item xs/>
           <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
