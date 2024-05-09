@@ -17,6 +17,7 @@ import OwnerMain from './pages/Users/View/OwnerMain';
 import Address from './pages/Users/View/Address';
 import MenuRegister from './pages/Menus/MenuRegister';
 import MenuUpdate from './pages/Menus/MenuUpdate';
+import ReviewRegister from './pages/Review/ReviewRegister';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,8 @@ const router = createBrowserRouter([
       { path: 'MenuUpdate', element: <MenuUpdate />},
       { path: 'UserMain', element: <UserMain />,},
       { path: 'OwnerMain', element: <OwnerMain />},
+      { path: 'ReviewRegister', element: <ReviewRegister />},
+      
     ]
   }
 ]);

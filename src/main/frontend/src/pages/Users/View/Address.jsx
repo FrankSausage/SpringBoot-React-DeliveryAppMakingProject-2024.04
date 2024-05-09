@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router";
-import { Box, Button,Divider, Grid, Input, Stack,  Typography, } from "@mui/material";
+import { Avatar, Box, Button,Divider, Grid, Input, Stack,  Typography, } from "@mui/material";
 import RoomIcon from '@mui/icons-material/Room';
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
+import MailSharpIcon from '@mui/icons-material/MailSharp';
 import { findPostcode } from "../../../utils/AddressUtil";
 import { extractDataFromFormData, splitAddressFromCurrentUserAddress, useAddressListByEmail } from "../../../utils/userInfo";
 import { getCurrentUser } from "../../../utils/firebase";
@@ -106,7 +107,12 @@ export default function Address() {
                   textAlign: 'center',
                   width: '100%',
                   }}>
-        <Stack sx={{ maxWidth:'600px', width:'100%', textAlign: 'center' }}>
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main',
+                    alignSelf: 'center' }}>
+          <MailSharpIcon />
+        </Avatar>
+        <Stack sx={{ maxWidth:'500px', width:'100%', 
+                    textAlign: 'center', marginLeft: '85px' }}>
           {isLoading && <Typography>로딩 중..</Typography>}
           {error && <Typography>에러 발생!</Typography>}
           {address && 
@@ -114,7 +120,7 @@ export default function Address() {
             <Grid container>
               <Stack component='form' onSubmit={handleSubmit} sx={{my: 3}}>
                 <Grid item sx={{mb: 3}}>
-                  <Typography variant="h5"> 주소 목록 </Typography>
+                  <Typography variant="h5" sx={{marginLeft: '-60px'}}> 주소 목록 </Typography>
                   <Stack direction={"row"}  sx={{my: 4}}>
                     <Input type="text" 
                     value={roadAddress + extraAddress} 
@@ -132,9 +138,9 @@ export default function Address() {
                     placeholder="상세 주소"/>
                   </Stack>
                 </Grid>
-                <Grid item>
-                    { !roadAddress && <Button disabled>추가</Button> }
-                    { roadAddress && <Button sx={{border: 0, mx: 1}} type="submit" variant="contained" >주소 추가</Button> }
+                <Grid item sx={{marginLeft: '-60px', mb: 3}}>
+                    { !roadAddress && <Button disabled sx={{fontSize: '1.2rem', height: '3rem'}}>추가</Button> }
+                    { roadAddress && <Button sx={{border: 0, mx: 1, fontSize: '1.2rem', height: '3rem'}} type="submit" variant="contained" >주소 추가</Button> }
                 </Grid>
               </Stack>
             </Grid>
