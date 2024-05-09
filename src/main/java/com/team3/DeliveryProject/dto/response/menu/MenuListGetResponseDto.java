@@ -1,5 +1,6 @@
-package com.team3.DeliveryProject.dto.response.user;
+package com.team3.DeliveryProject.dto.response.menu;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +14,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserSignInResponseDto {
-    private String currentAddress;
-    private String role;
+public class MenuListGetResponseDto {
+    private List<MenuListGetInnerCategoriesResponseDto> categories;
 }

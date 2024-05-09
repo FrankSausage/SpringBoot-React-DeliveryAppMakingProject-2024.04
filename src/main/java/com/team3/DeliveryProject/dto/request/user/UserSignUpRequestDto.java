@@ -21,4 +21,5 @@ public class UserSignUpRequestDto {
     private String email;
     private String role;
     private String currentAddress;
+    private Long addressCode;
 }

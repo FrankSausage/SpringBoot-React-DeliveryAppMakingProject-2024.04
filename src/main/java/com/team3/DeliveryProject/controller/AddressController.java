@@ -1,6 +1,7 @@
 package com.team3.DeliveryProject.controller;
 
 import com.team3.DeliveryProject.dto.request.address.AddressAddRequestDto;
+import com.team3.DeliveryProject.dto.request.address.AddressChangeRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressFindAllRequestDto;
 import com.team3.DeliveryProject.dto.request.address.AddressModifyRequestDto;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +48,13 @@ public class AddressController {
     }
 
     @GetMapping("/getList")
-    public ResponseEntity<?> getListAddress(@RequestBody AddressFindAllRequestDto requestDto) {
+    public ResponseEntity<?> getListAddress(@ModelAttribute AddressFindAllRequestDto requestDto) {
         return ResponseEntity.ok().body(addressService.findAllAddress(requestDto));
     }
+
+    @PostMapping("/change")
+    public ResponseEntity<?> changeAddress(@RequestBody AddressChangeRequestDto requestDto) {
+        return ResponseEntity.ok().body(addressService.changeCurrentAddress(requestDto));
+    }
+
 }

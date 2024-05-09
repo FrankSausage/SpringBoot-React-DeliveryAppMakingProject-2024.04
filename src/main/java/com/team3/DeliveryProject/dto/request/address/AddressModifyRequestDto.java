@@ -17,4 +17,6 @@ import lombok.ToString;
 public class AddressModifyRequestDto {
     private Long addressId;
     private String address;
+    private Long addressCode;
+    private String email;
 }

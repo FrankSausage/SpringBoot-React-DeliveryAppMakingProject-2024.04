@@ -31,10 +31,10 @@ public class UserServiceImpl implements UserService{
             return Response.toResponseEntity(USER_EMAIL_IS_ALREADY_EXIST);
         }else{
             Users tmpUser = new Users(" ", user.getName(), user.getPhone(), user.getEmail(),0,
-                user.getRole(), user.getCurrentAddress(), LocalDateTime.now(),LocalDateTime.now(), "일반", 0);
+                user.getRole(), user.getCurrentAddress(), user.getAddressCode(),LocalDateTime.now(),LocalDateTime.now(), "일반", 0);
             usersRepository.save(tmpUser);
 
-            Address address = new Address(tmpUser.getUserId(), tmpUser.getCurrentAddress(),
+            Address address = new Address(tmpUser.getUserId(), tmpUser.getCurrentAddress(), tmpUser.getAddressCode(),
                 LocalDateTime.now(),LocalDateTime.now(),"일반");
             addressRepository.save(address);
             return Response.toResponseEntity(USER_SIGNUP_SUCCESS);
@@ -47,7 +47,12 @@ public class UserServiceImpl implements UserService{
         users.setPhone(user.getPhone());
         users.setName(user.getName());
         users.setCurrentAddress(user.getCurrentAddress());
-        usersRepository.save(users);
+        users.setAddressCode(user.getAddressCode());
+        Long userId = usersRepository.save(users).getUserId();
+        Address address = addressRepository.findAddressByUserId(userId).get();
+        address.setAddress(users.getCurrentAddress());
+        address.setAddressCode(users.getAddressCode());
+        addressRepository.save(address);
         return Response.toResponseEntity(USER_UPDATE_SUCCESS);
     }
 
