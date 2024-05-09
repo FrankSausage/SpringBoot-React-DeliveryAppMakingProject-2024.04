@@ -1,73 +1,63 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
-import { Link, useNavigate } from 'react-router-dom';
-import { findPostcode } from '../../utils/AddressUtil';
-import { getCurrentUser, register } from '../../utils/firebase';
-import { extractDataFromFormData, formatPhoneNumber } from '../../utils/storeInfo';
+import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
+import { getCurrentUser } from '../../utils/firebase';
+import { extractDataFromFormData } from '../../utils/storeInfo';
 import axios from 'axios';
 import Ownerheader from '../../components/OwnerHeader';
 
 const defaultTheme = createTheme();
 
 export default function MenuRegister() {
+  const location = useLocation()
+  const { storeId } = location.state;
+  const { email } = getCurrentUser();
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState('');
-  const [deliveryTip, setDeliveryTip] = useState('');
   const [content, setContent] = useState('');
-  const [storePictureName, setStorePictureName] = useState('');
+  const [menuPictureName, setMenuPictureName] = useState('');
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  // const [userInfo, setUserInfo] = useState({email: '', password: '', })
-  // const [storeInfo, setStoreInfo] = useState({deliveryAddress: '', closedDays: '',}) // 나중에 이런식으로 이팩토리 할것 이유 업데이트 할때 정보 받기 편해지기 위해서
   
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const { email } = await getCurrentUser();
-      setEmail(email);
-    };
-    fetchUserData();
-  }, []);
-  console.log(email);
-  
-
-  
-
+  console.log(storeId)
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
 
-    if (!data.get('name') || !data.get('phone')) {
+    if (!name || !price) {
       alert('필수 항목을 입력하세요.');
       return;
     }
 
-    
-      const formData = await setFormData(data);
-      extractDataFromFormData(formData)
-        .then(resFormData => axios.post(`/dp/store/menu/register`, resFormData));
-
-      alert('음식 등록이 완료되었습니다.');
-      navigate('/OwnerMain');
-    
+    const formData = await setFormData(data);
+    extractDataFromFormData(formData)
+      .then(resFormData => {
+        console.log(resFormData)
+        axios.post(`/dp/store/menu/register`, resFormData)
+        
+       }
+      )
+      .then(() => {
+        alert('음식 등록이 완료되었습니다.');
+        navigate(`/StoreDetail/:storeId, state:{storeId: storeId}` );
+      })
+      .catch(error => console.error('음식 등록 실패: ', error));
   };
-
-  
 
   const setFormData = async (data) => {
     try {
+      data.append('storeId', storeId);
       data.append('email', email);
       data.append('category', category);
       data.append('content', content);
       data.append('name', name);
-      data.append('deliveryTip', deliveryTip);
       data.append('price', price);
-      return await data;
-    }
-    catch (error) {
+      data.append('menuPictureName', menuPictureName);
+      return data;
+    } catch (error) {
       console.error('setFormData Error!: ', error);
       return null;
     }
@@ -77,11 +67,9 @@ export default function MenuRegister() {
     const files = Array.from(e.target.files);
     if (files.length > 0) {
       const fileNames = files.map(file => file.name);
-      setStorePictureName(fileNames);
+      setMenuPictureName(fileNames);
     }
   };
-
-
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -100,7 +88,7 @@ export default function MenuRegister() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/StoreList" style={{ textDecoration: 'none', color: 'black' }}>가게 이동</Link>
+            <Link to="/StoreDetail" style={{ textDecoration: 'none', color: 'black' }}>가게 이동</Link>
           </Typography>
           <Typography component="h1" variant="h5">
             메뉴 등록(단건)
@@ -128,7 +116,7 @@ export default function MenuRegister() {
                   name="price"
                   autoComplete="price"
                   value={price}
-                  onChange={e => setName(e.target.value)}
+                  onChange={e => setPrice(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -138,36 +126,12 @@ export default function MenuRegister() {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <FormControlLabel
-                      control={<Checkbox checked={category === '한식'} onChange={() => setCategory('한식')} color="primary" />}
-                      label="한식"
+                      control={<Checkbox checked={category === '메인 메뉴'} onChange={() => setCategory('메인 메뉴')} color="primary" />}
+                      label="메인 메뉴"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={category === '중식'} onChange={() => setCategory('중식')} color="primary" />}
-                      label="중식"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '일식'} onChange={() => setCategory('일식')} color="primary" />}
-                      label="일식"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '양식'} onChange={() => setCategory('양식')} color="primary" />}
-                      label="양식"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '패스트'} onChange={() => setCategory('패스트')} color="primary" />}
-                      label="패스트"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '치킨'} onChange={() => setCategory('치킨')} color="primary" />}
-                      label="치킨"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '분식'} onChange={() => setCategory('분식')} color="primary" />}
-                      label="분식"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '디저트'} onChange={() => setCategory('디저트')} color="primary" />}
-                      label="디저트"
+                      control={<Checkbox checked={category === '사이드 메뉴'} onChange={() => setCategory('사이드 메뉴')} color="primary" />}
+                      label="사이드 메뉴"
                     />
                   </Grid>
                 </Grid>
@@ -200,18 +164,16 @@ export default function MenuRegister() {
 
                 <TextField
                   autoComplete="given-name"
-                  name="storePictureName"
-                  value={storePictureName}
+                  name="menuPictureName"
+                  value={menuPictureName}
                   fullWidth
-                  id="storePictureName"
+                  id="menuPictureName"
                   label="음식 사진"
                   autoFocus
                   onClick={(e) => {
-                    e.target.value = null;
+                    e.target.value = setMenuPictureName(e.target.value)
                   }}
                 />
-                {/* 아이콘 대신에 "사진 올리기" 텍스트를 사용하고 싶다면 아래 주석 처리된 라인을 사용하세요 */}
-                {/* <span>사진 올리기</span> */}
 
                 <Button
                   type="button"
@@ -234,7 +196,7 @@ export default function MenuRegister() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
-               음식 등록 하기
+              음식 등록 하기
             </Button>
           </Box>
         </Box>

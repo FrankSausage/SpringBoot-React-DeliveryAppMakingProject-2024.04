@@ -15,5 +15,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class StoreOwnerListResponseDto {
+
     private List<StoreOwnerListInnerResponseDto> storeList;
 }

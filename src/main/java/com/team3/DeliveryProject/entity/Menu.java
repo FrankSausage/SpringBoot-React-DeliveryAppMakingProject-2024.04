@@ -1,11 +1,15 @@
 package com.team3.DeliveryProject.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import java.time.LocalDateTime;
-import java.util.List;
-
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +24,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "Menu")
 public class Menu {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long menuId;
@@ -39,7 +44,7 @@ public class Menu {
     private String menuPictureName;
 
     @Column(nullable = false)
-    private int popularity;
+    private byte popularity;
 
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdDate;
@@ -51,7 +56,7 @@ public class Menu {
     private String status;
 
     public Menu(Long storeId, String category, String name, String content, int price,
-        String menuPictureName, int popularity, LocalDateTime createdDate,
+        String menuPictureName, byte popularity, LocalDateTime createdDate,
         LocalDateTime modifiedDate,
         String status) {
         this.storeId = storeId;

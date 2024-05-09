@@ -14,6 +14,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class UserSignInRoleOwnerInnerDto {
+
+    private Long storeId;
     private String storePictureName;
     private String name;
 }
