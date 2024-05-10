@@ -1,23 +1,25 @@
 import * as React from 'react';
-import { Box, Grid, createTheme, } from '@mui/material';
+import { Box, Grid, createTheme, ThemeProvider, Typography } from '@mui/material';
 import { getCurrentUser } from '../../utils/firebase';
-import { useOwnerByEmail } from '../../utils/storeInfo';
+import { useStoreInfoByEmail } from '../../utils/storeInfo';
+import { useLocation, useParams } from 'react-router';
 
-// const defaultTheme = createTheme();
+const defaultTheme = createTheme();
 
 export default function StoreInfo(data) {
-  // const {email} = getCurrentUser();
-  // const { isLoading, error, user} = useOwnerByEmail(email);
+  const {email} = getCurrentUser();
+  const location = useLocation();
+  const {storeId} = location.data.storeId;
+  // const [ storeId ] = useParams();
+  const { isLoading, error, store } = useStoreInfoByEmail(email);
+  console.log(store)
 
   return (
-    // <ThemeProvider theme={defaultTheme}>
-    // {isLoading && <Typography>Loading...</Typography>}
-    // {error && <Typography>에러 발생!</Typography>}
-    // {user && (
-    //   user.data.map => (
-
-    //   )
-    // )}
+    <ThemeProvider theme={defaultTheme}>
+     {isLoading && <Typography>Loading...</Typography>}
+     {error && <Typography>에러 발생!</Typography>}
+     {store && 
+     <>
     <Box sx={{ margin: 1 }}>
         가게·원산지 정보
         <Grid container>
@@ -50,12 +52,19 @@ export default function StoreInfo(data) {
                     <li style={{ listStyleType: 'none' }}>가게 소개</li>
                   </ul>
               </Box>
+              <Box sx={{...boxStyle, position: 'relative', width: { xs: '100%', sm: '70%' }, height: '300px', marginX: 'auto', marginBottom: '10px' }}>
+                  <ul style={{ position: 'absolute', top: '50%', left: '15%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
+                    <li style={{ listStyleType: 'none' }}>원산지 정보</li>
+                  </ul>
+              </Box>
               </Grid>
             </Grid>
           <Grid item xs />
         </Grid>
     </Box>
-  // </ThemeProvider>
+     </>
+     }
+   </ThemeProvider>
   );
 }
 

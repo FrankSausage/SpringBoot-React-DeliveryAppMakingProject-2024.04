@@ -4,14 +4,13 @@ import { getAuth, createUserWithEmailAndPassword, GithubAuthProvider,
   onAuthStateChanged, 
   updatePassword} from "firebase/auth";
 import { extractDataFromFormData } from '../utils/userInfo';
-import { useOutletContext } from "react-router";
+import { Navigate, useNavigate, useOutletContext } from "react-router";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
 };
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 
@@ -66,9 +65,13 @@ export function getCurrentUser() {
 }
 
 export function logout() {
-  signOut(auth).catch(console.error);
-  window.location.reload();   // 화면 새로고침 하는 코드
-  localStorage.clear();
+  
+  signOut(auth)
+  .then(() => {
+    localStorage.clear();
+    window.location.reload();
+  })
+  .catch(console.error);
 }
 
 export function onUserStateChanged(callback) {
