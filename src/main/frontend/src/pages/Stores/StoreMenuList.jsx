@@ -27,13 +27,15 @@ export default function StoreMenuList(data) {
     const newStatuses = [...status];
     newStatuses[index] = !newStatuses[index];
     setStatus(newStatuses);
-  
+
     try {
       // 현재 사용자의 이메일 가져오기
       const { email } = getCurrentUser();
-      
-      // 메뉴 아이디 가져오기
-      const menuId = menuData.categories[index].menus[index].menuId;
+
+      // 해당 인덱스에 해당하는 메뉴의 menuId 가져오기
+      const menuId = menuData.categories
+        .flatMap(category => category.menus)
+      [index].menuId;
 
       // API 요청 보내기
       const response = await axios.post(`/dp/store/menu/status`, {
@@ -41,7 +43,7 @@ export default function StoreMenuList(data) {
         email: email,
         status: newStatuses[index] ? '품절' : '일반' // 상태에 따라 '품절' 또는 '일반' 전달
       });
-  
+
       // 응답 처리
       console.log(response.data); // 성공적으로 업데이트된 메뉴 정보 출력
     } catch (error) {
@@ -66,10 +68,12 @@ export default function StoreMenuList(data) {
                         {/* <img src={'/img/칠리모짜징거통다리세트.png'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} /> */}
                         <img src={res.menuPictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
                         <ul style={{ position: 'absolute', top: '50%', left: '40%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
-                          <li style={{ listStyleType: 'none' }}>이름 : {res.name}</li>
+                          <li style={{ listStyleType: 'none' }}>{res.name}</li>
                           <li style={{ listStyleType: 'none' }}>인기 : {res.popularity} </li>
-                          <li style={{ listStyleType: 'none' }}>음식 소개글 : {res.content} </li>
-                          <li style={{ listStyleType: 'none' }}>{res.status} </li>
+                          <li style={{ listStyleType: 'none' }}>구성 : {res.content} </li>
+                          {res.status === '품절' && (
+                            <li style={{ listStyleType: 'none' }}>{res.status}</li>
+                          )}
                         </ul>
                       </div>
                       <Grid container spacing={3} >
@@ -85,7 +89,7 @@ export default function StoreMenuList(data) {
                             label="품절"
                           />
                         </Grid>
-                        </Grid>
+                      </Grid>
                     </Box>
                   </Grid>
                 </Grid>
