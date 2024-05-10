@@ -14,5 +14,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class UserUpdateGetRequestDto {
+
     private String email;
 }

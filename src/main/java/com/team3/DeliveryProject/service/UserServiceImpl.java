@@ -18,24 +18,27 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
+
     private final UsersRepository usersRepository;
     private final AddressRepository addressRepository;
 
 
     @Override
     public ResponseEntity<Response> signUp(Users user) {
-        if (usersRepository.findUsersByUserId(user.getUserId()).isPresent()){
+        if (usersRepository.findUsersByUserId(user.getUserId()).isPresent()) {
             return Response.toResponseEntity(USERNAME_IS_ALREADY_EXIST);
         } else if (usersRepository.findUsersByEmail(user.getEmail()).isPresent()) {
             return Response.toResponseEntity(USER_EMAIL_IS_ALREADY_EXIST);
-        }else{
-            Users tmpUser = new Users(" ", user.getName(), user.getPhone(), user.getEmail(),0,
-                user.getRole(), user.getCurrentAddress(), user.getAddressCode(),LocalDateTime.now(),LocalDateTime.now(), "일반", 0);
+        } else {
+            Users tmpUser = new Users(" ", user.getName(), user.getPhone(), user.getEmail(), 0,
+                user.getRole(), user.getCurrentAddress(), user.getAddressCode(),
+                LocalDateTime.now(), LocalDateTime.now(), "일반", 0);
             usersRepository.save(tmpUser);
 
-            Address address = new Address(tmpUser.getUserId(), tmpUser.getCurrentAddress(), tmpUser.getAddressCode(),
-                LocalDateTime.now(),LocalDateTime.now(),"일반");
+            Address address = new Address(tmpUser.getUserId(), tmpUser.getCurrentAddress(),
+                tmpUser.getAddressCode(),
+                LocalDateTime.now(), LocalDateTime.now(), "일반");
             addressRepository.save(address);
             return Response.toResponseEntity(USER_SIGNUP_SUCCESS);
         }
@@ -58,7 +61,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public ResponseEntity<Response> deleteUser(Users user) {
-        Users users = usersRepository.findUsersByEmail(user.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+        Users users = usersRepository.findUsersByEmail(user.getEmail())
+            .orElseThrow(() -> new RuntimeException("User not found"));
         users.setStatus("탈퇴");
         usersRepository.save(users);
         return Response.toResponseEntity(USER_DELETE_SUCCESS);

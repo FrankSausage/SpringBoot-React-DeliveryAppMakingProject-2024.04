@@ -25,16 +25,19 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class AddressServiceImpl implements AddressService{
+public class AddressServiceImpl implements AddressService {
 
     private final UsersRepository usersRepository;
     private final AddressRepository addressRepository;
+
     @Override
     public ResponseEntity<Response> addAddress(AddressAddRequestDto requestDto) {
-        Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()->new RuntimeException("User not found"));
+        Users user = usersRepository.findUsersByEmail(requestDto.getEmail())
+            .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Address address = new Address(user.getUserId(), requestDto.getAddress(), requestDto.getAddressCode(),
-            LocalDateTime.now(), LocalDateTime.now(),"일반");
+        Address address = new Address(user.getUserId(), requestDto.getAddress(),
+            requestDto.getAddressCode(),
+            LocalDateTime.now(), LocalDateTime.now(), "일반");
         addressRepository.save(address);
         AddressChangeRequestDto addressChangeRequestDto = AddressChangeRequestDto.builder()
             .email(requestDto.getEmail())
@@ -74,7 +77,8 @@ public class AddressServiceImpl implements AddressService{
 
     @Override
     public List<AddressFindAllResponseDto> findAllAddress(AddressFindAllRequestDto requestDto) {
-        Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+        Users user = usersRepository.findUsersByEmail(requestDto.getEmail())
+            .orElseThrow(() -> new RuntimeException("User not found"));
         List<Address> addresses = addressRepository.findAllByUserId(user.getUserId());
         List<AddressFindAllResponseDto> responseDtos = addresses.stream()
             .filter(address -> !address.getStatus().equals("삭제"))
@@ -86,7 +90,8 @@ public class AddressServiceImpl implements AddressService{
 
     @Override
     public ResponseEntity<Response> changeCurrentAddress(AddressChangeRequestDto requestDto) {
-        Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()->new RuntimeException("User not found"));
+        Users user = usersRepository.findUsersByEmail(requestDto.getEmail())
+            .orElseThrow(() -> new RuntimeException("User not found"));
         user.setCurrentAddress(requestDto.getAddress());
         user.setAddressCode(requestDto.getAddressCode());
         usersRepository.save(user);

@@ -1,7 +1,6 @@
 package com.team3.DeliveryProject.dto.response.store;
 
 import java.time.LocalDateTime;
-import java.util.random.RandomGenerator.StreamableGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class StoreDetailResponseDto {
+
     private String role;
     private String name;
     private int type;

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 import { getCurrentUser } from "./firebase";
 
-export const useUserByEmail = (storeId, email) => {
+export const useOwnerByEmail = (storeId, email) => {
     const { isLoading, error, data: user } = useQuery({
         queryKey: ['storeId', storeId, 'email', email],
         queryFn: async () => {
@@ -13,31 +13,6 @@ export const useUserByEmail = (storeId, email) => {
     })        
     return { isLoading, error, user };
 }
-
-export const useMenuByEmail =  email => {
-  const { isLoading, error, data: storeData } = useQuery({
-    queryKey: ['menuId', email ],
-    queryFn: async () => {
-        return axios.get(`/dp/store/menu/register`, { params: {email: email }})
-          .then(res => res.data)
-          .catch(console.error);
-    }
-  })
-  return { isLoading, error, storeData };
-}
-
-export const useMenuListByEmail = email => {
-  const { isLoading, error, data: storeData } = useQuery({
-    queryKey: ['StoreMenu', email ],
-    queryFn: async () => {
-        return axios.get(`/dp/store/menu/list`, { params : { email : email }})
-          .then(res => res.data)
-          .catch(console.error);
-    }
-  })
-  return { isLoading, error, storeData };
-}
-
 
 export const useStoreListByEmail = email => {
   const { isLoading, error, data: storeData } = useQuery({
@@ -60,6 +35,42 @@ export function useStore (email) {
   })
 
   return { getStoreList }
+}
+
+export const useMenuListByStoreId = storeId => {
+  const { isLoading, error, data: menuData } = useQuery({
+    queryKey: ['StoreMenu', storeId ],
+    queryFn: async () => {
+        return axios.get(`/dp/store/menu/list`, { params: { storeId: storeId }})
+          .then(res => res.data)
+          .catch(console.error);
+    }
+  })
+  return { isLoading, error, menuData };
+}
+
+export const useMenuByEmail =  email => {
+  const { isLoading, error, data: storeData } = useQuery({
+    queryKey: ['menuId', email ],
+    queryFn: async () => {
+        return axios.get(`/dp/store/menu/register`, { params: {email: email }})
+          .then(res => res.data)
+          .catch(console.error);
+    }
+  })
+  return { isLoading, error, storeData };
+}
+
+export const useMenuUpByEmail = ( email, menuId) => {
+  const { isLoading, error, data: menu } = useQuery({
+      queryKey: ['email', email, 'menuId', menuId],
+      queryFn: async () => {
+          return axios.get(`/dp/store/menu/update`, { params: { email: email, menuId: menuId }})
+          .then(res => res.data)
+          .catch(console.error);
+      }
+  })        
+  return { isLoading, error, menu };
 }
 
 export async function extractDataFromFormData(formData) {

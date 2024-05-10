@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 
 @Getter
 public class Response {
+
     private final String timestamp = String.valueOf(LocalDateTime.now());
     private final Integer status;
     private final String message;
@@ -19,7 +20,7 @@ public class Response {
         this.message = message;
     }
 
-    public static ResponseEntity<Response> toResponseEntity(ResponseCode responseCode){
+    public static ResponseEntity<Response> toResponseEntity(ResponseCode responseCode) {
         return ResponseEntity
             .status(responseCode.getHttpStatus())
             .body(Response.builder()
@@ -29,7 +30,7 @@ public class Response {
             );
     }
 
-    public static ResponseEntity<Response> toResponseEntity(ErrorCode errorCode){
+    public static ResponseEntity<Response> toResponseEntity(ErrorCode errorCode) {
         return ResponseEntity
             .status(errorCode.getHttpStatus())
             .body(Response.builder()
