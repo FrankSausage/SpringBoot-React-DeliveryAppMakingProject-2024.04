@@ -17,7 +17,7 @@ export default function Update() {
     const { email, displayName } = getCurrentUser();
     // const { isLoading, error, user } = useUserByEmail(email);
     const { getUserByEmail: {isLoading, error, data: user} } = useUser(email);
-    const [ phoneNumber, setPhoneNumber] = useState();
+    const [ phoneNumber, setPhoneNumber] = useState(user.phone ? user.phone : '');
     const [ passwordCheack, setPasswordCheack ] = useState('');
     const [ isPasswordMatch, setIsPasswordMatch ] = useState(true);
     const { roadAddress, extraAddress, detailAddress} = (localStorage.getItem("splitAddress") ? 
