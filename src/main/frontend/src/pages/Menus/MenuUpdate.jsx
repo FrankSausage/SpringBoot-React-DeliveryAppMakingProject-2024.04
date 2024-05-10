@@ -11,14 +11,14 @@ import Ownerheader from '../../components/OwnerHeader';
 
 const defaultTheme = createTheme();
 
-export default function MenuUpdate(data) {
+export default function MenuUpdate() {
+  const location = useLocation();
+  const { storeId, menuId } = location.state;
   const { email } = getCurrentUser();
-  const { isLoading, error, menu } = useMenuUpByEmail(email);
-  const { storeId, menuId } = useParams();
-  // const location = useLocation();
-  // const { storeId, menuId } = location.state;
+  const { isLoading, error, menu } = useMenuUpByEmail(email, menuId);
 
-  console.log(email);
+
+
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [type, setType] = useState('');
@@ -44,7 +44,7 @@ export default function MenuUpdate(data) {
       .then(resFormData => axios.post(`/dp/store/menu/update`, resFormData));
 
     alert('메뉴 업데이트가 완료되었습니다.');
-    navigate(`/StoreMenuList/${storeId}`);
+    navigate(`/StoreDetail/${storeId}`);
 
   };
 
@@ -81,8 +81,8 @@ export default function MenuUpdate(data) {
     <ThemeProvider theme={defaultTheme}>
       {isLoading && <Typography>Loading...</Typography>}
       {error && <Typography>에러 발생!</Typography>}
-      {menu &&
-        <>
+      {!isLoading && menu.menus &&
+        <Box>
           <Ownerheader />
           <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -98,7 +98,7 @@ export default function MenuUpdate(data) {
                 <LockOutlinedIcon />
               </Avatar>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>
+                <Link to={`/StoreDetail/${storeId}`} style={{ textDecoration: 'none', color: 'black' }}>메뉴 리스트</Link>
               </Typography>
               <Typography component="h1" variant="h5">
                 음식 정보 수정
@@ -112,7 +112,7 @@ export default function MenuUpdate(data) {
                       autoComplete="given-name"
                       name="name"
                       id="name"
-                      defaultValuevalue={name}
+                      value={menu.menus[0].name}
                       label="음식 이름"
                       onChange={e => setName(e.target.value)}
                     />
@@ -124,7 +124,7 @@ export default function MenuUpdate(data) {
                       autoComplete="given-name"
                       name="price"
                       id="price"
-                      defaultValuevalue={name}
+                      value={menu.menus[0].price}
                       label="음식 가격"
                       onChange={e => setPrice(e.target.value)}
                     />
@@ -137,15 +137,15 @@ export default function MenuUpdate(data) {
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
                         <FormControlLabel
-                          control={<Checkbox checked={category === '메인 메뉴'} onChange={() => setCategory('메인 메뉴')} color="primary" />}
+                          control={<Checkbox checked={menu.menus[0].category === '메인 메뉴'} onChange={() => setCategory('메인 메뉴')} color="primary" />}
                           label="메인 메뉴"
                         />
                         <FormControlLabel
-                          control={<Checkbox checked={category === '사이드 메뉴'} onChange={() => setCategory('사이드 메뉴')} color="primary" />}
+                          control={<Checkbox checked={menu.menus[0].category === '사이드 메뉴'} onChange={() => setCategory('사이드 메뉴')} color="primary" />}
                           label="사이드 메뉴"
                         />
-                         <FormControlLabel
-                          control={<Checkbox checked={category === '세트 메뉴'} onChange={() => setCategory('세트 메뉴')} color="primary" />}
+                        <FormControlLabel
+                          control={<Checkbox checked={menu.menus[0].category === '세트 메뉴'} onChange={() => setCategory('세트 메뉴')} color="primary" />}
                           label="세트 메뉴"
                         />
                       </Grid>
@@ -158,6 +158,7 @@ export default function MenuUpdate(data) {
                       fullWidth
                       id="content"
                       label="음식 소개글"
+                      value={menu.menus[0].content}
                       multiline
                       rows={4}
                       variant='outlined'
@@ -179,10 +180,10 @@ export default function MenuUpdate(data) {
 
                     <TextField
                       autoComplete="given-name"
-                      name="storePictureName"
-                      value={storePictureName}
+                      name="menuPictureName"
+                      value={menu.menus[0].menuPictureName}
                       fullWidth
-                      id="storePictureName"
+                      id="menuPictureName"
                       label="가게 사진"
                       autoFocus
                       onClick={(e) => {
@@ -212,7 +213,7 @@ export default function MenuUpdate(data) {
             </Box>
             <Footer sx={{ mt: 5 }} />
           </Container>
-        </>
+        </Box>
       }
     </ThemeProvider>
   );
