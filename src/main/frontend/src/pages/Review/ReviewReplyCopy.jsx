@@ -26,7 +26,7 @@ export default function ReviewReply() {
     return (
       <div
         role="tabpanel"
-        hidden={value !== index}
+        hidden={reply !== index}
         id={`full-width-tabpanel-${index}`}
         aria-labelledby={`full-width-tab-${index}`}
         {...other}
