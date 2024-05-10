@@ -4,7 +4,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { getCurrentUser, register } from '../../utils/firebase';
+import { getCurrentUser } from '../../utils/firebase';
 import { extractDataFromFormData, useMenuUpByEmail } from '../../utils/storeInfo';
 import axios from 'axios';
 import Ownerheader from '../../components/OwnerHeader';
@@ -16,8 +16,9 @@ export default function MenuUpdate(data) {
   const { isLoading, error, menu } = useMenuUpByEmail(email);
   const { storeId, menuId } = useParams();
   // const location = useLocation();
-  // const { menuId } = location.state;
+  // const { storeId, menuId } = location.state;
 
+  console.log(email);
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [type, setType] = useState('');
@@ -27,13 +28,12 @@ export default function MenuUpdate(data) {
 
   const navigate = useNavigate();
 
-  console.log(storeId)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
 
-    if (!data.get('name') || !data.get('phone')) {
+    if (!data.get('name') || !data.get('price')) {
       alert('필수 항목을 입력하세요.');
       return;
     }
@@ -41,9 +41,9 @@ export default function MenuUpdate(data) {
 
     const formData = await setFormData(data);
     extractDataFromFormData(formData)
-      .then(resFormData => axios.post(`/dp/store/owner/update`, resFormData));
+      .then(resFormData => axios.post(`/dp/store/menu/update`, resFormData));
 
-    alert('입점 신청이 완료되었습니다.');
+    alert('메뉴 업데이트가 완료되었습니다.');
     navigate(`/StoreMenuList/${storeId}`);
 
   };
@@ -58,6 +58,7 @@ export default function MenuUpdate(data) {
       data.append('content', content);
       data.append('name', name);
       data.append('price', price);
+      // data.append('popularity', popularity);
       return await data;
     }
     catch (error) {
@@ -100,7 +101,7 @@ export default function MenuUpdate(data) {
                 <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>
               </Typography>
               <Typography component="h1" variant="h5">
-                가게 정보 수정
+                음식 정보 수정
               </Typography>
               <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
@@ -112,7 +113,7 @@ export default function MenuUpdate(data) {
                       name="name"
                       id="name"
                       defaultValuevalue={name}
-                      label="가게 이름"
+                      label="음식 이름"
                       onChange={e => setName(e.target.value)}
                     />
                   </Grid>
@@ -124,7 +125,7 @@ export default function MenuUpdate(data) {
                       name="price"
                       id="price"
                       defaultValuevalue={name}
-                      label="가게 이름"
+                      label="음식 가격"
                       onChange={e => setPrice(e.target.value)}
                     />
                   </Grid>
@@ -142,6 +143,10 @@ export default function MenuUpdate(data) {
                         <FormControlLabel
                           control={<Checkbox checked={category === '사이드 메뉴'} onChange={() => setCategory('사이드 메뉴')} color="primary" />}
                           label="사이드 메뉴"
+                        />
+                         <FormControlLabel
+                          control={<Checkbox checked={category === '세트 메뉴'} onChange={() => setCategory('세트 메뉴')} color="primary" />}
+                          label="세트 메뉴"
                         />
                       </Grid>
                     </Grid>
