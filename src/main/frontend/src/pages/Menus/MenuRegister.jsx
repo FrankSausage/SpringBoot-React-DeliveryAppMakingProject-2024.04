@@ -12,16 +12,15 @@ import Ownerheader from '../../components/OwnerHeader';
 const defaultTheme = createTheme();
 
 export default function MenuRegister() {
-  const location = useLocation()
-  const { storeId } = location.state;
   const { email } = getCurrentUser();
+  const location = useLocation();
+  const { storeId } = location.state;
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState('');
   const [content, setContent] = useState('');
   const [menuPictureName, setMenuPictureName] = useState('');
   const navigate = useNavigate();
-  
   console.log(storeId)
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,7 +41,7 @@ export default function MenuRegister() {
       )
       .then(() => {
         alert('음식 등록이 완료되었습니다.');
-        navigate(`/StoreDetail/:storeId, state:{storeId: storeId}` );
+        navigate(`/StoreDetail/${storeId}`);
       })
       .catch(error => console.error('음식 등록 실패: ', error));
   };

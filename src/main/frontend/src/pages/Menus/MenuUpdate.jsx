@@ -3,16 +3,21 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Gri
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { findPostcode } from '../../utils/AddressUtil';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { getCurrentUser, register } from '../../utils/firebase';
-import { extractDataFromFormData, useOwnerByEmail } from '../../utils/storeInfo';
+import { extractDataFromFormData, useMenuUpByEmail } from '../../utils/storeInfo';
 import axios from 'axios';
 import Ownerheader from '../../components/OwnerHeader';
 
 const defaultTheme = createTheme();
 
-export default function MenuUpdate() {
+export default function MenuUpdate(data) {
+  const { email } = getCurrentUser();
+  const { isLoading, error, menu } = useMenuUpByEmail(email);
+  const { storeId, menuId } = useParams();
+  // const location = useLocation();
+  // const { menuId } = location.state;
+
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [type, setType] = useState('');
@@ -21,13 +26,8 @@ export default function MenuUpdate() {
   const [storePictureName, setStorePictureName] = useState('');
 
   const navigate = useNavigate();
-  const { email } = getCurrentUser();
-  const { isLoading, error, MenuData } = useOwnerByEmail(email);
-  const location = useLocation();
-  const { menuId } = location.state;
 
-
-
+  console.log(storeId)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,7 +44,7 @@ export default function MenuUpdate() {
       .then(resFormData => axios.post(`/dp/store/owner/update`, resFormData));
 
     alert('입점 신청이 완료되었습니다.');
-    navigate('/OwnerMain');
+    navigate(`/StoreMenuList/${storeId}`);
 
   };
 
@@ -80,7 +80,7 @@ export default function MenuUpdate() {
     <ThemeProvider theme={defaultTheme}>
       {isLoading && <Typography>Loading...</Typography>}
       {error && <Typography>에러 발생!</Typography>}
-      {MenuData &&
+      {menu &&
         <>
           <Ownerheader />
           <Container component="main" maxWidth="xs">
@@ -194,13 +194,6 @@ export default function MenuUpdate() {
                       sx={{ mt: 3, mb: 2, }}>
                       사진 올리기
                     </Button>
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={<Checkbox value="allowExtraEmails" color="primary" />}
-                      label="개인정보 수집 및 이용에 동의합니다"
-                    />
                   </Grid>
                 </Grid>
                 <Button
