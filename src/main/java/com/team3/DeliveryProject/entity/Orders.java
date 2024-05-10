@@ -29,10 +29,11 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
     private Long storeId;
-    private Long userId;
-
+    private Long orderUserId;
+    private Long deliveryUserId;
     @Column(nullable = false)
     private String paymentMethod;
+    private int point;
 
     @Column(nullable = false)
     private int totalPrice;
@@ -48,4 +49,5 @@ public class Orders {
 
     @Column(nullable = false)
     private String status;
+    private String address;
 }
