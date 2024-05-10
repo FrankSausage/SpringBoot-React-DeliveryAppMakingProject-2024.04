@@ -14,6 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class MenuOptionDeleteRequestDto {
+
     private Long menuOptionId;
     private String email;
 }

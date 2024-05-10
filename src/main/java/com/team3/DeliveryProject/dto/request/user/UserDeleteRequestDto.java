@@ -14,6 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class UserDeleteRequestDto {
+
     private String email;
 
 }
