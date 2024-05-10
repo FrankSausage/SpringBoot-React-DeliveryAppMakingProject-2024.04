@@ -20,6 +20,9 @@ import MenuUpdate from './pages/Menus/MenuUpdate';
 import ReviewRegister from './pages/Review/ReviewRegister';
 import ReviewUpdate from './pages/Review/ReviewUpdate';
 import ReviewList from './pages/Review/ReviewList';
+import ReviewDetail from './pages/Review/ReviewDetail';
+import ReviewReply from './pages/Review/ReviewReply';
+import ReviewReplyCopy from './pages/Review/ReviewReplyCopy';
 
 const router = createBrowserRouter([
   {
@@ -36,9 +39,7 @@ const router = createBrowserRouter([
       { path: 'Store', element: <Store />},
       { path: 'StoreRegister', element: <StoreRegister />},
       { path: 'StoreUpdate', element: <StoreUpdate />},
-      // { path: 'StoreDetail', element: <StoreDetail />},
       { path: 'StoreDetail/:storeId', element: <StoreDetail />},
-      // { path: 'MenuRegister', element: <MenuRegister />},
       { path: 'MenuRegister/:storeId', element: <MenuRegister />},
       { path: 'MenuUpdate', element: <MenuUpdate />},
       { path: 'MenuUpdate/:menuId', element: <MenuUpdate />},
@@ -46,7 +47,10 @@ const router = createBrowserRouter([
       { path: 'OwnerMain', element: <OwnerMain />},
       { path: 'ReviewRegister', element: <ReviewRegister />},
       { path: 'ReviewUpdate', element: <ReviewUpdate />},
-      { path: 'ReviewList', element: <ReviewList />}
+      { path: 'ReviewList', element: <ReviewList />},
+      { path: 'ReviewDetail', element: <ReviewDetail />},
+      { path: 'ReviewReply', element: <ReviewReply />},
+      { path: 'ReviewReplyCopy', element: <ReviewReplyCopy />}
     ]
   }
 ]);
