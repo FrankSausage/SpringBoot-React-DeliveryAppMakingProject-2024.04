@@ -3,9 +3,9 @@ import React from "react";
 import { useStore } from "./Hook/useStore";
 import { Link } from "react-router-dom";
 
-export default function StoreList({ category }) {
-		const { getStoreListByCategory: {isLoading, data: storeDatas} } = useStore(category);	
-		
+export default function StoreList({ category, searchText }) {
+		const { getStoreListByCategory: {isLoading, data: storeDatas} } = useStore(searchText ? searchText : category);	
+
     return(
 			<Grid container>
 				<Grid item xs />
@@ -17,10 +17,8 @@ export default function StoreList({ category }) {
 					}
 					{!isLoading && storeDatas && (
 						storeDatas.data.storeList.map((data) => (
-							<Box sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
-								<Link to={`/StoreDetail/${data.storeId}`}>
+							<Box component={Link} to={`/StoreDetail/${data.storeId}`} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
 									{data.name}
-								</Link>
 							</Box>
 						))
 					)}

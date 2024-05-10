@@ -45,6 +45,7 @@ function a11yProps(index) {
 export default function Store() {
   const { state: category } = useLocation();
   const [value, setValue] = useState(category ? category : 0);
+  const [ searchText, setSearchText ] = useState ('');
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -73,37 +74,39 @@ export default function Store() {
             <InputBase
               placeholder="검색"
               inputProps={{ 'aria-label': 'search' }}
+              onChange={e => setSearchText(e.target.value)}
+              value={searchText}
               fullWidth
             />
           </Box>
         </Grid>
       </Grid>
       <CustomTabPanel value={value} index={0}>
-        <StoreList category={'전체'}/>
+        <StoreList category={'전체'} searchText={searchText}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>        
-        <StoreList category={'한식'}/>
+        <StoreList category={'한식'} searchText={searchText}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <StoreList category={'중식'}/>
+        <StoreList category={'중식'} searchText={searchText}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
-        <StoreList category={'일식'}/>
+        <StoreList category={'일식'} searchText={searchText}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={4}>
-        <StoreList category={'양식'}/>
+        <StoreList category={'양식'} searchText={searchText}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={5}>
-        <StoreList category={'패스트'}/>
+        <StoreList category={'패스트'} searchText={searchText}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={6}>
-        <StoreList category={'치킨'}/>
+        <StoreList category={'치킨'} searchText={searchText}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={7}>
-        <StoreList category={'분식'}/>
+        <StoreList category={'분식'} searchText={searchText}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={8}>
-        <StoreList category={'디저트'}/>
+        <StoreList category={'디저트'} searchText={searchText}/>
       </CustomTabPanel>
       <Footer />
     </Box>
