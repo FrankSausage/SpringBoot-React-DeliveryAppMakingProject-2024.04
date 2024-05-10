@@ -6,7 +6,7 @@ import Footer from '../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findPostcode } from '../../utils/AddressUtil';
 import { getCurrentUser, register } from '../../utils/firebase';
-import { extractDataFromFormData, formatPhoneNumber, useUserByEmail } from '../../utils/storeInfo';
+import { extractDataFromFormData, formatPhoneNumber, useOwnerByEmail } from '../../utils/storeInfo';
 import axios from 'axios';
 import Ownerheader from '../../components/OwnerHeader';
 
@@ -32,13 +32,13 @@ export default function StoreRegister() {
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const { isLoading, error, user } = useUserByEmail(email);
+  const { isLoading, error, user } = useOwnerByEmail(email);
 
-    // 현재 사용자의 이메일을 설정합니다.가 현재 사용자의 이메일 정보를 보냅니다로 바뀌게
-    useEffect(() => {
-      const { email } = getCurrentUser();
-      setEmail(email);
-    }, []);
+  // 현재 사용자의 이메일을 설정합니다.가 현재 사용자의 이메일 정보를 보냅니다로 바뀌게
+  useEffect(() => {
+    const { email } = getCurrentUser();
+    setEmail(email);
+  }, []);
 
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
@@ -78,7 +78,7 @@ export default function StoreRegister() {
         // axios.post(`/dp/store/owner/update`, resFormData)
         console.log(resFormData);
       }
-    );
+      );
 
     alert('입점 신청이 완료되었습니다.');
     navigate('/OwnerMain');
@@ -430,10 +430,10 @@ export default function StoreRegister() {
                 </Button>
               </Box>
             </Box>
-          <Footer sx={{ mt: 5 }} />
-        </Container>
-          </>
-            }
+            <Footer sx={{ mt: 5 }} />
+          </Container>
+        </>
+      }
     </ThemeProvider>
   );
 }
