@@ -75,6 +75,20 @@ public class UserController {
         return ResponseEntity.ok().body(responseDto);
     }
 
+//    @PostMapping("/update/new")
+//    public ResponseEntity<?> updateUser(@RequestBody UserUpdateGetRequestDto requestDto) {
+//        System.out.println("진입");
+//        Users user = usersRepository.findUsersByEmail(requestDto.getEmail())
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+//        System.out.println(user);
+//        UserUpdateResponseDto responseDto = UserUpdateResponseDto.builder()
+//                .phone(user.getPhone())
+//                .currentAddress(user.getCurrentAddress())
+//                .build();
+//        System.out.println(responseDto);
+//        return ResponseEntity.ok().body(responseDto);
+//    }
+
     @PostMapping("/delete")
     public ResponseEntity<?> deleteUser(@RequestBody UserDeleteRequestDto requestDto) {
         Users user = usersRepository.findUsersByEmail(requestDto.getEmail())

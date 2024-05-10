@@ -3,16 +3,22 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Gri
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { findPostcode } from '../../utils/AddressUtil';
-import { getCurrentUser, register } from '../../utils/firebase';
-import { extractDataFromFormData, useOwnerByEmail } from '../../utils/storeInfo';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { getCurrentUser } from '../../utils/firebase';
+import { extractDataFromFormData, useMenuUpByEmail } from '../../utils/storeInfo';
 import axios from 'axios';
 import Ownerheader from '../../components/OwnerHeader';
 
 const defaultTheme = createTheme();
 
 export default function MenuUpdate() {
+  const location = useLocation();
+  const { storeId, menuId } = location.state;
+  const { email } = getCurrentUser();
+  const { isLoading, error, menu } = useMenuUpByEmail(email, menuId);
+
+
+
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [type, setType] = useState('');
@@ -21,19 +27,13 @@ export default function MenuUpdate() {
   const [storePictureName, setStorePictureName] = useState('');
 
   const navigate = useNavigate();
-  const { email } = getCurrentUser();
-  const { isLoading, error, MenuData } = useOwnerByEmail(email);
-  const location = useLocation();
-  const { menuId } = location.state;
-
-
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
 
-    if (!data.get('name') || !data.get('phone')) {
+    if (!data.get('name') || !data.get('price')) {
       alert('필수 항목을 입력하세요.');
       return;
     }
@@ -41,10 +41,10 @@ export default function MenuUpdate() {
 
     const formData = await setFormData(data);
     extractDataFromFormData(formData)
-      .then(resFormData => axios.post(`/dp/store/owner/update`, resFormData));
+      .then(resFormData => axios.post(`/dp/store/menu/update`, resFormData));
 
-    alert('입점 신청이 완료되었습니다.');
-    navigate('/OwnerMain');
+    alert('메뉴 업데이트가 완료되었습니다.');
+    navigate(`/StoreDetail/${storeId}`);
 
   };
 
@@ -58,6 +58,7 @@ export default function MenuUpdate() {
       data.append('content', content);
       data.append('name', name);
       data.append('price', price);
+      // data.append('popularity', popularity);
       return await data;
     }
     catch (error) {
@@ -80,8 +81,8 @@ export default function MenuUpdate() {
     <ThemeProvider theme={defaultTheme}>
       {isLoading && <Typography>Loading...</Typography>}
       {error && <Typography>에러 발생!</Typography>}
-      {MenuData &&
-        <>
+      {!isLoading && menu.menus &&
+        <Box>
           <Ownerheader />
           <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -97,10 +98,10 @@ export default function MenuUpdate() {
                 <LockOutlinedIcon />
               </Avatar>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>
+                <Link to={`/StoreDetail/${storeId}`} style={{ textDecoration: 'none', color: 'black' }}>메뉴 리스트</Link>
               </Typography>
               <Typography component="h1" variant="h5">
-                가게 정보 수정
+                음식 정보 수정
               </Typography>
               <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
@@ -111,8 +112,8 @@ export default function MenuUpdate() {
                       autoComplete="given-name"
                       name="name"
                       id="name"
-                      defaultValuevalue={name}
-                      label="가게 이름"
+                      value={menu.menus[0].name}
+                      label="음식 이름"
                       onChange={e => setName(e.target.value)}
                     />
                   </Grid>
@@ -123,8 +124,8 @@ export default function MenuUpdate() {
                       autoComplete="given-name"
                       name="price"
                       id="price"
-                      defaultValuevalue={name}
-                      label="가게 이름"
+                      value={menu.menus[0].price}
+                      label="음식 가격"
                       onChange={e => setPrice(e.target.value)}
                     />
                   </Grid>
@@ -136,12 +137,16 @@ export default function MenuUpdate() {
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
                         <FormControlLabel
-                          control={<Checkbox checked={category === '메인 메뉴'} onChange={() => setCategory('메인 메뉴')} color="primary" />}
+                          control={<Checkbox checked={menu.menus[0].category === '메인 메뉴'} onChange={() => setCategory('메인 메뉴')} color="primary" />}
                           label="메인 메뉴"
                         />
                         <FormControlLabel
-                          control={<Checkbox checked={category === '사이드 메뉴'} onChange={() => setCategory('사이드 메뉴')} color="primary" />}
+                          control={<Checkbox checked={menu.menus[0].category === '사이드 메뉴'} onChange={() => setCategory('사이드 메뉴')} color="primary" />}
                           label="사이드 메뉴"
+                        />
+                        <FormControlLabel
+                          control={<Checkbox checked={menu.menus[0].category === '세트 메뉴'} onChange={() => setCategory('세트 메뉴')} color="primary" />}
+                          label="세트 메뉴"
                         />
                       </Grid>
                     </Grid>
@@ -153,6 +158,7 @@ export default function MenuUpdate() {
                       fullWidth
                       id="content"
                       label="음식 소개글"
+                      value={menu.menus[0].content}
                       multiline
                       rows={4}
                       variant='outlined'
@@ -174,10 +180,10 @@ export default function MenuUpdate() {
 
                     <TextField
                       autoComplete="given-name"
-                      name="storePictureName"
-                      value={storePictureName}
+                      name="menuPictureName"
+                      value={menu.menus[0].menuPictureName}
                       fullWidth
-                      id="storePictureName"
+                      id="menuPictureName"
                       label="가게 사진"
                       autoFocus
                       onClick={(e) => {
@@ -195,13 +201,6 @@ export default function MenuUpdate() {
                       사진 올리기
                     </Button>
                   </Grid>
-
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={<Checkbox value="allowExtraEmails" color="primary" />}
-                      label="개인정보 수집 및 이용에 동의합니다"
-                    />
-                  </Grid>
                 </Grid>
                 <Button
                   type="submit"
@@ -214,7 +213,7 @@ export default function MenuUpdate() {
             </Box>
             <Footer sx={{ mt: 5 }} />
           </Container>
-        </>
+        </Box>
       }
     </ThemeProvider>
   );
