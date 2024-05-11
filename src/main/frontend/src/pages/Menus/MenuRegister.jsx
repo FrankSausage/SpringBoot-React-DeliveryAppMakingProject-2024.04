@@ -87,7 +87,7 @@ export default function MenuRegister() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/StoreDetail" style={{ textDecoration: 'none', color: 'black' }}>가게 이동</Link>
+            <Link to={`/StoreDetail/${storeId}`} state={{storeId: storeId}} style={{ textDecoration: 'none', color: 'black' }}>가게 이동</Link>
           </Typography>
           <Typography component="h1" variant="h5">
             메뉴 등록(단건)

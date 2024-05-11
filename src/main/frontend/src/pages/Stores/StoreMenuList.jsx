@@ -57,8 +57,8 @@ export default function StoreMenuList() {
     }
     setTimeout(() => {
       // alert("상태가 업데이트되었습니다!");
-      console.log('1초 후에 반응');
-    }, 1000);
+      console.log('2초 후에 반응');
+    }, 2000);
   };
 
   return (
