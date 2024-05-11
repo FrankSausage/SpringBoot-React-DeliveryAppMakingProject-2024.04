@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import SearchHeader from "../components/SearchHeader"
-import Footer from "../components/Footer"
+import SearchHeader from "../../../components/SearchHeader"
+import Footer from "../../../components/Footer"
 import PropTypes from 'prop-types';
 import { Tab, Tabs, Box, Typography, Stack, Grid, InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -43,7 +43,7 @@ function a11yProps(index) {
 
 export default function Store() {
   const { state: category } = useLocation();
-  const [value, setValue] = useState(category);
+  const [value, setValue] = useState(category ? category : 0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -84,7 +84,7 @@ export default function Store() {
           <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
           <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2}} sx={gridStyle}>
                 <Box sx={{...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto'}}>
-                <Link to="/StoreList" variant="body2" style={{ textDecoration: 'none', color: 'black'  }}>
+                <Link to="/StoreDetail" variant="body2" style={{ textDecoration: 'none', color: 'black'  }}>
                 <div>
                   <img src={''} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
                   <ul style={{ position: 'absolute', top: '50%', left: '40%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>

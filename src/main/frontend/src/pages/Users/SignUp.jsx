@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Footer from '../components/Footer';
+import Footer from '../../components/Footer';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
-import { findPostcode } from '../utils/AddressUtil'; 
-import { register } from '../utils/firebase';
-import { extractDataFromFormData, formatPhoneNumber } from '../utils/userInfo';
+import { findPostcode } from '../../utils/AddressUtil'; 
+import { register } from '../../utils/firebase';
+import { extractDataFromFormData, formatPhoneNumber } from '../../utils/userInfo';
 import axios from 'axios';
 
 const defaultTheme = createTheme();
@@ -79,10 +79,10 @@ export default function SignUp() {
 
   const setFormData = async (data) => {
     try{
-      data.append('currentAddress', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '') 
-          + ',' + (detailAddress ? detailAddress : '')));
-      data.append('role', role);
-      data.append('addressCode', addressCode.substring(0,8));
+        data.append('currentAddress', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '') 
+            + ',' + (detailAddress ? detailAddress : '')));
+        data.append('role', role);
+        data.append('addressCode', role==='회원' ? addressCode.substring(0,8) : '00000000');
       return await data;
     }
     catch (error) {
@@ -173,49 +173,53 @@ export default function SignUp() {
                   }}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="roadAddress"
-                  label="도로명주소"
-                  value={roadAddress}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              </Grid>
-                  <Button
-                    type="button"
-                    onClick={handleFindPostcode}
+              { role === '회원' &&
+              <Fragment>
+                <Grid item xs={12}>
+                  <TextField
+                    required
                     fullWidth
-                    variant="contained"
-                    sx={{ mt: 1, mb: 2, ml: 2}}
-                  >
-                    주소 찾기
-                  </Button>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  id="extraAddress"
-                  label="참고항목"
-                  value={extraAddress}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="detailAddress"
-                  label="상세주소"
-                  name="detailAddress"
-                  autoComplete="detailAddress"
-                  onChange={e => setDetailAddress(e.target.value)}
-                />
-              </Grid>
+                    id="roadAddress"
+                    label="도로명주소"
+                    value={roadAddress}
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                  />
+                </Grid>
+                    <Button
+                      type="button"
+                      onClick={handleFindPostcode}
+                      fullWidth
+                      variant="contained"
+                      sx={{ mt: 1, mb: 2, ml: 2}}
+                    >
+                      주소 찾기
+                    </Button>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    id="extraAddress"
+                    label="참고항목"
+                    value={extraAddress}
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="detailAddress"
+                    label="상세주소"
+                    name="detailAddress"
+                    autoComplete="detailAddress"
+                    onChange={e => setDetailAddress(e.target.value)}
+                  />
+                </Grid>
+              </Fragment>
+              }
               <Grid item xs={12} sm={6}>
                 <FormControlLabel
                   control={<Checkbox checked={role === '회원'} onChange={() => setRole('회원')} color="primary" />}

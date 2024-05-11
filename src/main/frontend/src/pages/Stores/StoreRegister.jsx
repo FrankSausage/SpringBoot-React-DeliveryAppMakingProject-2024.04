@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Footer from '../components/Footer';
+import Footer from '../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
-import { findPostcode } from '../utils/AddressUtil';
-import { getCurrentUser, register } from '../utils/firebase';
-import { extractDataFromFormData, formatPhoneNumber } from '../utils/storeInfo';
+import { findPostcode } from '../../utils/AddressUtil';
+import { getCurrentUser } from '../../utils/firebase';
+import { extractDataFromFormData, formatPhoneNumber } from '../../utils/storeInfo';
 import axios from 'axios';
-import Ownerheader from '../components/OwnerHeader';
+import Ownerheader from '../../components/OwnerHeader';
 
 const defaultTheme = createTheme();
 
 export default function StoreRegister() {
+  const { email } = getCurrentUser();
   const [roadAddress, setRoadAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
@@ -31,19 +32,8 @@ export default function StoreRegister() {
   const [closedDays, setClosedDays] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
   // const [userInfo, setUserInfo] = useState({email: '', password: '', })
   // const [storeInfo, setStoreInfo] = useState({deliveryAddress: '', closedDays: '',}) // 나중에 이런식으로 이팩토리 할것 이유 업데이트 할때 정보 받기 편해지기 위해서
-  
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const { email } = await getCurrentUser();
-      setEmail(email);
-    };
-    fetchUserData();
-  }, []);
-  console.log(email);
-  
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
       const script = document.createElement('script');
@@ -69,20 +59,24 @@ export default function StoreRegister() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-
+    extractDataFromFormData(data).then(res=>console.log(res))
     if (!data.get('name') || !data.get('phone')) {
       alert('필수 항목을 입력하세요.');
       return;
+    } else {
+      setFormData(data)
+        .then(res => {
+          extractDataFromFormData(res)
+            .then(resFormData => {
+              axios.post(`/dp/store/owner/register`, resFormData)
+            })
+            .then(() => {
+              alert('입점 신청이 완료되었습니다.');
+              navigate('/');
+            })
+        })
+        .catch(console.error);
     }
-
-    
-      const formData = await setFormData(data);
-      extractDataFromFormData(formData)
-        .then(resFormData => axios.post(`/dp/store/owner/register`, resFormData));
-
-      alert('입점 신청이 완료되었습니다.');
-      navigate('/OwnerMain');
-    
   };
 
   const handlePhoneNumberChange = (event) => {
@@ -97,17 +91,7 @@ export default function StoreRegister() {
       data.append('email', email);
       data.append('addressCode', addressCode.substring(0, 8));
       data.append('category', category);
-      data.append('type', type);
-      data.append('minDeliveryPrice', minDeliveryPrice);
-      data.append('content', content);
-      data.append('name', name);
-      data.append('deliveryTip', deliveryTip);
-      data.append('minDeliveryTime', minDeliveryTime);
-      data.append('maxDeliveryTime', maxDeliveryTime);
-      data.append('operationHours', operationHours);
-      data.append('minDeliveryTime', minDeliveryTime);
-      data.append('closedDays', closedDays);
-      data.append('deliveryAddress', deliveryAddress);
+      data.append('type', type);      
       return await data;
     }
     catch (error) {
@@ -224,6 +208,7 @@ export default function StoreRegister() {
                   required
                   fullWidth
                   id="roadAddress"
+                  name="roadAddress"
                   label="도로명 주소"
                   value={roadAddress}
                   InputProps={{
@@ -245,6 +230,7 @@ export default function StoreRegister() {
                   required
                   fullWidth
                   id="extraAddress"
+                  name="extraAddress"
                   label="참고항목"
                   value={extraAddress}
                   InputProps={{

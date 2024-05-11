@@ -1,22 +1,24 @@
 // SearchHeader.jsx
 
 import React, { useState } from 'react';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
+import { useAuthContext } from '../context/AuthContext';
+import { logout } from '../utils/firebase';
 import { AppBar, Box, Toolbar, Typography, SwipeableDrawer, IconButton, List, ListItem, 
-  ListItemButton, ListItemIcon, ListItemText, InputAdornment, OutlinedInput, Divider, Stack, Grid} from '@mui/material';
+  ListItemButton, ListItemIcon, ListItemText, InputAdornment, OutlinedInput, Divider, Stack, Grid,
+  Button} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ReceiptIcon from '@mui/icons-material/Receipt'; 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; 
 import FavoriteIcon from '@mui/icons-material/Favorite'; 
-import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
-import { useAuthContext } from '../context/AuthContext';
-import { logout } from '../utils/firebase';
 
 export default function SearchHeader() {
   const [ state, setState ] = useState({ left: false, });
   const { user } = useAuthContext();
   const { outletAddress, setOutletAddress } = useOutletContext();
   const address = localStorage.getItem("address") && localStorage.getItem("address");
+  const role = localStorage.getItem('role') && localStorage.getItem('role');
   const navigate = useNavigate();
 
   const toggleDrawer = (open) => (event) => {
@@ -38,10 +40,10 @@ export default function SearchHeader() {
 
   const handleNavigate = () => {
     if(user)  {
-    navigate('address');
+    navigate('/Address');
     } else {
       alert('로그인이 필요합니다.');
-      navigate('signIn');
+      navigate('/SignIn');
     }
   }
 
@@ -85,18 +87,20 @@ export default function SearchHeader() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>휴먼 딜리버리</Link>    
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
-            <GpsFixedIcon style={{ color: 'white' }} />&nbsp;
-            <OutlinedInput
-              value={address ? address : outletAddress}
-              startAdornment={
-                <InputAdornment position="start">
-                </InputAdornment>
-              }
-              sx={{ width: '100%', maxWidth: 400, mr: 1, backgroundColor: 'white' }} 
-              onClick={handleNavigate}
-            />
-          </Box> 
+          {role === '회원' &&
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
+              <OutlinedInput
+                value={address ? address : outletAddress}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <GpsFixedIcon style={{ color: 'gray' }} />&nbsp;
+                  </InputAdornment>
+                }
+                sx={{ width: '100%', maxWidth: 400, mr: 25, backgroundColor: 'white' }} 
+                onClick={handleNavigate}
+              />
+            </Box> 
+          }
           <Grid item xs={3}>
           <Stack direction='row' spacing={1} justifyContent='right' alignItems='center'>
             {user ? (

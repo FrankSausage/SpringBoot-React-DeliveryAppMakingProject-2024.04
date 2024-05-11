@@ -1,61 +1,25 @@
 import * as React from 'react';
-import SearchHeader from "../components/SearchHeader"
-import Footer from "../components/Footer"
-import PropTypes from 'prop-types';
-import { Tab, Tabs, Box, Typography, Stack, Grid, InputBase} from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import { Box, Grid, createTheme, } from '@mui/material';
+import { getCurrentUser } from '../../utils/firebase';
+import { useOwnerByEmail } from '../../utils/storeInfo';
 
+// const defaultTheme = createTheme();
 
-function CustomTabPanel(props) {
-  const { children, value, index, ...other } = props;
+export default function StoreInfo(data) {
+  // const {email} = getCurrentUser();
+  // const { isLoading, error, user} = useOwnerByEmail(email);
 
   return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
+    // <ThemeProvider theme={defaultTheme}>
+    // {isLoading && <Typography>Loading...</Typography>}
+    // {error && <Typography>에러 발생!</Typography>}
+    // {user && (
+    //   user.data.map => (
 
-CustomTabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
-
-
-export default function Store() {
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  
-  return (
+    //   )
+    // )}
     <Box sx={{ margin: 1 }}>
-
-        
-      
-    
-      
-        Item 정보
+        가게·원산지 정보
         <Grid container>
           <Grid item xs/>
           <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
@@ -90,10 +54,8 @@ export default function Store() {
             </Grid>
           <Grid item xs />
         </Grid>
-      
-      
-      <Footer/>
     </Box>
+  // </ThemeProvider>
   );
 }
 

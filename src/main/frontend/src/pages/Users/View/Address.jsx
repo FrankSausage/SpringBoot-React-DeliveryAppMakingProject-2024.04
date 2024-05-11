@@ -3,12 +3,12 @@ import { useNavigate, useOutletContext } from "react-router";
 import { Box, Button,Divider, Grid, Input, Stack,  Typography, } from "@mui/material";
 import RoomIcon from '@mui/icons-material/Room';
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
-import { findPostcode } from "../utils/AddressUtil";
-import { extractDataFromFormData, splitAddressFromCurrentUserAddress, useAddressListByEmail } from "../utils/userInfo";
-import { getCurrentUser } from "../utils/firebase";
+import { findPostcode } from "../../../utils/AddressUtil";
+import { extractDataFromFormData, splitAddressFromCurrentUserAddress, useAddressListByEmail } from "../../../utils/userInfo";
+import { getCurrentUser } from "../../../utils/firebase";
 import axios from "axios";
-import AddressUpdate from "./AddressUpdate";
-import AddressDelete from "./AddressDelete";
+import AddressUpdate from "../AddressUpdate";
+import AddressDelete from "../AddressDelete";
 
 
 export default function Address() {
@@ -21,7 +21,6 @@ export default function Address() {
     const [addressCode, setAddressCode] = useState('');
     const { setOutletAddress } = useOutletContext();
     const navigate = useNavigate();
-    console.log(address);
     useEffect(() => {
       const loadDaumPostcodeScript = () => {
         const script = document.createElement('script');
