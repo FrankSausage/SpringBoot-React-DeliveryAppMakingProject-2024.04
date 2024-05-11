@@ -47,6 +47,18 @@ export function useStoreInfoByEmail (email, storeId) {
   return { getStoreInfoData }
 }
 
+export const useStoreDeatilByEmail = (email ,storeId) => {
+  const { isLoading, error, data: StoreDetailOwner } = useQuery({
+    queryKey: ['storeDetail', email ,'DetailStore', storeId ],
+    queryFn: async () => {
+        return axios.get(`/dp/store/detail`, { params: { email: email , storeId : storeId}})
+          .then(res => res.data)
+          .catch(console.error);
+    }
+  })
+  return { isLoading, error, StoreDetailOwner };
+}
+
 export const useMenuListByStoreId = storeId => {
   const { isLoading, error, data: menuData } = useQuery({
     queryKey: ['StoreMenu', storeId ],

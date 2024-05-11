@@ -10,11 +10,11 @@ const defaultTheme = createTheme();
 
 export default function StoreMenuList() {
   const { email, role } = getCurrentUser(); // 가정: getCurrentUser 함수가 사용자의 역할 정보도 반환
-  const { storeId, me } = useParams();
+  const { storeId } = useParams();
   const [status, setStatus] = useState([]);
   const { isLoading, error, menuData } = useMenuListByStoreId(storeId);
   const navigate = useNavigate();
-  console.log(menuData)
+  // console.log(menuData)
 
   useEffect(() => {
     const storedStatus = localStorage.getItem(`status_${storeId}`);
