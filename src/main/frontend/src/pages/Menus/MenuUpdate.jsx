@@ -138,7 +138,7 @@ export default function MenuUpdate() {
                       name="name"
                       id="name"
                       value={name}
-                      placeholder={initialName}
+                      placeholder={String(initialName)}
                       label="음식 이름"
                       onChange={e => setName(e.target.value)}
                     />
@@ -151,7 +151,7 @@ export default function MenuUpdate() {
                       name="price"
                       id="price"
                       value={price}
-                      placeholder={initialPrice}
+                      placeholder={initialPrice.toString()}
                       label="음식 가격"
                       onChange={e => setPrice(e.target.value)}
                     />
@@ -186,7 +186,7 @@ export default function MenuUpdate() {
                       id="content"
                       label="음식 소개글"
                       value={content}
-                      placeholder={initialContent}
+                      placeholder={initialContent.toString()}
                       multiline
                       rows={4}
                       variant='outlined'
@@ -210,7 +210,7 @@ export default function MenuUpdate() {
                       autoComplete="given-name"
                       name="menuPictureName"
                       value={storePictureName}
-                      placeholder={initialMenuPictureName}
+                      placeholder={initialMenuPictureName.toString()}
                       fullWidth
                       id="menuPictureName"
                       label="음식 사진"
