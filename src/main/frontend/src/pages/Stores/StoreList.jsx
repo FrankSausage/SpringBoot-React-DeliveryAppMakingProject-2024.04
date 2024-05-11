@@ -3,9 +3,9 @@ import React from "react";
 import { useStore } from "./Hook/useStore";
 import { Link } from "react-router-dom";
 
-export default function StoreList({ category, searchText }) {
-		const { getStoreListByCategory: {isLoading, data: storeDatas} } = useStore(searchText ? searchText : category);	
-	console.log(storeDatas)
+export default function StoreList({ category, searchText, }) {
+	const { getStoreListByCategory: {isLoading, data: storeDatas} } = useStore(searchText ? searchText : category);	
+	
     return(
 			<Grid container>
 				<Grid item xs />
