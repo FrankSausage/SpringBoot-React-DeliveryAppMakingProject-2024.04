@@ -121,6 +121,7 @@ export default function SignUp() {
                   fullWidth
                   id="name"
                   label="이름"
+                  placeholder='ex)홍길동'
                   autoFocus
                 />
               </Grid>
@@ -130,6 +131,7 @@ export default function SignUp() {
                   fullWidth
                   id="email"
                   label="이메일"
+                  placeholder='ex)human@example.com'
                   name="email"
                   autoComplete="email"
                 />
@@ -142,6 +144,7 @@ export default function SignUp() {
                   label="비밀번호"
                   type="password"
                   id="password"
+                  placeholder='6자리 이상 입력하세요.(영문,숫자만 입력 가능합니다)'
                   autoComplete="new-password"
                 />
               </Grid>
@@ -151,6 +154,7 @@ export default function SignUp() {
                   fullWidth
                   label="비밀번호 확인"
                   type="password"
+                  placeholder='위와 일치하게 작성하세요'
                   onChange={e => {setPasswordCheack(e.target.value)}}
                   error={!isPasswordMatch}
                   helperText={!isPasswordMatch && "비밀번호가 일치하지 않습니다"}
@@ -164,6 +168,7 @@ export default function SignUp() {
                   id="phone"
                   label="휴대전화"
                   name="phone"
+                  placeholder='ex) 010-1234-5678'
                   autoComplete="phone"
                   value={phoneNumber}
                   onChange={handlePhoneNumberChange}
