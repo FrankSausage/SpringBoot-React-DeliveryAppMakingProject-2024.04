@@ -36,8 +36,8 @@ export default function MenuRegister() {
       .then(resFormData => {
         console.log(resFormData)
         axios.post(`/dp/store/menu/register`, resFormData)
-        
-       }
+
+      }
       )
       .then(() => {
         alert('음식 등록이 완료되었습니다.');
@@ -87,7 +87,7 @@ export default function MenuRegister() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/StoreDetail" style={{ textDecoration: 'none', color: 'black' }}>가게 이동</Link>
+            <Link to={`/StoreDetail/${storeId}`} state={{storeId: storeId}} style={{ textDecoration: 'none', color: 'black' }}>가게 이동</Link>
           </Typography>
           <Typography component="h1" variant="h5">
             메뉴 등록(단건)
@@ -103,6 +103,7 @@ export default function MenuRegister() {
                   id="name"
                   value={name}
                   label="음식 이름"
+                  placeholder='ex) 휴먼 버거'
                   onChange={e => setName(e.target.value)}
                 />
               </Grid>
@@ -114,6 +115,7 @@ export default function MenuRegister() {
                   label="음식 가격"
                   name="price"
                   autoComplete="price"
+                  placeholder='ex) 10000'
                   value={price}
                   onChange={e => setPrice(e.target.value)}
                 />
@@ -127,6 +129,10 @@ export default function MenuRegister() {
                     <FormControlLabel
                       control={<Checkbox checked={category === '메인 메뉴'} onChange={() => setCategory('메인 메뉴')} color="primary" />}
                       label="메인 메뉴"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox checked={category === '세트 메뉴'} onChange={() => setCategory('세트 메뉴')} color="primary" />}
+                      label="세트 메뉴"
                     />
                     <FormControlLabel
                       control={<Checkbox checked={category === '사이드 메뉴'} onChange={() => setCategory('사이드 메뉴')} color="primary" />}
