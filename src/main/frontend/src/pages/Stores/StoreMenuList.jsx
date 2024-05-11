@@ -55,6 +55,10 @@ export default function StoreMenuList() {
     } catch (error) {
       console.error('에러 발생:', error);
     }
+    setTimeout(() => {
+      // alert("상태가 업데이트되었습니다!");
+      console.log('1초 후에 반응');
+    }, 1000);
   };
 
   return (
