@@ -37,7 +37,8 @@ export default function SignIn() {
           } else {
             axios.get(`dp/user/signin`, { params: { email: userInfo.email }})
               .then(res => {
-                console.log(res)
+                // console.log(res)
+                localStorage.setItem('email', userInfo.email);
                 localStorage.setItem('role', res.data.role);
                 if(res.data.role !== '점주') {
                   setOutletAddress(res.data.currentAddress);

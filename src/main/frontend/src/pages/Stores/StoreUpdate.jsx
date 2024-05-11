@@ -13,7 +13,7 @@ import Ownerheader from '../../components/OwnerHeader';
 const defaultTheme = createTheme();
 
 export default function StoreRegister() {
-  const { email } = getCurrentUser();
+  const [email ] = useState(localStorage.getItem('email') || '');
   const { storeId } = useParams();
   const { isLoading, error, store } = useOwnerByEmail(email, storeId);
   const { roadAddress, extraAddress, detailAddress } = store ? store.address : { roadAddress: '', extraAddress: '', detailAddress: '' };
