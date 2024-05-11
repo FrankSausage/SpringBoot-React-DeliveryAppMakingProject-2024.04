@@ -21,7 +21,6 @@ export default function MenuRegister() {
   const [content, setContent] = useState('');
   const [menuPictureName, setMenuPictureName] = useState('');
   const navigate = useNavigate();
-  console.log(storeId)
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -187,13 +186,6 @@ export default function MenuRegister() {
                   sx={{ mt: 3, mb: 2, }}>
                   사진 올리기
                 </Button>
-              </Grid>
-
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="개인정보 수집 및 이용에 동의합니다"
-                />
               </Grid>
             </Grid>
             <Button
