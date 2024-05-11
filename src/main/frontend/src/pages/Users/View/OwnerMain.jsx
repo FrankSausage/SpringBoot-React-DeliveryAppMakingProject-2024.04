@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Stack, Box, Grid, InputBase, Button, Typography, } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom';
@@ -8,7 +8,8 @@ import { getCurrentUser } from '../../../utils/firebase';
 import StoreDetail from '../../Stores/StoreDetail';
 
 export default function OwnerMain() {
-  const { email } = getCurrentUser();     // { Key : Value } , { name : '제임스' }
+  // const { email } = getCurrentUser();
+  const [email ] = useState(localStorage.getItem('email') || '');    // { Key : Value } , { name : '제임스' }
   const { isLoading, error, storeData } = useStoreListByEmail(email);
 
   // console.log(storeData)  // {storeList : Array(2)}

@@ -6,7 +6,7 @@ import Footer from '../../components/Footer';
 import axios from 'axios';
 import SearchHeader from '../../components/SearchHeader';
 import { findPostcode } from '../../utils/AddressUtil'; 
-import { extractDataFromFormData, formatPhoneNumber, useUserByEmail } from '../../utils/userInfo';
+import { extractDataFromFormData, formatPhoneNumber } from '../../utils/userInfo';
 import { getCurrentUser, logout, updateUser } from '../../utils/firebase';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from './useUser';
@@ -17,7 +17,7 @@ export default function Update() {
     const { email, displayName } = getCurrentUser();
     // const { isLoading, error, user } = useUserByEmail(email);
     const { getUserByEmail: {isLoading, error, data: user} } = useUser(email);
-    const [ phoneNumber, setPhoneNumber] = useState();
+    const [ phone, setPhoneNumber] = useState();
     const [ passwordCheack, setPasswordCheack ] = useState('');
     const [ isPasswordMatch, setIsPasswordMatch ] = useState(true);
     const { roadAddress, extraAddress, detailAddress} = (localStorage.getItem("splitAddress") ? 
@@ -30,7 +30,9 @@ export default function Update() {
     const role = localStorage.getItem('role');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const navigate = useNavigate();  
+    const navigate = useNavigate();
+
+    // console.log(user)
     useEffect(() => {
       const loadDaumPostcodeScript = () => {
         const script = document.createElement('script');
@@ -45,7 +47,6 @@ export default function Update() {
       loadDaumPostcodeScript();
       
       return () => {
-        // 언마운트 시 스크립트 제거 로직
       };
     }, []);
 
@@ -109,12 +110,12 @@ export default function Update() {
         return ('setFormData Error!: ' + error);
       }
     }
-
+    
     return (
         <ThemeProvider theme={defaultTheme}>
         {isLoading && <Typography>Loading...</Typography>}
         {error && <Typography>에러 발생!</Typography>}
-        {user &&
+        {user && user.data &&
         <>
           <SearchHeader />  
            <Container component="main" maxWidth="xs">
@@ -126,7 +127,7 @@ export default function Update() {
                         flexDirection: 'column',
                         alignItems: 'center',
                     }}
-                >
+                    >
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                         <LockOutlinedIcon />
                     </Avatar>
@@ -143,7 +144,7 @@ export default function Update() {
                                     name="name"
                                     label="이름"
                                     defaultValue={displayName} // 기존 이름 정보 표시
-                                />
+                                    />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
@@ -154,7 +155,7 @@ export default function Update() {
                                     label="이메일"
                                     defaultValue={email} // 기존 이메일 정보 표시
                                     autoComplete="current-email"
-                                />
+                                    />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
@@ -185,14 +186,13 @@ export default function Update() {
                                     id="phone"
                                     name="phone"
                                     label="휴대전화"
-                                    defaultValue={user.phoneNumber}
-                                    value={phoneNumber}
+                                    value={user.data.phone}
                                     onChange={handlePhoneNumberChange}
                                     inputProps={{
                                         maxLength: 13,
                                         inputMode: 'numeric',
                                     }}
-                                />
+                                    />
                             </Grid>    
                             {role==='회원' &&
                             <Fragment>
@@ -203,10 +203,11 @@ export default function Update() {
                                       id="roadAddress"
                                       label="도로명주소"
                                       value={updateRoadAddress}
+                                    //   value={user.data.currentAddress.split(',')[0]}
                                       InputProps={{
                                           readOnly: true, // 도로명주소도 수정되지 않도록 설정되어 있습니다.
-                                      }}
-                                  />
+                                        }}
+                                        />
                               </Grid>
                               <Button
                                   type="button"
@@ -214,7 +215,7 @@ export default function Update() {
                                   fullWidth
                                   variant="contained"
                                   sx={{ mt: 1, mb: 2, ml: 2}}
-                              >
+                                  >
                                   주소 찾기
                               </Button>
                               <Grid item xs={12}>
@@ -224,10 +225,11 @@ export default function Update() {
                                       id="extraAddress"
                                       label="참고항목"
                                       value={updateExtraAddress}
+                                    //   value={user.data.currentAddress.split(',')[1]}
                                       InputProps={{
                                           readOnly: true, // 참고항목도 수정되지 않도록 설정되어 있습니다.
-                                      }}
-                                  />
+                                        }}
+                                        />
                               </Grid>
                               <Grid item xs={12}>
                                   <TextField
@@ -236,8 +238,9 @@ export default function Update() {
                                       id="detailAddress"
                                       label="상세주소"
                                       value={updateDetailAddress}
+                                    //   value={user.data.currentAddress.split(',')[3]}
                                       onChange={e => setUpdateDetailAddress(e.target.value)}
-                                  />
+                                      />
                               </Grid>
                             </Fragment>
                             }                        
@@ -247,7 +250,7 @@ export default function Update() {
                                     variant="contained" 
                                     sx={{ mt: 2 }}
                                     onClick={handleOpen}
-                                >
+                                    >
                                 계정 삭제
                                 </Button>
                             </Grid>
@@ -257,7 +260,7 @@ export default function Update() {
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
-                        >
+                            >
                             정보 업데이트
                         </Button>
                     </Box>
@@ -290,7 +293,7 @@ export default function Update() {
     </>
     }
     </ThemeProvider>
-    );
+);
 }
 
 const style = {
@@ -303,5 +306,5 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-  };
+};
 

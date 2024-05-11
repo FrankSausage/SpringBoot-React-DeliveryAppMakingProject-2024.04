@@ -13,7 +13,7 @@ import Ownerheader from '../../components/OwnerHeader';
 const defaultTheme = createTheme();
 
 export default function StoreRegister() {
-  const [email ] = useState(localStorage.getItem('email') || '');
+  const [email] = useState(localStorage.getItem('email') || '');
   const { storeId } = useParams();
   const { isLoading, error, store } = useOwnerByEmail(email, storeId);
   const { roadAddress, extraAddress, detailAddress } = store ? store.address : { roadAddress: '', extraAddress: '', detailAddress: '' };
@@ -124,6 +124,7 @@ export default function StoreRegister() {
       {isLoading && <Typography>Loading...</Typography>}
       {error && <Typography>에러 발생!</Typography>}
       {store &&
+
         <>
           <Ownerheader />
           <Container component="main" maxWidth="xs">
@@ -183,36 +184,28 @@ export default function StoreRegister() {
                       <Grid item xs={12}>
                         <FormControlLabel
                           control={<Checkbox checked={category === '한식'} onChange={() => setCategory('한식')} color="primary" />}
-                          label="한식"
-                        />
+                          label="한식" />
                         <FormControlLabel
                           control={<Checkbox checked={category === '중식'} onChange={() => setCategory('중식')} color="primary" />}
-                          label="중식"
-                        />
+                          label="중식" />
                         <FormControlLabel
                           control={<Checkbox checked={category === '일식'} onChange={() => setCategory('일식')} color="primary" />}
-                          label="일식"
-                        />
+                          label="일식" />
                         <FormControlLabel
                           control={<Checkbox checked={category === '양식'} onChange={() => setCategory('양식')} color="primary" />}
-                          label="양식"
-                        />
+                          label="양식" />
                         <FormControlLabel
                           control={<Checkbox checked={category === '패스트'} onChange={() => setCategory('패스트')} color="primary" />}
-                          label="패스트"
-                        />
+                          label="패스트" />
                         <FormControlLabel
                           control={<Checkbox checked={category === '치킨'} onChange={() => setCategory('치킨')} color="primary" />}
-                          label="치킨"
-                        />
+                          label="치킨" />
                         <FormControlLabel
                           control={<Checkbox checked={category === '분식'} onChange={() => setCategory('분식')} color="primary" />}
-                          label="분식"
-                        />
+                          label="분식" />
                         <FormControlLabel
                           control={<Checkbox checked={category === '디저트'} onChange={() => setCategory('디저트')} color="primary" />}
-                          label="디저트"
-                        />
+                          label="디저트" />
                       </Grid>
                     </Grid>
                   </Grid>
@@ -222,26 +215,16 @@ export default function StoreRegister() {
                       fullWidth
                       id="roadAddress"
                       label="도로명 주소"
-                      value={updateRoadAddress}
-                    />
+                      value={store.address.split(',')[0]} />
                   </Grid>
-                  <Button
-                    type="button"
-                    onClick={handleFindPostcode}
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 1, mb: 2, ml: 2 }}
-                  >
-                    주소 찾기
-                  </Button>
+                  <Button type="button" onClick={handleFindPostcode} fullWidth variant="contained" sx={{ mt: 1, mb: 2, ml: 2 }} >주소 찾기 </Button>
                   <Grid item xs={12}>
                     <TextField
                       required
                       fullWidth
                       id="extraAddress"
                       label="참고항목"
-                      value={updateRoadAddress}
-                    />
+                      value={store.address.split(',')[1]} />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
@@ -251,7 +234,7 @@ export default function StoreRegister() {
                       label="상세주소"
                       name="detailAddress"
                       autoComplete="detailAddress"
-                      value={updateDetailAddress}
+                      value={store.address.split(',')[2]}
                       onChange={e => setUpdateDetailAddress(e.target.value)}
                     />
                   </Grid>
@@ -261,12 +244,10 @@ export default function StoreRegister() {
                       <Grid item xs={12}>
                         <FormControlLabel
                           control={<Checkbox checked={type === 0} onChange={() => setType(0)} color="primary" />}
-                          label="배달"
-                        />
+                          label="배달" />
                         <FormControlLabel
                           control={<Checkbox checked={type === 1} onChange={() => setType(1)} color="primary" />}
-                          label="배달+포장"
-                        />
+                          label="배달+포장" />
                       </Grid>
                     </Grid>
                   </Grid>
@@ -407,19 +388,10 @@ export default function StoreRegister() {
                   </Grid>
 
                   <Grid item xs={12}>
-                    <FormControlLabel
-                      control={<Checkbox value="allowExtraEmails" color="primary" />}
-                      label="개인정보 수집 및 이용에 동의합니다"
-                    />
+                    <FormControlLabel control={<Checkbox value="allowExtraEmails" color="primary" />} label="개인정보 수집 및 이용에 동의합니다" />
                   </Grid>
                 </Grid>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}>
-                  수정하기
-                </Button>
+                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>수정하기</Button>
               </Box>
             </Box>
             <Footer sx={{ mt: 5 }} />
