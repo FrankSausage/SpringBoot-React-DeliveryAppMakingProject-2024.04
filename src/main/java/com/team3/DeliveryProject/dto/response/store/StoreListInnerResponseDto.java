@@ -1,5 +1,6 @@
 package com.team3.DeliveryProject.dto.response.store;
 
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,4 +22,18 @@ public class StoreListInnerResponseDto {
     private Double rating;
     private int dibsCount;
     private int reviewCount;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StoreListInnerResponseDto that = (StoreListInnerResponseDto) o;
+        return storeId.equals(that.storeId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(storeId);
+    }
+
 }
