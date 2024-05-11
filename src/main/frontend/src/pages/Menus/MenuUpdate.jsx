@@ -17,14 +17,36 @@ export default function MenuUpdate() {
   const { email } = getCurrentUser();
   const { isLoading, error, menu } = useMenuUpByEmail(email, menuId);
 
-
+  const [initialName, setInitialName] = useState('');
+  const [initialPrice, setInitialPrice] = useState('');
+  const [initialContent, setInitialContent] = useState('');
+  const [initialCategory, setInitialCategory] = useState('');
+  const [initialMenuPictureName, setInitialMenuPictureName] = useState('');
 
   const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
   const [category, setCategory] = useState('');
   const [type, setType] = useState('');
-  const [price, setPrice] = useState('');
   const [content, setContent] = useState('');
   const [storePictureName, setStorePictureName] = useState('');
+
+  useEffect(() => {
+    if (!isLoading && menu.menus) {
+      // 초기 값을 설정합니다.
+      setInitialName(menu.menus[0].name);
+      setInitialPrice(menu.menus[0].price);
+      setInitialContent(menu.menus[0].content);
+      setInitialCategory(menu.menus[0].category);
+      setInitialMenuPictureName(menu.menus[0].menuPictureName);
+
+      // 사용자 입력 상태 변수를 초기 값으로 설정합니다.
+      setName(menu.menus[0].name);
+      setPrice(menu.menus[0].price);
+      setContent(menu.menus[0].content);
+      setCategory(menu.menus[0].category);
+      setStorePictureName(menu.menus[0].menuPictureName);
+    }
+  }, [isLoading, menu]);
 
   const navigate = useNavigate();
 
@@ -37,7 +59,6 @@ export default function MenuUpdate() {
       alert('필수 항목을 입력하세요.');
       return;
     }
-
 
     const formData = await setFormData(data);
     extractDataFromFormData(formData)
@@ -53,11 +74,15 @@ export default function MenuUpdate() {
     try {
       data.append('menuId', menuId);
       data.append('email', email);
-      data.append('category', category + (','));
+      data.append('category', category);
       data.append('type', type);
       data.append('content', content);
       data.append('name', name);
       data.append('price', price);
+      data.append('menuPictureName', storePictureName); // 업데이트된 사진 파일 이름 추가
+
+      // 기타 필요한 데이터 추가
+
       // data.append('popularity', popularity);
       return await data;
     }
@@ -112,7 +137,8 @@ export default function MenuUpdate() {
                       autoComplete="given-name"
                       name="name"
                       id="name"
-                      value={menu.menus[0].name}
+                      value={name}
+                      placeholder={initialName}
                       label="음식 이름"
                       onChange={e => setName(e.target.value)}
                     />
@@ -124,7 +150,8 @@ export default function MenuUpdate() {
                       autoComplete="given-name"
                       name="price"
                       id="price"
-                      value={menu.menus[0].price}
+                      value={price}
+                      placeholder={initialPrice}
                       label="음식 가격"
                       onChange={e => setPrice(e.target.value)}
                     />
@@ -137,15 +164,15 @@ export default function MenuUpdate() {
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
                         <FormControlLabel
-                          control={<Checkbox checked={menu.menus[0].category === '메인 메뉴'} onChange={() => setCategory('메인 메뉴')} color="primary" />}
+                          control={<Checkbox checked={category === '메인 메뉴'} onChange={() => setCategory('메인 메뉴')} color="primary" />}
                           label="메인 메뉴"
                         />
                         <FormControlLabel
-                          control={<Checkbox checked={menu.menus[0].category === '사이드 메뉴'} onChange={() => setCategory('사이드 메뉴')} color="primary" />}
+                          control={<Checkbox checked={category === '사이드 메뉴'} onChange={() => setCategory('사이드 메뉴')} color="primary" />}
                           label="사이드 메뉴"
                         />
                         <FormControlLabel
-                          control={<Checkbox checked={menu.menus[0].category === '세트 메뉴'} onChange={() => setCategory('세트 메뉴')} color="primary" />}
+                          control={<Checkbox checked={category === '세트 메뉴'} onChange={() => setCategory('세트 메뉴')} color="primary" />}
                           label="세트 메뉴"
                         />
                       </Grid>
@@ -158,7 +185,8 @@ export default function MenuUpdate() {
                       fullWidth
                       id="content"
                       label="음식 소개글"
-                      value={menu.menus[0].content}
+                      value={content}
+                      placeholder={initialContent}
                       multiline
                       rows={4}
                       variant='outlined'
@@ -181,10 +209,11 @@ export default function MenuUpdate() {
                     <TextField
                       autoComplete="given-name"
                       name="menuPictureName"
-                      value={menu.menus[0].menuPictureName}
+                      value={storePictureName}
+                      placeholder={initialMenuPictureName}
                       fullWidth
                       id="menuPictureName"
-                      label="가게 사진"
+                      label="음식 사진"
                       autoFocus
                       onClick={(e) => {
                         e.target.value = null;
