@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function StoreList({ category, searchText }) {
 		const { getStoreListByCategory: {isLoading, data: storeDatas} } = useStore(searchText ? searchText : category);	
-
+	console.log(storeDatas)
     return(
 			<Grid container>
 				<Grid item xs />
