@@ -32,7 +32,7 @@ export default function StoreMenuList() {
         setStatus(initialStatus);
       }
     }
-  }, [menuData, status]);
+  }, [menuData]);
 
   const handleCheckboxChange = async (index) => {
     const newStatuses = [...status];

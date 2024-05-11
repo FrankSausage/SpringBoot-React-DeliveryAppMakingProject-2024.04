@@ -3,9 +3,9 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Gri
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { findPostcode } from '../../utils/AddressUtil';
-import { getCurrentUser, register } from '../../utils/firebase';
+import { getCurrentUser } from '../../utils/firebase';
 import { extractDataFromFormData, formatPhoneNumber, useOwnerByEmail } from '../../utils/storeInfo';
 import axios from 'axios';
 import Ownerheader from '../../components/OwnerHeader';
@@ -13,14 +13,18 @@ import Ownerheader from '../../components/OwnerHeader';
 const defaultTheme = createTheme();
 
 export default function StoreRegister() {
-  const [roadAddress, setRoadAddress] = useState('');
-  const [extraAddress, setExtraAddress] = useState('');
-  const [detailAddress, setDetailAddress] = useState('');
+  const { email } = getCurrentUser();
+  const { storeId } = useParams();
+  const { isLoading, error, store } = useOwnerByEmail(email, storeId);
+  const { roadAddress, extraAddress, detailAddress } = store ? store.address : { roadAddress: '', extraAddress: '', detailAddress: '' };
+  const [updateRoadAddress, setUpdateRoadAddress] = useState(roadAddress ? roadAddress : '');
+  const [updateExtraAddress, setUpdateExtraAddress] = useState(extraAddress ? extraAddress : '');
+  const [updateDetailAddress, setUpdateDetailAddress] = useState(detailAddress ? detailAddress : '');
+  const [addressCode, setAddressCode] = useState('');
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [type, setType] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [addressCode, setAddressCode] = useState('');
   const [minDeliveryPrice, setMinDeliveryPrice] = useState('');
   const [deliveryTip, setDeliveryTip] = useState('');
   const [content, setContent] = useState('');
@@ -31,14 +35,6 @@ export default function StoreRegister() {
   const [closedDays, setClosedDays] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const { isLoading, error, user } = useOwnerByEmail(email);
-
-  // 현재 사용자의 이메일을 설정합니다.가 현재 사용자의 이메일 정보를 보냅니다로 바뀌게
-  useEffect(() => {
-    const { email } = getCurrentUser();
-    setEmail(email);
-  }, []);
 
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
@@ -54,12 +50,11 @@ export default function StoreRegister() {
     loadDaumPostcodeScript();
 
     return () => {
-      // 언마운트 시 스크립트 제거 로직
     };
   }, []);
 
   const handleFindPostcode = () => {
-    findPostcode(setRoadAddress, setExtraAddress, setAddressCode);
+    findPostcode(setUpdateRoadAddress, setUpdateExtraAddress, setAddressCode);
   };
 
   const handleSubmit = async (e) => {
@@ -75,7 +70,7 @@ export default function StoreRegister() {
     const formData = await setFormData(data);
     extractDataFromFormData(formData)
       .then(resFormData => {
-        // axios.post(`/dp/store/owner/update`, resFormData)
+        axios.post(`/dp/store/owner/update`, resFormData)
         console.log(resFormData);
       }
       );
@@ -92,8 +87,8 @@ export default function StoreRegister() {
 
   const setFormData = async (data) => {
     try {
-      data.append('address', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '')
-        + ',' + (detailAddress ? detailAddress : '')));
+      data.append('address', ((updateRoadAddress ? updateRoadAddress : '') + ',' + (updateExtraAddress ? updateExtraAddress : '')
+        + ',' + (updateDetailAddress ? updateDetailAddress : '')));
       data.append('email', email);
       data.append('addressCode', addressCode.substring(0, 8));
       data.append('category', category);
@@ -128,7 +123,7 @@ export default function StoreRegister() {
     <ThemeProvider theme={defaultTheme}>
       {isLoading && <Typography>Loading...</Typography>}
       {error && <Typography>에러 발생!</Typography>}
-      {user &&
+      {store &&
         <>
           <Ownerheader />
           <Container component="main" maxWidth="xs">
@@ -159,7 +154,7 @@ export default function StoreRegister() {
                       autoComplete="given-name"
                       name="name"
                       id="name"
-                      defaultValuevalue={name}
+                      value={store.name}
                       label="가게 이름"
                       onChange={e => setName(e.target.value)}
                     />
@@ -172,7 +167,7 @@ export default function StoreRegister() {
                       label="전화번호"
                       name="phone"
                       autoComplete="phone"
-                      value={phoneNumber}
+                      value={store.phone}
                       onChange={handlePhoneNumberChange}
                       inputProps={{
                         maxLength: 12,
@@ -227,10 +222,7 @@ export default function StoreRegister() {
                       fullWidth
                       id="roadAddress"
                       label="도로명 주소"
-                      value={roadAddress}
-                      InputProps={{
-                        readOnly: true,
-                      }}
+                      value={updateRoadAddress}
                     />
                   </Grid>
                   <Button
@@ -248,10 +240,7 @@ export default function StoreRegister() {
                       fullWidth
                       id="extraAddress"
                       label="참고항목"
-                      value={extraAddress}
-                      InputProps={{
-                        readOnly: true,
-                      }}
+                      value={updateRoadAddress}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -262,7 +251,8 @@ export default function StoreRegister() {
                       label="상세주소"
                       name="detailAddress"
                       autoComplete="detailAddress"
-                      onChange={e => setDetailAddress(e.target.value)}
+                      value={updateDetailAddress}
+                      onChange={e => setUpdateDetailAddress(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -287,6 +277,7 @@ export default function StoreRegister() {
                       required
                       fullWidth
                       id="minDeliveryPrice"
+                      value={store.minDeliveryPrice}
                       label="최소 주문금액"
                       onChange={e => setMinDeliveryPrice(e.target.value)}
                       autoFocus
@@ -300,7 +291,7 @@ export default function StoreRegister() {
                       fullWidth
                       id="deliveryTip"
                       label="배달팁"
-                      value={deliveryTip}
+                      value={store.deliveryTip}
                       onChange={e => setDeliveryTip(e.target.value)}
                     />
                   </Grid>
@@ -311,7 +302,7 @@ export default function StoreRegister() {
                       required
                       fullWidth
                       id="minDeliveryTime"
-                      value={minDeliveryTime}
+                      value={store.minDeliveryTime}
                       label="최소 배달 예상 시간"
                       onChange={e => setMinDeliveryTime(e.target.value)}
                     />
@@ -323,7 +314,7 @@ export default function StoreRegister() {
                       required
                       fullWidth
                       id="maxDeliveryTime"
-                      value={maxDeliveryTime}
+                      value={store.maxDeliveryTime}
                       label="최대 배달 예상 시간"
                       onChange={e => setMaxDeliveryTime(e.target.value)}
                     />
@@ -335,7 +326,7 @@ export default function StoreRegister() {
                       required
                       fullWidth
                       id="operationHours"
-                      value={operationHours}
+                      value={store.operationHours}
                       label="운영 시간"
                       onChange={e => setOperationHours(e.target.value)}
                     />
@@ -347,7 +338,7 @@ export default function StoreRegister() {
                       required
                       fullWidth
                       id="closedDays"
-                      value={closedDays}
+                      value={store.closedDays}
                       label="휴무일"
                       onChange={e => setClosedDays(e.target.value)}
                     />
@@ -359,7 +350,7 @@ export default function StoreRegister() {
                       required
                       fullWidth
                       id="deliveryAddress"
-                      value={deliveryAddress}
+                      value={store.deliveryAddress}
                       label="배달 지역"
                       onChange={e => setDeliveryAddress(e.target.value)}
                     />
@@ -368,6 +359,7 @@ export default function StoreRegister() {
                     <TextField
                       autoComplete="given-name"
                       name="content"
+                      value={store.content}
                       fullWidth
                       id="content"
                       label="가게 소개글"
@@ -393,7 +385,7 @@ export default function StoreRegister() {
                     <TextField
                       autoComplete="given-name"
                       name="storePictureName"
-                      value={storePictureName}
+                      value={store.storePictureName}
                       fullWidth
                       id="storePictureName"
                       label="가게 사진"

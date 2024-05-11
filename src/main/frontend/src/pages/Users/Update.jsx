@@ -185,7 +185,7 @@ export default function Update() {
                                     id="phone"
                                     name="phone"
                                     label="휴대전화"
-                                    defaultValue={user.phone}
+                                    defaultValue={user.phoneNumber}
                                     value={phoneNumber}
                                     onChange={handlePhoneNumberChange}
                                     inputProps={{
