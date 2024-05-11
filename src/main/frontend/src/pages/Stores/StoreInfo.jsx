@@ -58,7 +58,7 @@ export default function StoreInfo() {
                     height: '350px',
                     marginX: 'auto',
                     marginBottom: '10px',
-                    overflow: 'hidden', // 이 부분 추가
+                    overflow: 'hidden', 
                   }}
                 >
                   <div style={{ position: 'absolute', top: '50%', left: '15%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
@@ -69,8 +69,7 @@ export default function StoreInfo() {
                       <li style={{ listStyleType: 'none' }}>카테고리: {StoreDetailOwner.category}</li>
                       <li style={{ listStyleType: 'none' }}>최소 주문 금액: {StoreDetailOwner.minDeliveryPrice}원</li>
                       <li style={{ listStyleType: 'none' }}>배달팁: {StoreDetailOwner.deliveryTip}원</li>
-                      <li style={{ listStyleType: 'none' }}>최소 배달 예상 시간: {StoreDetailOwner.minDeliveryTime}분 </li>
-                      <li style={{ listStyleType: 'none' }}>최대 배달 예상 시간: {StoreDetailOwner.maxDeliveryTime}분</li>
+                      <li style={{ listStyleType: 'none' }}>배달 예상 시간: {StoreDetailOwner.minDeliveryTime}분 ~ {StoreDetailOwner.maxDeliveryTime}분</li>
                       <li style={{ listStyleType: 'none' }}>운영 시간: {StoreDetailOwner.operationHours}</li>
                       <li style={{ listStyleType: 'none' }}>휴무일: {StoreDetailOwner.closedDays}</li>
                       <li style={{ listStyleType: 'none' }}>배달지역: </li>
@@ -89,7 +88,7 @@ export default function StoreInfo() {
                   }}
                 >
                   <ul style={{ position: 'absolute', top: '50%', left: '15%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
-                    <li style={{ listStyleType: 'none' }}>가게 소개</li>
+                    <li style={{ listStyleType: 'none' }}>가게 소개: {StoreDetailOwner.content}</li>
                   </ul>
                 </Box>
 
