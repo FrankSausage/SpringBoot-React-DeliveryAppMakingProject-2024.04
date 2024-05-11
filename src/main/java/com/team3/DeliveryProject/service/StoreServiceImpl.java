@@ -127,8 +127,13 @@ public class StoreServiceImpl implements StoreService {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
             .orElseThrow(() -> new RuntimeException("user not found"));
         Long addrCode = users.getAddressCode();
-        List<Stores> storesListByCategory = storesRepository.findByCategoryContaining(
-            requestDto.getQuery());
+        List<Stores> storesListByCategory = new ArrayList<>();
+        if(requestDto.getQuery().equals("전체")){
+            storesListByCategory = storesRepository.findAll();
+        }else{
+            storesListByCategory = storesRepository.findByCategoryContaining(
+                requestDto.getQuery());
+        }
         List<Stores> storesListByName = storesRepository.findByNameContaining(
             requestDto.getQuery());
 
