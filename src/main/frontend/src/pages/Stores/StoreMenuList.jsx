@@ -8,42 +8,50 @@ import axios from 'axios';
 
 const defaultTheme = createTheme();
 
-export default function StoreMenuList(data) {
-  const { email } = getCurrentUser();
+export default function StoreMenuList() {
+  const { email, role } = getCurrentUser(); // 가정: getCurrentUser 함수가 사용자의 역할 정보도 반환
   const { storeId } = useParams();
-  const { price } = useState('');
-  const [status, setStatus] = useState([]); // 배열로 각 메뉴의 상태를 저장한다고 하네요.
-  const navigate = useNavigate();
+  const [status, setStatus] = useState([]);
   const { isLoading, error, menuData } = useMenuListByStoreId(storeId);
+  const navigate = useNavigate();
   console.log(menuData)
 
-  console.log(data)
+  useEffect(() => {
+    const storedStatus = localStorage.getItem(`status_${storeId}`);
+    if (storedStatus) {
+      setStatus(JSON.parse(storedStatus));
+    }
+  }, [storeId]);
 
-  const handleLinkClick = () => {
-    navigate(`/MenuUpdate/`);
-  };
+
+  useEffect(() => {
+    if (menuData) {
+      // menuData가 존재하면서 status가 초기화되지 않았을 때
+      if (status.length === 0) {
+        const initialStatus = menuData.categories.flatMap(category => category.menus).map(menu => menu.status === '품절');
+        setStatus(initialStatus);
+      }
+    }
+  }, [menuData, status]);
 
   const handleCheckboxChange = async (index) => {
     const newStatuses = [...status];
     newStatuses[index] = !newStatuses[index];
     setStatus(newStatuses);
-  
+    localStorage.setItem(`status_${storeId}`, JSON.stringify(newStatuses));
     try {
-      // 현재 사용자의 이메일 가져오기
       const { email } = getCurrentUser();
-      
-      // 메뉴 아이디 가져오기
-      const menuId = menuData.categories[index].menus[index].menuId;
+      const menuId = menuData.categories
+        .flatMap(category => category.menus)
+      [index].menuId;
 
-      // API 요청 보내기
       const response = await axios.post(`/dp/store/menu/status`, {
         menuId: menuId,
         email: email,
-        status: newStatuses[index] ? '품절' : '일반' // 상태에 따라 '품절' 또는 '일반' 전달
+        status: newStatuses[index] ? '품절' : '일반'
       });
-  
-      // 응답 처리
-      console.log(response.data); // 성공적으로 업데이트된 메뉴 정보 출력
+
+      console.log(response.data);
     } catch (error) {
       console.error('에러 발생:', error);
     }
@@ -62,30 +70,32 @@ export default function StoreMenuList(data) {
                 <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
                   <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
                     <Box key={res.menuId} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
-                      <div onClick={handleLinkClick} style={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
-                        {/* <img src={'/img/칠리모짜징거통다리세트.png'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} /> */}
-                        <img src={res.menuPictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
-                        <ul style={{ position: 'absolute', top: '50%', left: '40%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
-                          <li style={{ listStyleType: 'none' }}>이름 : {res.name}</li>
-                          <li style={{ listStyleType: 'none' }}>인기 : {res.popularity} </li>
-                          <li style={{ listStyleType: 'none' }}>음식 소개글 : {res.content} </li>
-                          <li style={{ listStyleType: 'none' }}>{res.status} </li>
-                        </ul>
-                      </div>
-                      <Grid container spacing={3} >
-                        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                checked={status[idx]} // 각 메뉴에 해당하는 상태를 체크합니다.
-                                onChange={() => handleCheckboxChange(idx)} // 체크박스 변경 핸들러를 호출합니다.
-                                color="primary"
-                              />
-                            }
-                            label="품절"
-                          />
+                      <Link to={`/MenuUpdate/${res.menuId}`} state={{ menuId: res.menuId, storeId: storeId }} style={{ textDecoration: 'none', color: 'black' }} >
+                        <div style={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
+                          <img src={res.menuPictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
+                          <ul style={{ position: 'absolute', top: '50%', left: '40%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
+                            <li style={{ listStyleType: 'none' }}>{res.name}</li>
+                            <li style={{ listStyleType: 'none' }}>인기 : {res.popularity} </li>
+                            <li style={{ listStyleType: 'none' }}>구성 : {res.content} </li>
+                            {status[idx] && (
+                              <li style={{ listStyleType: 'none' }}>{res.status}</li>
+                            )}
+                          </ul>
+                        </div>
+                      </Link>
+                      {role === '회원' ? null : (
+                        <Grid container spacing={3} >
+                          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', mt: 5 }}>
+                            <Button
+                              variant="contained"
+                              color={status[idx] ? 'primary' : 'secondary'}
+                              onClick={() => handleCheckboxChange(idx)}
+                            >
+                              {status[idx] ? '상품 판매' : '품절'}
+                            </Button>
+                          </Grid>
                         </Grid>
-                        </Grid>
+                      )}
                     </Box>
                   </Grid>
                 </Grid>
@@ -95,15 +105,17 @@ export default function StoreMenuList(data) {
           )
         ))
       )}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Button
-          type="submit"
-          variant="contained"
-          style={{ textDecoration: 'none', color: 'white' }}
-          sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem' }}>
-          <Link Link to={`/MenuRegister/${storeId}`} state={{ storeId: storeId }} style={{ textDecoration: 'none', color: 'white' }}>메뉴 추가하기</Link>
-        </Button>
-      </div>
+      {role === '회원' ? null : (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Button
+            type="submit"
+            variant="contained"
+            style={{ textDecoration: 'none', color: 'white' }}
+            sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem', }}>
+            <Link Link to={`/MenuRegister/${storeId}`} state={{ storeId: storeId }} style={{ textDecoration: 'none', color: 'white' }}>메뉴 추가하기</Link>
+          </Button>
+        </div>
+      )}
     </ThemeProvider>
   );
 }
