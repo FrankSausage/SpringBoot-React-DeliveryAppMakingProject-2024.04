@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Footer from '../components/Footer';
+import Footer from '../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
-import { findPostcode } from '../utils/AddressUtil';
-import { getCurrentUser, register } from '../utils/firebase';
-import { extractDataFromFormData, formatPhoneNumber, useUserByEmail } from '../utils/storeInfo';
+import { findPostcode } from '../../utils/AddressUtil';
+import { getCurrentUser, register } from '../../utils/firebase';
+import { extractDataFromFormData, formatPhoneNumber, useOwnerByEmail } from '../../utils/storeInfo';
 import axios from 'axios';
-import Ownerheader from '../components/OwnerHeader';
+import Ownerheader from '../../components/OwnerHeader';
 
 const defaultTheme = createTheme();
 
-export default function MenuUpdate() {
+export default function StoreRegister() {
   const [roadAddress, setRoadAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
@@ -32,8 +32,13 @@ export default function MenuUpdate() {
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const { isLoading, error, user } = useUserByEmail(email);
+  const { isLoading, error, user } = useOwnerByEmail(email);
 
+  // 현재 사용자의 이메일을 설정합니다.가 현재 사용자의 이메일 정보를 보냅니다로 바뀌게
+  useEffect(() => {
+    const { email } = getCurrentUser();
+    setEmail(email);
+  }, []);
 
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
@@ -69,7 +74,11 @@ export default function MenuUpdate() {
 
     const formData = await setFormData(data);
     extractDataFromFormData(formData)
-      .then(resFormData => axios.post(`/dp/store/owner/update`, resFormData));
+      .then(resFormData => {
+        // axios.post(`/dp/store/owner/update`, resFormData)
+        console.log(resFormData);
+      }
+      );
 
     alert('입점 신청이 완료되었습니다.');
     navigate('/OwnerMain');
@@ -114,8 +123,6 @@ export default function MenuUpdate() {
       setStorePictureName(fileNames);
     }
   };
-
-
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -423,10 +430,10 @@ export default function MenuUpdate() {
                 </Button>
               </Box>
             </Box>
-          <Footer sx={{ mt: 5 }} />
-        </Container>
-          </>
-            }
+            <Footer sx={{ mt: 5 }} />
+          </Container>
+        </>
+      }
     </ThemeProvider>
   );
 }

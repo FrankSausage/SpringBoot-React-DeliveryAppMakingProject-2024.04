@@ -19,7 +19,6 @@ import com.team3.DeliveryProject.dto.request.menu.MenuUpdateStatusRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionAddRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionUpdateRequestDto;
-import com.team3.DeliveryProject.dto.response.address.AddressFindAllResponseDto;
 import com.team3.DeliveryProject.dto.response.menu.MenuDetailInnerMenusResponseDto;
 import com.team3.DeliveryProject.dto.response.menu.MenuDetailInnerOptionsResponseDto;
 import com.team3.DeliveryProject.dto.response.menu.MenuDetailResponseDto;
@@ -29,10 +28,8 @@ import com.team3.DeliveryProject.dto.response.menu.MenuListGetResponseDto;
 import com.team3.DeliveryProject.dto.response.menu.MenuUpdateGetResponseDto;
 import com.team3.DeliveryProject.dto.response.menu.MenuUpdateInnerMenusResponseDto;
 import com.team3.DeliveryProject.dto.response.menu.MenuUpdateInnerOptionsResponseDto;
-import com.team3.DeliveryProject.entity.Address;
 import com.team3.DeliveryProject.entity.Menu;
 import com.team3.DeliveryProject.entity.MenuOption;
-import com.team3.DeliveryProject.entity.Users;
 import com.team3.DeliveryProject.repository.MenuOptionRepository;
 import com.team3.DeliveryProject.repository.MenuRepository;
 import java.time.LocalDateTime;
@@ -46,12 +43,15 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class MenuServiceImpl implements MenuService{
+public class MenuServiceImpl implements MenuService {
+
     private final MenuOptionRepository menuOptionRepository;
     private final MenuRepository menuRepository;
+
     @Override
     public ResponseEntity<Response> addMenu(MenuAddRequestDto requestDto) {
-        Menu menu = new Menu(requestDto.getStoreId(), requestDto.getCategory(), requestDto.getName(),
+        Menu menu = new Menu(requestDto.getStoreId(), requestDto.getCategory(),
+            requestDto.getName(),
             requestDto.getContent(), requestDto.getPrice(), requestDto.getMenuPictureName(),
             requestDto.getPopularity(), LocalDateTime.now(), LocalDateTime.now(), "일반");
         menuRepository.save(menu);
@@ -69,7 +69,8 @@ public class MenuServiceImpl implements MenuService{
 
     @Override
     public ResponseEntity<Response> updateMenu(MenuUpdatePostRequestDto requestDto) {
-        Menu menu = menuRepository.findById(requestDto.getMenuId()).orElseThrow(()->new RuntimeException("Menu not found"));
+        Menu menu = menuRepository.findById(requestDto.getMenuId())
+            .orElseThrow(() -> new RuntimeException("Menu not found"));
         menu.setCategory(requestDto.getCategory());
         menu.setName(requestDto.getName());
         menu.setPrice(requestDto.getPrice());
@@ -82,12 +83,13 @@ public class MenuServiceImpl implements MenuService{
 
     @Override
     public MenuUpdateGetResponseDto updateGetMenu(MenuUpdateGetRequestDto requestDto) {
-        Menu menu = menuRepository.findById(requestDto.getMenuId()).orElseThrow(()->new RuntimeException("Menu not found"));
+        Menu menu = menuRepository.findById(requestDto.getMenuId())
+            .orElseThrow(() -> new RuntimeException("Menu not found"));
         List<MenuOption> menuOptionList = menuOptionRepository.findAllByMenuId(
             requestDto.getMenuId());
         List<MenuUpdateInnerMenusResponseDto> menusResponseDtos = new ArrayList<>();
         List<MenuUpdateInnerOptionsResponseDto> optionsResponseDtos = new ArrayList<>();
-        for (MenuOption menuOption : menuOptionList){
+        for (MenuOption menuOption : menuOptionList) {
             MenuUpdateInnerOptionsResponseDto optionsResponseDto = MenuUpdateInnerOptionsResponseDto.builder()
                 .menuOptionId(menuOption.getMenuOptionId())
                 .options(menuOption.getOptions())
@@ -114,7 +116,8 @@ public class MenuServiceImpl implements MenuService{
 
     @Override
     public ResponseEntity<Response> updateMenuOption(MenuOptionUpdateRequestDto requestDto) {
-        MenuOption menuOption = menuOptionRepository.findById(requestDto.getMenuOptionId()).orElseThrow(()->new RuntimeException("MenuOption not found"));
+        MenuOption menuOption = menuOptionRepository.findById(requestDto.getMenuOptionId())
+            .orElseThrow(() -> new RuntimeException("MenuOption not found"));
         menuOption.setOptions(requestDto.getOptions());
         menuOption.setPrice(requestDto.getPrice());
         menuOptionRepository.save(menuOption);
@@ -123,7 +126,8 @@ public class MenuServiceImpl implements MenuService{
 
     @Override
     public ResponseEntity<Response> updateMenuStatus(MenuUpdateStatusRequestDto requestDto) {
-        Menu menu = menuRepository.findById(requestDto.getMenuId()).orElseThrow(()->new RuntimeException("Menu not found"));
+        Menu menu = menuRepository.findById(requestDto.getMenuId())
+            .orElseThrow(() -> new RuntimeException("Menu not found"));
         menu.setStatus(requestDto.getStatus());
         menuRepository.save(menu);
         return Response.toResponseEntity(MENUSTATUS_UPDATE_SUCCESS);
@@ -131,7 +135,8 @@ public class MenuServiceImpl implements MenuService{
 
     @Override
     public ResponseEntity<Response> deleteMenu(MenuDeleteRequestDto requestDto) {
-        Menu menu = menuRepository.findById(requestDto.getMenuId()).orElseThrow(()->new RuntimeException("Menu not found"));
+        Menu menu = menuRepository.findById(requestDto.getMenuId())
+            .orElseThrow(() -> new RuntimeException("Menu not found"));
         menu.setStatus("삭제");
         menuRepository.save(menu);
         return Response.toResponseEntity(MENU_DELETE_SUCCESS);
@@ -139,7 +144,8 @@ public class MenuServiceImpl implements MenuService{
 
     @Override
     public ResponseEntity<Response> deleteMenuOption(MenuOptionDeleteRequestDto requestDto) {
-        MenuOption menuOption = menuOptionRepository.findById(requestDto.getMenuOptionId()).orElseThrow(()->new RuntimeException("MenuOption not found"));
+        MenuOption menuOption = menuOptionRepository.findById(requestDto.getMenuOptionId())
+            .orElseThrow(() -> new RuntimeException("MenuOption not found"));
         menuOption.setStatus("삭제");
         menuOptionRepository.save(menuOption);
         return Response.toResponseEntity(MENUOPTION_DELETE_SUCCESS);
@@ -183,7 +189,8 @@ public class MenuServiceImpl implements MenuService{
             .filter(menu -> !menu.getStatus().equals("삭제"))
             .map(MenuDetailInnerOptionsResponseDto::new)
             .collect(Collectors.toList());
-        Menu menu = menuRepository.findById(requestDto.getMenuId()).orElseThrow(()->new RuntimeException("Menu not found"));
+        Menu menu = menuRepository.findById(requestDto.getMenuId())
+            .orElseThrow(() -> new RuntimeException("Menu not found"));
         MenuDetailInnerMenusResponseDto menusResponseDto = MenuDetailInnerMenusResponseDto.builder()
             .menuId(requestDto.getMenuId())
             .category(menu.getCategory())

@@ -15,5 +15,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class MenuListGetResponseDto {
+
     private List<MenuListGetInnerCategoriesResponseDto> categories;
 }

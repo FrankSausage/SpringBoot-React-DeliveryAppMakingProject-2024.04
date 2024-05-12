@@ -35,20 +35,24 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class StoreServiceImpl implements StoreService{
+public class StoreServiceImpl implements StoreService {
+
     private final StoresRepository storesRepository;
     private final UsersRepository usersRepository;
     private final AddressCodeRepository addressCodeRepository;
+
     @Override
     public ResponseEntity<Response> addStore(StoreAddRequestDto requestDto) {
-        Users users = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()-> new RuntimeException("user not found"));;
-        Stores stores = new Stores(users.getUserId(),requestDto.getName(), requestDto.getType(),
+        Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
+            .orElseThrow(() -> new RuntimeException("user not found"));
+        ;
+        Stores stores = new Stores(users.getUserId(), requestDto.getName(), requestDto.getType(),
             requestDto.getCategory(), requestDto.getAddress(), requestDto.getStorePictureName(),
             requestDto.getPhone(), requestDto.getContent(), requestDto.getMinDeliveryPrice(),
-            requestDto.getDeliveryTip(),requestDto.getMinDeliveryTime(),
-            requestDto.getMaxDeliveryTime(), 0,0,0,requestDto.getOperationHours(),
+            requestDto.getDeliveryTip(), requestDto.getMinDeliveryTime(),
+            requestDto.getMaxDeliveryTime(), 0, 0, 0, requestDto.getOperationHours(),
             requestDto.getClosedDays(),
-            LocalDateTime.now(), LocalDateTime.now(),"일반");
+            LocalDateTime.now(), LocalDateTime.now(), "일반");
 
         System.out.println("Dto -> Entity가 제대로 됫는지 출력해보기 (아래). 아직 저장전임 ㅇㅇ");
         System.out.println(stores);
@@ -71,9 +75,12 @@ public class StoreServiceImpl implements StoreService{
 
     @Override
     public ResponseEntity<Response> updateStore(StoreUpdateRequestDto requestDto) {
-        Users users = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()-> new RuntimeException("user not found"));;
-        Stores stores = storesRepository.findById(requestDto.getStoreId()).orElseThrow(()-> new RuntimeException("Store not found"));
-        if(users.getUserId() == stores.getUserId()){
+        Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
+            .orElseThrow(() -> new RuntimeException("user not found"));
+        ;
+        Stores stores = storesRepository.findById(requestDto.getStoreId())
+            .orElseThrow(() -> new RuntimeException("Store not found"));
+        if (users.getUserId() == stores.getUserId()) {
             stores.setName(requestDto.getName());
             stores.setType(requestDto.getType());
             stores.setCategory(requestDto.getCategory());
@@ -90,7 +97,7 @@ public class StoreServiceImpl implements StoreService{
             stores.setModifiedDate(LocalDateTime.now());
             storesRepository.save(stores);
             return Response.toResponseEntity(STORE_UPDATE_SUCCESS);
-        }else {
+        } else {
             return Response.toResponseEntity(STORE_UPDATE_FAIL);
         }
     }
@@ -102,29 +109,40 @@ public class StoreServiceImpl implements StoreService{
 
     @Override
     public ResponseEntity<Response> deleteStore(StoreDeleteRequestDto requestDto) {
-        Users users = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()-> new RuntimeException("user not found"));
-        Stores stores = storesRepository.findById(requestDto.getStoreId()).orElseThrow(()-> new RuntimeException("Store not found"));
-        if(users.getUserId() == stores.getUserId()){
+        Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
+            .orElseThrow(() -> new RuntimeException("user not found"));
+        Stores stores = storesRepository.findById(requestDto.getStoreId())
+            .orElseThrow(() -> new RuntimeException("Store not found"));
+        if (users.getUserId() == stores.getUserId()) {
             stores.setStatus("삭제");
             storesRepository.save(stores);
             return Response.toResponseEntity(STORE_DELETE_SUCCESS);
-        }else{
+        } else {
             return Response.toResponseEntity(STORE_DELETE_FAIL);
         }
     }
 
     @Override
     public StoreListResponseDto getStoreList(StoreListRequestDto requestDto) {
-        Users users = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()-> new RuntimeException("user not found"));
+        Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
+            .orElseThrow(() -> new RuntimeException("user not found"));
         Long addrCode = users.getAddressCode();
-        List<Stores> storesListByCategory = storesRepository.findByCategoryContaining(requestDto.getQuery());
-        List<Stores> storesListByName = storesRepository.findByNameContaining(requestDto.getQuery());
+        List<Stores> storesListByCategory = new ArrayList<>();
+        if(requestDto.getQuery().equals("전체")){
+            storesListByCategory = storesRepository.findAll();
+        }else{
+            storesListByCategory = storesRepository.findByCategoryContaining(
+                requestDto.getQuery());
+        }
+        List<Stores> storesListByName = storesRepository.findByNameContaining(
+            requestDto.getQuery());
 
         List<StoreListInnerResponseDto> filteredStores = new ArrayList<>();
         for (Stores store : storesListByCategory) {
             Long storeId = store.getStoreId();
-            List<AddressCode> addressCodes = addressCodeRepository.findAllByStoreId(storeId).orElseThrow(
-                ()->new RuntimeException("storeId에 해당하는 데이터가 addressCode 테이블에 존재하지 않습니다."));
+            List<AddressCode> addressCodes = addressCodeRepository.findAllByStoreId(storeId)
+                .orElseThrow(
+                    () -> new RuntimeException("storeId에 해당하는 데이터가 addressCode 테이블에 존재하지 않습니다."));
             // AddressCode 리스트에서 유저의 addrCode와 일치하는지 확인 ㅇㅇ
             for (AddressCode addressCode : addressCodes) {
                 if (addressCode.getAddressCode().equals(addrCode)) {
@@ -136,13 +154,16 @@ public class StoreServiceImpl implements StoreService{
         }
         for (Stores store : storesListByName) {
             Long storeId = store.getStoreId();
-            List<AddressCode> addressCodes = addressCodeRepository.findAllByStoreId(storeId).orElseThrow(
-                ()->new RuntimeException("storeId에 해당하는 데이터가 addressCode 테이블에 존재하지 않습니다."));
+            List<AddressCode> addressCodes = addressCodeRepository.findAllByStoreId(storeId)
+                .orElseThrow(
+                    () -> new RuntimeException("storeId에 해당하는 데이터가 addressCode 테이블에 존재하지 않습니다."));
             // AddressCode 리스트에서 유저의 addrCode와 일치하는지 확인 ㅇㅇ
             for (AddressCode addressCode : addressCodes) {
                 if (addressCode.getAddressCode().equals(addrCode)) {
                     // 조건에 맞는 Store 정보를 DTO로 변환하고 리스트에 추가
-                    filteredStores.add(convertToDto(store));
+                    if (!filteredStores.contains(convertToDto(store))) {
+                        filteredStores.add(convertToDto(store));
+                    }
                     break;  // 일치하는 주소 코드를 찾으면 더 이상 반복하지 않음
                 }
             }
@@ -151,13 +172,16 @@ public class StoreServiceImpl implements StoreService{
         String sortCriteria = requestDto.getSort();
         switch (sortCriteria) {
             case "dibs":
-                filteredStores.sort(Comparator.comparing(StoreListInnerResponseDto::getDibsCount).reversed());
+                filteredStores.sort(
+                    Comparator.comparing(StoreListInnerResponseDto::getDibsCount).reversed());
                 break;
             case "rating":
-                filteredStores.sort(Comparator.comparing(StoreListInnerResponseDto::getRating).reversed());
+                filteredStores.sort(
+                    Comparator.comparing(StoreListInnerResponseDto::getRating).reversed());
                 break;
             case "reviewCount":
-                filteredStores.sort(Comparator.comparing(StoreListInnerResponseDto::getReviewCount).reversed());
+                filteredStores.sort(
+                    Comparator.comparing(StoreListInnerResponseDto::getReviewCount).reversed());
                 break;
         }
 
@@ -170,8 +194,10 @@ public class StoreServiceImpl implements StoreService{
 
     @Override
     public StoreDetailResponseDto getStoreDetail(StoreDetailRequestDto requestDto) {
-        Users users = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()-> new RuntimeException("user not found"));
-        Stores stores = storesRepository.findById(requestDto.getStoreId()).orElseThrow(()-> new RuntimeException("store not found"));
+        Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
+            .orElseThrow(() -> new RuntimeException("user not found"));
+        Stores stores = storesRepository.findById(requestDto.getStoreId())
+            .orElseThrow(() -> new RuntimeException("store not found"));
         StoreDetailResponseDto responseDto = StoreDetailResponseDto.builder()
             .role(users.getRole())
             .name(stores.getName())
@@ -198,7 +224,8 @@ public class StoreServiceImpl implements StoreService{
 
     @Override
     public StoreOwnerListResponseDto getStoreListForOwner(StoreOwnerListRequestDto requestDto) {
-        Users users = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()-> new RuntimeException("user not found"));
+        Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
+            .orElseThrow(() -> new RuntimeException("user not found"));
         List<Stores> storesList = storesRepository.findAllByUserId(users.getUserId());
         List<StoreOwnerListInnerResponseDto> responseDtos = new ArrayList<>();
         for (Stores store : storesList) {
@@ -224,7 +251,8 @@ public class StoreServiceImpl implements StoreService{
         if (store == null) {
             return null;
         }
-        return new StoreListInnerResponseDto(store.getStoreId(), store.getName(), store.getStorePictureName(),
+        return new StoreListInnerResponseDto(store.getStoreId(), store.getName(),
+            store.getStorePictureName(),
             store.getRating(), store.getDibsCount(), store.getReviewCount());
     }
 

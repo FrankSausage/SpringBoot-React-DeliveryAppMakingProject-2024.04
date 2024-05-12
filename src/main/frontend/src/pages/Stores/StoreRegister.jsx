@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container } from '@mui/material';
+import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container, FormControl, InputLabel, Select, Input, MenuItem, ListItemText } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Footer from '../components/Footer';
+import Footer from '../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
-import { findPostcode } from '../utils/AddressUtil';
-import { getCurrentUser, register } from '../utils/firebase';
-import { extractDataFromFormData, formatPhoneNumber } from '../utils/storeInfo';
+import { findPostcode } from '../../utils/AddressUtil';
+import { getCurrentUser } from '../../utils/firebase';
+import { extractDataFromFormData, formatPhoneNumber } from '../../utils/storeInfo';
 import axios from 'axios';
-import Ownerheader from '../components/OwnerHeader';
+import Ownerheader from '../../components/OwnerHeader';
 
 const defaultTheme = createTheme();
 
 export default function StoreRegister() {
+  const { email } = getCurrentUser();
   const [roadAddress, setRoadAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
@@ -30,20 +31,12 @@ export default function StoreRegister() {
   const [operationHours, setOperationHours] = useState('');
   const [closedDays, setClosedDays] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [openHours, setOpenHours] = useState('');
+  const [closeHours, setCloseHours] = useState('');
+
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
   // const [userInfo, setUserInfo] = useState({email: '', password: '', })
   // const [storeInfo, setStoreInfo] = useState({deliveryAddress: '', closedDays: '',}) // 나중에 이런식으로 이팩토리 할것 이유 업데이트 할때 정보 받기 편해지기 위해서
-  
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const { email } = await getCurrentUser();
-      setEmail(email);
-    };
-    fetchUserData();
-  }, []);
-  console.log(email);
-  
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
       const script = document.createElement('script');
@@ -69,20 +62,24 @@ export default function StoreRegister() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-
+    extractDataFromFormData(data).then(res => console.log(res))
     if (!data.get('name') || !data.get('phone')) {
       alert('필수 항목을 입력하세요.');
       return;
+    } else {
+      setFormData(data)
+        .then(res => {
+          extractDataFromFormData(res)
+            .then(resFormData => {
+              axios.post(`/dp/store/owner/register`, resFormData)
+            })
+            .then(() => {
+              alert('입점 신청이 완료되었습니다.');
+              navigate('/');
+            })
+        })
+        .catch(console.error);
     }
-
-    
-      const formData = await setFormData(data);
-      extractDataFromFormData(formData)
-        .then(resFormData => axios.post(`/dp/store/owner/register`, resFormData));
-
-      alert('입점 신청이 완료되었습니다.');
-      navigate('/OwnerMain');
-    
   };
 
   const handlePhoneNumberChange = (event) => {
@@ -98,16 +95,8 @@ export default function StoreRegister() {
       data.append('addressCode', addressCode.substring(0, 8));
       data.append('category', category);
       data.append('type', type);
-      data.append('minDeliveryPrice', minDeliveryPrice);
-      data.append('content', content);
-      data.append('name', name);
-      data.append('deliveryTip', deliveryTip);
-      data.append('minDeliveryTime', minDeliveryTime);
-      data.append('maxDeliveryTime', maxDeliveryTime);
-      data.append('operationHours', operationHours);
-      data.append('minDeliveryTime', minDeliveryTime);
-      data.append('closedDays', closedDays);
-      data.append('deliveryAddress', deliveryAddress);
+      data.append('operationHours', `${openHours}~${closeHours}`);
+      data.append('closedDays', selectedDays.join(','));
       return await data;
     }
     catch (error) {
@@ -123,6 +112,27 @@ export default function StoreRegister() {
       setStorePictureName(fileNames);
     }
   };
+
+  const weekDays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
+  const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];
+
+  const [selectedDays, setSelectedDays] = useState([]);
+
+  const generateTimeOptions = (startHour, endHour) => {
+    const options = [];
+    for (let hour = startHour; hour <= endHour; hour++) {
+      for (let minute = 0; minute < 60; minute += 30) {
+        const formattedHour = hour.toString().padStart(2, '0');
+        const formattedMinute = minute.toString().padStart(2, '0');
+        options.push(`${formattedHour}:${formattedMinute}`);
+      }
+    }
+    return options;
+  };
+
+  const timeOptionsOpen = generateTimeOptions(5, 18);
+  const timeOptionsClose = generateTimeOptions(15, 24).concat(generateTimeOptions(0, 7));
+
 
 
 
@@ -159,6 +169,7 @@ export default function StoreRegister() {
                   id="name"
                   value={name}
                   label="가게 이름"
+                  placeholder='ex) 휴먼 딜리버리'
                   onChange={e => setName(e.target.value)}
                 />
               </Grid>
@@ -168,6 +179,7 @@ export default function StoreRegister() {
                   fullWidth
                   id="phone"
                   label="전화번호"
+                  placeholder='ex) 031-123-4567'
                   name="phone"
                   autoComplete="phone"
                   value={phoneNumber}
@@ -224,6 +236,7 @@ export default function StoreRegister() {
                   required
                   fullWidth
                   id="roadAddress"
+                  name="roadAddress"
                   label="도로명 주소"
                   value={roadAddress}
                   InputProps={{
@@ -245,6 +258,7 @@ export default function StoreRegister() {
                   required
                   fullWidth
                   id="extraAddress"
+                  name="extraAddress"
                   label="참고항목"
                   value={extraAddress}
                   InputProps={{
@@ -286,18 +300,20 @@ export default function StoreRegister() {
                   fullWidth
                   id="minDeliveryPrice"
                   label="최소 주문금액"
+                  placeholder='ex) 10000'
                   onChange={e => setMinDeliveryPrice(e.target.value)}
                   autoFocus
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"  
+                  autoComplete="given-name"
                   name="deliveryTip"
                   required
                   fullWidth
                   id="deliveryTip"
                   label="배달팁"
+                  placeholder='ex) 2000'
                   value={deliveryTip}
                   onChange={e => setDeliveryTip(e.target.value)}
                 />
@@ -311,6 +327,7 @@ export default function StoreRegister() {
                   id="minDeliveryTime"
                   value={minDeliveryTime}
                   label="최소 배달 예상 시간"
+                  placeholder='10'
                   onChange={e => setMinDeliveryTime(e.target.value)}
                 />
               </Grid>
@@ -323,33 +340,72 @@ export default function StoreRegister() {
                   id="maxDeliveryTime"
                   value={maxDeliveryTime}
                   label="최대 배달 예상 시간"
+                  placeholder='50'
                   onChange={e => setMaxDeliveryTime(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="operationHours"
-                  required
-                  fullWidth
-                  id="operationHours"
-                  value={operationHours}
-                  label="운영 시간"
-                  onChange={e => setOperationHours(e.target.value)}
-                />
+              <Grid item xs={6}>
+                <FormControl fullWidth required>
+                  <InputLabel id="openHours-label">오픈 시간</InputLabel>
+                  <Select
+                    labelId="openHours-label"
+                    id="openHours"
+                    value={openHours}
+                    onChange={e => setOpenHours(e.target.value)}
+                  >
+                    {timeOptionsOpen.map(time => (
+                      <MenuItem key={time} value={time}>
+                        {time}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth required>
+                  <InputLabel id="closeHours-label">종료 시간</InputLabel>
+                  <Select
+                    labelId="closeHours-label"
+                    id="closeHours"
+                    value={closeHours}
+                    onChange={e => setCloseHours(e.target.value)}
+                  >
+                    {timeOptionsClose.map(time => (
+                      <MenuItem key={time} value={time}>
+                        {time}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="closedDays"
-                  required
-                  fullWidth
-                  id="closedDays"
-                  value={closedDays}
-                  label="휴무일"
-                  onChange={e => setClosedDays(e.target.value)}
-                />
+                <FormControl fullWidth required>
+                  <InputLabel id="closedDays-label">휴무일</InputLabel>
+                  <Select
+                    labelId="closedDays-label"
+                    id="closedDays"
+                    multiple
+                    value={selectedDays}
+                    onChange={e => setSelectedDays(e.target.value)}
+                    input={<Input />}
+                    renderValue={(selected) => selected.join(', ')}
+                  >
+                    {weekDays.map(day => (
+                      <MenuItem key={day} value={day}>
+                        <Checkbox checked={selectedDays.indexOf(day) > -1} />
+                        <ListItemText primary={day} />
+                      </MenuItem>
+                    ))}
+                    {holidays.map(holiday => (
+                      <MenuItem key={holiday} value={holiday}>
+                        <Checkbox checked={selectedDays.indexOf(holiday) > -1} />
+                        <ListItemText primary={holiday} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
@@ -359,6 +415,7 @@ export default function StoreRegister() {
                   id="deliveryAddress"
                   value={deliveryAddress}
                   label="배달 지역"
+                  placeholder='ex) 원천동, 우만동'
                   onChange={e => setDeliveryAddress(e.target.value)}
                 />
               </Grid>
@@ -369,6 +426,7 @@ export default function StoreRegister() {
                   fullWidth
                   id="content"
                   label="가게 소개글"
+                  placeholder='ex) 안녕하세요. 고객을 위해 빠른 배달을 하는 휴먼 딜리버리입니다.'
                   multiline
                   rows={4}
                   variant='outlined'

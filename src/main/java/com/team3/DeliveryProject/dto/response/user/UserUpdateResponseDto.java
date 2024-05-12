@@ -14,6 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class UserUpdateResponseDto {
+
     private String phone;
     private String currentAddress;
 

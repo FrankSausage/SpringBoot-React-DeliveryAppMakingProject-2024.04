@@ -14,6 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class StoreUpdateResponseDto {
+
     private String name;
     private int type;
     private String category;

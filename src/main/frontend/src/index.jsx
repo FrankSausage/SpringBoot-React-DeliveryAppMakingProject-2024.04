@@ -1,24 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
-import Home from './pages/Home';
-import Store from './pages/Store';
-import Update from './pages/Update';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ProtectedRoute from './pages/ProtectedRoute';
-import StoreRegister from './pages/StoreRegister';
-import StoreUpdate from './pages/StoreUpdate';
-import StoreDetail from './pages/StoreDetail';
-import StoreInto from './pages/StoreInto';
-import UserMain from './components/UserMain';
-import OwnerMain from './components/OwnerMain';
-import StoreList from './pages/StoreList';
-import Address from './components/Address';
-import MenuRegister from './pages/MenuRegister';
-import MenuUpdate from './pages/MenuUpdate';
+import Home from './pages/Home';
+import SignIn from './pages/Users/SignIn';
+import SignUp from './pages/Users/SignUp';
+import Update from './pages/Users/Update';
+import Store from './pages/Stores/View/Store';
+import StoreRegister from './pages/Stores/StoreRegister';
+import StoreUpdate from './pages/Stores/StoreUpdate';
+import StoreDetail from './pages/Stores/StoreDetail';
+import UserMain from './pages/Users/View/UserMain';
+import OwnerMain from './pages/Users/View/OwnerMain';
+import Address from './pages/Users/View/Address';
+import MenuRegister from './pages/Menus/MenuRegister';
+import MenuUpdate from './pages/Menus/MenuUpdate';
+import Cart from './pages/Cart/View/Cart';
+import Order from './pages/Order/View/Order';
+
 
 const router = createBrowserRouter([
   {
@@ -35,13 +36,14 @@ const router = createBrowserRouter([
       { path: 'Store', element: <Store />},
       { path: 'StoreRegister', element: <StoreRegister />},
       { path: 'StoreUpdate', element: <StoreUpdate />},
-      { path: 'StoreDetail', element: <StoreDetail />},
-      { path: 'StoreInto', element: <StoreInto />,},
-      { path: 'StoreList', element: <StoreList />,},
-      { path: 'MenuRegister', element: <MenuRegister />},
+      { path: 'StoreDetail/:storeId', element: <StoreDetail />},
+      { path: 'MenuRegister/:storeId', element: <MenuRegister />},
       { path: 'MenuUpdate', element: <MenuUpdate />},
+      { path: 'MenuUpdate/:menuId', element: <MenuUpdate />},
       { path: 'UserMain', element: <UserMain />,},
       { path: 'OwnerMain', element: <OwnerMain />},
+      { path: 'Cart', element: <Cart />},
+      { path: 'Order', element: <Order />},
     ]
   }
 ]);
