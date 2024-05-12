@@ -23,15 +23,14 @@ export const useStoreListByEmail = email => {
           .catch(console.error);
     }
   })
-  console.log(storeData)
   return { isLoading, error, storeData };
 }
 
-export function useStore (email) {
-  console.log(email)
+export const useStore = (email) => {
+  
   const getStoreList = useQuery({
-    queryKey: ['ownerList'],
-    queryFn: () => {return axios.get(`/dp/store/list`, {params : { 'email' : email }})}
+    queryKey: ['ownerList', email],
+    queryFn: () => { return axios.get(`/dp/store/list`, {params : { email : email }}) }
   })
 
   return { getStoreList }

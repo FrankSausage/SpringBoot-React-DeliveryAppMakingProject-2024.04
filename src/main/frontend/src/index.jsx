@@ -17,6 +17,9 @@ import OwnerMain from './pages/Users/View/OwnerMain';
 import Address from './pages/Users/View/Address';
 import MenuRegister from './pages/Menus/MenuRegister';
 import MenuUpdate from './pages/Menus/MenuUpdate';
+import Cart from './pages/Cart/View/Cart';
+import Order from './pages/Order/View/Order';
+import StoreSearch from './pages/Stores/StoreSearch';
 
 const router = createBrowserRouter([
   {
@@ -26,21 +29,21 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'Signin', element: <SignIn />},
       { path: 'SignUp', element: <SignUp />},
-      { path: 'Store', element: <Store />},
-      { path: 'Store/:category', element: <Store />},
       { path: 'Update', element: <ProtectedRoute><Update /></ProtectedRoute>},
       { path: 'Address', element: <Address />},
-      { path: 'Store', element: <Store />},
+      { path: 'Store', element: <ProtectedRoute><Store /></ProtectedRoute>},
+      { path: 'Store/:category', element: <ProtectedRoute><Store /></ProtectedRoute>},
+      { path: 'StoreSearch', element: <ProtectedRoute><StoreSearch /></ProtectedRoute>},
       { path: 'StoreRegister', element: <StoreRegister />},
       { path: 'StoreUpdate', element: <StoreUpdate />},
-      // { path: 'StoreDetail', element: <StoreDetail />},
       { path: 'StoreDetail/:storeId', element: <StoreDetail />},
-      // { path: 'MenuRegister', element: <MenuRegister />},
       { path: 'MenuRegister/:storeId', element: <MenuRegister />},
       { path: 'MenuUpdate', element: <MenuUpdate />},
       { path: 'MenuUpdate/:menuId', element: <MenuUpdate />},
       { path: 'UserMain', element: <UserMain />,},
       { path: 'OwnerMain', element: <OwnerMain />},
+      { path: 'Cart', element: <Cart />},
+      { path: 'Order', element: <Order />},
     ]
   }
 ]);
