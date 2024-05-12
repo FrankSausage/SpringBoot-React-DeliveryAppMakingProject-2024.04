@@ -46,20 +46,10 @@ export default function Store() {
   const { state: category } = useLocation();
   const navigate = useNavigate();
   const [value, setValue] = useState(category ? category : 0);
-  const [ searchText, setSearchText ] = useState('');
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    if(!searchText) {
-      alert('검색어를 입력하세요.');
-      return;
-    } else {
-      navigate('/StoreSearchResult', {state: {searchText: searchText}})
-    }
-  }
 
   return (
     <Box sx={{ margin: -1 }}>
@@ -84,11 +74,9 @@ export default function Store() {
                 <InputBase
                   placeholder="가게 / 메뉴 이름 입력"
                   inputProps={{ 'aria-label': 'search' }}
-                  value={searchText}
-                  onChange={e => setSearchText(e.target.value)}
+                  onClick={() => navigate('/StoreSearch')}
                   fullWidth
                 />
-                <Button onClick={handleSubmit}>검색</Button>
               </Box>
             </Grid>
           </Grid>

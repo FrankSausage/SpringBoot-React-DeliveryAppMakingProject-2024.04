@@ -4,21 +4,17 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import SearchHeader from "../../components/SearchHeader";
 import SearchIcon from '@mui/icons-material/Search';
 import StoreList from '../Stores/StoreList';
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function StoreSearch() {
-	const location = useLocation();
-	const navigate = useNavigate();
-	const { searchText } = location.state;
-	const [ queryText, setQueryText ] = useState(searchText ? searchText : '');
+	const queryClient = useQueryClient();
+	const [ searchText, setSearchText ] = useState('');
 
 	const handleSubmit = e => {
     e.preventDefault();
-    if(!searchText) {
-      alert('검색어를 입력하세요.');
-      return;
-    } else {
-      navigate('/StoreSearchResult', {state: {searchText: queryText}})
-    }
+	if(searchText) {
+    	queryClient.refetchQueries(['storeList'])
+	}
   }
 
 	return (
@@ -32,8 +28,8 @@ export default function StoreSearch() {
 					<InputBase
 					placeholder="검색"
 					inputProps={{ 'aria-label': 'search' }}
-					value={queryText}
-					onChange={e => setQueryText(e.target.value)}
+					value={searchText}
+					onChange={e => setSearchText(e.target.value)}
 					fullWidth
 					autoFocus
 					/>
@@ -41,6 +37,9 @@ export default function StoreSearch() {
 				</Box>
 				</Grid>
 			</Grid>
+			{searchText &&
+				<StoreList searchText={searchText}/>
+			}
 		</Box>
 	);
 }
