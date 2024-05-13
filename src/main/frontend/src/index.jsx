@@ -24,7 +24,6 @@ import ReviewDetail from './pages/Review/ReviewDetail';
 import ReviewReply from './pages/Review/ReviewReply';
 import ReviewRating from './pages/Review/ReviewRating';
 
-import MenuDetail from './pages/Menus/MenuDetail';
 import Cart from './pages/Cart/View/Cart';
 import Order from './pages/Order/View/Order';
 import StoreSearch from './pages/Stores/StoreSearch';
@@ -49,7 +48,6 @@ const router = createBrowserRouter([
       { path: 'StoreDetail/:storeId', element: <StoreDetail />},
       { path: 'MenuRegister/:storeId', element: <MenuRegister />},
       { path: 'MenuUpdate', element: <MenuUpdate />},
-      { path: 'MenuDetail', element: <MenuDetail />},
       { path: 'MenuUpdate/:menuId', element: <MenuUpdate />},
       { path: 'UserMain', element: <UserMain />,},
       { path: 'OwnerMain', element: <OwnerMain />},

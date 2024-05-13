@@ -3,18 +3,19 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Gri
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { getCurrentUser } from '../../utils/firebase';
 import { extractDataFromFormData, useMenuUpByEmail } from '../../utils/storeInfo';
 import axios from 'axios';
 import Ownerheader from '../../components/OwnerHeader';
+import MenuOptionDetail from './MenuOptionDetail';
 
 const defaultTheme = createTheme();
 
 export default function MenuUpdate() {
   const location = useLocation();
   const { storeId, menuId } = location.state;
-  const { email } = getCurrentUser();
+  const { email } = localStorage.getItem('email');
   const { isLoading, error, menu } = useMenuUpByEmail(email, menuId);
 
   const [initialName, setInitialName] = useState('');
@@ -100,8 +101,6 @@ export default function MenuUpdate() {
     }
   };
 
-
-
   return (
     <ThemeProvider theme={defaultTheme}>
       {isLoading && <Typography>Loading...</Typography>}
@@ -128,6 +127,7 @@ export default function MenuUpdate() {
               <Typography component="h1" variant="h5">
                 음식 정보 수정
               </Typography>
+              {menu.menus[0].options && <MenuOptionDetail options={menu.menus[0].options} email={email} />}
               <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>

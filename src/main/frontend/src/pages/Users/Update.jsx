@@ -15,9 +15,8 @@ const defaultTheme = createTheme();
 
 export default function Update() {
     const { email, displayName } = getCurrentUser();
-    // const { isLoading, error, user } = useUserByEmail(email);
-    const { getUserByEmail: {isLoading, error, data: user} } = useUser(email);
-    const [ phoneNumber, setPhoneNumber] = useState(user.phone ? user.phone : '');
+    const { getUserByEmail: {isLoading, error, data: user} } = useUser(localStorage.getItem('email'));
+    const [ phoneNumber, setPhoneNumber] = useState('');
     const [ passwordCheack, setPasswordCheack ] = useState('');
     const [ isPasswordMatch, setIsPasswordMatch ] = useState(true);
     const { roadAddress, extraAddress, detailAddress} = (localStorage.getItem("splitAddress") ? 
@@ -48,6 +47,13 @@ export default function Update() {
         // 언마운트 시 스크립트 제거 로직
       };
     }, []);
+
+    useEffect(() => {
+        if(user) {
+            setPhoneNumber(user.data.phone)
+        }
+				console.log('호출')
+    }, [isLoading])
 
     const handleFindPostcode = () => {
       findPostcode(setUpdateRoadAddress, setUpdateExtraAddress, setAddressCode); // use findPostcode from AddressUtil
@@ -176,6 +182,7 @@ export default function Update() {
                                 onChange={e => {setPasswordCheack(e.target.value)}}
                                 error={!isPasswordMatch}
                                 helperText={!isPasswordMatch && "비밀번호가 일치하지 않습니다"}
+																autoComplete="second-current-password"
                                 />
                             </Grid>
                             <Grid item xs={12}>
