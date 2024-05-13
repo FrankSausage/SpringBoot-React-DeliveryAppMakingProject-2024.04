@@ -7,6 +7,6 @@ export const useUser = (email) => {
         queryKey: ['email'],
         queryFn: () => { return axios.get(`/dp/user/update`, {params : {email : email}}) },
     })
-        
+    
     return { getUserByEmail };
 }

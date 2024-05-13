@@ -21,6 +21,7 @@ export default function MenuRegister() {
   const [content, setContent] = useState('');
   const [menuPictureName, setMenuPictureName] = useState('');
   const navigate = useNavigate();
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);

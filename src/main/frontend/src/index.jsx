@@ -17,8 +17,6 @@ import OwnerMain from './pages/Users/View/OwnerMain';
 import Address from './pages/Users/View/Address';
 import MenuRegister from './pages/Menus/MenuRegister';
 import MenuUpdate from './pages/Menus/MenuUpdate';
-import MenuDetail from './pages/Menus/MenuDetail';
-import Cart from './pages/Cart/View/Cart';
 import Order from './pages/Order/View/Order';
 import StoreSearch from './pages/Stores/StoreSearch';
 
@@ -40,11 +38,9 @@ const router = createBrowserRouter([
       { path: 'StoreDetail/:storeId', element: <StoreDetail />},
       { path: 'MenuRegister/:storeId', element: <MenuRegister />},
       { path: 'MenuUpdate', element: <MenuUpdate />},
-      { path: 'MenuDetail', element: <MenuDetail />},
       { path: 'MenuUpdate/:menuId', element: <MenuUpdate />},
       { path: 'UserMain', element: <UserMain />,},
       { path: 'OwnerMain', element: <OwnerMain />},
-      { path: 'Cart', element: <Cart />},
       { path: 'Order', element: <Order />},
     ]
   }

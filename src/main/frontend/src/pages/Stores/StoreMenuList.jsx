@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Checkbox, Typography, Button, FormControlLabel } from '@mui/material';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Box, Grid,  Typography, Button, Stack } from '@mui/material';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useMenuListByStoreId } from '../../utils/storeInfo';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { getCurrentUser } from '../../utils/firebase';
 import axios from 'axios';
+import MenuOptionRegister from '../Menus/MenuOptionRegister';
 
 const defaultTheme = createTheme();
 
@@ -17,7 +18,6 @@ export default function StoreMenuList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('여기서 호출')
     const storedStatus = localStorage.getItem(`status_${storeId}`);
     if (storedStatus) {
       setStatus(JSON.parse(storedStatus));
@@ -26,7 +26,6 @@ export default function StoreMenuList() {
 
 
   useEffect(() => {
-    console.log('저기서 호출')
     if (menuData) {
       // menuData가 존재하면서 status가 초기화되지 않았을 때
       if (status.length === 0) {
@@ -91,14 +90,19 @@ export default function StoreMenuList() {
                       </Link>
                       {role === '점주' && 
                         <Grid container spacing={3} >
-                          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', mt: 5 }}>
-                            <Button
-                              variant="contained"
-                              color={status[idx] ? 'primary' : 'secondary'}
-                              onClick={() => handleCheckboxChange(idx)}
-                            >
-                              {status[idx] ? '상품 판매' : '품절'}
-                            </Button>
+                          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
+                            <Stack>
+                              <Button
+                                variant="contained"
+                                color={status[idx] ? 'primary' : 'secondary'}
+                                onClick={() => handleCheckboxChange(idx)}
+                              >
+                                {status[idx] ? '상품 판매' : '품절'}
+                              </Button>
+                              <Button color={'info'}>
+                                <MenuOptionRegister email={email} menuId={res.menuId}/>
+                              </Button>
+                            </Stack>
                           </Grid>
                         </Grid>
                       }
