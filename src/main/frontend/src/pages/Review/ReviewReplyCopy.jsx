@@ -1,21 +1,21 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import Ownerheader from '../../components/OwnerHeader';
-import { Box, Rating, Typography, Paper, Tab, Tabs, useTheme, AppBar } from '@mui/material';
+import { Box, Rating, Typography, Tab, Tabs, useTheme, AppBar } from '@mui/material';
 
 
 export default function ReviewReply() {
   
   const [value, setValue] = React.useState(2);
-  const [reply, setRply] = React.useState(0);
+  const [reply, setReply] = React.useState(0);
   const theme = useTheme();
 
-  const handleChange = (event, setRply) => {
-    setValue(setRply);
+  const handleChange = (event, newValue) => {
+    setValue(setReply(newValue));
   };
 
   const handleChangeIndex = (index) => {
-    setValue(index);
+    setReply(index);
   };
 
 
@@ -31,7 +31,7 @@ export default function ReviewReply() {
         aria-labelledby={`full-width-tab-${index}`}
         {...other}
       >
-        {value === index && (
+        {reply === index && (
           <Box p={3}>
             <Typography>{children}</Typography>
           </Box>
