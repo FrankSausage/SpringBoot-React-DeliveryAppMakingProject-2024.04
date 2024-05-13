@@ -5,6 +5,7 @@ import com.team3.DeliveryProject.dto.request.address.AddressAddRequestDto;
 import com.team3.DeliveryProject.dto.request.cart.CartAddRequestDto;
 import com.team3.DeliveryProject.dto.request.cart.CartDeleteAllRequestDto;
 import com.team3.DeliveryProject.dto.request.cart.CartDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.cart.CartUpdateRequestDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.ErrorResponse;
 
@@ -14,4 +15,6 @@ public interface CartService {
     public ResponseEntity<Response> deleteAllCart(CartDeleteAllRequestDto requestDto);
 
     public ResponseEntity<Response> deleteCart(CartDeleteRequestDto requestDto);
+
+    public ResponseEntity<Response> UpdateCart(CartUpdateRequestDto requestDto);
 }
