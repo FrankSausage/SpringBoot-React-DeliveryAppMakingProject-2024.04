@@ -51,4 +51,15 @@ public class CartServiceImpl implements CartService{
     }
 
 
+    @Override
+    public ResponseEntity<Response> deleteAllCart(CartDeleteAllRequestDto requestDto) {
+        Users users = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()->new RuntimeException("User not found"));
+        List<Cart> cartList = cartRepository.findAllByUserId(users.getUserId());
+        for(Cart cart : cartList){
+            cart.setStatus("삭제");
+            cartRepository.save(cart);
+        }
+        return Response.toResponseEntity(CART_DELETE_ALL_SUCCESS);
+    }
+
 }

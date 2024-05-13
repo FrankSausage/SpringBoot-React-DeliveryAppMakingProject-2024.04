@@ -1,6 +1,7 @@
 package com.team3.DeliveryProject.controller;
 
 import com.team3.DeliveryProject.dto.request.cart.CartAddRequestDto;
+import com.team3.DeliveryProject.dto.request.cart.CartDeleteAllRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuListGetRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionDeleteRequestDto;
 import com.team3.DeliveryProject.service.AddressService;
@@ -23,5 +24,10 @@ public class CartController {
     @PostMapping("/register")
     public ResponseEntity<?> addCart(@RequestBody CartAddRequestDto requestDto) {
         return ResponseEntity.ok().body(cartService.addCart(requestDto).getBody());
+    }
+
+    @PostMapping("/deleteall")
+    public ResponseEntity<?> deleteAllCart(@RequestBody CartDeleteAllRequestDto requestDto) {
+        return ResponseEntity.ok().body(cartService.deleteAllCart(requestDto).getBody());
     }
 }
