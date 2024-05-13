@@ -3,10 +3,8 @@ package com.team3.DeliveryProject.controller;
 import com.team3.DeliveryProject.dto.request.cart.CartAddRequestDto;
 import com.team3.DeliveryProject.dto.request.cart.CartDeleteAllRequestDto;
 import com.team3.DeliveryProject.dto.request.cart.CartDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.cart.CartDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.cart.CartUpdateRequestDto;
-import com.team3.DeliveryProject.dto.request.menu.MenuListGetRequestDto;
-import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionDeleteRequestDto;
-import com.team3.DeliveryProject.service.AddressService;
 import com.team3.DeliveryProject.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +21,7 @@ public class CartController {
 
     @Autowired
     private CartService cartService;
+
     @PostMapping("/register")
     public ResponseEntity<?> addCart(@RequestBody CartAddRequestDto requestDto) {
         return ResponseEntity.ok().body(cartService.addCart(requestDto).getBody());
@@ -37,9 +36,15 @@ public class CartController {
     public ResponseEntity<?> deleteAllCart(@RequestBody CartDeleteRequestDto requestDto) {
         return ResponseEntity.ok().body(cartService.deleteCart(requestDto).getBody());
     }
+
     @PostMapping("/update")
     public ResponseEntity<?> updateCart(@RequestBody CartUpdateRequestDto requestDto) {
-        return ResponseEntity.ok().body(cartService.UpdateCart(requestDto).getBody());
+        return ResponseEntity.ok().body(cartService.updateCart(requestDto).getBody());
+    }
+
+    @GetMapping("/detail")
+    public ResponseEntity<?> detailCart(@ModelAttribute CartDetailRequestDto requestDto) {
+        return ResponseEntity.ok().body(cartService.detailCart(requestDto));
     }
 
 }
