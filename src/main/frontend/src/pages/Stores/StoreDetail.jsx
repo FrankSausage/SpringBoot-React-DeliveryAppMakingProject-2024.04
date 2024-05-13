@@ -99,7 +99,7 @@ export default function StoreDetail(data) {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={1}>
-        <StoreMenuList menuNumber={'123'} />
+        <StoreMenuList />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <StoreInfo />

@@ -15,7 +15,6 @@ export default function StoreMenuList() {
   const { storeId } = useParams();
   const [status, setStatus] = useState([]);
   const { isLoading, error, menuData } = useMenuListByStoreId(storeId);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const storedStatus = localStorage.getItem(`status_${storeId}`);
@@ -76,7 +75,7 @@ export default function StoreMenuList() {
                   <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
                     <Box key={res.menuId} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
                       <Link to={`/MenuUpdate/${res.menuId}`} state={{ menuId: res.menuId, storeId: storeId }} style={{ textDecoration: 'none', color: 'black' }} >
-                        <Box component={Link} to={role==='회원' ? `/MenuDetail` : `/MenuUpdate`} state={{menuId : res.menuId, storeId : storeId}}  sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
+                        <Box component={Link} to={role==='회원' ? `/MenuDetail` : `/MenuUpdate`} state={{menuId : res.menuId, storeId : storeId,}}  sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
                           <img src={res.menuPictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
                           <ul style={{ position: 'absolute', top: '50%', left: '40%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
                             <li style={{ listStyleType: 'none' }}>{res.name}</li>

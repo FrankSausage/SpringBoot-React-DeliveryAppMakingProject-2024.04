@@ -48,7 +48,7 @@ export function useStoreInfoByEmail (email, storeId) {
 
 export const useMenuListByStoreId = storeId => {
   const { isLoading, error, data: menuData } = useQuery({
-    queryKey: ['StoreMenu', storeId ],
+    queryKey: ['StoreMenuList', storeId ],
     queryFn: async () => {
         return axios.get(`/dp/store/menu/list`, { params: { storeId: storeId }})
           .then(res => res.data)
@@ -72,7 +72,7 @@ export const useMenuByEmail =  email => {
 
 export const useMenuUpByEmail = ( email, menuId) => {
   const { isLoading, error, data: menu } = useQuery({
-      queryKey: ['email', email, 'menuId', menuId],
+      queryKey: ['menuList', email, menuId],
       queryFn: async () => {
           return axios.get(`/dp/store/menu/update`, { params: { email: email, menuId: menuId }})
           .then(res => res.data)
