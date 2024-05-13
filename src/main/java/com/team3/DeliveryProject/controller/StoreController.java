@@ -92,19 +92,19 @@ public class StoreController {
         return ResponseEntity.ok().body(storeService.getStoreListForOwner(requestDto));
     }
 
-    @GetMapping("/list/search")
-    public ResponseEntity<?> getStoreList(@ModelAttribute StoreListRequestDto requestDto) {
-        return ResponseEntity.ok().body(storeService.getStoreList(requestDto));
-    }
-
-    @GetMapping("/detail")
-    public ResponseEntity<?> getStoreDetail(@ModelAttribute StoreDetailRequestDto requestDto) {
-        return ResponseEntity.ok().body(storeService.getStoreDetail(requestDto));
-    }
-
-    @GetMapping("/list")
-    public ResponseEntity<?> getStoreListForOwner(
-        @ModelAttribute StoreOwnerListRequestDto requestDto) {
-        return ResponseEntity.ok().body(storeService.getStoreListForOwner(requestDto));
-    }
+//    @GetMapping("/list/search")
+//    public ResponseEntity<?> getStoreList(@ModelAttribute StoreListRequestDto requestDto) {
+//        return ResponseEntity.ok().body(storeService.getStoreList(requestDto));
+//    }
+//
+//    @GetMapping("/detail")
+//    public ResponseEntity<?> getStoreDetail(@ModelAttribute StoreDetailRequestDto requestDto) {
+//        return ResponseEntity.ok().body(storeService.getStoreDetail(requestDto));
+//    }
+//
+//    @GetMapping("/list")
+//    public ResponseEntity<?> getStoreListForOwner(
+//        @ModelAttribute StoreOwnerListRequestDto requestDto) {
+//        return ResponseEntity.ok().body(storeService.getStoreListForOwner(requestDto));
+//    }
 }

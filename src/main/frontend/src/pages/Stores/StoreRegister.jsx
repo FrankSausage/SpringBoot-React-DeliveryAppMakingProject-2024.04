@@ -302,7 +302,6 @@ export default function StoreRegister() {
                   label="최소 주문금액"
                   placeholder='ex) 10000'
                   onChange={e => setMinDeliveryPrice(e.target.value)}
-                  autoFocus
                 />
               </Grid>
               <Grid item xs={12}>
@@ -453,7 +452,6 @@ export default function StoreRegister() {
                   fullWidth
                   id="storePictureName"
                   label="가게 사진"
-                  autoFocus
                   onClick={(e) => {
                     e.target.value = null;
                   }}
