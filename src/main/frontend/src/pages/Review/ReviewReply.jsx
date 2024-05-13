@@ -1,7 +1,8 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Ownerheader from '../../components/OwnerHeader';
-import { Box, Rating, Typography, Tab, Tabs, useTheme, AppBar } from '@mui/material';
+import ReviewRating from './ReviewRating';
+import ReviewList from './ReviewList';
+import { Box, Typography, Tab, Tabs, useTheme, AppBar } from '@mui/material';
 
 
 export default function ReviewReply() {
@@ -59,24 +60,12 @@ export default function ReviewReply() {
 
   return (
   
-  <Box sx={{ margin: -1 }}>
-    <Ownerheader />
-      <Box
-        sx={{
-          '& > legend': { mt: 2 },
-        }}
-      >
-        <Typography component="legend">Controlled</Typography>
-        <Rating
-          name="simple-controlled"
-          value={value}
-          onChange={handleRatingChange}
-        />
-        <Typography component="legend">가게 별점? 평점?</Typography>
-        <Rating name="read-only" value={value} readOnly />
+  <Box sx={{ margin: 0 }}>
+      <Box marginBottom={10}>
+        <ReviewRating />
       </Box>
       
-      <div>
+      <Box>
         <AppBar position="static" color="default">
         <Tabs
           value={reply}
@@ -92,12 +81,13 @@ export default function ReviewReply() {
         </AppBar>
 
         <TabPanel value={reply} index={0} dir={theme.direction}>
-          Item One Content
+          <ReviewList></ReviewList>
         </TabPanel>
         <TabPanel value={reply} index={1} dir={theme.direction}>
-          Item Two Content
+          <p>사장 리뷰?</p>
+          <p>사장 리뷰 없는 것?</p>
         </TabPanel>
-      </div>
+      </Box>
   </Box>
   );
 }

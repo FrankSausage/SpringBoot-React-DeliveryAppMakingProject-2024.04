@@ -7,13 +7,13 @@ import { Link, useLocation } from 'react-router-dom';
 
 
 
-export default function Store() {
+export default function ReviewList() {
   
 
 
   return (
     <Box sx={{ margin: -1 }}>
-      <SearchHeader />
+      {/* <SearchHeader /> */}
       <Grid container justifyContent="center" alignItems="center" mt={2}>
         <Grid item xs={6} md={4}>
           <Box sx={{ display: 'flex', alignItems: 'center', border: 1, borderColor: 'divider', borderRadius: 1 }}>
@@ -36,11 +36,14 @@ export default function Store() {
                 <Link to="/ReviewUpdate" variant="body2" style={{ textDecoration: 'none', color: 'black'  }}>
                 <div>
                   <img src={'/img/41.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
-                  <ul style={{ position: 'absolute', top: '50%', left: '40%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
+                  {/* <ul style={{ position: 'absolute', top: '50%', left: '40%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
                     <li style={{ listStyleType: 'none' }}>가게 이름</li>
                     <li style={{ listStyleType: 'none' }}>평점</li>
                     <li style={{ listStyleType: 'none' }}>메뉴</li>
-                  </ul>
+                  </ul> */}
+                  <p>가게 이름</p>
+                  <p>평점</p>
+                  <p>메뉴</p>
                 </div> 
                 </Link>
                 </Box>
