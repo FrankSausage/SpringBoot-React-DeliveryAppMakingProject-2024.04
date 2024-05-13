@@ -13,7 +13,7 @@ import Ownerheader from '../../components/OwnerHeader';
 const defaultTheme = createTheme();
 
 export default function StoreRegister() {
-  const [email] = useState(localStorage.getItem('email') || '');
+  const email = localStorage.getItem('email');
   const { storeId } = useParams();
   const { isLoading, error, store } = useOwnerByEmail(email, storeId);
   // const { roadAddress, extraAddress, detailAddress } = store ? store.address : { roadAddress: ' ', extraAddress: ' ', detailAddress: ' ' };
@@ -100,12 +100,6 @@ export default function StoreRegister() {
       .then(resFormData => {
         axios.post(`/dp/store/owner/update`, resFormData)
         console.log(resFormData)
-        .then(response => {
-          console.log("백엔드 응답:", response);
-        })
-        .catch(error => {
-          console.error("백엔드 요청 오류:", error);
-        });
       }
       
       );
@@ -123,6 +117,7 @@ export default function StoreRegister() {
   const setFormData = async (data) => {
     try {
       data.append('email', email);
+      data.append('storeId', storeId);
       data.append('name', name);
       data.append('category', category);
       data.append('type', type);
