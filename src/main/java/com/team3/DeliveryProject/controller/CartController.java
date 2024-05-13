@@ -2,6 +2,7 @@ package com.team3.DeliveryProject.controller;
 
 import com.team3.DeliveryProject.dto.request.cart.CartAddRequestDto;
 import com.team3.DeliveryProject.dto.request.cart.CartDeleteAllRequestDto;
+import com.team3.DeliveryProject.dto.request.cart.CartDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.menu.MenuListGetRequestDto;
 import com.team3.DeliveryProject.dto.request.menuOption.MenuOptionDeleteRequestDto;
 import com.team3.DeliveryProject.service.AddressService;
@@ -30,4 +31,10 @@ public class CartController {
     public ResponseEntity<?> deleteAllCart(@RequestBody CartDeleteAllRequestDto requestDto) {
         return ResponseEntity.ok().body(cartService.deleteAllCart(requestDto).getBody());
     }
+
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteAllCart(@RequestBody CartDeleteRequestDto requestDto) {
+        return ResponseEntity.ok().body(cartService.deleteCart(requestDto).getBody());
+    }
+
 }
