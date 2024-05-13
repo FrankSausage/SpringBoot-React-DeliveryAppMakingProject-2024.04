@@ -107,40 +107,6 @@ public class CartServiceImpl implements CartService {
         return Response.toResponseEntity(CART_UPDATE_SUCCESS);
     }
 
-    //    @Override
-//    public CartDetailResponseDto detailCart(CartDetailRequestDto requestDto) {
-//        Users users = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()->new RuntimeException("User not found"));
-//        List<Cart> cartList = cartRepository.findAllByUserIdAndStatus(users.getUserId(), "일반");
-//
-//        List<CartDetailInnerMenusResponseDto> menusResponseDtos = new ArrayList<>();
-//        CartDetailResponseDto responseDto = new CartDetailResponseDto();
-//        for(Cart cart : cartList){
-//            int sequence = cart.getSequence();
-//            List<CartDetailInnerMenuOptionsResponseDto> menuOptionsResponseDtos = new ArrayList<>();
-//            MenuOption menuOption = menuOptionRepository.findById(cart.getMenuOptionId()).orElseThrow(()->new RuntimeException("MenuOption not found"));
-//            Menu menu = menuRepository.findById(cart.getMenuId()).orElseThrow(()->new RuntimeException("Menu not found"));
-//            Stores stores = storesRepository.findById(cart.getStoreId()).orElseThrow(()->new RuntimeException("Store not found"));
-//
-//            for(int i = 1; i <cart.getSequence();i++){
-//
-//            }
-//            CartDetailInnerMenuOptionsResponseDto cartDetailInnerMenuOptionsResponseDto = CartDetailInnerMenuOptionsResponseDto.builder()
-//                .menuOptionName(menuOption.getOptions())
-//                .menuOptionPrice(menuOption.getPrice())
-//                .build();
-//            menuOptionsResponseDtos.add(cartDetailInnerMenuOptionsResponseDto);
-//
-//            CartDetailInnerMenusResponseDto cartDetailInnerMenusResponseDto = CartDetailInnerMenusResponseDto.builder()
-//                .menuName(menu.getName())
-//                .menuPrice(menu.getPrice())
-//                .quantity(cart.getQuantity())
-//                .sequence(cart.getSequence())
-//                .menuPictureName(menu.getMenuPictureName())
-//                .menuOptions(menuOptionsResponseDtos)
-//                .build();
-//        }
-//        return responseDto;
-//    }
     @Override
     public CartDetailResponseDto detailCart(CartDetailRequestDto requestDto) {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
@@ -157,8 +123,6 @@ public class CartServiceImpl implements CartService {
             Cart cart = cartList.get(i);
             MenuOption menuOption = menuOptionRepository.findById(cart.getMenuOptionId())
                 .orElseThrow(() -> new RuntimeException("MenuOption not found"));
-            System.out.println("menuOption ========================== ");
-            System.out.println(menuOption);
             Menu menu = menuRepository.findById(cart.getMenuId())
                 .orElseThrow(() -> new RuntimeException("Menu not found"));
 
@@ -169,8 +133,6 @@ public class CartServiceImpl implements CartService {
                 .menuOptionName(menuOptionName)
                 .menuOptionPrice(menuOptionPrice)
                 .build();
-            System.out.println("cartDetailInnerMenuOptionsResponseDto =================== ");
-            System.out.println(cartDetailInnerMenuOptionsResponseDto);
             menuOptionsResponseDtos.add(cartDetailInnerMenuOptionsResponseDto);
 
             if (i + 1 < cartList.size() && cart.getSequence() == cartList.get(i + 1)
