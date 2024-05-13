@@ -14,8 +14,8 @@ const defaultTheme = createTheme();
 
 export default function MenuUpdate() {
   const location = useLocation();
-  const { storeId, menuId } = location.state;
   const email = localStorage.getItem('email');
+  const { storeId, menuId } = location.state;
   const { isLoading, error, menu } = useMenuUpByEmail(email, menuId);
 
   const [initialName, setInitialName] = useState('');
@@ -51,7 +51,6 @@ export default function MenuUpdate() {
 
   const navigate = useNavigate();
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -67,27 +66,36 @@ export default function MenuUpdate() {
 
     alert('메뉴 업데이트가 완료되었습니다.');
     navigate(`/StoreDetail/${storeId}`);
-
   };
 
+  const handleMenuDelete = () => {
+    const confirmDelete = window.confirm('정말로 이 메뉴를 삭제하시겠습니까?');
+    if (confirmDelete) {
+      axios.post(`/dp/store/menu/delete`, { menuId: menuId, storeId: storeId, email: email })
+        .then(response => {
+          alert('메뉴가 삭제되었습니다.');
+          navigate(`/StoreDetail/${storeId}`);
+        })
+        .catch(error => {
+          console.error('메뉴 삭제 중 에러 발생:', error);
+          alert('메뉴 삭제 중 에러가 발생했습니다.');
+        });
+    }
+  };
 
   const setFormData = async (data) => {
     try {
       data.append('menuId', menuId);
       data.append('email', email);
-      data.append('category', category);
-      data.append('type', type);
-      data.append('content', content);
-      data.append('name', name);
-      data.append('price', price);
-      data.append('menuPictureName', storePictureName); // 업데이트된 사진 파일 이름 추가
-
-      // 기타 필요한 데이터 추가
-
-      // data.append('popularity', popularity);
-      return await data;
-    }
-    catch (error) {
+      data.append('category', '');
+      data.append('type', '');
+      data.append('content', '');
+      data.append('name', '');
+      data.append('price', '');
+      data.append('menuPictureName', '');
+      data.append('menuOptions', null);
+      return data;
+    } catch (error) {
       console.error('setFormData Error!: ', error);
       return ('setFormData Error!: ', error);
     }
@@ -237,6 +245,14 @@ export default function MenuUpdate() {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}>
                   수정하기
+                </Button>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="error"
+                  onClick={() => handleMenuDelete(menuId, email, storeId)}
+                  sx={{ mt: 1, mb: 2 }}>
+                  삭제하기
                 </Button>
               </Box>
             </Box>

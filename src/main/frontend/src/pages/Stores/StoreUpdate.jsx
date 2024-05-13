@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container } from '@mui/material';
+import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container, ListItemText, FormControl, InputLabel, Select, Input, MenuItem } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { findPostcode } from '../../utils/AddressUtil';
-import { getCurrentUser, register } from '../../utils/firebase';
+import { getCurrentUser } from '../../utils/firebase';
 import { extractDataFromFormData, formatPhoneNumber, useOwnerByEmail } from '../../utils/storeInfo';
 import axios from 'axios';
 import Ownerheader from '../../components/OwnerHeader';
@@ -13,14 +13,18 @@ import Ownerheader from '../../components/OwnerHeader';
 const defaultTheme = createTheme();
 
 export default function StoreRegister() {
+  const email = localStorage.getItem('email');
+  const { storeId } = useParams();
+  const { isLoading, error, store } = useOwnerByEmail(email, storeId);
+  // const { roadAddress, extraAddress, detailAddress } = store ? store.address : { roadAddress: ' ', extraAddress: ' ', detailAddress: ' ' };
   const [roadAddress, setRoadAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
+  const [addressCode, setAddressCode] = useState('');
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [type, setType] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [addressCode, setAddressCode] = useState('');
+  const [phone, setPhone] = useState('');
   const [minDeliveryPrice, setMinDeliveryPrice] = useState('');
   const [deliveryTip, setDeliveryTip] = useState('');
   const [content, setContent] = useState('');
@@ -31,14 +35,8 @@ export default function StoreRegister() {
   const [closedDays, setClosedDays] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const { isLoading, error, user } = useOwnerByEmail(email);
 
-  // 현재 사용자의 이메일을 설정합니다.가 현재 사용자의 이메일 정보를 보냅니다로 바뀌게
-  useEffect(() => {
-    const { email } = getCurrentUser();
-    setEmail(email);
-  }, []);
+  console.log(store)
 
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
@@ -47,16 +45,37 @@ export default function StoreRegister() {
       script.async = true;
       document.body.appendChild(script);
       script.onload = () => {
-        console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
+        // console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
       };
     };
 
     loadDaumPostcodeScript();
 
     return () => {
-      // 언마운트 시 스크립트 제거 로직
     };
   }, []);
+
+  useEffect(() => {
+    if (store) {
+      setRoadAddress(store.address.roadAddress)
+      setExtraAddress(store.address.extraAddress)
+      setDetailAddress(store.address.detailAddress)
+      setCategory(store.category)
+      setClosedDays(store.closedDays)
+      setContent(store.content)
+      setDeliveryTip(store.deliveryTip)
+      setMaxDeliveryTime(store.maxDeliveryTime)
+      setMinDeliveryPrice(store.minDeliveryPrice)
+      setMinDeliveryTime(store.minDeliveryTime)
+      setName(store.name)
+      setOperationHours(store.operationHours)
+      setPhone(store.phone)
+      setDeliveryAddress(store.deliveryAddress)
+      setStorePictureName(store.storePictureName)
+      setType(store.type)
+      
+    }
+  }, [isLoading])
 
   const handleFindPostcode = () => {
     findPostcode(setRoadAddress, setExtraAddress, setAddressCode);
@@ -65,6 +84,10 @@ export default function StoreRegister() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
+
+    if (email) {
+      data.append('email', email);
+    }
 
     if (!data.get('name') || !data.get('phone')) {
       alert('필수 항목을 입력하세요.');
@@ -75,39 +98,41 @@ export default function StoreRegister() {
     const formData = await setFormData(data);
     extractDataFromFormData(formData)
       .then(resFormData => {
-        // axios.post(`/dp/store/owner/update`, resFormData)
-        console.log(resFormData);
+        axios.post(`/dp/store/owner/update`, resFormData)
+        console.log(resFormData)
       }
+      
       );
 
-    alert('입점 신청이 완료되었습니다.');
-    navigate('/OwnerMain');
+    alert('가게 수정이 완료되었습니다.');
+    navigate(`/OwnerMain`);
 
   };
 
   const handlePhoneNumberChange = (event) => {
     const formattedPhoneNumber = formatPhoneNumber(event.target.value);
-    setPhoneNumber(formattedPhoneNumber);
+    setPhone(formattedPhoneNumber);
   };
 
   const setFormData = async (data) => {
     try {
-      data.append('address', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '')
-        + ',' + (detailAddress ? detailAddress : '')));
       data.append('email', email);
-      data.append('addressCode', addressCode.substring(0, 8));
+      data.append('storeId', storeId);
+      data.append('name', name);
       data.append('category', category);
       data.append('type', type);
       data.append('minDeliveryPrice', minDeliveryPrice);
-      data.append('content', content);
-      data.append('name', name);
+      // data.append('address', ((updateRoadAddress ? updateRoadAddress : '') + ',' + (updateExtraAddress ? updateExtraAddress : '')
+      //   + ',' + (updateDetailAddress ? updateDetailAddress : '')));
+      data.append('addressCode', addressCode.substring(0, 8));
       data.append('deliveryTip', deliveryTip);
       data.append('minDeliveryTime', minDeliveryTime);
       data.append('maxDeliveryTime', maxDeliveryTime);
       data.append('operationHours', operationHours);
       data.append('minDeliveryTime', minDeliveryTime);
       data.append('closedDays', closedDays);
-      data.append('deliveryAddress', deliveryAddress);
+      // data.append('deliveryAddress', deliveryAddress);
+      data.append('content', content);
       return await data;
     }
     catch (error) {
@@ -124,11 +149,34 @@ export default function StoreRegister() {
     }
   };
 
+  const weekDays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
+  const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];
+
+  const [selectedDays, setSelectedDays] = useState([]);
+
+  const generateTimeOptions = (startHour, endHour) => {
+    const options = [];
+    for (let hour = startHour; hour <= endHour; hour++) {
+      for (let minute = 0; minute < 60; minute += 30) {
+        if (hour < endHour || (hour === endHour && minute < 30)) { // 24:00과 24:30 제외
+          const formattedHour = (hour === 24 ? '23' : hour).toString().padStart(2, '0');
+          const formattedMinute = (hour === endHour && minute === 0) ? '59' : minute.toString().padStart(2, '0'); // 24:00 대신 23:59 추가
+          options.push(`${formattedHour}:${formattedMinute}`);
+        }
+      }
+    }
+    return options;
+  };
+
+  const timeOptionsOpen = generateTimeOptions(5, 18);
+  const timeOptionsClose = generateTimeOptions(15, 24).concat(generateTimeOptions(0, 7));
+
   return (
     <ThemeProvider theme={defaultTheme}>
       {isLoading && <Typography>Loading...</Typography>}
       {error && <Typography>에러 발생!</Typography>}
-      {user &&
+      {store &&
+
         <>
           <Ownerheader />
           <Container component="main" maxWidth="xs">
@@ -159,7 +207,7 @@ export default function StoreRegister() {
                       autoComplete="given-name"
                       name="name"
                       id="name"
-                      defaultValuevalue={name}
+                      value={name}
                       label="가게 이름"
                       onChange={e => setName(e.target.value)}
                     />
@@ -172,7 +220,7 @@ export default function StoreRegister() {
                       label="전화번호"
                       name="phone"
                       autoComplete="phone"
-                      value={phoneNumber}
+                      value={phone}
                       onChange={handlePhoneNumberChange}
                       inputProps={{
                         maxLength: 12,
@@ -188,36 +236,28 @@ export default function StoreRegister() {
                       <Grid item xs={12}>
                         <FormControlLabel
                           control={<Checkbox checked={category === '한식'} onChange={() => setCategory('한식')} color="primary" />}
-                          label="한식"
-                        />
+                          label="한식" />
                         <FormControlLabel
                           control={<Checkbox checked={category === '중식'} onChange={() => setCategory('중식')} color="primary" />}
-                          label="중식"
-                        />
+                          label="중식" />
                         <FormControlLabel
                           control={<Checkbox checked={category === '일식'} onChange={() => setCategory('일식')} color="primary" />}
-                          label="일식"
-                        />
+                          label="일식" />
                         <FormControlLabel
                           control={<Checkbox checked={category === '양식'} onChange={() => setCategory('양식')} color="primary" />}
-                          label="양식"
-                        />
+                          label="양식" />
                         <FormControlLabel
                           control={<Checkbox checked={category === '패스트'} onChange={() => setCategory('패스트')} color="primary" />}
-                          label="패스트"
-                        />
+                          label="패스트" />
                         <FormControlLabel
                           control={<Checkbox checked={category === '치킨'} onChange={() => setCategory('치킨')} color="primary" />}
-                          label="치킨"
-                        />
+                          label="치킨" />
                         <FormControlLabel
                           control={<Checkbox checked={category === '분식'} onChange={() => setCategory('분식')} color="primary" />}
-                          label="분식"
-                        />
+                          label="분식" />
                         <FormControlLabel
                           control={<Checkbox checked={category === '디저트'} onChange={() => setCategory('디저트')} color="primary" />}
-                          label="디저트"
-                        />
+                          label="디저트" />
                       </Grid>
                     </Grid>
                   </Grid>
@@ -227,32 +267,16 @@ export default function StoreRegister() {
                       fullWidth
                       id="roadAddress"
                       label="도로명 주소"
-                      value={roadAddress}
-                      InputProps={{
-                        readOnly: true,
-                      }}
-                    />
+                      value={store.address.split(',')[0]} />
                   </Grid>
-                  <Button
-                    type="button"
-                    onClick={handleFindPostcode}
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 1, mb: 2, ml: 2 }}
-                  >
-                    주소 찾기
-                  </Button>
+                  <Button type="button" onClick={handleFindPostcode} fullWidth variant="contained" sx={{ mt: 1, mb: 2, ml: 2 }} >주소 찾기 </Button>
                   <Grid item xs={12}>
                     <TextField
                       required
                       fullWidth
                       id="extraAddress"
                       label="참고항목"
-                      value={extraAddress}
-                      InputProps={{
-                        readOnly: true,
-                      }}
-                    />
+                      value={store.address.split(',')[1]} />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
@@ -262,6 +286,7 @@ export default function StoreRegister() {
                       label="상세주소"
                       name="detailAddress"
                       autoComplete="detailAddress"
+                      value={store.address.split(',')[2]}
                       onChange={e => setDetailAddress(e.target.value)}
                     />
                   </Grid>
@@ -271,12 +296,10 @@ export default function StoreRegister() {
                       <Grid item xs={12}>
                         <FormControlLabel
                           control={<Checkbox checked={type === 0} onChange={() => setType(0)} color="primary" />}
-                          label="배달"
-                        />
+                          label="배달" />
                         <FormControlLabel
                           control={<Checkbox checked={type === 1} onChange={() => setType(1)} color="primary" />}
-                          label="배달+포장"
-                        />
+                          label="배달+포장" />
                       </Grid>
                     </Grid>
                   </Grid>
@@ -287,6 +310,7 @@ export default function StoreRegister() {
                       required
                       fullWidth
                       id="minDeliveryPrice"
+                      value={minDeliveryPrice}
                       label="최소 주문금액"
                       onChange={e => setMinDeliveryPrice(e.target.value)}
                       autoFocus
@@ -341,16 +365,31 @@ export default function StoreRegister() {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      autoComplete="given-name"
-                      name="closedDays"
-                      required
-                      fullWidth
-                      id="closedDays"
-                      value={closedDays}
-                      label="휴무일"
-                      onChange={e => setClosedDays(e.target.value)}
-                    />
+                    <FormControl fullWidth required>
+                      <InputLabel id="closedDays-label">휴무일</InputLabel>
+                      <Select
+                        labelId="closedDays-label"
+                        id="closedDays"
+                        multiple
+                        value={selectedDays}
+                        onChange={e => setSelectedDays(e.target.value)}
+                        input={<Input />}
+                        renderValue={(selected) => selected.join(', ')}
+                      >
+                        {weekDays.map(day => (
+                          <MenuItem key={day} value={day}>
+                            <Checkbox checked={selectedDays.indexOf(day) > -1} />
+                            <ListItemText primary={day} />
+                          </MenuItem>
+                        ))}
+                        {holidays.map(holiday => (
+                          <MenuItem key={holiday} value={holiday}>
+                            <Checkbox checked={selectedDays.indexOf(holiday) > -1} />
+                            <ListItemText primary={holiday} />
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
@@ -368,6 +407,7 @@ export default function StoreRegister() {
                     <TextField
                       autoComplete="given-name"
                       name="content"
+                      value={content}
                       fullWidth
                       id="content"
                       label="가게 소개글"
@@ -415,19 +455,10 @@ export default function StoreRegister() {
                   </Grid>
 
                   <Grid item xs={12}>
-                    <FormControlLabel
-                      control={<Checkbox value="allowExtraEmails" color="primary" />}
-                      label="개인정보 수집 및 이용에 동의합니다"
-                    />
+                    <FormControlLabel control={<Checkbox value="allowExtraEmails" color="primary" />} label="개인정보 수집 및 이용에 동의합니다" />
                   </Grid>
                 </Grid>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}>
-                  수정하기
-                </Button>
+                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>수정하기</Button>
               </Box>
             </Box>
             <Footer sx={{ mt: 5 }} />

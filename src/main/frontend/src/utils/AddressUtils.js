@@ -1,4 +1,4 @@
-export const findPostcode = (setRoadAddress, setExtraAddress, setAddressCode) => {
+export const findPostcode = (setRoadAddress, setExtraAddress) => {
 
   if (window.daum && window.daum.Postcode) {
     new window.daum.Postcode({
@@ -15,7 +15,6 @@ export const findPostcode = (setRoadAddress, setExtraAddress, setAddressCode) =>
           extraRoadAddr = ' (' + extraRoadAddr + ')';
         }
         setExtraAddress(extraRoadAddr);
-        setAddressCode(data.bcode);
       }
     }).open();
   } else {
@@ -23,7 +22,7 @@ export const findPostcode = (setRoadAddress, setExtraAddress, setAddressCode) =>
   }
 };
 
-export const findDeliverPostCode = (setJibunAddress, setAddressCode, setExtraAddress) => {
+export const findDeliverPostCode = (setJibunAddress, setExtraAddress, setAddressCode) => {
 
   if (window.daum && window.daum.Postcode) {
     new window.daum.Postcode({
@@ -32,15 +31,15 @@ export const findDeliverPostCode = (setJibunAddress, setAddressCode, setExtraAdd
         if (data.bname !== '' && /[동|로|가|읍|면|리]$/g.test(data.bname)) {
           jibunRoadAddr += data.bname;
         }
-        if (data.buildingName !== '' && data.apartment === 'Y') {
-          jibunRoadAddr += (jibunRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-        }
+        // if (data.buildingName !== '' && data.apartment === 'Y') {
+        //   jibunRoadAddr += (jibunRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+        // }
         if (jibunRoadAddr !== '') {
           jibunRoadAddr = ' (' + jibunRoadAddr + ')';
         }
         setJibunAddress(jibunRoadAddr);
+        setExtraAddress(data.bname); 
         setAddressCode(data.bcode);
-        setExtraAddress(data.address); 
       }
     }).open();
   } else {

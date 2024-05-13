@@ -4,14 +4,13 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Link, } from 'react-router-dom';
 import OwnerHeader from '../../../components/OwnerHeader';
 import { useStore } from '../../../utils/storeInfo';
-import { getAuth } from 'firebase/auth';
 
 export default function OwnerMain() {
   const email = localStorage.getItem('email');
   const { getStoreList: { isLoading, error, data: storeData } } = useStore(email)
   
   return (
-    <Box sx={{margin: -1}}>
+    <Box sx={{ margin: -1 }}>
       <OwnerHeader />
       <Grid container justifyContent="center" alignItems="center" mt={2}>
         <Grid item xs={6} md={4}>
@@ -48,23 +47,26 @@ export default function OwnerMain() {
                       </ul>
                     </div>
                   </Link>
+                  <Link to={`/StoreUpdate/${data.storeId}`} style={{ textDecoration: 'none', color: 'black', position: 'absolute', bottom: '10px', right: '10px' }}>
+                    <Button variant="outlined" sx={{mb: 6}}>가게 수정하기</Button>
+                  </Link>
                 </Box>
               </Grid>
             </Grid>
             <Grid item xs />
           </Grid>
-                  ))
-          )}
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem' }}>
-                  <Link to='/StoreRegister' style={{ textDecoration: 'none', color: 'white' }} >가게 추가하기</Link>
+        ))
+      )}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem' }}>
+          <Link to='/StoreRegister' style={{ textDecoration: 'none', color: 'white' }} >가게 추가하기</Link>
 
-                </Button>
-              </div>
-        </Box>
+        </Button>
+      </div>
+    </Box>
   );
 }
 {/* <StoreDetail storeList={data} /> */ }

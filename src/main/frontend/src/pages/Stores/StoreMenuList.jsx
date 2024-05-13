@@ -9,7 +9,7 @@ import MenuOptionRegister from '../Menus/MenuOptionRegister';
 
 const defaultTheme = createTheme();
 
-export default function StoreMenuList() {
+export default function StoreMenuList() {   
   const email = localStorage.getItem('email')
   const role = localStorage.getItem('role');
   const { storeId } = useParams();
