@@ -61,7 +61,7 @@ export default function StoreInfo() {
                     overflow: 'hidden', 
                   }}
                 >
-                  <div style={{ position: 'absolute', top: '50%', left: '15%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
+                  <div style={{ position: 'absolute', top: '50%', left: '25%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
                     <ul >
                       <li style={{ listStyleType: 'none' }}>가게 이름: {StoreDetailOwner.name}</li>
                       <li style={{ listStyleType: 'none' }}>주소: {StoreDetailOwner.address}</li>

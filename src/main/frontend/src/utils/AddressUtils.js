@@ -1,4 +1,4 @@
-export const findPostcode = (setRoadAddress, setExtraAddress, setAddressCode) => {
+export const findPostcode = (setRoadAddress, setExtraAddress) => {
 
   if (window.daum && window.daum.Postcode) {
     new window.daum.Postcode({
@@ -15,7 +15,6 @@ export const findPostcode = (setRoadAddress, setExtraAddress, setAddressCode) =>
           extraRoadAddr = ' (' + extraRoadAddr + ')';
         }
         setExtraAddress(extraRoadAddr);
-        setAddressCode(data.bcode);
       }
     }).open();
   } else {
@@ -39,8 +38,8 @@ export const findDeliverPostCode = (setJibunAddress, setAddressCode, setExtraAdd
           jibunRoadAddr = ' (' + jibunRoadAddr + ')';
         }
         setJibunAddress(jibunRoadAddr);
-        setAddressCode(data.bcode);
         setExtraAddress(data.address); 
+        setAddressCode(data.bcode);
       }
     }).open();
   } else {

@@ -21,19 +21,19 @@ export default function StoreRegister() {
   const [updateExtraAddress, setUpdateExtraAddress] = useState(extraAddress ? extraAddress : '');
   const [updateDetailAddress, setUpdateDetailAddress] = useState(detailAddress ? detailAddress : '');
   const [addressCode, setAddressCode] = useState('');
-  const [name, setName] = useState('');
-  const [category, setCategory] = useState('');
-  const [type, setType] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [minDeliveryPrice, setMinDeliveryPrice] = useState('');
-  const [deliveryTip, setDeliveryTip] = useState('');
-  const [content, setContent] = useState('');
-  const [storePictureName, setStorePictureName] = useState('');
-  const [minDeliveryTime, setMinDeliveryTime] = useState('');
-  const [maxDeliveryTime, setMaxDeliveryTime] = useState('');
-  const [operationHours, setOperationHours] = useState('');
-  const [closedDays, setClosedDays] = useState('');
-  const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [name, setName] = useState(store ? store.name : '');
+  const [category, setCategory] = useState(store ? store.category : '');
+  const [type, setType] = useState(store ? store.type : '');
+  const [phone, setPhone] = useState(store ? store.phone : '');
+  const [minDeliveryPrice, setMinDeliveryPrice] = useState(store ? store.minDeliveryPrice : '');
+  const [deliveryTip, setDeliveryTip] = useState(store ? store.deliveryTip : '');
+  const [content, setContent] = useState(store ? store.content :'');
+  const [storePictureName, setStorePictureName] = useState(store ? store.storePictureName : '');
+  const [minDeliveryTime, setMinDeliveryTime] = useState(store ? store.minDeliveryTime : '');
+  const [maxDeliveryTime, setMaxDeliveryTime] = useState(store ? store.maxDeliveryTime : '');
+  const [operationHours, setOperationHours] = useState(store ? store.operationHours : '');
+  const [closedDays, setClosedDays] = useState(store ? store.closedDays : '');
+  const [deliveryAddress, setDeliveryAddress] = useState(store ? store.deliveryAddress : '');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -75,14 +75,14 @@ export default function StoreRegister() {
       }
       );
 
-    alert('입점 신청이 완료되었습니다.');
+    alert('가게 수정이 완료되었습니다.');
     navigate('/OwnerMain');
 
   };
 
   const handlePhoneNumberChange = (event) => {
     const formattedPhoneNumber = formatPhoneNumber(event.target.value);
-    setPhoneNumber(formattedPhoneNumber);
+    setPhone(formattedPhoneNumber);
   };
 
   const setFormData = async (data) => {
@@ -155,7 +155,7 @@ export default function StoreRegister() {
                       autoComplete="given-name"
                       name="name"
                       id="name"
-                      value={store.name}
+                      value={name}
                       label="가게 이름"
                       onChange={e => setName(e.target.value)}
                     />
@@ -168,7 +168,7 @@ export default function StoreRegister() {
                       label="전화번호"
                       name="phone"
                       autoComplete="phone"
-                      value={store.phone}
+                      value={phone}
                       onChange={handlePhoneNumberChange}
                       inputProps={{
                         maxLength: 12,
@@ -258,7 +258,7 @@ export default function StoreRegister() {
                       required
                       fullWidth
                       id="minDeliveryPrice"
-                      value={store.minDeliveryPrice}
+                      value={minDeliveryPrice}
                       label="최소 주문금액"
                       onChange={e => setMinDeliveryPrice(e.target.value)}
                       autoFocus
@@ -272,7 +272,7 @@ export default function StoreRegister() {
                       fullWidth
                       id="deliveryTip"
                       label="배달팁"
-                      value={store.deliveryTip}
+                      value={deliveryTip}
                       onChange={e => setDeliveryTip(e.target.value)}
                     />
                   </Grid>
@@ -283,7 +283,7 @@ export default function StoreRegister() {
                       required
                       fullWidth
                       id="minDeliveryTime"
-                      value={store.minDeliveryTime}
+                      value={minDeliveryTime}
                       label="최소 배달 예상 시간"
                       onChange={e => setMinDeliveryTime(e.target.value)}
                     />
@@ -295,7 +295,7 @@ export default function StoreRegister() {
                       required
                       fullWidth
                       id="maxDeliveryTime"
-                      value={store.maxDeliveryTime}
+                      value={maxDeliveryTime}
                       label="최대 배달 예상 시간"
                       onChange={e => setMaxDeliveryTime(e.target.value)}
                     />
@@ -307,7 +307,7 @@ export default function StoreRegister() {
                       required
                       fullWidth
                       id="operationHours"
-                      value={store.operationHours}
+                      value={operationHours}
                       label="운영 시간"
                       onChange={e => setOperationHours(e.target.value)}
                     />
@@ -319,7 +319,7 @@ export default function StoreRegister() {
                       required
                       fullWidth
                       id="closedDays"
-                      value={store.closedDays}
+                      value={closedDays}
                       label="휴무일"
                       onChange={e => setClosedDays(e.target.value)}
                     />
@@ -331,7 +331,7 @@ export default function StoreRegister() {
                       required
                       fullWidth
                       id="deliveryAddress"
-                      value={store.deliveryAddress}
+                      value={deliveryAddress}
                       label="배달 지역"
                       onChange={e => setDeliveryAddress(e.target.value)}
                     />
@@ -340,7 +340,7 @@ export default function StoreRegister() {
                     <TextField
                       autoComplete="given-name"
                       name="content"
-                      value={store.content}
+                      value={content}
                       fullWidth
                       id="content"
                       label="가게 소개글"
@@ -366,7 +366,7 @@ export default function StoreRegister() {
                     <TextField
                       autoComplete="given-name"
                       name="storePictureName"
-                      value={store.storePictureName}
+                      value={storePictureName}
                       fullWidth
                       id="storePictureName"
                       label="가게 사진"
