@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container } from '@mui/material';
+import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container, ListItemText, FormControl, InputLabel, Select, Input, MenuItem } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
@@ -16,25 +16,27 @@ export default function StoreRegister() {
   const [email] = useState(localStorage.getItem('email') || '');
   const { storeId } = useParams();
   const { isLoading, error, store } = useOwnerByEmail(email, storeId);
-  const { roadAddress, extraAddress, detailAddress } = store ? store.address : { roadAddress: '', extraAddress: '', detailAddress: '' };
-  const [updateRoadAddress, setUpdateRoadAddress] = useState(roadAddress ? roadAddress : '');
-  const [updateExtraAddress, setUpdateExtraAddress] = useState(extraAddress ? extraAddress : '');
-  const [updateDetailAddress, setUpdateDetailAddress] = useState(detailAddress ? detailAddress : '');
+  // const { roadAddress, extraAddress, detailAddress } = store ? store.address : { roadAddress: ' ', extraAddress: ' ', detailAddress: ' ' };
+  const [roadAddress, setRoadAddress] = useState('');
+  const [extraAddress, setExtraAddress] = useState('');
+  const [detailAddress, setDetailAddress] = useState('');
   const [addressCode, setAddressCode] = useState('');
-  const [name, setName] = useState(store ? store.name : '');
-  const [category, setCategory] = useState(store ? store.category : '');
-  const [type, setType] = useState(store ? store.type : '');
-  const [phone, setPhone] = useState(store ? store.phone : '');
-  const [minDeliveryPrice, setMinDeliveryPrice] = useState(store ? store.minDeliveryPrice : '');
-  const [deliveryTip, setDeliveryTip] = useState(store ? store.deliveryTip : '');
-  const [content, setContent] = useState(store ? store.content :'');
-  const [storePictureName, setStorePictureName] = useState(store ? store.storePictureName : '');
-  const [minDeliveryTime, setMinDeliveryTime] = useState(store ? store.minDeliveryTime : '');
-  const [maxDeliveryTime, setMaxDeliveryTime] = useState(store ? store.maxDeliveryTime : '');
-  const [operationHours, setOperationHours] = useState(store ? store.operationHours : '');
-  const [closedDays, setClosedDays] = useState(store ? store.closedDays : '');
-  const [deliveryAddress, setDeliveryAddress] = useState(store ? store.deliveryAddress : '');
+  const [name, setName] = useState('');
+  const [category, setCategory] = useState('');
+  const [type, setType] = useState('');
+  const [phone, setPhone] = useState('');
+  const [minDeliveryPrice, setMinDeliveryPrice] = useState('');
+  const [deliveryTip, setDeliveryTip] = useState('');
+  const [content, setContent] = useState('');
+  const [storePictureName, setStorePictureName] = useState('');
+  const [minDeliveryTime, setMinDeliveryTime] = useState('');
+  const [maxDeliveryTime, setMaxDeliveryTime] = useState('');
+  const [operationHours, setOperationHours] = useState('');
+  const [closedDays, setClosedDays] = useState('');
+  const [deliveryAddress, setDeliveryAddress] = useState('');
   const navigate = useNavigate();
+
+  console.log(store)
 
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
@@ -43,7 +45,7 @@ export default function StoreRegister() {
       script.async = true;
       document.body.appendChild(script);
       script.onload = () => {
-        console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
+        // console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
       };
     };
 
@@ -53,13 +55,39 @@ export default function StoreRegister() {
     };
   }, []);
 
+  useEffect(() => {
+    if (store) {
+      setRoadAddress(store.address.roadAddress)
+      setExtraAddress(store.address.extraAddress)
+      setDetailAddress(store.address.detailAddress)
+      setCategory(store.category)
+      setClosedDays(store.closedDays)
+      setContent(store.content)
+      setDeliveryTip(store.deliveryTip)
+      setMaxDeliveryTime(store.maxDeliveryTime)
+      setMinDeliveryPrice(store.minDeliveryPrice)
+      setMinDeliveryTime(store.minDeliveryTime)
+      setName(store.name)
+      setOperationHours(store.operationHours)
+      setPhone(store.phone)
+      setDeliveryAddress(store.deliveryAddress)
+      setStorePictureName(store.storePictureName)
+      setType(store.type)
+      
+    }
+  }, [isLoading])
+
   const handleFindPostcode = () => {
-    findPostcode(setUpdateRoadAddress, setUpdateExtraAddress, setAddressCode);
+    findPostcode(setRoadAddress, setExtraAddress, setAddressCode);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
+
+    if (email) {
+      data.append('email', email);
+    }
 
     if (!data.get('name') || !data.get('phone')) {
       alert('필수 항목을 입력하세요.');
@@ -71,12 +99,19 @@ export default function StoreRegister() {
     extractDataFromFormData(formData)
       .then(resFormData => {
         axios.post(`/dp/store/owner/update`, resFormData)
-        console.log(resFormData);
+        console.log(resFormData)
+        .then(response => {
+          console.log("백엔드 응답:", response);
+        })
+        .catch(error => {
+          console.error("백엔드 요청 오류:", error);
+        });
       }
+      
       );
 
     alert('가게 수정이 완료되었습니다.');
-    navigate('/OwnerMain');
+    navigate(`/OwnerMain`);
 
   };
 
@@ -87,22 +122,22 @@ export default function StoreRegister() {
 
   const setFormData = async (data) => {
     try {
-      data.append('address', ((updateRoadAddress ? updateRoadAddress : '') + ',' + (updateExtraAddress ? updateExtraAddress : '')
-        + ',' + (updateDetailAddress ? updateDetailAddress : '')));
       data.append('email', email);
-      data.append('addressCode', addressCode.substring(0, 8));
+      data.append('name', name);
       data.append('category', category);
       data.append('type', type);
       data.append('minDeliveryPrice', minDeliveryPrice);
-      data.append('content', content);
-      data.append('name', name);
+      // data.append('address', ((updateRoadAddress ? updateRoadAddress : '') + ',' + (updateExtraAddress ? updateExtraAddress : '')
+      //   + ',' + (updateDetailAddress ? updateDetailAddress : '')));
+      data.append('addressCode', addressCode.substring(0, 8));
       data.append('deliveryTip', deliveryTip);
       data.append('minDeliveryTime', minDeliveryTime);
       data.append('maxDeliveryTime', maxDeliveryTime);
       data.append('operationHours', operationHours);
       data.append('minDeliveryTime', minDeliveryTime);
       data.append('closedDays', closedDays);
-      data.append('deliveryAddress', deliveryAddress);
+      // data.append('deliveryAddress', deliveryAddress);
+      data.append('content', content);
       return await data;
     }
     catch (error) {
@@ -118,6 +153,28 @@ export default function StoreRegister() {
       setStorePictureName(fileNames);
     }
   };
+
+  const weekDays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
+  const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];
+
+  const [selectedDays, setSelectedDays] = useState([]);
+
+  const generateTimeOptions = (startHour, endHour) => {
+    const options = [];
+    for (let hour = startHour; hour <= endHour; hour++) {
+      for (let minute = 0; minute < 60; minute += 30) {
+        if (hour < endHour || (hour === endHour && minute < 30)) { // 24:00과 24:30 제외
+          const formattedHour = (hour === 24 ? '23' : hour).toString().padStart(2, '0');
+          const formattedMinute = (hour === endHour && minute === 0) ? '59' : minute.toString().padStart(2, '0'); // 24:00 대신 23:59 추가
+          options.push(`${formattedHour}:${formattedMinute}`);
+        }
+      }
+    }
+    return options;
+  };
+
+  const timeOptionsOpen = generateTimeOptions(5, 18);
+  const timeOptionsClose = generateTimeOptions(15, 24).concat(generateTimeOptions(0, 7));
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -235,7 +292,7 @@ export default function StoreRegister() {
                       name="detailAddress"
                       autoComplete="detailAddress"
                       value={store.address.split(',')[2]}
-                      onChange={e => setUpdateDetailAddress(e.target.value)}
+                      onChange={e => setDetailAddress(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -313,16 +370,31 @@ export default function StoreRegister() {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      autoComplete="given-name"
-                      name="closedDays"
-                      required
-                      fullWidth
-                      id="closedDays"
-                      value={closedDays}
-                      label="휴무일"
-                      onChange={e => setClosedDays(e.target.value)}
-                    />
+                    <FormControl fullWidth required>
+                      <InputLabel id="closedDays-label">휴무일</InputLabel>
+                      <Select
+                        labelId="closedDays-label"
+                        id="closedDays"
+                        multiple
+                        value={selectedDays}
+                        onChange={e => setSelectedDays(e.target.value)}
+                        input={<Input />}
+                        renderValue={(selected) => selected.join(', ')}
+                      >
+                        {weekDays.map(day => (
+                          <MenuItem key={day} value={day}>
+                            <Checkbox checked={selectedDays.indexOf(day) > -1} />
+                            <ListItemText primary={day} />
+                          </MenuItem>
+                        ))}
+                        {holidays.map(holiday => (
+                          <MenuItem key={holiday} value={holiday}>
+                            <Checkbox checked={selectedDays.indexOf(holiday) > -1} />
+                            <ListItemText primary={holiday} />
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
                   </Grid>
                   <Grid item xs={12}>
                     <TextField

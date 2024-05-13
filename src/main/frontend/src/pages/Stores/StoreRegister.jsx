@@ -4,7 +4,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
-import { findPostcode } from '../../utils/AddressUtils';
+import { findPostcode, findDeliverPostCode } from '../../utils/AddressUtils';
 import { getCurrentUser } from '../../utils/firebase';
 import { extractDataFromFormData, formatPhoneNumber } from '../../utils/storeInfo';
 import axios from 'axios';
@@ -16,7 +16,6 @@ export default function StoreRegister() {
   const { email } = getCurrentUser();
   const [roadAddress, setRoadAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
-  const [extraAddress1, setExtraAddress1] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
@@ -35,8 +34,7 @@ export default function StoreRegister() {
   const [openHours, setOpenHours] = useState('');
   const [closeHours, setCloseHours] = useState('');
   const [jibun, setJibunAddress] = useState('')
-  
-  console.log(jibun)
+
   const navigate = useNavigate();
   // const [userInfo, setUserInfo] = useState({email: '', password: '', })
   // const [storeInfo, setStoreInfo] = useState({deliveryAddress: '', closedDays: '',}) // 나중에 이런식으로 이팩토리 할것 이유 업데이트 할때 정보 받기 편해지기 위해서
@@ -62,8 +60,8 @@ export default function StoreRegister() {
     findPostcode(setRoadAddress, setExtraAddress);
   };
 
-  const findDeliverPostCode = () => {
-    findPostcode(setJibunAddress, setDeliveryAddress, setAddressCode);
+  const handleFindDeliverPostCode = () => {
+    findDeliverPostCode(setJibunAddress, setDeliveryAddress, setAddressCode);
   };
 
   const handleSubmit = async (e) => {
@@ -97,7 +95,7 @@ export default function StoreRegister() {
   const setFormData = async (data) => {
     try {
       data.append('address', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '')
-        + ',' + (detailAddress ? detailAddress : '')));
+        + ',' + (detailAddress ? detailAddress : '') + " " + (deliveryAddress ? deliveryAddress : '') + " " ));
       data.append('deliveryAddress', deliveryAddress);
       data.append('addressCode', addressCode.substring(0, 8));
       data.append('email', email);
@@ -127,25 +125,21 @@ export default function StoreRegister() {
   const [selectedDays, setSelectedDays] = useState([]);
 
   const generateTimeOptions = (startHour, endHour) => {
-  const options = [];
-  for (let hour = startHour; hour <= endHour; hour++) {
-    for (let minute = 0; minute < 60; minute += 30) {
-      if (hour < endHour || (hour === endHour && minute < 30)) { // 24:00과 24:30 제외
-        const formattedHour = (hour === 24 ? '23' : hour).toString().padStart(2, '0');
-        const formattedMinute = (hour === endHour && minute === 0) ? '59' : minute.toString().padStart(2, '0'); // 24:00 대신 23:59 추가
-        options.push(`${formattedHour}:${formattedMinute}`);
+    const options = [];
+    for (let hour = startHour; hour <= endHour; hour++) {
+      for (let minute = 0; minute < 60; minute += 30) {
+        if (hour < endHour || (hour === endHour && minute < 30)) { // 24:00과 24:30 제외
+          const formattedHour = (hour === 24 ? '23' : hour).toString().padStart(2, '0');
+          const formattedMinute = (hour === endHour && minute === 0) ? '59' : minute.toString().padStart(2, '0'); // 24:00 대신 23:59 추가
+          options.push(`${formattedHour}:${formattedMinute}`);
+        }
       }
     }
-  }
-  return options;
-};
-
+    return options;
+  };
 
   const timeOptionsOpen = generateTimeOptions(5, 18);
   const timeOptionsClose = generateTimeOptions(15, 24).concat(generateTimeOptions(0, 7));
-
-
-
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -430,9 +424,9 @@ export default function StoreRegister() {
                   onChange={e => setJibunAddress(e.target.value)}
                 />
               </Grid>
-                <Button
+              <Button
                 type="button"
-                onClick={findDeliverPostCode}
+                onClick={handleFindDeliverPostCode}
                 fullWidth
                 variant="contained"
                 sx={{ mt: 1, mb: 2, ml: 2 }}
@@ -461,7 +455,7 @@ export default function StoreRegister() {
                 <input
                   accept=".png, .jpeg, .jpg"
                   id="upload-photo"
-                  type="file"a
+                  type="file" a
                   style={{ display: 'none' }}
                   onChange={handleFileUpload} multiple
                 />
