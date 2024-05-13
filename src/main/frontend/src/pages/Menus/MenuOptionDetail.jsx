@@ -1,19 +1,27 @@
-import { Box, Button, Modal, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Box, Button, Divider, Grid, Input, Modal, Stack, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Form, Link, useLocation } from "react-router-dom";
 import { useMenu } from "./useMenu";
+import MenuOptionUpdateForm from "./MenuOptionUpdateForm";
 
 export default function MenuOptionDetail({options, email}) {
 		const [ open, setOpen ] = useState(false);
-		const [ optionUpdataData, setOptionUpdateData ] = useState({options: '', price: ''})
+		const { deleteMenuOption } = useMenu();
 		
-		const handleOpen = () => setOpen(true);
-		const handleClose = () => setOpen(false);
-    // const { getMenuDetailByMenuId: {isLoading, data: menuData } } = useMenu(menuId, email);
-    const handleUpdate = () => {
-			
+		const handleOpen = () => {
+			if(options.length===0) {
+				alert('메뉴에 수정 할 수 있는 옵션이 없습니다, 먼저 옵션을 추가 해 주세요.')
+				return;
+			}
+			setOpen(true);
 		}
+		const handleClose = () => setOpen(false);
 
+    const handleDelete = (menuOptionId) => {
+			deleteMenuOption.mutate(menuOptionId, email, {
+				onSuccess: handleClose
+			})
+		}
 
     return (
 			<Box>
@@ -26,12 +34,23 @@ export default function MenuOptionDetail({options, email}) {
 				>
 					<Box sx={style}>
 						{options.map((data) => (
-							<Box key={data.menuOptionId}>
-									<Stack direction={'row'}>
-										<Typography>옵션명: {data.options}</Typography>
-										<Typography>가격: {data.price}</Typography>
-										<Button >수정</Button>
-									</Stack>
+							<Box key={data.menuOptionId} component={Form} sx={{border: 1, borderRadius: 2, mb: 1}}>
+								<Stack direction={'row'} sx={{justifyContent:'space-between', alignItems:'center', px:1}}>
+									<Grid Container>
+										<Grid item sx={{py:2}}>
+											<Typography>{data.options} </Typography>
+											<Typography>{data.price} 원 </Typography>
+										</Grid>
+									</Grid>
+									<Grid Container>
+										<Grid item>
+											<Stack sx={{alignContent:"center", my: 1}}>
+												<MenuOptionUpdateForm menuOptionId={data.menuOptionId} email={email}/>
+												<Button sx={{border: 1}} onClick={() => handleDelete(data.menuOptionId)} color="error">삭제</Button>
+											</Stack>
+										</Grid>
+									</Grid>
+								</Stack>
 							</Box>
 						))}
 					</Box>

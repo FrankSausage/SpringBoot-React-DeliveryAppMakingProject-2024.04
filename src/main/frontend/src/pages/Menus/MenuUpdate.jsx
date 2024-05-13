@@ -15,7 +15,7 @@ const defaultTheme = createTheme();
 export default function MenuUpdate() {
   const location = useLocation();
   const { storeId, menuId } = location.state;
-  const { email } = localStorage.getItem('email');
+  const email = localStorage.getItem('email');
   const { isLoading, error, menu } = useMenuUpByEmail(email, menuId);
 
   const [initialName, setInitialName] = useState('');
