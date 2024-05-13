@@ -4,7 +4,6 @@ import { getAuth, createUserWithEmailAndPassword, GithubAuthProvider,
   onAuthStateChanged, 
   updatePassword} from "firebase/auth";
 import { extractDataFromFormData } from '../utils/userInfo';
-import { Navigate, useNavigate, useOutletContext } from "react-router";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -69,6 +68,7 @@ export function logout() {
   signOut(auth)
   .then(() => {
     localStorage.clear();
+    sessionStorage.clear();
     window.location.reload();
   })
   .catch(console.error);

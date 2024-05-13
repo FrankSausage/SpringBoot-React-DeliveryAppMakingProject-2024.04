@@ -39,6 +39,7 @@ export default function SignIn() {
               .then(res => {
                 console.log(res)
                 localStorage.setItem('role', res.data.role);
+                localStorage.setItem('email', userInfo.email);
                 if(res.data.role !== '점주') {
                   setOutletAddress(res.data.currentAddress);
                   localStorage.setItem("address", res.data.currentAddress); // 세션 스토리지 리팩터
@@ -46,7 +47,7 @@ export default function SignIn() {
                 }
               })
               .then(()=>{
-                navigate('/')
+                navigate('/', {state: userInfo.email})
               })
           }
         })

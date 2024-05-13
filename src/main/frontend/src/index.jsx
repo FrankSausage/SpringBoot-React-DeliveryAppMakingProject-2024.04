@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import reportWebVitals from './reportWebVitals';
 import ProtectedRoute from './pages/ProtectedRoute';
 import Home from './pages/Home';
 import SignIn from './pages/Users/SignIn';
@@ -24,6 +25,10 @@ import ReviewDetail from './pages/Review/ReviewDetail';
 import ReviewReply from './pages/Review/ReviewReply';
 import ReviewRating from './pages/Review/ReviewRating';
 
+import MenuDetail from './pages/Menus/MenuDetail';
+import Cart from './pages/Cart/View/Cart';
+import Order from './pages/Order/View/Order';
+import StoreSearch from './pages/Stores/StoreSearch';
 
 const router = createBrowserRouter([
   {
@@ -37,12 +42,15 @@ const router = createBrowserRouter([
       { path: 'Store/:category', element: <Store />},
       { path: 'Update', element: <ProtectedRoute><Update /></ProtectedRoute>},
       { path: 'Address', element: <Address />},
-      { path: 'Store', element: <Store />},
+      { path: 'Store', element: <ProtectedRoute><Store /></ProtectedRoute>},
+      { path: 'Store/:category', element: <ProtectedRoute><Store /></ProtectedRoute>},
+      { path: 'StoreSearch', element: <ProtectedRoute><StoreSearch /></ProtectedRoute>},
       { path: 'StoreRegister', element: <StoreRegister />},
       { path: 'StoreUpdate', element: <StoreUpdate />},
       { path: 'StoreDetail/:storeId', element: <StoreDetail />},
       { path: 'MenuRegister/:storeId', element: <MenuRegister />},
       { path: 'MenuUpdate', element: <MenuUpdate />},
+      { path: 'MenuDetail', element: <MenuDetail />},
       { path: 'MenuUpdate/:menuId', element: <MenuUpdate />},
       { path: 'UserMain', element: <UserMain />,},
       { path: 'OwnerMain', element: <OwnerMain />},
@@ -51,7 +59,9 @@ const router = createBrowserRouter([
       { path: 'ReviewList', element: <ReviewList />},
       { path: 'ReviewDetail', element: <ReviewDetail />},
       { path: 'ReviewReply', element: <ReviewReply />},
-      { path: 'ReviewRating', element: <ReviewRating />}
+      { path: 'ReviewRating', element: <ReviewRating />},
+      { path: 'Cart', element: <Cart />},
+      { path: 'Order', element: <Order />},
     ]
   }
 ]);

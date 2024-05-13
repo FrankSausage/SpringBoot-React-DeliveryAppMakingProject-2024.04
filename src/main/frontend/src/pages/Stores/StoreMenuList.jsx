@@ -9,14 +9,15 @@ import axios from 'axios';
 const defaultTheme = createTheme();
 
 export default function StoreMenuList() {
-  const { email, role } = getCurrentUser(); // 가정: getCurrentUser 함수가 사용자의 역할 정보도 반환
-  const { storeId, me } = useParams();
+  const email = localStorage.getItem('email')
+  const role = localStorage.getItem('role');
+  const { storeId } = useParams();
   const [status, setStatus] = useState([]);
   const { isLoading, error, menuData } = useMenuListByStoreId(storeId);
   const navigate = useNavigate();
-  console.log(menuData)
 
   useEffect(() => {
+    console.log('여기서 호출')
     const storedStatus = localStorage.getItem(`status_${storeId}`);
     if (storedStatus) {
       setStatus(JSON.parse(storedStatus));
@@ -25,6 +26,7 @@ export default function StoreMenuList() {
 
 
   useEffect(() => {
+    console.log('저기서 호출')
     if (menuData) {
       // menuData가 존재하면서 status가 초기화되지 않았을 때
       if (status.length === 0) {
@@ -32,7 +34,7 @@ export default function StoreMenuList() {
         setStatus(initialStatus);
       }
     }
-  }, [menuData, status]);
+  }, [menuData]);
 
   const handleCheckboxChange = async (index) => {
     const newStatuses = [...status];
@@ -55,13 +57,17 @@ export default function StoreMenuList() {
     } catch (error) {
       console.error('에러 발생:', error);
     }
+    setTimeout(() => {
+      // alert("상태가 업데이트되었습니다!");
+      console.log('2초 후에 반응');
+    }, 2000);
   };
-
+  
   return (
     <ThemeProvider theme={defaultTheme}>
       {isLoading && <Typography>Loading...</Typography>}
       {error && <Typography>에러 발생!</Typography>}
-      {menuData && (
+      {!isLoading && menuData && (
         menuData.categories.map((data) => (
           data.menus.map((res, idx) =>
             <Box>
@@ -71,7 +77,7 @@ export default function StoreMenuList() {
                   <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
                     <Box key={res.menuId} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
                       <Link to={`/MenuUpdate/${res.menuId}`} state={{ menuId: res.menuId, storeId: storeId }} style={{ textDecoration: 'none', color: 'black' }} >
-                        <div style={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
+                        <Box component={Link} to={role==='회원' ? `/MenuDetail` : `/MenuUpdate`} state={{menuId : res.menuId, storeId : storeId}}  sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
                           <img src={res.menuPictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
                           <ul style={{ position: 'absolute', top: '50%', left: '40%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
                             <li style={{ listStyleType: 'none' }}>{res.name}</li>
@@ -81,9 +87,9 @@ export default function StoreMenuList() {
                               <li style={{ listStyleType: 'none' }}>{res.status}</li>
                             )}
                           </ul>
-                        </div>
+                        </Box>
                       </Link>
-                      {role === '회원' ? null : (
+                      {role === '점주' && 
                         <Grid container spacing={3} >
                           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', mt: 5 }}>
                             <Button
@@ -95,7 +101,7 @@ export default function StoreMenuList() {
                             </Button>
                           </Grid>
                         </Grid>
-                      )}
+                      }
                     </Box>
                   </Grid>
                 </Grid>
@@ -105,7 +111,7 @@ export default function StoreMenuList() {
           )
         ))
       )}
-      {role === '회원' ? null : (
+      {role === '점주' &&
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Button
             type="submit"
@@ -115,7 +121,7 @@ export default function StoreMenuList() {
             <Link Link to={`/MenuRegister/${storeId}`} state={{ storeId: storeId }} style={{ textDecoration: 'none', color: 'white' }}>메뉴 추가하기</Link>
           </Button>
         </div>
-      )}
+      }
     </ThemeProvider>
   );
 }
