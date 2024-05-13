@@ -127,8 +127,13 @@ public class StoreServiceImpl implements StoreService {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
             .orElseThrow(() -> new RuntimeException("user not found"));
         Long addrCode = users.getAddressCode();
-        List<Stores> storesListByCategory = storesRepository.findByCategoryContaining(
-            requestDto.getQuery());
+        List<Stores> storesListByCategory = new ArrayList<>();
+        if(requestDto.getQuery().equals("전체")){
+            storesListByCategory = storesRepository.findAll();
+        }else{
+            storesListByCategory = storesRepository.findByCategoryContaining(
+                requestDto.getQuery());
+        }
         List<Stores> storesListByName = storesRepository.findByNameContaining(
             requestDto.getQuery());
 
@@ -156,7 +161,9 @@ public class StoreServiceImpl implements StoreService {
             for (AddressCode addressCode : addressCodes) {
                 if (addressCode.getAddressCode().equals(addrCode)) {
                     // 조건에 맞는 Store 정보를 DTO로 변환하고 리스트에 추가
-                    filteredStores.add(convertToDto(store));
+                    if (!filteredStores.contains(convertToDto(store))) {
+                        filteredStores.add(convertToDto(store));
+                    }
                     break;  // 일치하는 주소 코드를 찾으면 더 이상 반복하지 않음
                 }
             }

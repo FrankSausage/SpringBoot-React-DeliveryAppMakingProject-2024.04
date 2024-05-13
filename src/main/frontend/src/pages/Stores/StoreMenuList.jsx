@@ -10,13 +10,13 @@ const defaultTheme = createTheme();
 
 export default function StoreMenuList() {
   const { email, role } = getCurrentUser(); // 가정: getCurrentUser 함수가 사용자의 역할 정보도 반환
-  const { storeId, me } = useParams();
+  const { storeId } = useParams();
   const [status, setStatus] = useState([]);
   const { isLoading, error, menuData } = useMenuListByStoreId(storeId);
   const navigate = useNavigate();
-  console.log(menuData)
 
   useEffect(() => {
+    console.log('여기서 호출')
     const storedStatus = localStorage.getItem(`status_${storeId}`);
     if (storedStatus) {
       setStatus(JSON.parse(storedStatus));
@@ -25,6 +25,7 @@ export default function StoreMenuList() {
 
 
   useEffect(() => {
+    console.log('저기서 호출')
     if (menuData) {
       // menuData가 존재하면서 status가 초기화되지 않았을 때
       if (status.length === 0) {
@@ -32,7 +33,7 @@ export default function StoreMenuList() {
         setStatus(initialStatus);
       }
     }
-  }, [menuData, status]);
+  }, [menuData]);
 
   const handleCheckboxChange = async (index) => {
     const newStatuses = [...status];
@@ -55,13 +56,17 @@ export default function StoreMenuList() {
     } catch (error) {
       console.error('에러 발생:', error);
     }
+    setTimeout(() => {
+      // alert("상태가 업데이트되었습니다!");
+      console.log('2초 후에 반응');
+    }, 2000);
   };
-
+  
   return (
     <ThemeProvider theme={defaultTheme}>
       {isLoading && <Typography>Loading...</Typography>}
       {error && <Typography>에러 발생!</Typography>}
-      {menuData && (
+      {!isLoading && menuData && (
         menuData.categories.map((data) => (
           data.menus.map((res, idx) =>
             <Box>

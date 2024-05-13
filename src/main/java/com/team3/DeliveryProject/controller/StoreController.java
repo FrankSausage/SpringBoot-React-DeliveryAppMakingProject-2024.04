@@ -76,6 +76,7 @@ public class StoreController {
 
     @GetMapping("/list/search")
     public ResponseEntity<?> getStoreList(@ModelAttribute StoreListRequestDto requestDto) {
+        System.out.println(requestDto);
         return ResponseEntity.ok().body(storeService.getStoreList(requestDto));
     }
 
@@ -87,6 +88,7 @@ public class StoreController {
     @GetMapping("/list")
     public ResponseEntity<?> getStoreListForOwner(
         @ModelAttribute StoreOwnerListRequestDto requestDto) {
+        System.out.println(requestDto);
         return ResponseEntity.ok().body(storeService.getStoreListForOwner(requestDto));
     }
 }
