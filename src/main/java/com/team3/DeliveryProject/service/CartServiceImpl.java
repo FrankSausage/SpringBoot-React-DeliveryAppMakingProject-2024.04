@@ -1,12 +1,14 @@
 package com.team3.DeliveryProject.service;
 
 import static com.team3.DeliveryProject.responseCode.ResponseCode.CART_ADD_SUCCESS;
+import static com.team3.DeliveryProject.responseCode.ResponseCode.CART_DELETE_ALL_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.MENUOPTION_DELETE_SUCCESS;
 
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.cart.CartAddInnerMenuOptionsRequestDto;
 import com.team3.DeliveryProject.dto.request.cart.CartAddInnerMenusRequestDto;
 import com.team3.DeliveryProject.dto.request.cart.CartAddRequestDto;
+import com.team3.DeliveryProject.dto.request.cart.CartDeleteAllRequestDto;
 import com.team3.DeliveryProject.entity.Cart;
 import com.team3.DeliveryProject.entity.Users;
 import com.team3.DeliveryProject.repository.CartRepository;
@@ -38,7 +40,7 @@ public class CartServiceImpl implements CartService{
 
             for (CartAddInnerMenuOptionsRequestDto menuOption : menuOptions) {
                 Long menuOptionId = menuOption.getMenuOptionId();
-                Cart cart = new Cart(users.getUserId(), menuId, menuOptionId, storeId, sequence, quantity);
+                Cart cart = new Cart(users.getUserId(), menuId, menuOptionId, storeId, sequence, quantity, "일반");
                 carts.add(cart);
             }
         }

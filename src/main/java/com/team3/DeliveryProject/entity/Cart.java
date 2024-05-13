@@ -29,13 +29,15 @@ public class Cart {
     private Long storeId;
     private int sequence;
     private int quantity;
+    private String status;
 
-    public Cart(Long userId, Long menuId, Long menuOptionId, Long storeId, int sequence, int quantity) {
+    public Cart(Long userId, Long menuId, Long menuOptionId, Long storeId, int sequence, int quantity, String status) {
         this.userId = userId;
         this.menuId = menuId;
         this.menuOptionId = menuOptionId;
         this.storeId = storeId;
         this.sequence = sequence;
         this.quantity = quantity;
+        this.status = status;
     }
 }
