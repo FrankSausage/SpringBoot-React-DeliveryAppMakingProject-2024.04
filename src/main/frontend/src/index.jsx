@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import reportWebVitals from './reportWebVitals';
 import ProtectedRoute from './pages/ProtectedRoute';
 import Home from './pages/Home';
 import SignIn from './pages/Users/SignIn';
@@ -17,6 +17,7 @@ import OwnerMain from './pages/Users/View/OwnerMain';
 import Address from './pages/Users/View/Address';
 import MenuRegister from './pages/Menus/MenuRegister';
 import MenuUpdate from './pages/Menus/MenuUpdate';
+import MenuDetail from './pages/Menus/MenuDetail';
 import Cart from './pages/Cart/View/Cart';
 import Order from './pages/Order/View/Order';
 import StoreSearch from './pages/Stores/StoreSearch';
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
       { path: 'StoreDetail/:storeId', element: <StoreDetail />},
       { path: 'MenuRegister/:storeId', element: <MenuRegister />},
       { path: 'MenuUpdate', element: <MenuUpdate />},
+      { path: 'MenuDetail', element: <MenuDetail />},
       { path: 'MenuUpdate/:menuId', element: <MenuUpdate />},
       { path: 'UserMain', element: <UserMain />,},
       { path: 'OwnerMain', element: <OwnerMain />},
