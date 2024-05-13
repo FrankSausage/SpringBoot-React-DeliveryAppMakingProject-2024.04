@@ -68,6 +68,7 @@ export function logout() {
   signOut(auth)
   .then(() => {
     localStorage.clear();
+    sessionStorage.clear();
     window.location.reload();
   })
   .catch(console.error);

@@ -9,7 +9,8 @@ import axios from 'axios';
 const defaultTheme = createTheme();
 
 export default function StoreMenuList() {
-  const { email, role } = getCurrentUser(); // 가정: getCurrentUser 함수가 사용자의 역할 정보도 반환
+  const email = localStorage.getItem('email')
+  const role = localStorage.getItem('role');
   const { storeId } = useParams();
   const [status, setStatus] = useState([]);
   const { isLoading, error, menuData } = useMenuListByStoreId(storeId);
@@ -76,7 +77,7 @@ export default function StoreMenuList() {
                   <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
                     <Box key={res.menuId} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
                       <Link to={`/MenuUpdate/${res.menuId}`} state={{ menuId: res.menuId, storeId: storeId }} style={{ textDecoration: 'none', color: 'black' }} >
-                        <div style={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
+                        <Box component={Link} to={role==='회원' ? `/MenuDetail` : `/MenuUpdate`} state={{menuId : res.menuId, storeId : storeId}}  sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
                           <img src={res.menuPictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
                           <ul style={{ position: 'absolute', top: '50%', left: '40%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
                             <li style={{ listStyleType: 'none' }}>{res.name}</li>
@@ -86,9 +87,9 @@ export default function StoreMenuList() {
                               <li style={{ listStyleType: 'none' }}>{res.status}</li>
                             )}
                           </ul>
-                        </div>
+                        </Box>
                       </Link>
-                      {role === '회원' ? null : (
+                      {role === '점주' && 
                         <Grid container spacing={3} >
                           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', mt: 5 }}>
                             <Button
@@ -100,7 +101,7 @@ export default function StoreMenuList() {
                             </Button>
                           </Grid>
                         </Grid>
-                      )}
+                      }
                     </Box>
                   </Grid>
                 </Grid>
@@ -110,7 +111,7 @@ export default function StoreMenuList() {
           )
         ))
       )}
-      {role === '회원' ? null : (
+      {role === '점주' &&
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Button
             type="submit"
@@ -120,7 +121,7 @@ export default function StoreMenuList() {
             <Link Link to={`/MenuRegister/${storeId}`} state={{ storeId: storeId }} style={{ textDecoration: 'none', color: 'white' }}>메뉴 추가하기</Link>
           </Button>
         </div>
-      )}
+      }
     </ThemeProvider>
   );
 }
