@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Footer from "../../components/Footer";
-import { Stack, Box, Grid, InputBase, Button, Tab, Tabs, Typography, FormControlLabel, Checkbox } from '@mui/material/';
+import { Box, Grid, InputBase, Tab, Tabs, Typography, } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 import Ownerheader from '../../components/OwnerHeader';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import StoreInfo from './StoreInfo';
 import StoreMenuList from './StoreMenuList';
@@ -41,8 +41,7 @@ function a11yProps(index) {
   };
 }
 
-export default function StoreDetail(data) {
-  const { storeId, menuId } = useParams();
+export default function StoreDetail() {
   const { state: category } = useLocation();
   const [value, setValue] = useState(category ? category : 1);
   const [ popularity, setPopularity ] = useState('');
@@ -107,17 +106,4 @@ export default function StoreDetail(data) {
       <Footer />
     </Box>
   );
-}
-
-let boxStyle = {
-  width: 200,
-  height: 200,
-  border: 1,
-  borderColor: 'rgb(217, 217, 217)',
-  m: 2
-}
-let gridStyle = {
-  justifyContent: 'center',
-  alignItems: 'center',
-  p: 2
 }

@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { Box, Grid, createTheme, ThemeProvider, Typography } from '@mui/material';
-import { getCurrentUser } from '../../utils/firebase';
 import { useStoreDeatilByEmail } from '../../utils/storeInfo';
-import { useLocation, useParams } from 'react-router';
+import { useParams } from 'react-router';
 
 const defaultTheme = createTheme();
 
 export default function StoreInfo() {
-  const { email } = getCurrentUser();
-  const location = useLocation();
+  const email = localStorage.getItem('email');
   const { storeId } = useParams();
   const { isLoading, error, StoreDetailOwner } = useStoreDeatilByEmail(email, storeId);
 

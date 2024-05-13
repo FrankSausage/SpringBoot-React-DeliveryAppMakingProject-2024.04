@@ -1,13 +1,12 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {  Box, Grid, InputBase, Button, Typography, } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link, } from 'react-router-dom';
 import OwnerHeader from '../../../components/OwnerHeader';
-import { useStore } from '../../../utils/storeInfo';
+import { useUser } from '../../../pages/Users/Hook/useUser';
 
 export default function OwnerMain() {
-  const email = localStorage.getItem('email');
-  const { getStoreList: { isLoading, error, data: storeData } } = useStore(email)
+  const { getStoreListAll: { isLoading, error, data: storeData } } = useUser(localStorage.getItem('role'))
   
   return (
     <Box sx={{ margin: -1 }}>
@@ -38,7 +37,7 @@ export default function OwnerMain() {
                   <Link to={`/StoreDetail/${data.storeId}`} style={{ textDecoration: 'none', color: 'black' }} >
                     <Typography>{idx}</Typography>
                     <div>
-                      <img src={'/img/01.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
+                      <img src={'/img/01.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} alt="메뉴 이미지" />
                       <ul style={{ position: 'absolute', top: '50%', left: '30%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
                         <li style={{ listStyleType: 'none' }}>{data.name}</li>
                         <li style={{ listStyleType: 'none' }}>별점: {data.rateing}</li>
@@ -69,7 +68,6 @@ export default function OwnerMain() {
     </Box>
   );
 }
-{/* <StoreDetail storeList={data} /> */ }
 
 let boxStyle = {
   width: 200,

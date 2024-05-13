@@ -70,6 +70,7 @@ export function logout() {
     localStorage.clear();
     sessionStorage.clear();
     window.location.reload();
+    alert('로그아웃 되었습니다.');
   })
   .catch(console.error);
 }

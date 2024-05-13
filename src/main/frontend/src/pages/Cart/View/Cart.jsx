@@ -53,8 +53,3 @@ export default function Cart({ allClose }) {
   );
 }
 
-let dialogOpener = {
-  cursor: 'pointer',
-  
-}
-

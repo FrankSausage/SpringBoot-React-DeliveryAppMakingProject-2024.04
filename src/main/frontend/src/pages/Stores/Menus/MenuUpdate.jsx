@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Ownerheader from '../../../components/OwnerHeader';
+import Footer from '../../../components/Footer';
+import { extractDataFromFormData } from '../../../utils/storeInfo';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Footer from '../../components/Footer';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { getCurrentUser } from '../../utils/firebase';
-import { extractDataFromFormData, useMenuUpByEmail } from '../../utils/storeInfo';
-import axios from 'axios';
-import Ownerheader from '../../components/OwnerHeader';
 import MenuOptionDetail from './MenuOptionDetail';
+import { useMenu } from '../Hook/useMenu';
 
 const defaultTheme = createTheme();
 
@@ -16,7 +16,7 @@ export default function MenuUpdate() {
   const location = useLocation();
   const email = localStorage.getItem('email');
   const { storeId, menuId } = location.state;
-  const { isLoading, error, menu } = useMenuUpByEmail(email, menuId);
+  const { getMenuDetailByMenuId: {isLoading, error, data: menu}} = useMenu(menuId)
 
   const [initialName, setInitialName] = useState('');
   const [initialPrice, setInitialPrice] = useState('');
@@ -27,27 +27,26 @@ export default function MenuUpdate() {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [category, setCategory] = useState('');
-  const [type, setType] = useState('');
   const [content, setContent] = useState('');
   const [storePictureName, setStorePictureName] = useState('');
 
   useEffect(() => {
-    if (!isLoading && menu.menus) {
+    if (!isLoading && menu.data) {
       // 초기 값을 설정합니다.
-      setInitialName(menu.menus[0].name);
-      setInitialPrice(menu.menus[0].price);
-      setInitialContent(menu.menus[0].content);
-      setInitialCategory(menu.menus[0].category);
-      setInitialMenuPictureName(menu.menus[0].menuPictureName);
+      setInitialName(menu.data.menus[0].name);
+      setInitialPrice(menu.data.menus[0].price);
+      setInitialContent(menu.data.menus[0].content);
+      setInitialCategory(menu.data.menus[0].category);
+      setInitialMenuPictureName(menu.data.menus[0].menuPictureName);
 
       // 사용자 입력 상태 변수를 초기 값으로 설정합니다.
-      setName(menu.menus[0].name);
-      setPrice(menu.menus[0].price);
-      setContent(menu.menus[0].content);
-      setCategory(menu.menus[0].category);
-      setStorePictureName(menu.menus[0].menuPictureName);
+      setName(menu.data.menus[0].name);
+      setPrice(menu.data.menus[0].price);
+      setContent(menu.data.menus[0].content);
+      setCategory(menu.data.menus[0].category);
+      setStorePictureName(menu.data.menus[0].menuPictureName);
     }
-  }, [isLoading, menu]);
+  }, [isLoading]);
 
   const navigate = useNavigate();
 
@@ -113,7 +112,7 @@ export default function MenuUpdate() {
     <ThemeProvider theme={defaultTheme}>
       {isLoading && <Typography>Loading...</Typography>}
       {error && <Typography>에러 발생!</Typography>}
-      {!isLoading && menu.menus &&
+      {!isLoading && menu.data.menus &&
         <Box>
           <Ownerheader />
           <Container component="main" maxWidth="xs">
@@ -135,7 +134,7 @@ export default function MenuUpdate() {
               <Typography component="h1" variant="h5">
                 음식 정보 수정
               </Typography>
-              {menu.menus[0].options && <MenuOptionDetail options={menu.menus[0].options} email={email} />}
+              {menu.data.menus[0].options && <MenuOptionDetail options={menu.data.menus[0].options} email={email} />}
               <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>

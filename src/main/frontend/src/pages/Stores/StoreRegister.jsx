@@ -5,15 +5,15 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findPostcode, findDeliverPostCode } from '../../utils/AddressUtils';
-import { getCurrentUser } from '../../utils/firebase';
 import { extractDataFromFormData, formatPhoneNumber } from '../../utils/storeInfo';
-import axios from 'axios';
 import Ownerheader from '../../components/OwnerHeader';
+import { useStore } from './Hook/useStore';
 
 const defaultTheme = createTheme();
 
 export default function StoreRegister() {
-  const { email } = getCurrentUser();
+  const email = localStorage.getItem('email')
+  const { postStoreRegister } = useStore();
   const [roadAddress, setRoadAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
@@ -76,16 +76,14 @@ export default function StoreRegister() {
         .then(res => {
           extractDataFromFormData(res)
             .then(resFormData => {
-              axios.post(`/dp/store/owner/register`, resFormData)
+              postStoreRegister.mutate(resFormData,{
+                onSuccess: () => navigate('/'),
+                onError: e => console.error('가게 등록 실패: ' + e)
+              })
             })
-            .then(() => {
-              alert('입점 신청이 완료되었습니다.');
-              navigate('/');
-            })
-        })
-        .catch(console.error);
+      });
     }
-  };
+  }
 
   const handlePhoneNumberChange = (event) => {
     const formattedPhoneNumber = formatPhoneNumber(event.target.value);

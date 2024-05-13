@@ -1,12 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-export function useMenu(menuId, email) {
+export const useMenu = (menuId) => {
+  const email = localStorage.getItem('email')
   const queryClient = useQueryClient();
   
   const getMenuDetailByMenuId = useQuery({
-    queryKey: ['menuDetailInfo', menuId],
-    queryFn: () => { return axios.get(`/dp/store/menu/update`, {params: {menuId : menuId, email: email}})}
+    queryKey: ['menuDetailInfo'],
+    queryFn: () => { return axios.get(`/dp/store/menu/update`, { params: {menuId : menuId, email: email}})},
+    enabled: !!menuId
   });
 
   const postMenuOption = useMutation({

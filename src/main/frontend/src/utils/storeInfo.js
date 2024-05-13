@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
-import { getCurrentUser } from "./firebase";
 
 export const useOwnerByEmail = (email, storeId) => {
     const { isLoading, error, data: store } = useQuery({
@@ -59,6 +58,7 @@ export const useStoreDeatilByEmail = (email ,storeId) => {
 }
 
 export const useMenuListByStoreId = storeId => {
+
   const { isLoading, error, data: menuData } = useQuery({
     queryKey: ['StoreMenuList', storeId ],
     queryFn: async () => {
@@ -70,17 +70,17 @@ export const useMenuListByStoreId = storeId => {
   return { isLoading, error, menuData };
 }
 
-export const useMenuByEmail =  email => {
-  const { isLoading, error, data: storeData } = useQuery({
-    queryKey: ['menuId', email ],
-    queryFn: async () => {
-        return axios.get(`/dp/store/menu/register`, { params: {email: email }})
-          .then(res => res.data)
-          .catch(console.error);
-    }
-  })
-  return { isLoading, error, storeData };
-}
+// export const useMenuByEmail =  email => {
+//   const { isLoading, error, data: storeData } = useQuery({
+//     queryKey: ['menuId', email ],
+//     queryFn: async () => {
+//         return axios.get(`/dp/store/menu/register`, { params: {email: email }})
+//           .then(res => res.data)
+//           .catch(console.error);
+//     }
+//   })
+//   return { isLoading, error, storeData };
+// }
 
 export const useMenuUpByEmail = ( email, menuId) => {
   const { isLoading, error, data: menu } = useQuery({

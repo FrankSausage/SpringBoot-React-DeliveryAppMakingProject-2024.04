@@ -9,13 +9,13 @@ import { findPostcode } from '../../utils/AddressUtil';
 import { extractDataFromFormData, formatPhoneNumber } from '../../utils/userInfo';
 import { getCurrentUser, logout, updateUser } from '../../utils/firebase';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from './useUser';
+import { useUser } from './Hook/useUser';
 
 const defaultTheme = createTheme();
 
 export default function Update() {
     const { email, displayName } = getCurrentUser();
-    const { getUserByEmail: {isLoading, error, data: user} } = useUser(localStorage.getItem('email'));
+    const { getUserByEmail: {isLoading, error, data: user} } = useUser(localStorage.getItem('role'));
     const [ phone, setPhoneNumber] = useState();
     const [ passwordCheack, setPasswordCheack ] = useState('');
     const [ isPasswordMatch, setIsPasswordMatch ] = useState(true);
@@ -31,7 +31,6 @@ export default function Update() {
     const handleClose = () => setOpen(false);
     const navigate = useNavigate();
 
-    // console.log(user)
     useEffect(() => {
       const loadDaumPostcodeScript = () => {
         const script = document.createElement('script');
@@ -192,7 +191,8 @@ export default function Update() {
                                     id="phone"
                                     name="phone"
                                     label="휴대전화"
-                                    value={user.data.phone}
+                                    defaultValue={user.data.phone}
+                                    value={phone}
                                     onChange={handlePhoneNumberChange}
                                     inputProps={{
                                         maxLength: 13,
