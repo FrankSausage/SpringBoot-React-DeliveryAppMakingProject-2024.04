@@ -31,6 +31,7 @@ public class Orders {
     private Long storeId;
     private Long orderUserId;
     private Long deliveryUserId;
+    private Long cartId;
     @Column(nullable = false)
     private String paymentMethod;
     private int point;
