@@ -22,7 +22,8 @@ import ReviewUpdate from './pages/Review/ReviewUpdate';
 import ReviewList from './pages/Review/ReviewList';
 import ReviewDetail from './pages/Review/ReviewDetail';
 import ReviewReply from './pages/Review/ReviewReply';
-import ReviewReplyCopy from './pages/Review/ReviewReplyCopy';
+import ReviewRating from './pages/Review/ReviewRating';
+
 
 const router = createBrowserRouter([
   {
@@ -50,7 +51,7 @@ const router = createBrowserRouter([
       { path: 'ReviewList', element: <ReviewList />},
       { path: 'ReviewDetail', element: <ReviewDetail />},
       { path: 'ReviewReply', element: <ReviewReply />},
-      { path: 'ReviewReplyCopy', element: <ReviewReplyCopy />}
+      { path: 'ReviewRating', element: <ReviewRating />}
     ]
   }
 ]);

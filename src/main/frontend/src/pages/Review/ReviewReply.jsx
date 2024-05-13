@@ -1,61 +1,85 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
-import {  useTheme, AppBar, Tab, Tabs, Typography, Box } from '@mui/material';
+import Ownerheader from '../../components/OwnerHeader';
+import { Box, Rating, Typography, Tab, Tabs, useTheme, AppBar } from '@mui/material';
 
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`,
-  };
-}
-
-
-
-export default function FullWidthTabs() {
+export default function ReviewReply() {
   
+  const [value, setValue] = React.useState(2);
+  const [reply, setReply] = React.useState(0);
   const theme = useTheme();
-  const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setValue(setReply(newValue));
   };
 
+  const handleRatingChange = (event, newValue) => {
+    setValue(newValue);
+  }
   const handleChangeIndex = (index) => {
-    setValue(index);
+    setReply(index);
   };
+
+
+
+  function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={reply !== index}
+        id={`full-width-tabpanel-${index}`}
+        aria-labelledby={`full-width-tab-${index}`}
+        {...other}
+      >
+        {reply === index && (
+          <Box p={3}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
+  
+  TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired,
+  };
+  
+  function a11yProps(index) {
+    return {
+      id: `full-width-tab-${index}`,
+      'aria-controls': `full-width-tabpanel-${index}`,
+    };
+  }
+
 
   return (
-    <div>
-      <AppBar position="static" color="default">
-        <Tabs
+  
+  <Box sx={{ margin: -1 }}>
+    <Ownerheader />
+      <Box
+        sx={{
+          '& > legend': { mt: 2 },
+        }}
+      >
+        <Typography component="legend">Controlled</Typography>
+        <Rating
+          name="simple-controlled"
           value={value}
+          onChange={handleRatingChange}
+        />
+        <Typography component="legend">가게 별점? 평점?</Typography>
+        <Rating name="read-only" value={value} readOnly />
+      </Box>
+      
+      <div>
+        <AppBar position="static" color="default">
+        <Tabs
+          value={reply}
           onChange={handleChange}
           indicatorColor="primary"
           textColor="primary"
@@ -63,19 +87,17 @@ export default function FullWidthTabs() {
           aria-label="full width tabs example"
         >
           <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+          <Tab label="Item Two" {...a11yProps(1)} />
         </Tabs>
-      </AppBar>
+        </AppBar>
 
-        <TabPanel value={value} index={0} dir={theme.direction}>
-          Item One
+        <TabPanel value={reply} index={0} dir={theme.direction}>
+          Item One Content
         </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          Item Two
-        </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
-          Item Three
+        <TabPanel value={reply} index={1} dir={theme.direction}>
+          Item Two Content
         </TabPanel>
       </div>
+  </Box>
   );
 }
