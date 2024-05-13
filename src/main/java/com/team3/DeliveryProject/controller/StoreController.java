@@ -88,7 +88,6 @@ public class StoreController {
     @GetMapping("/list")
     public ResponseEntity<?> getStoreListForOwner(
         @ModelAttribute StoreOwnerListRequestDto requestDto) {
-        System.out.println(requestDto);
         return ResponseEntity.ok().body(storeService.getStoreListForOwner(requestDto));
     }
 }
