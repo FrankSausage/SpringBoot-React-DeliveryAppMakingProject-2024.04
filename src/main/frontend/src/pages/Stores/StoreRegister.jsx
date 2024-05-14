@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findDeliverPostCode, findPostcodeWithOutBCode } from '../../utils/AddressUtil';
-import { extractDataFromFormData, formatPhoneNumber } from '../../utils/commonUitil';
+import { extractDataFromFormData, formatStorePhoneNumber } from '../../utils/commonUitil';
 import { useStore } from './Hook/useStore';
 import SearchHeader from '../../components/SearchHeader';
 
@@ -33,7 +33,6 @@ export default function StoreRegister() {
   const [openHours, setOpenHours] = useState('');
   const [closeHours, setCloseHours] = useState('');
   const [jibun, setJibunAddress] = useState('')
-  console.log(addressCode)
   const navigate = useNavigate();
   // const [userInfo, setUserInfo] = useState({email: '', password: '', })
   // const [storeInfo, setStoreInfo] = useState({deliveryAddress: '', closedDays: '',}) // 나중에 이런식으로 이팩토리 할것 이유 업데이트 할때 정보 받기 편해지기 위해서
@@ -85,7 +84,7 @@ export default function StoreRegister() {
   }
 
   const handlePhoneNumberChange = (event) => {
-    const formattedPhoneNumber = formatPhoneNumber(event.target.value);
+    const formattedPhoneNumber = formatStorePhoneNumber(event.target.value);
     setPhoneNumber(formattedPhoneNumber);
   };
 
