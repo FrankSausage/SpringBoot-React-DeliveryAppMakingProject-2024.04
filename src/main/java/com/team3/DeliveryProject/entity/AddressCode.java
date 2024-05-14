@@ -26,9 +26,11 @@ public class AddressCode {
     private Long addressCodeId;
     private Long storeId;
     private Long addressCode;
+    private String deliveryAddress;
 
-    public AddressCode(Long storeId, Long addressCode) {
+    public AddressCode(Long storeId, Long addressCode, String deliveryAddress) {
         this.storeId = storeId;
         this.addressCode = addressCode;
+        this.deliveryAddress = deliveryAddress;
     }
 }
