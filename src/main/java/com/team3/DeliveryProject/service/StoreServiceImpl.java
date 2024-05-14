@@ -73,7 +73,7 @@ public class StoreServiceImpl implements StoreService {
     public ResponseEntity<Response> updateStore(StoreUpdateRequestDto requestDto) {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
             .orElseThrow(() -> new RuntimeException("user not found"));
-        ;
+
         Stores stores = storesRepository.findById(requestDto.getStoreId())
             .orElseThrow(() -> new RuntimeException("Store not found"));
         if (users.getUserId() == stores.getUserId()) {
