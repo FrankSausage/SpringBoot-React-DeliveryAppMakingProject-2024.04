@@ -10,5 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface AddressCodeRepository extends JpaRepository<AddressCode, Long> {
 
     Optional<List<AddressCode>> findAllByStoreId(Long storeId);
+    void deleteAllByStoreId(Long storeId);
 
 }
