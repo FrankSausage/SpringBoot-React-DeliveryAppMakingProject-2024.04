@@ -17,29 +17,22 @@ import Store from './pages/Stores/View/Store';
 import StoreRegister from './pages/Stores/StoreRegister';
 import StoreUpdate from './pages/Stores/StoreUpdate';
 import StoreDetail from './pages/Stores/StoreDetail';
-import UserMain from './pages/Users/View/UserMain';
-import OwnerMain from './pages/Users/View/OwnerMain';
-import Address from './pages/Users/View/Address';
-import MenuRegister from './pages/Menus/MenuRegister';
-import MenuUpdate from './pages/Menus/MenuUpdate';
+import StoreSearch from './pages/Stores/StoreSearch';
+// Reviews
 import ReviewRegister from './pages/Review/ReviewRegister';
 import ReviewUpdate from './pages/Review/ReviewUpdate';
 import ReviewList from './pages/Review/ReviewList';
 import ReviewDetail from './pages/Review/ReviewDetail';
 import ReviewReply from './pages/Review/ReviewReply';
 import ReviewRating from './pages/Review/ReviewRating';
-
-import Cart from './pages/Cart/View/Cart';
-import Order from './pages/Order/View/Order';
-import StoreSearch from './pages/Stores/StoreSearch';
 // Menus
 import MenuRegister from './pages/Stores/Menus/MenuRegister';
 import MenuUpdate from './pages/Stores/Menus/MenuUpdate';
 import MenuDetail from './pages/Stores/Menus/MenuDetail';
-
 // Order
 import Order from './pages/Order/View/Order';
 // Cart
+import Cart from './pages/Cart/View/Cart';
 
 
 const router = createBrowserRouter([
@@ -50,8 +43,6 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'Signin', element: <SignIn />},
       { path: 'SignUp', element: <SignUp />},
-      { path: 'Store', element: <Store />},
-      { path: 'Store/:category', element: <Store />},
       { path: 'Update', element: <ProtectedRoute><Update /></ProtectedRoute>},
       { path: 'Address', element: <Address />},
       { path: 'Store', element: <ProtectedRoute><Store /></ProtectedRoute>},
@@ -62,9 +53,8 @@ const router = createBrowserRouter([
       { path: 'StoreUpdate/:storeId', element: <StoreUpdate />},
       { path: 'StoreDetail/:storeId', element: <StoreDetail />},
       { path: 'MenuRegister/:storeId', element: <MenuRegister />},
-      { path: 'MenuUpdate', element: <MenuUpdate />},
       { path: 'MenuDetail', element: <MenuDetail />},
-      { path: 'MenuUpdate/:menuId', element: <MenuUpdate />},
+      { path: 'MenuUpdate', element: <MenuUpdate />},
       { path: 'UserMain', element: <UserMain />,},
       { path: 'OwnerMain', element: <OwnerMain />},
       { path: 'ReviewRegister', element: <ReviewRegister />},
