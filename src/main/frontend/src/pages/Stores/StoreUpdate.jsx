@@ -37,8 +37,6 @@ export default function StoreRegister() {
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const navigate = useNavigate();
 
-  console.log(store)
-
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
       const script = document.createElement('script');

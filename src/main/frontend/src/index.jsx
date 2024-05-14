@@ -25,7 +25,6 @@ import MenuDetail from './pages/Stores/Menus/MenuDetail';
 
 // Order
 import Order from './pages/Order/View/Order';
-
 // Cart
 
 const router = createBrowserRouter([
