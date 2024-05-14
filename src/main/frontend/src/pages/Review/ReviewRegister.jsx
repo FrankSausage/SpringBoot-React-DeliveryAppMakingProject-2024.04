@@ -4,7 +4,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
 import { getCurrentUser } from '../../utils/firebase';
-import { extractDataFromFormData  } from '../../utils/storeInfo';
+import { extractDataFromFormData  } from '../../utils/commonUitil';
 import axios from 'axios';
 import SearchHeader from '../../components/SearchHeader';
 import Footer from '../../components/Footer';

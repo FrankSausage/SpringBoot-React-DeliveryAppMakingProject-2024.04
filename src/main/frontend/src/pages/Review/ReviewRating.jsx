@@ -1,7 +1,6 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-// import Ownerheader from '../../components/OwnerHeader';
 import { Box, Rating, Typography, Tab, Tabs, useTheme, AppBar } from '@mui/material';
+import SearchHeader from '../../components/SearchHeader';
 
 
 export default function ReviewRating() {
@@ -16,7 +15,7 @@ export default function ReviewRating() {
   return (
   
   <Box sx={{ margin: -1 }}>
-    <Ownerheader />
+    <SearchHeader />
       <Box
         sx={{
           '& > legend': { mt: 2 },
