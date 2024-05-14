@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useStore } from '../Hook/useStore';
-import Ownerheader from '../../../components/OwnerHeader';
 import Footer from '../../../components/Footer';
-import { extractDataFromFormData } from '../../../utils/storeInfo';
+import { extractDataFromFormData } from '../../../utils/commonUitil';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import SearchHeader from '../../../components/SearchHeader';
 
 
 const defaultTheme = createTheme();
@@ -68,7 +68,7 @@ export default function MenuRegister() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Ownerheader />
+      <SearchHeader />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

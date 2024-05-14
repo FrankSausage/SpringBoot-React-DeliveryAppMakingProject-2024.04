@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import Footer from "../../components/Footer";
 import { Box, Grid, InputBase, Tab, Tabs, Typography, } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
-import Ownerheader from '../../components/OwnerHeader';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import StoreInfo from './StoreInfo';
 import StoreMenuList from './StoreMenuList';
+import SearchHeader from '../../components/SearchHeader';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -59,7 +59,7 @@ export default function StoreDetail() {
 
   return (
     <Box sx={{ margin: -1 }}>
-      <Ownerheader />
+      <SearchHeader />
       <Box sx={{ borderBottom: 1, borderColor: 'black', display: 'flex', justifyContent: 'center' }}>
         <Tabs
           value={value}

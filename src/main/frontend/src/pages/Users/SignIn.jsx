@@ -7,7 +7,7 @@ import { login, } from '../../utils/firebase';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import axios from 'axios';
-import { splitAddressFromCurrentUserAddress } from '../../utils/userInfo';
+import { splitAddressFromCurrentUserAddress } from '../../utils/commonUitil';
 
 
 

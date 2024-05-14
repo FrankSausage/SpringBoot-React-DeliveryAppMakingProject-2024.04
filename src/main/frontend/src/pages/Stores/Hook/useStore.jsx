@@ -1,14 +1,8 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-export function useStore(storeId) {
-  const email = localStorage.getItem('email')
-
-  const getStoreDetailByStoreId = useQuery({
-    queryKey: ['storeDetail'],
-    queryFn: () => {return axios.get(`/dp/store/detail`, {params : {email : email, storeId : storeId}})},
-    enabled: !!storeId
-  })
+export function useStore() {
+  const queryClient = useQueryClient();
 
   const postMenuRegister = useMutation({
     mutationFn: menuData => axios.post(`/dp/store/menu/register`, menuData),
@@ -22,5 +16,11 @@ export function useStore(storeId) {
     onError: () => {alert('가게 등록에 실패하였습니다!')},
   })
 
-  return { getStoreDetailByStoreId, postMenuRegister, postStoreRegister }
+  const postChangeMenuStatus = useMutation({
+    mutationFn: (menuStatus) => axios.post(`/dp/store/menu/status`, menuStatus),
+    onSuccess: () => {queryClient.invalidateQueries(['storeMenuList'])},
+    onError: e => { console.error(e) },
+  })
+
+  return { postMenuRegister, postStoreRegister, postChangeMenuStatus }
 }

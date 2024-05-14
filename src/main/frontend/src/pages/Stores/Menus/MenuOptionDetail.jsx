@@ -53,6 +53,7 @@ export default function MenuOptionDetail({options, email}) {
 								</Stack>
 							</Box>
 						))}
+						<Button onClick={handleClose} fullWidth>닫기</Button>
 					</Box>
 				</Modal>
 			</Box>

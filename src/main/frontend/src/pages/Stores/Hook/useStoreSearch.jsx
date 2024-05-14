@@ -6,14 +6,10 @@ export const useStoreSearch = (query) => {
 
     const getStoreListByCategory = useQuery({
         queryKey: ['storeList'],
-        queryFn: () => {return axios.get(`/dp/store/list/search`, {params : {email : email, query: query, sort: 'rating'}})}
+        queryFn: () => {return axios.get(`/dp/store/list/search`, {params : {email : email, query: query, sort: 'rating'}})},
+        enabled: !!query
     })
 
-    const getAllStoreList = useQuery({
-        queryKey: ['storeListAll'],
-        queryFn: () => {return axios.get(`/dp/store/list`, {params : {email: email}})},
-        enabled: !query
-    })
 
-    return { getStoreListByCategory, getAllStoreList }
+    return { getStoreListByCategory }
 }

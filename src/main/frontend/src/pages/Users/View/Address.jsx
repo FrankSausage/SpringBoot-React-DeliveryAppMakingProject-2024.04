@@ -4,7 +4,8 @@ import { Box, Button,Divider, Grid, Input, Stack,  Typography, } from "@mui/mate
 import RoomIcon from '@mui/icons-material/Room';
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
 import { findPostcode } from "../../../utils/AddressUtil";
-import { extractDataFromFormData, splitAddressFromCurrentUserAddress, useAddressListByEmail } from "../../../utils/userInfo";
+import { useAddressListByEmail } from "../../../utils/userInfo";
+import { extractDataFromFormData, splitAddressFromCurrentUserAddress } from "../../../utils/commonUitil";
 import { getCurrentUser } from "../../../utils/firebase";
 import axios from "axios";
 import AddressUpdate from "../AddressUpdate";

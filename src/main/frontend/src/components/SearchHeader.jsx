@@ -10,8 +10,8 @@ import DropUserInfo from './DropUserInfo';
 export default function SearchHeader() {
   const { user } = useAuthContext();
   const { outletAddress } = useOutletContext();
-  const address = localStorage.getItem("address") && localStorage.getItem("address");
-  const role = localStorage.getItem('role') && localStorage.getItem('role');
+  const address = localStorage.getItem("address") ? localStorage.getItem("address") : ''
+  const role = localStorage.getItem('role')
   const navigate = useNavigate();
 
   const handleNavigate = () => {
@@ -49,11 +49,11 @@ export default function SearchHeader() {
               </Box> 
             </Grid>
             }
-            <Grid item xs={user ? 3 : 9} >
+            <Grid item xs={(user && role!=='점주') ? 3 : 9} >
             <Stack direction='row' spacing={1} justifyContent='right' alignItems='center'>
               {user ? (
                 <>
-                  <DropUserInfo />
+                  <DropUserInfo role={role} />
                   <Typography variant="body1" sx={{ color: 'white'}}>
                     {user.displayName}
                   </Typography>

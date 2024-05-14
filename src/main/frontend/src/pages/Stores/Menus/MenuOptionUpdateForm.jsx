@@ -1,4 +1,4 @@
-import { Box, Button, Input, Modal } from "@mui/material";
+import { Box, Button, Input, Modal, Stack } from "@mui/material";
 import React, { Fragment, useState } from "react";
 import { useMenu } from "../Hook/useMenu";
 
@@ -35,7 +35,10 @@ export default function MenuOptionUpdateForm({menuOptionId, email}) {
         onChange={handleChange} required fullWidth/>
       <Input type="number" id='price' name='price' placeholder='새 가격 (숫자만 입력)' 
         onChange={handleChange} required fullWidth/>
-      <Button onClick={handleUpdate} fullWidth> 확인 </Button>
+      <Stack direction={'row'} sx={{justifyContent:'space-around'}}>
+        <Button onClick={handleUpdate}>확인</Button>
+        <Button onClick={handleClose} color="error">닫기</Button>
+      </Stack>
     </Box>
     </Modal>
     </Fragment>

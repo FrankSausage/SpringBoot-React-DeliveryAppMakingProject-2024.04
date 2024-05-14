@@ -14,6 +14,19 @@ export const useUserByEmail = email => {
     });     
     return { isLoading, error, user };
 }
+export const useOwnerStoreListByEmail = () => {
+  const email = localStorage.getItem('email')
+
+  const {isLoading, error, data: storeData } = useQuery({
+    queryKey: ['ownerStoreList', email],
+    queryFn: async () => {
+      return axios.get(`/dp/store/list`, {params: {email : email}})
+      .then(res => res.data)
+    }
+  })
+
+  return { isLoading, error, storeData }
+}
 
 export const useAddressListByEmail = email => {
   const { isLoading, error, data: address } = useQuery({
@@ -25,29 +38,4 @@ export const useAddressListByEmail = email => {
     }
   });
   return { isLoading, error, address };
-}
-
-export const extractDataFromFormData = async (formData) => {
-    const data = {};
-    for (const [key, value] of formData.entries()) {
-      data[key] = value;
-    };
-    return await data;
-  }
-
-export const formatPhoneNumber = (phoneNumberValue) => {
-  const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
-  //  핸드폰 입력 formatting (e.g., XXX-XXXX-XXXX)
-  const formattedPhoneNumber = strippedPhoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
-  
-  return formattedPhoneNumber;
-  };
-
-export const splitAddressFromCurrentUserAddress = (currentAddress) => {
-    const splitAddress = currentAddress.toString().split(',');
-    const roadAddress = (splitAddress[0] || '');
-    const extraAddress = (splitAddress[1] || '');
-    const detailAddress = (splitAddress[2] || '');
-
-    return { roadAddress: roadAddress, extraAddress: extraAddress, detailAddress: detailAddress };
 }

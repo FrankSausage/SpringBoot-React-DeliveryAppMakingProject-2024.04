@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container, ListItemText, FormControl, InputLabel, Select, Input, MenuItem } from '@mui/material';
+import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, 
+  Typography, Container, ListItemText, FormControl, InputLabel, Select, Input, MenuItem } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { findPostcode } from '../../utils/AddressUtil';
-import { extractDataFromFormData, formatPhoneNumber, useOwnerByEmail } from '../../utils/storeInfo';
+import { useOwnerByEmail } from '../../utils/storeInfo';
+import { extractDataFromFormData, formatPhoneNumber, splitAddressFromCurrentUserAddress } from '../../utils/commonUitil';
 import axios from 'axios';
-import Ownerheader from '../../components/OwnerHeader';
+import SearchHeader from '../../components/SearchHeader';
 
 const defaultTheme = createTheme();
 
@@ -15,7 +17,6 @@ export default function StoreRegister() {
   const email = localStorage.getItem('email');
   const { storeId } = useParams();
   const { isLoading, error, store } = useOwnerByEmail(email, storeId);
-  // const { roadAddress, extraAddress, detailAddress } = store ? store.address : { roadAddress: ' ', extraAddress: ' ', detailAddress: ' ' };
   const [roadAddress, setRoadAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
@@ -30,6 +31,7 @@ export default function StoreRegister() {
   const [storePictureName, setStorePictureName] = useState('');
   const [minDeliveryTime, setMinDeliveryTime] = useState('');
   const [maxDeliveryTime, setMaxDeliveryTime] = useState('');
+  const [selectedDays, setSelectedDays] = useState([]);
   const [operationHours, setOperationHours] = useState('');
   const [closedDays, setClosedDays] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
@@ -56,9 +58,10 @@ export default function StoreRegister() {
 
   useEffect(() => {
     if (store) {
-      setRoadAddress(store.address.roadAddress)
-      setExtraAddress(store.address.extraAddress)
-      setDetailAddress(store.address.detailAddress)
+      const { roadAddress, extraAddress, detailAddress } = splitAddressFromCurrentUserAddress(store.address)
+      setRoadAddress(roadAddress)
+      setExtraAddress(extraAddress)
+      setDetailAddress(detailAddress)
       setCategory(store.category)
       setClosedDays(store.closedDays)
       setContent(store.content)
@@ -151,7 +154,7 @@ export default function StoreRegister() {
   const weekDays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
   const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];
 
-  const [selectedDays, setSelectedDays] = useState([]);
+  
 
   const generateTimeOptions = (startHour, endHour) => {
     const options = [];
@@ -177,7 +180,7 @@ export default function StoreRegister() {
       {store &&
 
         <>
-          <Ownerheader />
+          <SearchHeader />
           <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Box
@@ -266,7 +269,8 @@ export default function StoreRegister() {
                       fullWidth
                       id="roadAddress"
                       label="도로명 주소"
-                      value={store.address.split(',')[0]} />
+                      value={roadAddress} 
+                      />
                   </Grid>
                   <Button type="button" onClick={handleFindPostcode} fullWidth variant="contained" sx={{ mt: 1, mb: 2, ml: 2 }} >주소 찾기 </Button>
                   <Grid item xs={12}>
@@ -275,7 +279,7 @@ export default function StoreRegister() {
                       fullWidth
                       id="extraAddress"
                       label="참고항목"
-                      value={store.address.split(',')[1]} />
+                      value={extraAddress} />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
@@ -285,7 +289,7 @@ export default function StoreRegister() {
                       label="상세주소"
                       name="detailAddress"
                       autoComplete="detailAddress"
-                      value={store.address.split(',')[2]}
+                      value={detailAddress}
                       onChange={e => setDetailAddress(e.target.value)}
                     />
                   </Grid>

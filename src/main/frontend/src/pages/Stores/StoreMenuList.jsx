@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { getCurrentUser } from '../../utils/firebase';
 import axios from 'axios';
 import MenuOptionRegister from './Menus/MenuOptionRegister';
+import { useStore } from './Hook/useStore';
 
 const defaultTheme = createTheme();
 
@@ -15,6 +16,7 @@ export default function StoreMenuList() {
   const { storeId } = useParams();
   const [status, setStatus] = useState([]);
   const { isLoading, error, menuData } = useMenuListByStoreId(storeId);
+  const { postChangeMenuStatus } = useStore()
 
   useEffect(() => {
     const storedStatus = localStorage.getItem(`status_${storeId}`);
@@ -45,20 +47,26 @@ export default function StoreMenuList() {
         .flatMap(category => category.menus)
       [index].menuId;
 
-      const response = await axios.post(`/dp/store/menu/status`, {
+      postChangeMenuStatus.mutate({
         menuId: menuId,
         email: email,
         status: newStatuses[index] ? '품절' : '일반'
-      });
+      })
 
-      console.log(response.data);
+      // const response = await axios.post(`/dp/store/menu/status`, {
+      //   menuId: menuId,
+      //   email: email,
+      //   status: newStatuses[index] ? '품절' : '일반'
+      // });
+
+      // console.log(response.data);
     } catch (error) {
       console.error('에러 발생:', error);
     }
-    setTimeout(() => {
-      // alert("상태가 업데이트되었습니다!");
-      console.log('2초 후에 반응');
-    }, 2000);
+    // setTimeout(() => {
+    //   // alert("상태가 업데이트되었습니다!");
+    //   console.log('2초 후에 반응');
+    // }, 2000);
   };
   
   return (

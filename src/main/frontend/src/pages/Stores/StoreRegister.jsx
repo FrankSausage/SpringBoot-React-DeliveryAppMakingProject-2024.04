@@ -4,10 +4,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
-import { findPostcode, findDeliverPostCode } from '../../utils/AddressUtils';
-import { extractDataFromFormData, formatPhoneNumber } from '../../utils/storeInfo';
-import Ownerheader from '../../components/OwnerHeader';
+import { findDeliverPostCode, findPostcodeWithOutBCode } from '../../utils/AddressUtil';
+import { extractDataFromFormData, formatPhoneNumber } from '../../utils/commonUitil';
 import { useStore } from './Hook/useStore';
+import SearchHeader from '../../components/SearchHeader';
 
 const defaultTheme = createTheme();
 
@@ -21,20 +21,19 @@ export default function StoreRegister() {
   const [category, setCategory] = useState('');
   const [type, setType] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [addressCode, setAddressCode] = useState('');
+  const [addressCode, setAddressCode] = useState({});
   const [minDeliveryPrice, setMinDeliveryPrice] = useState('');
   const [deliveryTip, setDeliveryTip] = useState('');
   const [content, setContent] = useState('');
   const [storePictureName, setStorePictureName] = useState('');
   const [minDeliveryTime, setMinDeliveryTime] = useState('');
   const [maxDeliveryTime, setMaxDeliveryTime] = useState('');
-  const [operationHours, setOperationHours] = useState('');
-  const [closedDays, setClosedDays] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [selectedDays, setSelectedDays] = useState([]);
   const [openHours, setOpenHours] = useState('');
   const [closeHours, setCloseHours] = useState('');
   const [jibun, setJibunAddress] = useState('')
-
+  console.log(addressCode)
   const navigate = useNavigate();
   // const [userInfo, setUserInfo] = useState({email: '', password: '', })
   // const [storeInfo, setStoreInfo] = useState({deliveryAddress: '', closedDays: '',}) // 나중에 이런식으로 이팩토리 할것 이유 업데이트 할때 정보 받기 편해지기 위해서
@@ -57,7 +56,7 @@ export default function StoreRegister() {
   }, []);
 
   const handleFindPostcode = () => {
-    findPostcode(setRoadAddress, setExtraAddress);
+    findPostcodeWithOutBCode(setRoadAddress, setExtraAddress);
   };
 
   const handleFindDeliverPostCode = () => {
@@ -94,7 +93,6 @@ export default function StoreRegister() {
     try {
       data.append('address', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '')
         + ',' + (detailAddress ? detailAddress : '') + " " + (deliveryAddress ? deliveryAddress : '') + " " ));
-      data.append('deliveryAddress', deliveryAddress);
       data.append('addressCode', addressCode.substring(0, 8));
       data.append('email', email);
       data.append('category', category);
@@ -120,7 +118,7 @@ export default function StoreRegister() {
   const weekDays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
   const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];
 
-  const [selectedDays, setSelectedDays] = useState([]);
+  
 
   const generateTimeOptions = (startHour, endHour) => {
     const options = [];
@@ -141,7 +139,7 @@ export default function StoreRegister() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Ownerheader />
+      <SearchHeader />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -416,7 +414,7 @@ export default function StoreRegister() {
                   required
                   fullWidth
                   id="jibun"
-                  value={deliveryAddress}
+                  value={deliveryAddress ? deliveryAddress : jibun}
                   label="배달 지역"
                   placeholder='ex) 원천동, 우만동'
                   onChange={e => setJibunAddress(e.target.value)}

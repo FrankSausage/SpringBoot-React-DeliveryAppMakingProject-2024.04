@@ -9,10 +9,7 @@ export default function StoreInfo() {
   const email = localStorage.getItem('email');
   const { storeId } = useParams();
   const { isLoading, error, StoreDetailOwner } = useStoreDeatilByEmail(email, storeId);
-
-  console.log(storeId);
-  console.log(StoreDetailOwner);
-
+  
   return (
     <ThemeProvider theme={defaultTheme}>
       {isLoading && <Typography>Loading...</Typography>}

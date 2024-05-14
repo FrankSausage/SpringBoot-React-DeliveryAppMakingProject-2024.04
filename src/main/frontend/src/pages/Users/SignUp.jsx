@@ -6,7 +6,7 @@ import Footer from '../../components/Footer';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { findPostcode } from '../../utils/AddressUtil'; 
 import { register } from '../../utils/firebase';
-import { extractDataFromFormData, formatPhoneNumber } from '../../utils/userInfo';
+import { extractDataFromFormData, formatPhoneNumber } from '../../utils/commonUitil';
 import axios from 'axios';
 import { useUser } from './Hook/useUser';
 

@@ -3,7 +3,7 @@ import { getAuth, createUserWithEmailAndPassword, GithubAuthProvider,
   signInWithPopup, signOut, updateProfile, signInWithEmailAndPassword,
   onAuthStateChanged, 
   updatePassword} from "firebase/auth";
-import { extractDataFromFormData } from '../utils/userInfo';
+import { extractDataFromFormData } from '../utils/commonUitil';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

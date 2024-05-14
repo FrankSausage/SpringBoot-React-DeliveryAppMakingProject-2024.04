@@ -2,15 +2,16 @@ import React from 'react';
 import {  Box, Grid, InputBase, Button, Typography, } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link, } from 'react-router-dom';
-import OwnerHeader from '../../../components/OwnerHeader';
 import { useUser } from '../../../pages/Users/Hook/useUser';
+import SearchHeader from '../../../components/SearchHeader';
+import { useOwnerStoreListByEmail } from '../../../utils/userInfo';
 
 export default function OwnerMain() {
-  const { getStoreListAll: { isLoading, error, data: storeData } } = useUser(localStorage.getItem('role'))
+  const  { isLoading, error, storeData } = useOwnerStoreListByEmail()
   
   return (
     <Box sx={{ margin: -1 }}>
-      <OwnerHeader />
+      <SearchHeader />
       <Grid container justifyContent="center" alignItems="center" mt={2}>
         <Grid item xs={6} md={4}>
           <Box sx={{ display: 'flex', alignItems: 'center', border: 1, borderColor: 'divider', borderRadius: 1 }}>
@@ -25,10 +26,10 @@ export default function OwnerMain() {
       </Grid>
       {isLoading && <Typography> 로딩 중.. </Typography>}
       {error && <Typography> 에러 발생! </Typography>}
-      {!isLoading && storeData.data.storeList.length===0 && 
+      {!isLoading && storeData.storeList.length===0 && 
       <Typography variant='h1' sx={{textAlign:'center', p:5}}>가게가 아직 없어요!</Typography>}
       {!isLoading && storeData && (
-        storeData.data.storeList.map((data, idx) => (
+        storeData.storeList.map((data, idx) => (
           <Grid container>
             <Grid item xs />
             <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>

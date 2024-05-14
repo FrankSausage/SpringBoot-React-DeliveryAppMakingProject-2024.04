@@ -4,12 +4,6 @@ import axios from "axios";
 export const useMenu = (menuId) => {
   const email = localStorage.getItem('email')
   const queryClient = useQueryClient();
-  
-  const getMenuDetailByMenuId = useQuery({
-    queryKey: ['menuDetailInfo'],
-    queryFn: () => { return axios.get(`/dp/store/menu/update`, { params: {menuId : menuId, email: email}})},
-    enabled: !!menuId
-  });
 
   const postMenuOption = useMutation({
     mutationFn: (menuOption) => { axios.post(`/dp/store/menuoption/register`, 
@@ -33,10 +27,10 @@ export const useMenu = (menuId) => {
     mutationFn: (menuOption) => { axios.post(`/dp/store/menuoption/update`, 
     menuOption)},
     onSuccess: () => {
-      queryClient.refetchQueries(['menuList'])
+      queryClient.invalidateQueries(['menuList'])
       alert('메뉴 옵션 수정에 성공하였습니다.')},
     onError: () => {alert('메뉴 옵션 수정에 실패하였습니다!')}
   })
 
-  return { getMenuDetailByMenuId, postMenuOption, deleteMenuOption, updateMenuOption }
+  return { postMenuOption, deleteMenuOption, updateMenuOption }
 }

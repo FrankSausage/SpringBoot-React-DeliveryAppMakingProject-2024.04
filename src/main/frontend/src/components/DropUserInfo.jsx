@@ -7,7 +7,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import Cart from '../pages/Cart/View/Cart';
 
-export default function DropUserInfo() {
+export default function DropUserInfo({ role }) {
 	const navigate = useNavigate();
   const { setOutletAddress } = useOutletContext();
 	const [anchorEl, setAnchorEl] = React.useState(null);
@@ -60,9 +60,11 @@ export default function DropUserInfo() {
         }}
           >
         <List>
+          {role!=='점주' &&
           <ListItem>
 						<Cart allClose={handleClose} />
           </ListItem>
+          }
           <ListItem>
             <ListItemButton onClick={() => {handleNavigate('Update')}}>
               <ListItemIcon>

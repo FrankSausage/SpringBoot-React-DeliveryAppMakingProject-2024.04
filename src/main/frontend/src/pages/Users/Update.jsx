@@ -6,7 +6,7 @@ import Footer from '../../components/Footer';
 import axios from 'axios';
 import SearchHeader from '../../components/SearchHeader';
 import { findPostcode } from '../../utils/AddressUtil'; 
-import { extractDataFromFormData, formatPhoneNumber } from '../../utils/userInfo';
+import { extractDataFromFormData, formatPhoneNumber } from '../../utils/commonUitil';
 import { getCurrentUser, logout, updateUser } from '../../utils/firebase';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from './Hook/useUser';
@@ -15,7 +15,7 @@ const defaultTheme = createTheme();
 
 export default function Update() {
     const { email, displayName } = getCurrentUser();
-    const { getUserByEmail: {isLoading, error, data: user} } = useUser(localStorage.getItem('role'));
+    const { getUserByEmail: {isLoading, error, data: user} } = useUser();
     const [ phone, setPhoneNumber] = useState();
     const [ passwordCheack, setPasswordCheack ] = useState('');
     const [ isPasswordMatch, setIsPasswordMatch ] = useState(true);
