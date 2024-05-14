@@ -17,7 +17,7 @@ export default function MenuUpdate() {
   const email = localStorage.getItem('email');
   const { storeId, menuId } = location.state;
   const { isLoading, error, menu} = useMenuUpByEmail(email, menuId)
-
+  console.log(menu)
   const [initialName, setInitialName] = useState('');
   const [initialPrice, setInitialPrice] = useState('');
   const [initialContent, setInitialContent] = useState('');
