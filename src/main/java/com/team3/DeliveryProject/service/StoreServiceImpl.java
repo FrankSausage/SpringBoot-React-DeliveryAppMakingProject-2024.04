@@ -73,9 +73,12 @@ public class StoreServiceImpl implements StoreService {
     public ResponseEntity<Response> updateStore(StoreUpdateRequestDto requestDto) {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
             .orElseThrow(() -> new RuntimeException("user not found"));
-        ;
+
         Stores stores = storesRepository.findById(requestDto.getStoreId())
             .orElseThrow(() -> new RuntimeException("Store not found"));
+
+        List<AddressCode> addressCodes = addressCodeRepository.findAllByStoreId(stores.getStoreId()).orElseThrow(()->
+            new RuntimeException("AddressCode not found"));
         if (users.getUserId() == stores.getUserId()) {
             stores.setName(requestDto.getName());
             stores.setType(requestDto.getType());
@@ -92,6 +95,11 @@ public class StoreServiceImpl implements StoreService {
             stores.setClosedDays(requestDto.getClosedDays());
             stores.setModifiedDate(LocalDateTime.now());
             storesRepository.save(stores);
+
+            for(AddressCode addressCode : addressCodes){
+
+                addressCode.getAddressCode();
+            }
             return Response.toResponseEntity(STORE_UPDATE_SUCCESS);
         } else {
             return Response.toResponseEntity(STORE_UPDATE_FAIL);

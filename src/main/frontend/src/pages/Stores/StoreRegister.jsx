@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findDeliverPostCode, findPostcodeWithOutBCode } from '../../utils/AddressUtil';
-import { extractDataFromFormData, formatPhoneNumber } from '../../utils/commonUitil';
+import { extractDataFromFormData, formatStorePhoneNumber, addressCodePacker } from '../../utils/commonUitil';
 import { useStore } from './Hook/useStore';
 import SearchHeader from '../../components/SearchHeader';
 
@@ -21,7 +21,7 @@ export default function StoreRegister() {
   const [category, setCategory] = useState('');
   const [type, setType] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [addressCode, setAddressCode] = useState({});
+  const [addressCode, setAddressCode] = useState('');
   const [minDeliveryPrice, setMinDeliveryPrice] = useState('');
   const [deliveryTip, setDeliveryTip] = useState('');
   const [content, setContent] = useState('');
@@ -33,7 +33,6 @@ export default function StoreRegister() {
   const [openHours, setOpenHours] = useState('');
   const [closeHours, setCloseHours] = useState('');
   const [jibun, setJibunAddress] = useState('')
-  console.log(addressCode)
   const navigate = useNavigate();
   // const [userInfo, setUserInfo] = useState({email: '', password: '', })
   // const [storeInfo, setStoreInfo] = useState({deliveryAddress: '', closedDays: '',}) // 나중에 이런식으로 이팩토리 할것 이유 업데이트 할때 정보 받기 편해지기 위해서
@@ -44,7 +43,7 @@ export default function StoreRegister() {
       script.async = true;
       document.body.appendChild(script);
       script.onload = () => {
-        console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
+        // console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
       };
     };
 
@@ -75,6 +74,8 @@ export default function StoreRegister() {
         .then(res => {
           extractDataFromFormData(res)
             .then(resFormData => {
+              resFormData.addressCodes = addressCodePacker(addressCode.split(','), deliveryAddress.split(','));
+              console.log(resFormData)
               postStoreRegister.mutate(resFormData,{
                 onSuccess: () => navigate('/'),
                 onError: e => console.error('가게 등록 실패: ' + e)
@@ -85,15 +86,14 @@ export default function StoreRegister() {
   }
 
   const handlePhoneNumberChange = (event) => {
-    const formattedPhoneNumber = formatPhoneNumber(event.target.value);
+    const formattedPhoneNumber = formatStorePhoneNumber(event.target.value);
     setPhoneNumber(formattedPhoneNumber);
   };
 
   const setFormData = async (data) => {
     try {
       data.append('address', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '')
-        + ',' + (detailAddress ? detailAddress : '') + " " + (deliveryAddress ? deliveryAddress : '') + " " ));
-      data.append('addressCode', addressCode.substring(0, 8));
+        + ',' + (detailAddress ? detailAddress : '')));
       data.append('email', email);
       data.append('category', category);
       data.append('type', type);
@@ -410,7 +410,7 @@ export default function StoreRegister() {
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="jibun"
+                  // name="jibun"
                   required
                   fullWidth
                   id="jibun"

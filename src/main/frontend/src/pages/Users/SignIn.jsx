@@ -9,8 +9,6 @@ import Footer from '../../components/Footer';
 import axios from 'axios';
 import { splitAddressFromCurrentUserAddress } from '../../utils/commonUitil';
 
-
-
 const defaultTheme = createTheme();
 
 export default function SignIn() {
