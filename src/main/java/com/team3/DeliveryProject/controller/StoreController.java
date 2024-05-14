@@ -85,7 +85,7 @@ public class StoreController {
                 .maxDeliveryTime(stores.getMaxDeliveryTime())
                 .operationHours(stores.getOperationHours())
                 .closedDays(stores.getClosedDays())
-                .deliveryAddresses(deliveryAddresses)
+                .addressCodes(deliveryAddresses)
                 .build();
 
             return ResponseEntity.ok().body(responseDto);

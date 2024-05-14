@@ -29,6 +29,6 @@ public class StoreUpdateResponseDto {
     private int maxDeliveryTime;
     private String operationHours;
     private String closedDays;
-    private List<StoreUpdateInnerDeliveryAddressesResponseDto> deliveryAddresses;
+    private List<StoreUpdateInnerDeliveryAddressesResponseDto> addressCodes;
 
 }
