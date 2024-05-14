@@ -85,8 +85,8 @@ public class MenuServiceImpl implements MenuService {
     public MenuUpdateGetResponseDto updateGetMenu(MenuUpdateGetRequestDto requestDto) {
         Menu menu = menuRepository.findById(requestDto.getMenuId())
             .orElseThrow(() -> new RuntimeException("Menu not found"));
-        List<MenuOption> menuOptionList = menuOptionRepository.findAllByMenuId(
-            requestDto.getMenuId());
+        List<MenuOption> menuOptionList = menuOptionRepository.findAllByMenuIdaAndStatus(
+            requestDto.getMenuId(), "일반");
         List<MenuUpdateInnerMenusResponseDto> menusResponseDtos = new ArrayList<>();
         List<MenuUpdateInnerOptionsResponseDto> optionsResponseDtos = new ArrayList<>();
         for (MenuOption menuOption : menuOptionList) {
@@ -184,7 +184,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public MenuDetailResponseDto getMenuDetail(MenuDetailRequestDto requestDto) {
-        List<MenuOption> menuOptions = menuOptionRepository.findAllByMenuId(requestDto.getMenuId());
+        List<MenuOption> menuOptions = menuOptionRepository.findAllByMenuIdaAndStatus(requestDto.getMenuId(), "일반");
         List<MenuDetailInnerOptionsResponseDto> menuDetailInnerOptionsResponseDtos = menuOptions.stream()
             .filter(menu -> !menu.getStatus().equals("삭제"))
             .map(MenuDetailInnerOptionsResponseDto::new)
