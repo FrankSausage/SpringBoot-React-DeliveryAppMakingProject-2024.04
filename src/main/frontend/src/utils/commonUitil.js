@@ -6,6 +6,15 @@ export async function extractDataFromFormData(formData) {
   return await data;
 }
 
+export function addressCodePacker(addressCode, deliveryAddress) {
+  // 매개변수는 split(',') 해서 넘길 것
+  const data = [];   
+    for(let i = 0; i < addressCode.length; i++) {
+      data[i] = {'addressCode': addressCode[i], 'deliveryAddress' : deliveryAddress[i]}
+    }
+  return data;
+}
+
 export const formatPhoneNumber = (phoneNumberValue) => {
 const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
 //  핸드폰 입력 formatting (e.g., XXX-XXXX-XXXX)

@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findDeliverPostCode, findPostcodeWithOutBCode } from '../../utils/AddressUtil';
-import { extractDataFromFormData, formatStorePhoneNumber } from '../../utils/commonUitil';
+import { extractDataFromFormData, formatStorePhoneNumber, addressCodePacker } from '../../utils/commonUitil';
 import { useStore } from './Hook/useStore';
 import SearchHeader from '../../components/SearchHeader';
 
@@ -74,6 +74,8 @@ export default function StoreRegister() {
         .then(res => {
           extractDataFromFormData(res)
             .then(resFormData => {
+              resFormData.addressCodes = addressCodePacker(addressCode.split(','), deliveryAddress.split(','));
+              console.log(resFormData)
               postStoreRegister.mutate(resFormData,{
                 onSuccess: () => navigate('/'),
                 onError: e => console.error('가게 등록 실패: ' + e)
@@ -92,8 +94,6 @@ export default function StoreRegister() {
     try {
       data.append('address', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '')
         + ',' + (detailAddress ? detailAddress : '')));
-      data.append('deliveryAddress', deliveryAddress);
-      data.append('addressCode', addressCode.substring(0, 8));
       data.append('email', email);
       data.append('category', category);
       data.append('type', type);
@@ -410,7 +410,7 @@ export default function StoreRegister() {
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="jibun"
+                  // name="jibun"
                   required
                   fullWidth
                   id="jibun"
