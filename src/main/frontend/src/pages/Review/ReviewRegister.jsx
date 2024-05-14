@@ -15,7 +15,7 @@ export default function ReviewRegister() {
   const { email } = getCurrentUser(); 
   const [rating, setRating] = useState('');
   const [content, setContent] = useState('');
-  const [storePictureName, setStorePictureName] = useState('');
+  const [reviewPictureName, setReviewPictureName] = useState('');
   const navigate = useNavigate();
   // const [userInfo, setUserInfo] = useState({email: '', password: '', })
   // const [storeInfo, setStoreInfo] = useState({deliveryAddress: '', closedDays: '',}) // 나중에 이런식으로 이팩토리 할것 이유 업데이트 할때 정보 받기 편해지기 위해서
@@ -55,7 +55,7 @@ export default function ReviewRegister() {
     const files = Array.from(e.target.files);
     if (files.length > 0) {
       const fileNames = files.map(file => file.name);
-      setStorePictureName(fileNames);
+      setReviewPictureName(fileNames);
     }
   };
 
@@ -129,10 +129,10 @@ export default function ReviewRegister() {
                 />
 
                 <TextField
-                  name="storePictureName"
-                  value={storePictureName}
+                  name="reviewPictureName"
+                  value={reviewPictureName}
                   fullWidth
-                  id="storePictureName"
+                  id="reviewPictureName"
                   label="리뷰 사진"
                   onClick={(e) => {
                     e.target.value = null;
@@ -154,8 +154,8 @@ export default function ReviewRegister() {
                 <div>
                   <ul style={{ display: 'flex', justifyContent: 'space-between', position: 'absolute', top: '50%', left: '40%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
                     <li style={{ listStyleType: 'none', marginLeft:'-140px', marginRight: '100px' }}>메뉴 이름</li>
-                    <li style={{ listStyleType: 'none', marginLeft:'100px', marginRight: '10px' }}> O </li>
-                    <li style={{ listStyleType: 'none', marginRight: '-220px'}}> X </li>
+                    {/* <li style={{ listStyleType: 'none', marginLeft:'100px', marginRight: '10px' }}> O </li>
+                    <li style={{ listStyleType: 'none', marginRight: '-220px'}}> X </li> */}
                   </ul>
                 </div> 
             </Box>
