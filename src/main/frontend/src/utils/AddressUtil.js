@@ -59,9 +59,18 @@ export const findDeliverPostCode = (setJibunAddress, setExtraAddress, setAddress
         if (jibunRoadAddr !== '') {
           jibunRoadAddr = ' (' + jibunRoadAddr + ')';
         }
-        setJibunAddress(jibunRoadAddr);
-        setExtraAddress(data.bname); 
-        setAddressCode(data.bcode);
+        setJibunAddress(prev => {
+          if (prev)
+            return prev + ',' + jibunRoadAddr;
+          return jibunRoadAddr});
+        setExtraAddress(prev => {
+          if (prev)
+            return prev + ',' + data.bname;
+          return data.bname}); 
+        setAddressCode(prev => {
+          if (prev)
+            return prev + ',' + data.bcode;
+          return data.bcode});
       }
     }).open();
   } else {

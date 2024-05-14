@@ -43,7 +43,7 @@ export default function StoreRegister() {
       script.async = true;
       document.body.appendChild(script);
       script.onload = () => {
-        console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
+        // console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
       };
     };
 
@@ -91,7 +91,8 @@ export default function StoreRegister() {
   const setFormData = async (data) => {
     try {
       data.append('address', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '')
-        + ',' + (detailAddress ? detailAddress : '') + " " + (deliveryAddress ? deliveryAddress : '') + " " ));
+        + ',' + (detailAddress ? detailAddress : '')));
+      data.append('deliveryAddress', deliveryAddress);
       data.append('addressCode', addressCode.substring(0, 8));
       data.append('email', email);
       data.append('category', category);
