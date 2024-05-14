@@ -7,7 +7,7 @@ import { login, } from '../../utils/firebase';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import axios from 'axios';
-import { splitAddressFromCurrentUserAddress } from '../../utils/userInfo';
+import { splitAddressFromCurrentUserAddress } from '../../utils/commonUitil';
 
 
 
@@ -37,7 +37,8 @@ export default function SignIn() {
           } else {
             axios.get(`dp/user/signin`, { params: { email: userInfo.email }})
               .then(res => {
-                console.log(res)
+                // console.log(res)
+                localStorage.setItem('email', userInfo.email);
                 localStorage.setItem('role', res.data.role);
                 localStorage.setItem('email', userInfo.email);
                 if(res.data.role !== '점주') {

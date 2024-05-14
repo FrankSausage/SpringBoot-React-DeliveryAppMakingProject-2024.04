@@ -1,6 +1,6 @@
 import { Box, Button, Grid, InputBase, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, } from "react-router-dom";
 import SearchHeader from "../../components/SearchHeader";
 import SearchIcon from '@mui/icons-material/Search';
 import StoreList from '../Stores/StoreList';

@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Footer from '../../../components/Footer';
+import { extractDataFromFormData } from '../../../utils/commonUitil';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Footer from '../../components/Footer';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { getCurrentUser } from '../../utils/firebase';
-import { extractDataFromFormData, useMenuUpByEmail } from '../../utils/storeInfo';
-import axios from 'axios';
-import Ownerheader from '../../components/OwnerHeader';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import MenuOptionDetail from './MenuOptionDetail';
+import { useMenuUpByEmail } from '../../../utils/storeInfo';
+import SearchHeader from '../../../components/SearchHeader';
 
 const defaultTheme = createTheme();
 
 export default function MenuUpdate() {
   const location = useLocation();
+  const email = localStorage.getItem('email');
   const { storeId, menuId } = location.state;
-  const { email } = getCurrentUser();
-  const { isLoading, error, menu } = useMenuUpByEmail(email, menuId);
-
+  const { isLoading, error, menu} = useMenuUpByEmail(email, menuId)
+  console.log(menu)
   const [initialName, setInitialName] = useState('');
   const [initialPrice, setInitialPrice] = useState('');
   const [initialContent, setInitialContent] = useState('');
@@ -26,12 +27,11 @@ export default function MenuUpdate() {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [category, setCategory] = useState('');
-  const [type, setType] = useState('');
   const [content, setContent] = useState('');
   const [storePictureName, setStorePictureName] = useState('');
 
   useEffect(() => {
-    if (!isLoading && menu.menus) {
+    if (!isLoading && menu) {
       // 초기 값을 설정합니다.
       setInitialName(menu.menus[0].name);
       setInitialPrice(menu.menus[0].price);
@@ -46,10 +46,9 @@ export default function MenuUpdate() {
       setCategory(menu.menus[0].category);
       setStorePictureName(menu.menus[0].menuPictureName);
     }
-  }, [isLoading, menu]);
+  }, [isLoading]);
 
   const navigate = useNavigate();
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,27 +65,36 @@ export default function MenuUpdate() {
 
     alert('메뉴 업데이트가 완료되었습니다.');
     navigate(`/StoreDetail/${storeId}`);
-
   };
 
+  const handleMenuDelete = () => {
+    const confirmDelete = window.confirm('정말로 이 메뉴를 삭제하시겠습니까?');
+    if (confirmDelete) {
+      axios.post(`/dp/store/menu/delete`, { menuId: menuId, storeId: storeId, email: email })
+        .then(response => {
+          alert('메뉴가 삭제되었습니다.');
+          navigate(`/StoreDetail/${storeId}`);
+        })
+        .catch(error => {
+          console.error('메뉴 삭제 중 에러 발생:', error);
+          alert('메뉴 삭제 중 에러가 발생했습니다.');
+        });
+    }
+  };
 
   const setFormData = async (data) => {
     try {
       data.append('menuId', menuId);
       data.append('email', email);
-      data.append('category', category);
-      data.append('type', type);
-      data.append('content', content);
-      data.append('name', name);
-      data.append('price', price);
-      data.append('menuPictureName', storePictureName); // 업데이트된 사진 파일 이름 추가
-
-      // 기타 필요한 데이터 추가
-
-      // data.append('popularity', popularity);
-      return await data;
-    }
-    catch (error) {
+      data.append('category', '');
+      data.append('type', '');
+      data.append('content', '');
+      data.append('name', '');
+      data.append('price', '');
+      data.append('menuPictureName', '');
+      data.append('menuOptions', null);
+      return data;
+    } catch (error) {
       console.error('setFormData Error!: ', error);
       return ('setFormData Error!: ', error);
     }
@@ -100,15 +108,13 @@ export default function MenuUpdate() {
     }
   };
 
-
-
   return (
     <ThemeProvider theme={defaultTheme}>
       {isLoading && <Typography>Loading...</Typography>}
       {error && <Typography>에러 발생!</Typography>}
       {!isLoading && menu.menus &&
         <Box>
-          <Ownerheader />
+          <SearchHeader />
           <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Box
@@ -128,6 +134,7 @@ export default function MenuUpdate() {
               <Typography component="h1" variant="h5">
                 음식 정보 수정
               </Typography>
+              {menu.menus[0].options && <MenuOptionDetail options={menu.menus[0].options} email={email} />}
               <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
@@ -237,6 +244,14 @@ export default function MenuUpdate() {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}>
                   수정하기
+                </Button>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="error"
+                  onClick={() => handleMenuDelete(menuId, email, storeId)}
+                  sx={{ mt: 1, mb: 2 }}>
+                  삭제하기
                 </Button>
               </Box>
             </Box>
