@@ -1,5 +1,6 @@
 package com.team3.DeliveryProject.dto.request.store;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,5 +30,5 @@ public class StoreAddRequestDto {
     private int maxDeliveryTime;
     private String operationHours;
     private String closedDays;
-    private String addressCode;
+    private List<StoreAddInnerAddressCodesRequestDto> addressCodes;
 }
