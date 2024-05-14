@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Ownerheader from '../../components/OwnerHeader';
+// import Ownerheader from '../../components/OwnerHeader';
 import { Box, Rating, Typography, Tab, Tabs, useTheme, AppBar } from '@mui/material';
 
 

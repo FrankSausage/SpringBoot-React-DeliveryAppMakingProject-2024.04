@@ -20,23 +20,23 @@ export default function ReviewUpdate() {
   // const [userInfo, setUserInfo] = useState({email: '', password: '', })
   // const [storeInfo, setStoreInfo] = useState({deliveryAddress: '', closedDays: '',}) // 나중에 이런식으로 이팩토리 할것 이유 업데이트 할때 정보 받기 편해지기 위해서
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    extractDataFromFormData(data).then(res=>console.log(res))
-      setFormData(data)
-        .then(res => {
-          extractDataFromFormData(res)
-            .then(resFormData => {
-              axios.post(`/dp/store/review/register`, resFormData)
-            })
-            .then(() => {
-              alert('리뷰 등록이 완료되었습니다.');
-              navigate('/');
-            })
-        })
-        .catch(console.error);
-    };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const data = new FormData(e.currentTarget);
+  //   extractDataFromFormData(data).then(res=>console.log(res))
+  //     setFormData(data)
+  //       .then(res => {
+  //         extractDataFromFormData(res)
+  //           .then(resFormData => {
+  //             axios.post(`/dp/store/review/register`, resFormData)
+  //           })
+  //           .then(() => {
+  //             alert('리뷰 등록이 완료되었습니다.');
+  //             navigate('/');
+  //           })
+  //       })
+  //       .catch(console.error);
+  //   };
 
   
 
