@@ -5,9 +5,14 @@ import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ProtectedRoute from './pages/ProtectedRoute';
 import Home from './pages/Home';
+// Users
+import UserMain from './pages/Users/View/UserMain';
+import OwnerMain from './pages/Users/View/OwnerMain';
+import Address from './pages/Users/View/Address';
 import SignIn from './pages/Users/SignIn';
 import SignUp from './pages/Users/SignUp';
 import Update from './pages/Users/Update';
+// Stores
 import Store from './pages/Stores/View/Store';
 import StoreRegister from './pages/Stores/StoreRegister';
 import StoreUpdate from './pages/Stores/StoreUpdate';
@@ -27,6 +32,14 @@ import ReviewRating from './pages/Review/ReviewRating';
 import Cart from './pages/Cart/View/Cart';
 import Order from './pages/Order/View/Order';
 import StoreSearch from './pages/Stores/StoreSearch';
+// Menus
+import MenuRegister from './pages/Stores/Menus/MenuRegister';
+import MenuUpdate from './pages/Stores/Menus/MenuUpdate';
+import MenuDetail from './pages/Stores/Menus/MenuDetail';
+
+// Order
+import Order from './pages/Order/View/Order';
+// Cart
 
 
 const router = createBrowserRouter([
@@ -46,9 +59,11 @@ const router = createBrowserRouter([
       { path: 'StoreSearch', element: <ProtectedRoute><StoreSearch /></ProtectedRoute>},
       { path: 'StoreRegister', element: <StoreRegister />},
       { path: 'StoreUpdate', element: <StoreUpdate />},
+      { path: 'StoreUpdate/:storeId', element: <StoreUpdate />},
       { path: 'StoreDetail/:storeId', element: <StoreDetail />},
       { path: 'MenuRegister/:storeId', element: <MenuRegister />},
       { path: 'MenuUpdate', element: <MenuUpdate />},
+      { path: 'MenuDetail', element: <MenuDetail />},
       { path: 'MenuUpdate/:menuId', element: <MenuUpdate />},
       { path: 'UserMain', element: <UserMain />,},
       { path: 'OwnerMain', element: <OwnerMain />},

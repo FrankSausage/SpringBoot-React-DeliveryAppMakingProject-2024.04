@@ -1,5 +1,6 @@
 package com.team3.DeliveryProject.dto.response.store;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,5 +29,6 @@ public class StoreUpdateResponseDto {
     private int maxDeliveryTime;
     private String operationHours;
     private String closedDays;
+    private List<StoreUpdateInnerDeliveryAddressesResponseDto> addressCodes;
 
 }

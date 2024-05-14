@@ -4,16 +4,16 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
-import { findPostcode } from '../../utils/AddressUtil';
-import { getCurrentUser } from '../../utils/firebase';
-import { extractDataFromFormData, formatPhoneNumber } from '../../utils/storeInfo';
-import axios from 'axios';
-import Ownerheader from '../../components/OwnerHeader';
+import { findDeliverPostCode, findPostcodeWithOutBCode } from '../../utils/AddressUtil';
+import { extractDataFromFormData, formatStorePhoneNumber, addressCodePacker } from '../../utils/commonUitil';
+import { useStore } from './Hook/useStore';
+import SearchHeader from '../../components/SearchHeader';
 
 const defaultTheme = createTheme();
 
 export default function StoreRegister() {
-  const { email } = getCurrentUser();
+  const email = localStorage.getItem('email')
+  const { postStoreRegister } = useStore();
   const [roadAddress, setRoadAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
@@ -28,12 +28,11 @@ export default function StoreRegister() {
   const [storePictureName, setStorePictureName] = useState('');
   const [minDeliveryTime, setMinDeliveryTime] = useState('');
   const [maxDeliveryTime, setMaxDeliveryTime] = useState('');
-  const [operationHours, setOperationHours] = useState('');
-  const [closedDays, setClosedDays] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [selectedDays, setSelectedDays] = useState([]);
   const [openHours, setOpenHours] = useState('');
   const [closeHours, setCloseHours] = useState('');
-
+  const [jibun, setJibunAddress] = useState('')
   const navigate = useNavigate();
   // const [userInfo, setUserInfo] = useState({email: '', password: '', })
   // const [storeInfo, setStoreInfo] = useState({deliveryAddress: '', closedDays: '',}) // 나중에 이런식으로 이팩토리 할것 이유 업데이트 할때 정보 받기 편해지기 위해서
@@ -44,7 +43,7 @@ export default function StoreRegister() {
       script.async = true;
       document.body.appendChild(script);
       script.onload = () => {
-        console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
+        // console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
       };
     };
 
@@ -56,7 +55,11 @@ export default function StoreRegister() {
   }, []);
 
   const handleFindPostcode = () => {
-    findPostcode(setRoadAddress, setExtraAddress, setAddressCode);
+    findPostcodeWithOutBCode(setRoadAddress, setExtraAddress);
+  };
+
+  const handleFindDeliverPostCode = () => {
+    findDeliverPostCode(setJibunAddress, setDeliveryAddress, setAddressCode);
   };
 
   const handleSubmit = async (e) => {
@@ -71,19 +74,19 @@ export default function StoreRegister() {
         .then(res => {
           extractDataFromFormData(res)
             .then(resFormData => {
-              axios.post(`/dp/store/owner/register`, resFormData)
+              resFormData.addressCodes = addressCodePacker(addressCode.split(','), deliveryAddress.split(','));
+              console.log(resFormData)
+              postStoreRegister.mutate(resFormData,{
+                onSuccess: () => navigate('/'),
+                onError: e => console.error('가게 등록 실패: ' + e)
+              })
             })
-            .then(() => {
-              alert('입점 신청이 완료되었습니다.');
-              navigate('/');
-            })
-        })
-        .catch(console.error);
+      });
     }
-  };
+  }
 
   const handlePhoneNumberChange = (event) => {
-    const formattedPhoneNumber = formatPhoneNumber(event.target.value);
+    const formattedPhoneNumber = formatStorePhoneNumber(event.target.value);
     setPhoneNumber(formattedPhoneNumber);
   };
 
@@ -92,7 +95,6 @@ export default function StoreRegister() {
       data.append('address', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '')
         + ',' + (detailAddress ? detailAddress : '')));
       data.append('email', email);
-      data.append('addressCode', addressCode.substring(0, 8));
       data.append('category', category);
       data.append('type', type);
       data.append('operationHours', `${openHours}~${closeHours}`);
@@ -116,15 +118,17 @@ export default function StoreRegister() {
   const weekDays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
   const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];
 
-  const [selectedDays, setSelectedDays] = useState([]);
+  
 
   const generateTimeOptions = (startHour, endHour) => {
     const options = [];
     for (let hour = startHour; hour <= endHour; hour++) {
       for (let minute = 0; minute < 60; minute += 30) {
-        const formattedHour = hour.toString().padStart(2, '0');
-        const formattedMinute = minute.toString().padStart(2, '0');
-        options.push(`${formattedHour}:${formattedMinute}`);
+        if (hour < endHour || (hour === endHour && minute < 30)) { // 24:00과 24:30 제외
+          const formattedHour = (hour === 24 ? '23' : hour).toString().padStart(2, '0');
+          const formattedMinute = (hour === endHour && minute === 0) ? '59' : minute.toString().padStart(2, '0'); // 24:00 대신 23:59 추가
+          options.push(`${formattedHour}:${formattedMinute}`);
+        }
       }
     }
     return options;
@@ -133,12 +137,9 @@ export default function StoreRegister() {
   const timeOptionsOpen = generateTimeOptions(5, 18);
   const timeOptionsClose = generateTimeOptions(15, 24).concat(generateTimeOptions(0, 7));
 
-
-
-
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Ownerheader />
+      <SearchHeader />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -408,16 +409,25 @@ export default function StoreRegister() {
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="deliveryAddress"
+                  // name="jibun"
                   required
                   fullWidth
-                  id="deliveryAddress"
-                  value={deliveryAddress}
+                  id="jibun"
+                  value={deliveryAddress ? deliveryAddress : jibun}
                   label="배달 지역"
                   placeholder='ex) 원천동, 우만동'
-                  onChange={e => setDeliveryAddress(e.target.value)}
+                  onChange={e => setJibunAddress(e.target.value)}
                 />
               </Grid>
+              <Button
+                type="button"
+                onClick={handleFindDeliverPostCode}
+                fullWidth
+                variant="contained"
+                sx={{ mt: 1, mb: 2, ml: 2 }}
+              >
+                주소 찾기
+              </Button>
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
@@ -440,7 +450,7 @@ export default function StoreRegister() {
                 <input
                   accept=".png, .jpeg, .jpg"
                   id="upload-photo"
-                  type="file"
+                  type="file" a
                   style={{ display: 'none' }}
                   onChange={handleFileUpload} multiple
                 />

@@ -3,9 +3,9 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Divider, FormControl, Grid, Input, Stack } from '@mui/material';
+import { Divider, Grid, Input, Stack } from '@mui/material';
 import { Form } from 'react-router-dom';
-import { useMenu } from './useMenu';
+import { useMenu } from '../Hook/useMenu';
 
 
 export default function MenuOptionRegister({ email, menuId }) {

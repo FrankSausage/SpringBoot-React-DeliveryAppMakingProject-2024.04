@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Grid,  Typography, Button, Stack } from '@mui/material';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useMenuListByStoreId } from '../../utils/storeInfo';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { getCurrentUser } from '../../utils/firebase';
 import axios from 'axios';
-import MenuOptionRegister from '../Menus/MenuOptionRegister';
+import MenuOptionRegister from './Menus/MenuOptionRegister';
+import { useStore } from './Hook/useStore';
 
 const defaultTheme = createTheme();
 
-export default function StoreMenuList() {
+export default function StoreMenuList() {   
   const email = localStorage.getItem('email')
   const role = localStorage.getItem('role');
   const { storeId } = useParams();
   const [status, setStatus] = useState([]);
   const { isLoading, error, menuData } = useMenuListByStoreId(storeId);
+  const { postChangeMenuStatus } = useStore()
 
   useEffect(() => {
     const storedStatus = localStorage.getItem(`status_${storeId}`);
@@ -45,20 +47,26 @@ export default function StoreMenuList() {
         .flatMap(category => category.menus)
       [index].menuId;
 
-      const response = await axios.post(`/dp/store/menu/status`, {
+      postChangeMenuStatus.mutate({
         menuId: menuId,
         email: email,
         status: newStatuses[index] ? '품절' : '일반'
-      });
+      })
 
-      console.log(response.data);
+      // const response = await axios.post(`/dp/store/menu/status`, {
+      //   menuId: menuId,
+      //   email: email,
+      //   status: newStatuses[index] ? '품절' : '일반'
+      // });
+
+      // console.log(response.data);
     } catch (error) {
       console.error('에러 발생:', error);
     }
-    setTimeout(() => {
-      // alert("상태가 업데이트되었습니다!");
-      console.log('2초 후에 반응');
-    }, 2000);
+    // setTimeout(() => {
+    //   // alert("상태가 업데이트되었습니다!");
+    //   console.log('2초 후에 반응');
+    // }, 2000);
   };
   
   return (
@@ -74,9 +82,8 @@ export default function StoreMenuList() {
                 <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
                   <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
                     <Box key={res.menuId} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
-                      <Link to={`/MenuUpdate/${res.menuId}`} state={{ menuId: res.menuId, storeId: storeId }} style={{ textDecoration: 'none', color: 'black' }} >
                         <Box component={Link} to={role==='회원' ? `/MenuDetail` : `/MenuUpdate`} state={{menuId : res.menuId, storeId : storeId,}}  sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
-                          <img src={res.menuPictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
+                          <img src={res.menuPictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} alt='메뉴 사진' />
                           <ul style={{ position: 'absolute', top: '50%', left: '40%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
                             <li style={{ listStyleType: 'none' }}>{res.name}</li>
                             <li style={{ listStyleType: 'none' }}>인기 : {res.popularity} </li>
@@ -86,7 +93,6 @@ export default function StoreMenuList() {
                             )}
                           </ul>
                         </Box>
-                      </Link>
                       {role === '점주' && 
                         <Grid container spacing={3} >
                           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>

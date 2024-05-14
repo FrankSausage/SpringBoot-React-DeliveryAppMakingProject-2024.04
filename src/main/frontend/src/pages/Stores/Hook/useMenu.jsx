@@ -1,13 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-export function useMenu(menuId, email) {
+export const useMenu = (menuId) => {
+  const email = localStorage.getItem('email')
   const queryClient = useQueryClient();
-  
-  const getMenuDetailByMenuId = useQuery({
-    queryKey: ['menuDetailInfo', menuId],
-    queryFn: () => { return axios.get(`/dp/store/menu/update`, {params: {menuId : menuId, email: email}})}
-  });
 
   const postMenuOption = useMutation({
     mutationFn: (menuOption) => { axios.post(`/dp/store/menuoption/register`, 
@@ -22,6 +18,7 @@ export function useMenu(menuId, email) {
     mutationFn: (menuOptionId, email) => { axios.post(`/dp/store/menuoption/delete`, 
     {menuOptionId: menuOptionId, email: email})},
     onSuccess: () => {
+      queryClient.invalidateQueries(['menuList'])
       queryClient.refetchQueries(['menuList'])
       alert('메뉴 옵션 삭제에 성공하였습니다.')},
     onError: () => {alert('메뉴 옵션 삭제에 실패하였습니다!')}
@@ -31,10 +28,11 @@ export function useMenu(menuId, email) {
     mutationFn: (menuOption) => { axios.post(`/dp/store/menuoption/update`, 
     menuOption)},
     onSuccess: () => {
+      queryClient.invalidateQueries(['menuList'])
       queryClient.refetchQueries(['menuList'])
       alert('메뉴 옵션 수정에 성공하였습니다.')},
     onError: () => {alert('메뉴 옵션 수정에 실패하였습니다!')}
   })
 
-  return { getMenuDetailByMenuId, postMenuOption, deleteMenuOption, updateMenuOption }
+  return { postMenuOption, deleteMenuOption, updateMenuOption }
 }

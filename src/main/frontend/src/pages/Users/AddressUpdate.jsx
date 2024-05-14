@@ -3,7 +3,7 @@ import { Button, Dialog, DialogActions, DialogContent,
 import React, { Fragment, useEffect, useState } from "react";
 import { findPostcode } from "../../utils/AddressUtil";
 import axios from "axios";
-import { extractDataFromFormData, splitAddressFromCurrentUserAddress } from "../../utils/userInfo";
+import { extractDataFromFormData, splitAddressFromCurrentUserAddress } from "../../utils/commonUitil";
 import { useNavigate, useOutletContext } from "react-router";
 
 
