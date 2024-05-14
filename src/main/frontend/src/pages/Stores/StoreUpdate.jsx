@@ -7,7 +7,7 @@ import Footer from '../../components/Footer';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { findPostcode } from '../../utils/AddressUtil';
 import { useOwnerByEmail } from '../../utils/storeInfo';
-import { extractDataFromFormData, formatPhoneNumber, splitAddressFromCurrentUserAddress } from '../../utils/commonUitil';
+import { extractDataFromFormData, formatStorePhoneNumber, splitAddressFromCurrentUserAddress } from '../../utils/commonUitil';
 import axios from 'axios';
 import SearchHeader from '../../components/SearchHeader';
 
@@ -112,7 +112,7 @@ export default function StoreRegister() {
   };
 
   const handlePhoneNumberChange = (event) => {
-    const formattedPhoneNumber = formatPhoneNumber(event.target.value);
+    const formattedPhoneNumber = formatStorePhoneNumber(event.target.value);
     setPhone(formattedPhoneNumber);
   };
 

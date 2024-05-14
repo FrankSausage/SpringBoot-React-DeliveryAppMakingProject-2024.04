@@ -9,6 +9,14 @@ export async function extractDataFromFormData(formData) {
 export const formatPhoneNumber = (phoneNumberValue) => {
 const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
 //  핸드폰 입력 formatting (e.g., XXX-XXXX-XXXX)
+const formattedPhoneNumber = strippedPhoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+
+return formattedPhoneNumber;
+};
+
+export const formatStorePhoneNumber = (phoneNumberValue) => {
+const strippedPhoneNumber = phoneNumberValue.replace(/\D/g, '');
+//  핸드폰 입력 formatting (e.g., XXX-XXXX-XXXX)
 const formattedPhoneNumber = strippedPhoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
 
 return formattedPhoneNumber;
