@@ -42,7 +42,7 @@ public class UserController {
     public ResponseEntity<?> signUp(@RequestBody UserSignUpRequestDto requestDto) {
 
         Users users = new Users(requestDto.getPassword(), requestDto.getName(),
-            requestDto.getPhone(), requestDto.getEmail(), 0, requestDto.getRole(),
+            requestDto.getPhone(), requestDto.getEmail(), 1, requestDto.getRole(),
             requestDto.getCurrentAddress(), requestDto.getAddressCode(),
             "우리집", 0);
         userService.signUp(users);
