@@ -34,9 +34,15 @@ export default function StoreRegister() {
   const [minDeliveryTime, setMinDeliveryTime] = useState('');
   const [maxDeliveryTime, setMaxDeliveryTime] = useState('');
   const [addressCodes, setAddressCodes] = useState([]);
-  const [deliveryAddress, setDeliveryAddress] = useState([]); // 변경된 부분
   const [newDeliveryAddress, setNewDeliveryAddress] = useState('');
+  const [existingDeliveryAddresses, setExistingDeliveryAddresses] = useState([]);
+  const [deliveryAddress, setDeliveryAddress] = useState([]);
+  const [usePreviousData, setUsePreviousData] = useState(false);
   const [selectedDays, setSelectedDays] = useState([]);
+  const [selectedDeliveryAddresses, setSelectedDeliveryAddresses] = useState([]);
+  const handleDeliveryAddressesChange = (event) => {
+    setSelectedDeliveryAddresses(event.target.value);
+  };
   const [openHours, setOpenHours] = useState('');
   const [closeHours, setCloseHours] = useState('');
   const [jibun, setJibunAddress] = useState([]);
@@ -65,13 +71,16 @@ export default function StoreRegister() {
   };
 
   const handleFindDeliverPostCode = () => {
-    if (newDeliveryAddress) {
-      setDeliveryAddress(prevAddresses => [...prevAddresses, newDeliveryAddress]);
-    } else {
-      setDeliveryAddress([]);
+    if (newDeliveryAddress && !usePreviousData) {
+      setDeliveryAddress(prevAddresses => [...prevAddresses, newDeliveryAddress]); // 새로운 데이터 추가
     }
     findDeliverPostCode(setJibunAddress, setNewDeliveryAddress, setAddressCode);
   };
+
+  const handleUsePreviousDataChange = () => {
+    setUsePreviousData(prev => !prev);
+  };
+
 
   useEffect(() => {
     if (store && store.addressCodes && store.closedDays) {
@@ -131,11 +140,11 @@ export default function StoreRegister() {
         .then(res => {
           extractDataFromFormData(res)
             .then(resFormData => {
-              resFormData.addressCodes = addressCodePacker(addressCode.split(','), deliveryAddress); // 변경된 부분
+              resFormData.addressCodes = addressCodePacker(addressCode.split(','), deliveryAddress.join(','));
               console.log(resFormData)
               postStoreUpdate.mutate(resFormData, {
                 onSuccess: () => navigate('/'),
-                onError: e => console.error('가게 등록 실패: ' + e)
+                onError: e => console.error('가게 수정 실패: ' + e)
               })
             })
         });
@@ -144,7 +153,7 @@ export default function StoreRegister() {
 
   const handlePhoneNumberChange = (event) => {
     const formattedPhoneNumber = formatStorePhoneNumber(event.target.value);
-    setPhoneNumber(formattedPhoneNumber);
+    setPhone(formattedPhoneNumber);
   };
 
   const setFormData = async (data) => {
@@ -215,12 +224,6 @@ export default function StoreRegister() {
           alert('가게 삭제 중 에러가 발생했습니다.');
         });
     }
-  };
-
-  const addressCodePacker = (addressCodes, deliveryAddresses) => {
-    const packedAddressCodes = addressCodes.map(code => code.substring(0, 8)); // 앞 8자리만 추출하여 저장
-    const packedDeliveryAddresses = deliveryAddresses.map(address => address.substring(0, 8)); // 앞 8자리만 추출하여 저장
-    return { packedAddressCodes, packedDeliveryAddresses };
   };
 
   return (
@@ -475,15 +478,47 @@ export default function StoreRegister() {
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
                         <TextField
-                          required
                           fullWidth
-                          id="newDeliveryAddress"
-                          name="newDeliveryAddress"
-                          label="배달 가능 주소"
-                          placeholder='ex) 경기도 성남시 분당구 판교역로 235'
-                          value={newDeliveryAddress}
-                          onChange={e => setNewDeliveryAddress(e.target.value)}
+                          id="deliveryAddress"
+                          name="deliveryAddress"
+                          label="배달 가능 지역"
+                          value={deliveryAddress.join(', ')}
+                          InputProps={{
+                            readOnly: true,
+                          }}
                         />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Grid container spacing={1}>
+                          <FormControlLabel
+                            control={<Checkbox checked={usePreviousData} onChange={handleUsePreviousDataChange} color="primary" />}
+                            label="기존 데이터 사용"
+                          />
+                          <Grid item xs={12}>
+                            <Select
+                              labelId="demo-multiple-checkbox-label"
+                              id="demo-multiple-checkbox"
+                              multiple
+                              value={selectedDeliveryAddresses}
+                              onChange={handleDeliveryAddressesChange}
+                              input={<Input />}
+                              renderValue={(selected) => selected.join(', ')}
+                              >
+                              {existingDeliveryAddresses.map((address) => (
+                                <MenuItem key={address} value={address}>
+                                  <Checkbox checked={selectedDeliveryAddresses.includes(address)} />
+                                  <ListItemText primary={address} />
+                                </MenuItem>
+                              ))}
+                              {deliveryAddress.map((address) => (
+                                <MenuItem key={address} value={address}>
+                                  <Checkbox checked={selectedDeliveryAddresses.includes(address)} />
+                                  <ListItemText primary={address} />
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </Grid>
+                        </Grid>
                       </Grid>
                       <Button
                         type="button"
@@ -491,6 +526,7 @@ export default function StoreRegister() {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 1, mb: 2, ml: 2 }}
+                        disabled={usePreviousData} 
                       >
                         주소 찾기
                       </Button>
@@ -540,30 +576,7 @@ export default function StoreRegister() {
                           사진 올리기
                         </Button>
                       </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          fullWidth
-                          id="addressCode"
-                          name="addressCode"
-                          label="배달 가능 주소 코드"
-                          value={addressCode}
-                          InputProps={{
-                            readOnly: true,
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          fullWidth
-                          id="deliveryAddress"
-                          name="deliveryAddress"
-                          label="배달 가능 주소 목록"
-                          value={deliveryAddress.join(', ')}
-                          InputProps={{
-                            readOnly: true,
-                          }}
-                        />
-                      </Grid>
+
                     </Grid>
                   </Grid>
                   <Grid item xs={6}>
@@ -575,12 +588,14 @@ export default function StoreRegister() {
                     >
                       수정
                     </Button>
+                  </Grid>
+                  <Grid item xs={6}>
                     <Button
                       fullWidth
                       variant="contained"
                       color="error"
                       onClick={() => handleStoreDelete(email, storeId)}
-                      sx={{ mt: 1, mb: 2 }}>
+                      sx={{ mt: 3, mb: 2 }}>
                       삭제하기
                     </Button>
                   </Grid>
