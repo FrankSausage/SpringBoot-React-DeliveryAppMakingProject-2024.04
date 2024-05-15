@@ -33,7 +33,7 @@ export default function StoreRegister() {
   const [maxDeliveryTime, setMaxDeliveryTime] = useState('');
   const [selectedDays, setSelectedDays] = useState([]);
   const [operationHours, setOperationHours] = useState('');
-  const [closedDays, setClosedDays] = useState('');
+  const [closedDays, setClosedDays] = useState([]);
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const navigate = useNavigate();
   console.log(store)
@@ -130,7 +130,7 @@ export default function StoreRegister() {
       data.append('maxDeliveryTime', maxDeliveryTime);
       data.append('operationHours', operationHours);
       data.append('minDeliveryTime', minDeliveryTime);
-      data.append('closedDays', closedDays);
+      data.append('closedDays', selectedDays.join(','));
       // data.append('deliveryAddress', deliveryAddress);
       data.append('content', content);
       return await data;
@@ -151,8 +151,6 @@ export default function StoreRegister() {
 
   const weekDays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
   const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];
-
-  
 
   const generateTimeOptions = (startHour, endHour) => {
     const options = [];
@@ -372,7 +370,7 @@ export default function StoreRegister() {
                         labelId="closedDays-label"
                         id="closedDays"
                         multiple
-                        value={selectedDays}
+                        value={selectedDays ? selectedDays : closedDays}
                         onChange={e => setSelectedDays(e.target.value)}
                         input={<Input />}
                         renderValue={(selected) => selected.join(', ')}
