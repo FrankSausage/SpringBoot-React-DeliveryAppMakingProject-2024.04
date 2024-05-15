@@ -3,12 +3,16 @@ package com.team3.DeliveryProject.service;
 import static com.team3.DeliveryProject.responseCode.ErrorCode.USER_POINT_LESS_THAN_INPUT;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.CART_ADD_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.ORDER_ADD_SUCCESS;
+import static com.team3.DeliveryProject.responseCode.ResponseCode.ORDER_DELETE_SUCCESS;
+import static com.team3.DeliveryProject.responseCode.ResponseCode.ORDER_STATUS_DETAIL_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.ORDER_STATUS_UPDATE_SUCCESS;
 
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.order.OrderAddInnerMenuOptionsRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderAddInnerMenusRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderAddRequestDto;
+import com.team3.DeliveryProject.dto.request.order.OrderDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.order.OrderStatusDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderUpdateRequestDto;
 import com.team3.DeliveryProject.entity.Menu;
 import com.team3.DeliveryProject.entity.MenuOption;
@@ -108,4 +112,13 @@ public class OrderServiceImpl implements OrderService{
 
         return Response.toResponseEntity(ORDER_STATUS_UPDATE_SUCCESS);
     }
+
+    @Override
+    public ResponseEntity<Response> deleteOrder(OrderDeleteRequestDto requestDto) {
+        Orders orders = ordersRepository.findById(requestDto.getOrderId()).orElseThrow(()->new RuntimeException("Order not found"));
+        orders.setStatus("삭제");
+        ordersRepository.save(orders);
+        return Response.toResponseEntity(ORDER_DELETE_SUCCESS);
+    }
+
 }
