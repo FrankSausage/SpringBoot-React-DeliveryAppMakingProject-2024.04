@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findDeliverPostCode, findPostcodeWithOutBCode } from '../../utils/AddressUtil';
-import { extractDataFromFormData, formatStorePhoneNumber, addressCodePacker } from '../../utils/commonUitil';
+import { extractDataFromFormData, formatStorePhoneNumber, addressCodePacker, generateTimeOptions } from '../../utils/commonUitil';
 import { useStore } from './Hook/useStore';
 import SearchHeader from '../../components/SearchHeader';
 
@@ -33,6 +33,8 @@ export default function StoreRegister() {
   const [openHours, setOpenHours] = useState('');
   const [closeHours, setCloseHours] = useState('');
   const [jibun, setJibunAddress] = useState('')
+   const timeOptionsOpen = generateTimeOptions(5, 18);
+  const timeOptionsClose = generateTimeOptions(15, 24).concat(generateTimeOptions(0, 7));
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -117,22 +119,6 @@ export default function StoreRegister() {
   const weekDays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
   const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];
 
-  const generateTimeOptions = (startHour, endHour) => {
-    const options = [];
-    for (let hour = startHour; hour <= endHour; hour++) {
-      for (let minute = 0; minute < 60; minute += 30) {
-        if (hour < endHour || (hour === endHour && minute < 30)) { // 24:00과 24:30 제외
-          const formattedHour = (hour === 24 ? '23' : hour).toString().padStart(2, '0');
-          const formattedMinute = (hour === endHour && minute === 0) ? '59' : minute.toString().padStart(2, '0'); // 24:00 대신 23:59 추가
-          options.push(`${formattedHour}:${formattedMinute}`);
-        }
-      }
-    }
-    return options;
-  };
-
-  const timeOptionsOpen = generateTimeOptions(5, 18);
-  const timeOptionsClose = generateTimeOptions(15, 24).concat(generateTimeOptions(0, 7));
 
   const handleCategoryChange = (event) => {
     const selectedCategory = event.target.value;
@@ -207,7 +193,6 @@ export default function StoreRegister() {
               </Typography>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
-                  {/* 카테고리 체크박스를 배열로 나열하고, handleChange 함수를 수정 */}
                   {['한식', '중식', '일식', '양식', '패스트', '치킨', '분식', '디저트'].map((cat) => (
                     <FormControlLabel
                       key={cat}

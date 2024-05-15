@@ -22,5 +22,11 @@ export function useStore() {
     onError: e => { console.error(e) },
   })
 
-  return { postMenuRegister, postStoreRegister, postChangeMenuStatus }
+  const postStoreUpdate= useMutation({
+    mutationFn: storeData => axios.post(`/dp/store/owner/update`, storeData),
+    onSuccess: () => {alert('가게 수정에 성공하였습니다.')},
+    onError: () => {alert('가게 수정에 실패하였습니다!')},
+  })
+
+  return { postMenuRegister, postStoreRegister, postChangeMenuStatus ,postStoreUpdate }
 }
