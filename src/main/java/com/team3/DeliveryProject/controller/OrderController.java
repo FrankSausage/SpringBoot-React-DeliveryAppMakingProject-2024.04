@@ -17,13 +17,12 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public ResponseEntity<?> addOrder(@RequestBody OrderAddRequestDto requestDto) {
         return ResponseEntity.ok().body(orderService.addOrder(requestDto).getBody());
     }
-    @PostMapping("modify")
+    @PostMapping("/modify")
     public ResponseEntity<?> updateOrder(@RequestBody OrderUpdateRequestDto requestDto) {
         return ResponseEntity.ok().body(orderService.updateOrder(requestDto).getBody());
     }
-
 }
