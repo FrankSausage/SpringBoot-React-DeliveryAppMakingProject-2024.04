@@ -6,8 +6,9 @@ import Footer from '../../components/Footer';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { findPostcode } from '../../utils/AddressUtil'; 
 import { register } from '../../utils/firebase';
-import { extractDataFromFormData, formatPhoneNumber } from '../../utils/userInfo';
+import { extractDataFromFormData, formatPhoneNumber } from '../../utils/commonUitil';
 import axios from 'axios';
+import { useUser } from './Hook/useUser';
 
 const defaultTheme = createTheme();
 
@@ -21,6 +22,7 @@ export default function SignUp() {
   const [ isPasswordMatch, setIsPasswordMatch ] = useState(true);
   const [ phoneNumber, setPhoneNumber ] = useState('');
   const { setOutletAddress } = useOutletContext();
+  const { postUserSignUp } = useUser();
   const navigate = useNavigate();
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
@@ -60,14 +62,15 @@ export default function SignUp() {
             extractDataFromFormData(res)
               .then(resFormData => {
                 // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}} // 이미지 파일 첨부 대비 코드
-                setOutletAddress(resFormData.currentAddress);
-                axios.post(`/dp/user/signup`, resFormData)
+                postUserSignUp.mutate(resFormData, {
+                  onSuccess: () => {
+                    setOutletAddress(resFormData.currentAddress);
+                    navigate('/signin')
+                  },
+                  onError: e => {console.error('회원 가입 실패:' + e)}
+                })
               })
           })
-          .then(() => {
-            alert('가입이 완료되었습니다.');
-            navigate('/signin');
-          });
       }
     }
   };

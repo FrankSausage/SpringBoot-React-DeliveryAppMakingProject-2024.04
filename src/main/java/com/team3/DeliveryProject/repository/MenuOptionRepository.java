@@ -9,5 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface MenuOptionRepository extends JpaRepository<MenuOption, Long> {
 
     List<MenuOption> findAllByMenuId(Long menuId);
+    List<MenuOption> findAllByMenuIdAndStatus(Long menuId, String status);
+
 
 }

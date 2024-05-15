@@ -1,11 +1,11 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import SearchHeader from "../../../components/SearchHeader"
 import Footer from "../../../components/Footer"
 import PropTypes from 'prop-types';
-import { Tab, Tabs, Box, Typography, Stack, Grid, InputBase, Button } from '@mui/material';
+import { Tab, Tabs, Box, Typography,  Grid, InputBase, } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import StoreList from '../StoreList';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 function CustomTabPanel(props) {
@@ -110,18 +110,5 @@ export default function Store() {
       <Footer />
     </Box>
   );
-}
-
-let boxStyle = {
-  width: 200,
-  height: 200,
-  border: 1,
-  borderColor: 'rgb(217, 217, 217)',
-  m: 2
-}
-let gridStyle = {
-  justifyContent: 'center',
-  alignItems: 'center',
-  p: 2
 }
 

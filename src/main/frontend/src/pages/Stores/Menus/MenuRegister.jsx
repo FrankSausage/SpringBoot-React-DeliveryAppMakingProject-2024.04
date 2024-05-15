@@ -1,26 +1,28 @@
 import React, { useState } from 'react';
+import { useStore } from '../Hook/useStore';
+import Footer from '../../../components/Footer';
+import { extractDataFromFormData } from '../../../utils/commonUitil';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Footer from '../../components/Footer';
-import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
-import { getCurrentUser } from '../../utils/firebase';
-import { extractDataFromFormData } from '../../utils/storeInfo';
-import axios from 'axios';
-import Ownerheader from '../../components/OwnerHeader';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import SearchHeader from '../../../components/SearchHeader';
+
 
 const defaultTheme = createTheme();
 
 export default function MenuRegister() {
-  const { email } = getCurrentUser();
   const location = useLocation();
   const { storeId } = location.state;
+  const email = localStorage.getItem('email')
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState('');
   const [content, setContent] = useState('');
   const [menuPictureName, setMenuPictureName] = useState('');
+  const { postMenuRegister } = useStore();
   const navigate = useNavigate();
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -33,16 +35,11 @@ export default function MenuRegister() {
     const formData = await setFormData(data);
     extractDataFromFormData(formData)
       .then(resFormData => {
-        console.log(resFormData)
-        axios.post(`/dp/store/menu/register`, resFormData)
-
-      }
-      )
-      .then(() => {
-        alert('음식 등록이 완료되었습니다.');
-        navigate(`/StoreDetail/${storeId}`);
-      })
-      .catch(error => console.error('음식 등록 실패: ', error));
+        postMenuRegister.mutate(resFormData, {
+          onSuccess:() => navigate(`/StoreDetail/${storeId}`),
+          onError: e => {console.error('음식 등록 실패: ' + e)}
+        })
+    })
   };
 
   const setFormData = async (data) => {
@@ -71,7 +68,7 @@ export default function MenuRegister() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Ownerheader />
+      <SearchHeader />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

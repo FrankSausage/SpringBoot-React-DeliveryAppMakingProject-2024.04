@@ -7,10 +7,16 @@ import com.team3.DeliveryProject.dto.request.store.StoreListRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreOwnerListRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateGetRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateRequestDto;
+import com.team3.DeliveryProject.dto.response.store.StoreUpdateInnerDeliveryAddressesResponseDto;
 import com.team3.DeliveryProject.dto.response.store.StoreUpdateResponseDto;
+import com.team3.DeliveryProject.entity.AddressCode;
 import com.team3.DeliveryProject.entity.Stores;
+import com.team3.DeliveryProject.repository.AddressCodeRepository;
+import com.team3.DeliveryProject.repository.MenuOptionRepository;
 import com.team3.DeliveryProject.repository.UsersRepository;
 import com.team3.DeliveryProject.service.StoreService;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +35,9 @@ public class StoreController {
     private StoreService storeService;
     @Autowired
     private UsersRepository usersRepository;
+
+    @Autowired
+    private AddressCodeRepository addressCodeRepository;
 
     @PostMapping("/owner/register")
     public ResponseEntity<?> addStore(@RequestBody StoreAddRequestDto requestDto) {
@@ -51,7 +60,17 @@ public class StoreController {
             -> new RuntimeException("Stores not found"));
         if (stores.getUserId() == usersRepository.findUsersByEmail(requestDto.getEmail())
             .orElseThrow(() ->
-                new RuntimeException("Users not found")).getUserId()) {
+                new RuntimeException("User not found")).getUserId()) {
+            List<StoreUpdateInnerDeliveryAddressesResponseDto> deliveryAddresses = new ArrayList<>();
+            List<AddressCode> addressCodes = addressCodeRepository.findAllByStoreId(requestDto.getStoreId()).orElseThrow(()
+                ->new RuntimeException("AddressCode not found"));
+            for (AddressCode addressCode : addressCodes){
+                StoreUpdateInnerDeliveryAddressesResponseDto innerDto = StoreUpdateInnerDeliveryAddressesResponseDto.builder()
+                    .addressCode(addressCode.getAddressCode())
+                    .deliveryAddress(addressCode.getDeliveryAddress())
+                    .build();
+                deliveryAddresses.add(innerDto);
+            }
             StoreUpdateResponseDto responseDto = StoreUpdateResponseDto.builder()
                 .name(stores.getName())
                 .type(stores.getType())
@@ -66,7 +85,9 @@ public class StoreController {
                 .maxDeliveryTime(stores.getMaxDeliveryTime())
                 .operationHours(stores.getOperationHours())
                 .closedDays(stores.getClosedDays())
+                .addressCodes(deliveryAddresses)
                 .build();
+
             return ResponseEntity.ok().body(responseDto);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("점주만 가게를 업데이트 할 수 있습니다.");
@@ -88,7 +109,22 @@ public class StoreController {
     @GetMapping("/list")
     public ResponseEntity<?> getStoreListForOwner(
         @ModelAttribute StoreOwnerListRequestDto requestDto) {
-        System.out.println(requestDto);
         return ResponseEntity.ok().body(storeService.getStoreListForOwner(requestDto));
     }
+
+//    @GetMapping("/list/search")
+//    public ResponseEntity<?> getStoreList(@ModelAttribute StoreListRequestDto requestDto) {
+//        return ResponseEntity.ok().body(storeService.getStoreList(requestDto));
+//    }
+//
+//    @GetMapping("/detail")
+//    public ResponseEntity<?> getStoreDetail(@ModelAttribute StoreDetailRequestDto requestDto) {
+//        return ResponseEntity.ok().body(storeService.getStoreDetail(requestDto));
+//    }
+//
+//    @GetMapping("/list")
+//    public ResponseEntity<?> getStoreListForOwner(
+//        @ModelAttribute StoreOwnerListRequestDto requestDto) {
+//        return ResponseEntity.ok().body(storeService.getStoreListForOwner(requestDto));
+//    }
 }

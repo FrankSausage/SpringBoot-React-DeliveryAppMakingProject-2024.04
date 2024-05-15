@@ -7,11 +7,13 @@ import static com.team3.DeliveryProject.responseCode.ResponseCode.STORE_DELETE_S
 import static com.team3.DeliveryProject.responseCode.ResponseCode.STORE_UPDATE_SUCCESS;
 
 import com.team3.DeliveryProject.dto.common.Response;
+import com.team3.DeliveryProject.dto.request.store.StoreAddInnerAddressCodesRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreAddRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreListRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreOwnerListRequestDto;
+import com.team3.DeliveryProject.dto.request.store.StoreUpdateInnerDeliveryAddressesRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateRequestDto;
 import com.team3.DeliveryProject.dto.response.store.StoreDetailResponseDto;
 import com.team3.DeliveryProject.dto.response.store.StoreListInnerResponseDto;
@@ -32,6 +34,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -45,7 +48,7 @@ public class StoreServiceImpl implements StoreService {
     public ResponseEntity<Response> addStore(StoreAddRequestDto requestDto) {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
             .orElseThrow(() -> new RuntimeException("user not found"));
-        ;
+
         Stores stores = new Stores(users.getUserId(), requestDto.getName(), requestDto.getType(),
             requestDto.getCategory(), requestDto.getAddress(), requestDto.getStorePictureName(),
             requestDto.getPhone(), requestDto.getContent(), requestDto.getMinDeliveryPrice(),
@@ -54,33 +57,32 @@ public class StoreServiceImpl implements StoreService {
             requestDto.getClosedDays(),
             LocalDateTime.now(), LocalDateTime.now(), "일반");
 
-        System.out.println("Dto -> Entity가 제대로 됫는지 출력해보기 (아래). 아직 저장전임 ㅇㅇ");
-        System.out.println(stores);
-
         Long storeId = storesRepository.save(stores).getStoreId();
 
-        System.out.println(requestDto.getAddressCode());
-        String[] addressCodes = requestDto.getAddressCode().split(" ");
-        System.out.println(addressCodes);
-        for (String code : addressCodes) {
-            Long parsedCode = Long.parseLong(code.trim());  // 문자열을 Long 형으로 변환
-            AddressCode addressCode = new AddressCode(storeId, parsedCode);
-            addressCodeRepository.save(addressCode);  // AddressCode 저장
+        List<StoreAddInnerAddressCodesRequestDto> addressCodes = requestDto.getAddressCodes();
+
+        for(StoreAddInnerAddressCodesRequestDto storeAddInnerAddressCodesRequestDto : addressCodes){
+            AddressCode addressCode = new AddressCode(storeId, storeAddInnerAddressCodesRequestDto.getAddressCode(), storeAddInnerAddressCodesRequestDto.getDeliveryAddress());
+            addressCodeRepository.save(addressCode);
         }
 
         System.out.println("저장된거 제대로 됫는지 출력해보기 (아래)");
         System.out.println(storesRepository.findById(storeId));
         return Response.toResponseEntity(STORE_ADD_SUCCESS);
     }
-
+    @Transactional
     @Override
     public ResponseEntity<Response> updateStore(StoreUpdateRequestDto requestDto) {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
             .orElseThrow(() -> new RuntimeException("user not found"));
-        ;
+
         Stores stores = storesRepository.findById(requestDto.getStoreId())
             .orElseThrow(() -> new RuntimeException("Store not found"));
+
+        List<StoreUpdateInnerDeliveryAddressesRequestDto> addressCodes = requestDto.getAddressCodes();
+
         if (users.getUserId() == stores.getUserId()) {
+
             stores.setName(requestDto.getName());
             stores.setType(requestDto.getType());
             stores.setCategory(requestDto.getCategory());
@@ -96,6 +98,15 @@ public class StoreServiceImpl implements StoreService {
             stores.setClosedDays(requestDto.getClosedDays());
             stores.setModifiedDate(LocalDateTime.now());
             storesRepository.save(stores);
+
+            //기존 옵션 삭제후 작업 시작하기
+            addressCodeRepository.deleteAllByStoreId(requestDto.getStoreId());
+
+            for(StoreUpdateInnerDeliveryAddressesRequestDto innerDto : addressCodes){
+                AddressCode addressCode = new AddressCode(requestDto.getStoreId(), innerDto.getAddressCode(),
+                    innerDto.getDeliveryAddress());
+                addressCodeRepository.save(addressCode);
+            }
             return Response.toResponseEntity(STORE_UPDATE_SUCCESS);
         } else {
             return Response.toResponseEntity(STORE_UPDATE_FAIL);
