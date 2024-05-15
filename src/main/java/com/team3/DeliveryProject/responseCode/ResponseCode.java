@@ -27,7 +27,7 @@ public enum ResponseCode {
     ORDER_ADD_SUCCESS(HttpStatus.OK, "주문 추가 성공"),
     ORDER_STATUS_UPDATE_SUCCESS(HttpStatus.OK, "주문 상태 수정 성공"),
     ORDER_DELETE_SUCCESS(HttpStatus.OK, "주문 삭제 성공"),
-    ORDER_STATUS_DETAIL_SUCCESS(HttpStatus.OK, "주문 상태 조회 성공"),
+    ORDER_STATUS_DETAIL_SUCCESS(HttpStatus.OK, "주문상태 상세 조회 성공"),
     CART_ADD_SUCCESS(HttpStatus.OK, "주문 메뉴 추가 성공"),
     CART_UPDATE_SUCCESS(HttpStatus.OK, "주문 메뉴 개수 수정 성공"),
     CART_DELETE_ALL_SUCCESS(HttpStatus.OK, "주문 메뉴 전체 삭제 성공"),

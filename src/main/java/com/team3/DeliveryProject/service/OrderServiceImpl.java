@@ -14,6 +14,7 @@ import com.team3.DeliveryProject.dto.request.order.OrderAddRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderStatusDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderUpdateRequestDto;
+import com.team3.DeliveryProject.dto.response.order.OrderStatusDetailResponseDto;
 import com.team3.DeliveryProject.entity.Menu;
 import com.team3.DeliveryProject.entity.MenuOption;
 import com.team3.DeliveryProject.entity.OrderMenu;
@@ -119,6 +120,15 @@ public class OrderServiceImpl implements OrderService{
         orders.setStatus("삭제");
         ordersRepository.save(orders);
         return Response.toResponseEntity(ORDER_DELETE_SUCCESS);
+    }
+
+    @Override
+    public OrderStatusDetailResponseDto statusDetailOrder(OrderStatusDetailRequestDto requestDto) {
+        Orders orders = ordersRepository.findById(requestDto.getOrderId()).orElseThrow(()->new RuntimeException("Order not found"));
+        OrderStatusDetailResponseDto responseDto = OrderStatusDetailResponseDto.builder()
+            .status(orders.getStatus())
+            .build();
+        return responseDto;
     }
 
 }
