@@ -14,11 +14,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderListInnerOrdersResponseDto {
+public class OrderOwnerListInnerOrdersResponseDto {
 
     private Long orderId;
-    private Long storeId;
-    private String storeName;
     private String menuName;
     private int count;
     private int totalPrice;

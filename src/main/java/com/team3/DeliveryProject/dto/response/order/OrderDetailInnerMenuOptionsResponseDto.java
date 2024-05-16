@@ -1,4 +1,4 @@
-package com.team3.DeliveryProject.dto.request.order;
+package com.team3.DeliveryProject.dto.response.order;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderListRequestDto {
-
-    private String email;
-
+public class OrderDetailInnerMenuOptionsResponseDto {
+    private String menuOptionName;
+    private int menuOptionPrice;
 }

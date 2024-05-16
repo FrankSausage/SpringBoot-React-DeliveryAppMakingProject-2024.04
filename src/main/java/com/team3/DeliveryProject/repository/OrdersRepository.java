@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface OrdersRepository extends JpaRepository<Orders, Long> {
     long countByModifiedDateBetweenAndStatusIn(LocalDateTime start, LocalDateTime end, List<String> statuses);
     List<Orders> findAllByStoreId(Long storeId);
+    List<Orders> findAllByDeliveryUserId(Long userId);
 }

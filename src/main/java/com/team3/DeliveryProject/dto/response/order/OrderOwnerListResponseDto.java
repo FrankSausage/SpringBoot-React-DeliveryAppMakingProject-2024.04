@@ -1,5 +1,6 @@
-package com.team3.DeliveryProject.dto.request.order;
+package com.team3.DeliveryProject.dto.response.order;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,8 +14,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderListRequestDto {
+public class OrderOwnerListResponseDto {
 
-    private String email;
-
+    private List<OrderOwnerListInnerOrdersResponseDto> orders;
 }
