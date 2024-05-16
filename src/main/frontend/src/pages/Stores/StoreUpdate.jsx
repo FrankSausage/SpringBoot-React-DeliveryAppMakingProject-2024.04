@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { useOwnerByEmail } from '../../utils/storeInfo';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { findDeliverPostCode, findPostcodeWithOutBCode } from '../../utils/AddressUtil';
+import { findDUpdatePostCode, findPostcodeWithOutBCode } from '../../utils/AddressUtil';
 import { extractDataFromFormData, formatStorePhoneNumber, addressCodePacker, generateTimeOptions, splitAddressFromCurrentUserAddress } from '../../utils/commonUitil';
 import { useStore } from './Hook/useStore';
 import SearchHeader from '../../components/SearchHeader';
@@ -23,7 +23,6 @@ export default function StoreRegister() {
   const [name, setName] = useState('');
   const [category, setCategory] = useState([]);
   const [type, setType] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
   const [phone, setPhone] = useState('');
   const [closedDays, setClosedDays] = useState([]);
   const [addressCode, setAddressCode] = useState('');
@@ -33,10 +32,8 @@ export default function StoreRegister() {
   const [storePictureName, setStorePictureName] = useState('');
   const [minDeliveryTime, setMinDeliveryTime] = useState('');
   const [maxDeliveryTime, setMaxDeliveryTime] = useState('');
-  const [addressCodes, setAddressCodes] = useState([]);
-  const [newDeliveryAddress, setNewDeliveryAddress] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState([]);
-  const [usePreviousData, setUsePreviousData] = useState(false);
+  const [usePreviousData, setUsePreviousData] = useState(true); // 초기에 비활성화
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedDeliveryAddresses, setSelectedDeliveryAddresses] = useState([]);
   const handleDeliveryAddressesChange = (event) => {
@@ -71,9 +68,15 @@ export default function StoreRegister() {
 
   const handleFindDeliverPostCode = async () => {
     try {
+      setDeliveryAddress([]); // 기존 데이터 초기화
       setSelectedDeliveryAddresses([]); // 선택된 주소 초기화
-      const newAddress = await findDeliverPostCode(setJibunAddress, setNewDeliveryAddress, setAddressCode);
-      setDeliveryAddress(prevAddresses => [...prevAddresses, newAddress]); // 새로운 배달 지역 추가
+    
+      await findDUpdatePostCode(
+        setJibunAddress,
+        setExtraAddress,
+        setAddressCode,
+        setDeliveryAddress
+      );
     } catch (error) {
       console.error('배달지역 찾기 오류:', error);
     }
@@ -81,7 +84,9 @@ export default function StoreRegister() {
 
   const handleUsePreviousDataChange = () => {
     setUsePreviousData(prev => !prev);
+    setDeliveryAddress([]); // 새로운 데이터 입력 시 이전 데이터 초기화
   };
+
 
   useEffect(() => {
     if (store && store.addressCodes && store.closedDays) {
@@ -103,7 +108,7 @@ export default function StoreRegister() {
       setPhone(store.phone)
       setStorePictureName(store.storePictureName)
       setType(store.type)
-      setDeliveryAddress(store.addressCodes.map(code => code.deliveryAddress)); // 변경된 부분
+      setDeliveryAddress(store.addressCodes.map(res => res.deliveryAddress)); // 변경된 부분
       const addressArray = store.address.split(',');
       const lastPartOfAddress = addressArray[addressArray.length - 1].trim();
       setDetailAddress(lastPartOfAddress);
@@ -117,7 +122,7 @@ export default function StoreRegister() {
         setSelectedDays(selectedDays);
       }
       if (store && store.addressCodes) {
-        const addresses = store.addressCodes.map(code => code.deliveryAddress);
+        const addresses = store.addressCodes.map(res => res.deliveryAddress);
         setDeliveryAddress(addresses); // 변경된 부분
       }
     }
@@ -249,10 +254,10 @@ export default function StoreRegister() {
                 <LockOutlinedIcon />
               </Avatar>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>
+                <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>
               </Typography>
               <Typography component="h1" variant="h5">
-                가게 수정 신청서
+                온라인 입점 신청서
               </Typography>
               <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
@@ -292,7 +297,7 @@ export default function StoreRegister() {
                     </Typography>
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
-                        {['한식', '중식', '일식', '양식', '패스트', '햄버거', '치킨', '분식', '디저트'].map((cat) => (
+                        {['한식', '중식', '일식', '양식', '패스트', '치킨', '분식', '디저트'].map((cat) => (
                           <FormControlLabel
                             key={cat}
                             control={<Checkbox checked={category.includes(cat)} onChange={handleCategoryChange} value={cat} color="primary" />}
@@ -325,10 +330,22 @@ export default function StoreRegister() {
                     주소 찾기
                   </Button>
                   <Grid item xs={12}>
-                    <TextField required fullWidth id="extraAddress" name="extraAddress" label="참고항목" value={extraAddress} />
+                    <TextField
+                      required
+                      fullWidth
+                      id="extraAddress"
+                      name="extraAddress"
+                      label="참고항목"
+                      value={extraAddress}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                    />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField required fullWidth
+                    <TextField
+                      required
+                      fullWidth
                       id="detailAddress"
                       label="상세주소"
                       value={detailAddress}
@@ -439,12 +456,7 @@ export default function StoreRegister() {
                   </Grid>
                   <Grid item xs={12}>
                     <InputLabel id="demo-multiple-checkbox-label">휴무일 선택</InputLabel>
-                    <Select
-                      labelId="demo-multiple-checkbox-label"
-                      id="demo-multiple-checkbox"
-                      multiple
-                      value={selectedDays}
-                      onChange={handleClosedDaysChange}
+                    <Select labelId="demo-multiple-checkbox-label" id="demo-multiple-checkbox" multiple value={selectedDays} onChange={handleClosedDaysChange}
                       input={<Input />}
                       renderValue={(selected) => selected.join(', ')}
                     >
@@ -467,36 +479,31 @@ export default function StoreRegister() {
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
                         <TextField
-                          autoComplete="given-name"
-                          name="deliveryAddress"
                           fullWidth
                           id="deliveryAddress"
+                          name="deliveryAddress"
                           label="배달 가능 지역"
-                          value={deliveryAddress}
-                          onChange={handleDeliveryAddressesChange} // 주소 변경 시 업데이트
+                          value={deliveryAddress ? deliveryAddress : jibun}
                         />
                       </Grid>
                       <Grid item xs={12}>
                         <Grid container spacing={1}>
                           <FormControlLabel
-                            fullWidth
-                            variant="contained"
                             control={<Checkbox checked={!usePreviousData} onChange={handleUsePreviousDataChange} color="primary" />}
-                            label="새로운 주소 사용"
+                            label="새로운 배달 지역 사용"
                           />
                         </Grid>
                       </Grid>
-                      {!usePreviousData && (
-                        <Button
-                          type="button"
-                          onClick={handleFindDeliverPostCode}
-                          fullWidth
-                          variant="contained"
-                          sx={{ mt: 1, mb: 2, ml: 2 }}
-                        >
-                          배달 지역 찾기
-                        </Button>
-                      )}
+                      <Button
+                        type="button"
+                        onClick={handleFindDeliverPostCode}
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 1, mb: 2, ml: 2 }}
+                        disabled={usePreviousData}
+                      >
+                        주소 찾기
+                      </Button>
                       <Grid item xs={12}>
                         <TextField
                           autoComplete="given-name"
@@ -543,6 +550,7 @@ export default function StoreRegister() {
                           사진 올리기
                         </Button>
                       </Grid>
+
                     </Grid>
                   </Grid>
                   <Grid item xs={6}>
