@@ -17,7 +17,7 @@ export default function StoreList({ category, searchText, }) {
 					}
 					{!isLoading && storeDatas && (
 						storeDatas.data.storeList.map((data) => (
-							<Box key={data.storeId} component={Link} to={`/StoreDetail/${data.storeId}`} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
+							<Box key={data.storeId} component={Link} to={`/StoreDetail/${data.storeId}`} state={{storeName: data.name}} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
 									{data.name}
 							</Box>
 						))

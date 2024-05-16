@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
         } else if (usersRepository.findUsersByEmail(user.getEmail()).isPresent()) {
             return Response.toResponseEntity(USER_EMAIL_IS_ALREADY_EXIST);
         } else {
-            Users tmpUser = new Users(" ", user.getName(), user.getPhone(), user.getEmail(), 0,
+            Users tmpUser = new Users(" ", user.getName(), user.getPhone(), user.getEmail(), 1,
                 user.getRole(), user.getCurrentAddress(), user.getAddressCode(),
                 LocalDateTime.now(), LocalDateTime.now(), "일반", 0);
             usersRepository.save(tmpUser);

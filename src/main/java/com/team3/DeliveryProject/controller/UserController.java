@@ -42,7 +42,7 @@ public class UserController {
     public ResponseEntity<?> signUp(@RequestBody UserSignUpRequestDto requestDto) {
 
         Users users = new Users(requestDto.getPassword(), requestDto.getName(),
-            requestDto.getPhone(), requestDto.getEmail(), 0, requestDto.getRole(),
+            requestDto.getPhone(), requestDto.getEmail(), 1, requestDto.getRole(),
             requestDto.getCurrentAddress(), requestDto.getAddressCode(),
             "우리집", 0);
         userService.signUp(users);
@@ -108,6 +108,7 @@ public class UserController {
             UserSignInRoleUserResponseDto responseDto = UserSignInRoleUserResponseDto.builder()
                 .currentAddress(user.getCurrentAddress())
                 .role(user.getRole())
+                .point(user.getPoint())
                 .build();
             return ResponseEntity.ok().body(responseDto);
         } else if (user.getRole().equals("점주")) {
