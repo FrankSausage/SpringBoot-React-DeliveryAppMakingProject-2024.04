@@ -32,7 +32,6 @@ import MenuDetail from './pages/Stores/Menus/MenuDetail';
 // Order
 import Order from './pages/Order/View/Order';
 // Cart
-import Cart from './pages/Cart/View/Cart';
 
 
 const router = createBrowserRouter([
@@ -63,7 +62,6 @@ const router = createBrowserRouter([
       { path: 'ReviewDetail', element: <ReviewDetail />},
       { path: 'ReviewReply', element: <ReviewReply />},
       { path: 'ReviewRating', element: <ReviewRating />},
-      { path: 'Cart', element: <Cart />},
       { path: 'Order', element: <Order />},
     ]
   }

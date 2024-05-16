@@ -7,7 +7,7 @@ import { useCart } from "../../Cart/Hook/useCart";
 export default function MenuDetail() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { storeId, menuId } = location.state;
+  const { storeId, menuId, storeName } = location.state;
   const { isLoading, error, menuDetailData } = useMenuDetailByMenuId(menuId)
   const { addItemToCart } = useCart();
   const [ items, setItems ] = useState([]);
@@ -23,14 +23,12 @@ export default function MenuDetail() {
   }
 
   const handleSubmit = () => {
-    addItemToCart({menus: {menuId: menuId, menuName: menuDetailData.menus.name, menuPrice: menuDetailData.menus.price, menuOptions: items}})
+    addItemToCart({menus: {menuId: menuId, menuName: menuDetailData.menus.name, menuPrice: menuDetailData.menus.price, storeId: storeId, storeName: storeName, menuOptions: items}})
     .then(() => {
       alert(`장바구니에 ${menuDetailData.menus.name}을(를) 담았습니다. `)
-      navigate(`/StoreDetail/${storeId}`)
+      navigate(`/StoreDetail/${storeId}`, {state: {storeName: storeName}})
     });
-    
   }
-
   return(
     <Fragment>
       {isLoading && <Typography> 로딩 중...</Typography>}      
@@ -51,8 +49,8 @@ export default function MenuDetail() {
                         labelPlacement="end"
                         />
                       </Grid>
-                      <Grid item xs={5}/>
-                      <Grid item xs={2}sx={{alignContent:'center', textAlign:'end'}}>
+                      <Grid item xs={4}/>
+                      <Grid item xs={3}sx={{alignContent:'center', textAlign:'end'}}>
                         <Typography>{menuDetailData.menus.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
                       </Grid>
                     </Grid>
@@ -72,8 +70,8 @@ export default function MenuDetail() {
                             labelPlacement="end"
                             />
                           </Grid>
-                          <Grid item xs={5}/>
-                          <Grid item xs={2} sx={{alignContent:'center', textAlign:'end'}}>
+                          <Grid item xs={4}/>
+                          <Grid item xs={3} sx={{alignContent:'center', textAlign:'end'}}>
                             <Typography>+{data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
                           </Grid>
                         </Grid>

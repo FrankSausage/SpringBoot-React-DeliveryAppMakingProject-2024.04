@@ -42,8 +42,9 @@ function a11yProps(index) {
 }
 
 export default function StoreDetail() {
-  const { state: category } = useLocation();
-  const [value, setValue] = useState(category ? category : 1);
+  const location = useLocation()
+  const { storeName } = location.state;
+  const [value, setValue] = useState(1);
   const [ popularity, setPopularity ] = useState('');
   const [searchOpen, setSearchOpen] = useState(false); // 검색 창의 상태를 추적하는 state
   const navigate = useNavigate();
@@ -98,7 +99,7 @@ export default function StoreDetail() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={1}>
-        <StoreMenuList />
+        <StoreMenuList storeName={storeName} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <StoreInfo />
