@@ -6,7 +6,7 @@ import OwnerMain from "./Users/View/OwnerMain";
 //주소: http://localhost:3000
 
 export default function Home() {
-    const role = localStorage.getItem('role') ? localStorage.getItem('role') : '점주';
+    const role = localStorage.getItem('role') ? localStorage.getItem('role') : '회원';
     
     return(
         <Box sx={{ margin: -1 }}>
