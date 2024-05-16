@@ -14,11 +14,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderDetailInnerMenusResponseDto {
+public class OrderDetailOwnerInnerMenusResponseDto {
     private String menuName;
     private int menuPrice;
     private int quantity;
     private int sequence;
     private String menuPictureName;
-    private List<OrderDetailInnerMenuOptionsResponseDto> menuOptions;
+    private List<OrderDetailOwnerInnerMenuOptionsResponseDto> menuOptions;
 }

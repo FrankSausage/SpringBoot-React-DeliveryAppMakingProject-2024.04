@@ -8,7 +8,7 @@ import com.team3.DeliveryProject.dto.request.order.OrderOwnerDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderOwnerListRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderStatusDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderUpdateRequestDto;
-import com.team3.DeliveryProject.dto.response.order.OrderDetailResponseDto;
+import com.team3.DeliveryProject.dto.response.order.OrderDetailOwnerResponseDto;
 import com.team3.DeliveryProject.dto.response.order.OrderListResponseDto;
 import com.team3.DeliveryProject.dto.response.order.OrderOwnerListResponseDto;
 import com.team3.DeliveryProject.dto.response.order.OrderStatusDetailResponseDto;
@@ -28,5 +28,5 @@ public interface OrderService {
 
     public OrderListResponseDto listOrder(OrderListRequestDto requestDto);
 
-    public OrderDetailResponseDto ownerDetailOrder(OrderOwnerDetailRequestDto requestDto);
+    public OrderDetailOwnerResponseDto ownerDetailOrder(OrderOwnerDetailRequestDto requestDto);
 }

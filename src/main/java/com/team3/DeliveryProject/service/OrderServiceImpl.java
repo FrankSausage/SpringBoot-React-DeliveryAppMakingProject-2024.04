@@ -15,9 +15,9 @@ import com.team3.DeliveryProject.dto.request.order.OrderOwnerDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderOwnerListRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderStatusDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderUpdateRequestDto;
-import com.team3.DeliveryProject.dto.response.order.OrderDetailInnerMenuOptionsResponseDto;
-import com.team3.DeliveryProject.dto.response.order.OrderDetailInnerMenusResponseDto;
-import com.team3.DeliveryProject.dto.response.order.OrderDetailResponseDto;
+import com.team3.DeliveryProject.dto.response.order.OrderDetailOwnerInnerMenuOptionsResponseDto;
+import com.team3.DeliveryProject.dto.response.order.OrderDetailOwnerInnerMenusResponseDto;
+import com.team3.DeliveryProject.dto.response.order.OrderDetailOwnerResponseDto;
 import com.team3.DeliveryProject.dto.response.order.OrderListInnerOrdersResponseDto;
 import com.team3.DeliveryProject.dto.response.order.OrderListResponseDto;
 import com.team3.DeliveryProject.dto.response.order.OrderOwnerListInnerOrdersResponseDto;
@@ -265,7 +265,7 @@ public class OrderServiceImpl implements OrderService {
 //        return null;
 //    }
     @Override
-    public OrderDetailResponseDto ownerDetailOrder(OrderOwnerDetailRequestDto requestDto) {
+    public OrderDetailOwnerResponseDto ownerDetailOrder(OrderOwnerDetailRequestDto requestDto) {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
             .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -273,7 +273,7 @@ public class OrderServiceImpl implements OrderService {
             .orElseThrow(() -> new RuntimeException("Orders not found"));
 
         List<OrderMenu> orderMenuList = orderMenuRepository.findAllByOrderId(orders.getOrderId());
-        List<OrderDetailInnerMenusResponseDto> innerMenusResponseDtos = new ArrayList<>();
+        List<OrderDetailOwnerInnerMenusResponseDto> innerMenusResponseDtos = new ArrayList<>();
 
         for (OrderMenu orderMenu : orderMenuList) {
             Menu menu = menuRepository.findById(orderMenu.getMenuId())
@@ -282,14 +282,14 @@ public class OrderServiceImpl implements OrderService {
             MenuOption menuOption = menuOptionRepository.findById(orderMenu.getMenuOptionId())
                 .orElseThrow(() -> new RuntimeException("MenuOption not found"));
 
-            List<OrderDetailInnerMenuOptionsResponseDto> innerMenuOptionsResponseDtos = new ArrayList<>();
-            OrderDetailInnerMenuOptionsResponseDto menuOptionsResponseDto = OrderDetailInnerMenuOptionsResponseDto.builder()
+            List<OrderDetailOwnerInnerMenuOptionsResponseDto> innerMenuOptionsResponseDtos = new ArrayList<>();
+            OrderDetailOwnerInnerMenuOptionsResponseDto menuOptionsResponseDto = OrderDetailOwnerInnerMenuOptionsResponseDto.builder()
                 .menuOptionName(menuOption.getOptions())
                 .menuOptionPrice(menuOption.getPrice())
                 .build();
             innerMenuOptionsResponseDtos.add(menuOptionsResponseDto);
 
-            OrderDetailInnerMenusResponseDto innerMenusResponseDto = OrderDetailInnerMenusResponseDto.builder()
+            OrderDetailOwnerInnerMenusResponseDto innerMenusResponseDto = OrderDetailOwnerInnerMenusResponseDto.builder()
                 .menuName(menu.getName())
                 .menuPrice(menu.getPrice())
                 .quantity(orderMenu.getQuantity())
@@ -300,7 +300,7 @@ public class OrderServiceImpl implements OrderService {
             innerMenusResponseDtos.add(innerMenusResponseDto);
         }
 
-        OrderDetailResponseDto responseDto = OrderDetailResponseDto.builder()
+        OrderDetailOwnerResponseDto responseDto = OrderDetailOwnerResponseDto.builder()
             .paymentMethod(orders.getPaymentMethod())
             .totalPrice(orders.getTotalPrice())
             .point(orders.getPoint())
