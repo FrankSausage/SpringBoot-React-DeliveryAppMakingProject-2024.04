@@ -2,6 +2,7 @@ package com.team3.DeliveryProject.controller;
 
 import com.team3.DeliveryProject.dto.request.order.OrderAddRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.order.OrderListRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderStatusDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderUpdateRequestDto;
 import com.team3.DeliveryProject.service.OrderService;
@@ -36,6 +37,10 @@ public class OrderController {
     @GetMapping("/status/detail")
     public ResponseEntity<?> updateOrder(@ModelAttribute OrderStatusDetailRequestDto requestDto) {
         return ResponseEntity.ok().body(orderService.statusDetailOrder(requestDto));
+    }
+    @GetMapping("/owner/list")
+    public ResponseEntity<?> listOrder(@ModelAttribute OrderListRequestDto requestDto) {
+        return ResponseEntity.ok().body(orderService.ownerListOrder(requestDto));
     }
 
 }
