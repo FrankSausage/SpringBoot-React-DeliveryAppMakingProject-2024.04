@@ -23,7 +23,8 @@ export default function MenuDetail() {
   }
 
   const handleSubmit = () => {
-    addItemToCart({menus: {menuId: menuId, menuName: menuDetailData.menus.name, menuPrice: menuDetailData.menus.price, storeId: storeId, storeName: storeName, menuOptions: items}})
+    addItemToCart({menus: {menuId: menuId, menuName: menuDetailData.menus.name, 
+      menuPrice: menuDetailData.menus.price, storeId: storeId, storeName: storeName, menuOptions: items}})
     .then(() => {
       alert(`장바구니에 ${menuDetailData.menus.name}을(를) 담았습니다. `)
       navigate(`/StoreDetail/${storeId}`, {state: {storeName: storeName}})

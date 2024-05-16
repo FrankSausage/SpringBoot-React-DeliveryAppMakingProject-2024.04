@@ -1,17 +1,40 @@
 import React, { Fragment, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Box, Button, Card, CardContent, CardHeader, Divider, FormControl, Grid, Input, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Button, Card,  Divider, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
+import { useOrder } from "../Hook/useOrder";
 
 export default function Order() {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const address = localStorage.getItem('address');
+	const email = localStorage.getItem('email');
 	const { totalPrice } = location.state;
+	const { postOrderRegist } = useOrder();
 	const [ request, setRequest ] = useState('');
-	const [ paymentMethod, setPaymentMethod ] = useState('')
+	const [ paymentMethod, setPaymentMethod ] = useState('');
+	const [ point, setPoint ] = useState(0);
 	const cartItems = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [];
+	
 	const handleSubmit = () => {
+		if(!paymentMethod) {
+			alert('결제 방식을 선택 해 주세요.')
+			return;
+		}
 
+		postOrderRegist.mutate({
+			storeId: cartItems[0].storeId,
+			userEmail: email,
+			deliveryUserEmail: email,
+			paymentMethod: paymentMethod,
+			point: point,
+			totalPrice: totalPrice,
+			request: request,
+			address: address,
+			menus: cartItems
+		}, {
+			onSuccess: res => {console.log(res)},
+			onError: e => {console.log(e)},
+		})
 	}
 
 	return(
@@ -73,10 +96,14 @@ export default function Order() {
 				</Grid>
 				<Grid item xs/>
 			</Grid>
+			<Stack direction={'row'} sx={{alignContent:'center', alignItems:'center', justifyContent:'center'}}>
+				<Typography>포인트 사용: </Typography>
+				<TextField type='number' id='point' name='point' sx={{ml:1, width:'10%'}} maxRows={1} placeholder='0' onChange={e=> {setPoint(e.target.value)}} value={setPoint} autoComplete="point-text"/>/ {point}
+			</Stack>
 			<Typography variant="h5" sx={{textAlign:'center', my:2}}>최종 금액: {totalPrice ? totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}원</Typography>
 			<Stack direction={'row'} sx={{justifyContent:'space-around'}}>
 				<Button sx={{border:1, width:'30%'}} color="error">돌아가기</Button>
-				<Button sx={{border:1, width:'30%'}}>주문하기</Button>
+				<Button sx={{border:1, width:'30%'}} onClick={handleSubmit}>주문하기</Button>
 			</Stack>
 		</Card>
 	);

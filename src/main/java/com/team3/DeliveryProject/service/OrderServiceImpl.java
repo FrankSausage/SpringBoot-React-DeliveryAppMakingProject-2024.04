@@ -60,10 +60,10 @@ public class OrderServiceImpl implements OrderService{
             new RuntimeException("DeliveryUser not found"));
 
         //포인트 로직
-        if((requestDto.getPoint() != 0) && (users.getPoint() > requestDto.getPoint())){
+        if((requestDto.getPoint() != 0) && (users.getPoint() >= requestDto.getPoint())){
             users.setPoint(users.getPoint()-requestDto.getPoint());
             usersRepository.save(users);
-        } else if ((requestDto.getPoint() == 0) && (users.getPoint() > requestDto.getPoint())) {
+        } else if ((requestDto.getPoint() == 0)) {
             int grade = users.getGrade();
             users.setPoint(users.getPoint() + (requestDto.getTotalPrice() * grade / 100));
         }else {
