@@ -10,7 +10,7 @@ import { useStore } from './Hook/useStore';
 
 const defaultTheme = createTheme();
 
-export default function StoreMenuList() {   
+export default function StoreMenuList({ storeName }) {   
   const email = localStorage.getItem('email')
   const role = localStorage.getItem('role');
   const { storeId } = useParams();
@@ -82,7 +82,7 @@ export default function StoreMenuList() {
                 <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
                   <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
                     <Box key={res.menuId} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
-                        <Box component={Link} to={role==='회원' ? `/MenuDetail` : `/MenuUpdate`} state={{menuId : res.menuId, storeId : storeId,}}  sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
+                        <Box component={Link} to={role==='회원' ? `/MenuDetail` : `/MenuUpdate`} state={{menuId : res.menuId, storeId : storeId, storeName : storeName}}  sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
                           <img src={res.menuPictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} alt='메뉴 사진' />
                           <ul style={{ position: 'absolute', top: '50%', left: '40%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
                             <li style={{ listStyleType: 'none' }}>{res.name}</li>

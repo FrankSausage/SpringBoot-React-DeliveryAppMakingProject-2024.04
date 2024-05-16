@@ -50,4 +50,21 @@ public class Orders {
     @Column(nullable = false)
     private String status;
     private String address;
+
+    public Orders(Long storeId, Long orderUserId, Long deliveryUserId, String paymentMethod,
+        int point,
+        int totalPrice, String requests, LocalDateTime createdDate, LocalDateTime modifiedDate,
+        String status, String address) {
+        this.storeId = storeId;
+        this.orderUserId = orderUserId;
+        this.deliveryUserId = deliveryUserId;
+        this.paymentMethod = paymentMethod;
+        this.point = point;
+        this.totalPrice = totalPrice;
+        this.requests = requests;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.status = status;
+        this.address = address;
+    }
 }

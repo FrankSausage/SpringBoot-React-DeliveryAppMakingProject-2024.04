@@ -37,6 +37,18 @@ export const useStoreDeatilByEmail = (email ,storeId) => {
   return { isLoading, error, StoreDetailOwner };
 }
 
+export const useMenuDetailByMenuId = menuId => {
+  const {isLoading, error, data: menuDetailData} = useQuery({
+    queryKey: ['menuDetail', menuId],
+    queryFn: async () => {
+      return axios.get(`/dp/store/menu/detail`, { params: { menuId: menuId}})
+        .then(res => res.data)
+        .catch(console.error);
+    }, staleTime: 1000 * 60 * 5
+  })
+  return { isLoading, error, menuDetailData}
+}
+
 export const useMenuListByStoreId = storeId => {
 
   const { isLoading, error, data: menuData } = useQuery({
