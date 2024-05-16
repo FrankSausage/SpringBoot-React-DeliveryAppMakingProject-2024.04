@@ -123,7 +123,7 @@ export default function SignIn() {
                 type="submit" 
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2, backgroundColor: '#FF9800', color: 'white', '&:hover': { backgroundColor: '#F57C00' } }}
+                sx={{ mt: 3, mb: 2 }}
               >
                 로그인
               </Button>
