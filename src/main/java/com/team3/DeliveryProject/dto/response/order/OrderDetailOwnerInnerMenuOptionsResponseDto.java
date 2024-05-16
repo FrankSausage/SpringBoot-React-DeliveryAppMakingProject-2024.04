@@ -13,7 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderDetailInnerMenuOptionsResponseDto {
+public class OrderDetailOwnerInnerMenuOptionsResponseDto {
     private String menuOptionName;
     private int menuOptionPrice;
 }

@@ -15,7 +15,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderDetailResponseDto {
+public class OrderDetailOwnerResponseDto {
     private String paymentMethod;
     private int totalPrice;
     private int point;
@@ -24,5 +24,5 @@ public class OrderDetailResponseDto {
     private int deliveryTip;
     private LocalDateTime orderDate;
     private String address;
-    private List<OrderDetailInnerMenusResponseDto> menus;
+    private List<OrderDetailOwnerInnerMenusResponseDto> menus;
 }
