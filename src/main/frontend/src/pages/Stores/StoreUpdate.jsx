@@ -35,7 +35,6 @@ export default function StoreRegister() {
   const [maxDeliveryTime, setMaxDeliveryTime] = useState('');
   const [addressCodes, setAddressCodes] = useState([]);
   const [newDeliveryAddress, setNewDeliveryAddress] = useState('');
-  const [existingDeliveryAddresses, setExistingDeliveryAddresses] = useState([]);
   const [deliveryAddress, setDeliveryAddress] = useState([]);
   const [usePreviousData, setUsePreviousData] = useState(false);
   const [selectedDays, setSelectedDays] = useState([]);
@@ -70,17 +69,20 @@ export default function StoreRegister() {
     findPostcodeWithOutBCode(setRoadAddress, setExtraAddress);
   };
 
-  const handleFindDeliverPostCode = () => {
-    if (newDeliveryAddress && !usePreviousData) {
-      setDeliveryAddress(prevAddresses => [...prevAddresses, newDeliveryAddress]); // 새로운 데이터 추가
+  const handleFindDeliverPostCode = async () => {
+    try {
+      setSelectedDeliveryAddresses([]); // 선택된 주소 초기화
+      setDeliveryAddress([]); // 기존 주소 초기화
+      const newAddress = await findDeliverPostCode(setJibunAddress, setNewDeliveryAddress, setAddressCode);
+      setDeliveryAddress(prevAddress => [...prevAddress, newAddress]); // 새로운 배달지역 추가
+    } catch (error) {
+      console.error('배달지역 찾기 오류:', error);
     }
-    findDeliverPostCode(setJibunAddress, setNewDeliveryAddress, setAddressCode);
   };
 
   const handleUsePreviousDataChange = () => {
     setUsePreviousData(prev => !prev);
   };
-
 
   useEffect(() => {
     if (store && store.addressCodes && store.closedDays) {
@@ -248,10 +250,10 @@ export default function StoreRegister() {
                 <LockOutlinedIcon />
               </Avatar>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>
+                <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>
               </Typography>
               <Typography component="h1" variant="h5">
-                온라인 입점 신청서
+                가게 수정 신청서
               </Typography>
               <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
@@ -291,7 +293,7 @@ export default function StoreRegister() {
                     </Typography>
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
-                        {['한식', '중식', '일식', '양식', '패스트', '치킨', '분식', '디저트'].map((cat) => (
+                        {['한식', '중식', '일식', '양식', '패스트', '햄버거', '치킨', '분식', '디저트'].map((cat) => (
                           <FormControlLabel
                             key={cat}
                             control={<Checkbox checked={category.includes(cat)} onChange={handleCategoryChange} value={cat} color="primary" />}
@@ -324,22 +326,10 @@ export default function StoreRegister() {
                     주소 찾기
                   </Button>
                   <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="extraAddress"
-                      name="extraAddress"
-                      label="참고항목"
-                      value={extraAddress}
-                      InputProps={{
-                        readOnly: true,
-                      }}
-                    />
+                    <TextField required fullWidth id="extraAddress" name="extraAddress" label="참고항목" value={extraAddress} />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
+                    <TextField required fullWidth
                       id="detailAddress"
                       label="상세주소"
                       value={detailAddress}
@@ -478,58 +468,35 @@ export default function StoreRegister() {
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
                         <TextField
+                          autoComplete="given-name"
+                          name="deliveryAddress"
                           fullWidth
                           id="deliveryAddress"
-                          name="deliveryAddress"
                           label="배달 가능 지역"
                           value={deliveryAddress.join(', ')}
-                          InputProps={{
-                            readOnly: true,
-                          }}
                         />
                       </Grid>
                       <Grid item xs={12}>
                         <Grid container spacing={1}>
                           <FormControlLabel
-                            control={<Checkbox checked={usePreviousData} onChange={handleUsePreviousDataChange} color="primary" />}
-                            label="기존 데이터 사용"
+                            fullWidth
+                            variant="contained"
+                            control={<Checkbox checked={!usePreviousData} onChange={handleUsePreviousDataChange} color="primary" />}
+                            label="새로운 주소 사용"
                           />
-                          <Grid item xs={12}>
-                            <Select
-                              labelId="demo-multiple-checkbox-label"
-                              id="demo-multiple-checkbox"
-                              multiple
-                              value={selectedDeliveryAddresses}
-                              onChange={handleDeliveryAddressesChange}
-                              input={<Input />}
-                              renderValue={(selected) => selected.join(', ')}
-                              >
-                              {existingDeliveryAddresses.map((address) => (
-                                <MenuItem key={address} value={address}>
-                                  <Checkbox checked={selectedDeliveryAddresses.includes(address)} />
-                                  <ListItemText primary={address} />
-                                </MenuItem>
-                              ))}
-                              {deliveryAddress.map((address) => (
-                                <MenuItem key={address} value={address}>
-                                  <Checkbox checked={selectedDeliveryAddresses.includes(address)} />
-                                  <ListItemText primary={address} />
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          </Grid>
                         </Grid>
                       </Grid>
-                      <Button
-                        type="button"
-                        onClick={handleFindDeliverPostCode}
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 1, mb: 2, ml: 2 }}
-                        disabled={usePreviousData} 
-                      >
-                        주소 찾기
-                      </Button>
+                      {!usePreviousData && (
+                        <Button
+                          type="button"
+                          onClick={handleFindDeliverPostCode}
+                          fullWidth
+                          variant="contained"
+                          sx={{ mt: 1, mb: 2, ml: 2 }}
+                        >
+                          배달 지역 찾기
+                        </Button>
+                      )}
                       <Grid item xs={12}>
                         <TextField
                           autoComplete="given-name"
@@ -576,7 +543,6 @@ export default function StoreRegister() {
                           사진 올리기
                         </Button>
                       </Grid>
-
                     </Grid>
                   </Grid>
                   <Grid item xs={6}>

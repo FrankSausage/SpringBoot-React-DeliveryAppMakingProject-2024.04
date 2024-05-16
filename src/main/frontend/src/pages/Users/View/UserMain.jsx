@@ -11,17 +11,16 @@ export default function UserMain() {
         <Grid container>
           <Grid item xs={12} sx={{ border: 1 }}>
             <Stack sx={{ maxHeight: 200 }}>
-              <Box
-                sx={
-                  {
-                    width: '100%',
-                    height: 200,
-                    backgroundImage: `url(https://source.unsplash.com/random?wallpapers)`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                  }}>
-              </Box>
+            <Box
+              sx={{
+                width: '100%',
+                height: 130,
+                backgroundImage: `url(https://source.unsplash.com/random?wallpapers)`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
             </Stack>
           </Grid>
         </Grid>

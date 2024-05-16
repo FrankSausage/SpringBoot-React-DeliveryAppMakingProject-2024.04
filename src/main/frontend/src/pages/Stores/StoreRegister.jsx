@@ -379,7 +379,6 @@ export default function StoreRegister() {
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
-                  // name="jibun"
                   required
                   fullWidth
                   id="jibun"
@@ -396,7 +395,7 @@ export default function StoreRegister() {
                 variant="contained"
                 sx={{ mt: 1, mb: 2, ml: 2 }}
               >
-                주소 찾기
+                배달 지역 찾기
               </Button>
               <Grid item xs={12}>
                 <TextField
