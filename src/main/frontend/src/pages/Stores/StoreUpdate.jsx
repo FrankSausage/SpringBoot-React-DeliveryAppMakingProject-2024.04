@@ -72,9 +72,8 @@ export default function StoreRegister() {
   const handleFindDeliverPostCode = async () => {
     try {
       setSelectedDeliveryAddresses([]); // 선택된 주소 초기화
-      setDeliveryAddress([]); // 기존 주소 초기화
       const newAddress = await findDeliverPostCode(setJibunAddress, setNewDeliveryAddress, setAddressCode);
-      setDeliveryAddress(prevAddress => [...prevAddress, newAddress]); // 새로운 배달지역 추가
+      setDeliveryAddress(prevAddresses => [...prevAddresses, newAddress]); // 새로운 배달 지역 추가
     } catch (error) {
       console.error('배달지역 찾기 오류:', error);
     }
@@ -473,7 +472,8 @@ export default function StoreRegister() {
                           fullWidth
                           id="deliveryAddress"
                           label="배달 가능 지역"
-                          value={deliveryAddress.join(', ')}
+                          value={deliveryAddress}
+                          onChange={handleDeliveryAddressesChange} // 주소 변경 시 업데이트
                         />
                       </Grid>
                       <Grid item xs={12}>
