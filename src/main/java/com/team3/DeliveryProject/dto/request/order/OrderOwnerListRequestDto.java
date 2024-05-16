@@ -13,8 +13,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderListRequestDto {
+public class OrderOwnerListRequestDto {
 
+    private Long storeId;
     private String email;
-
 }
