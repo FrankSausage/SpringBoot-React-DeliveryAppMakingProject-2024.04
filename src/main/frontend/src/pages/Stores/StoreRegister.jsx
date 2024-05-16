@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { findDeliverPostCode, findPostcodeWithOutBCode } from '../../utils/AddressUtil';
-import { extractDataFromFormData, formatStorePhoneNumber, addressCodePacker } from '../../utils/commonUitil';
+import { extractDataFromFormData, formatStorePhoneNumber, addressCodePacker, generateTimeOptions } from '../../utils/commonUitil';
 import { useStore } from './Hook/useStore';
 import SearchHeader from '../../components/SearchHeader';
 
@@ -18,7 +18,7 @@ export default function StoreRegister() {
   const [extraAddress, setExtraAddress] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
   const [name, setName] = useState('');
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState([]);
   const [type, setType] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [addressCode, setAddressCode] = useState('');
@@ -33,9 +33,10 @@ export default function StoreRegister() {
   const [openHours, setOpenHours] = useState('');
   const [closeHours, setCloseHours] = useState('');
   const [jibun, setJibunAddress] = useState('')
+   const timeOptionsOpen = generateTimeOptions(5, 18);
+  const timeOptionsClose = generateTimeOptions(15, 24).concat(generateTimeOptions(0, 7));
   const navigate = useNavigate();
-  // const [userInfo, setUserInfo] = useState({email: '', password: '', })
-  // const [storeInfo, setStoreInfo] = useState({deliveryAddress: '', closedDays: '',}) // 나중에 이런식으로 이팩토리 할것 이유 업데이트 할때 정보 받기 편해지기 위해서
+
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
       const script = document.createElement('script');
@@ -76,12 +77,12 @@ export default function StoreRegister() {
             .then(resFormData => {
               resFormData.addressCodes = addressCodePacker(addressCode.split(','), deliveryAddress.split(','));
               console.log(resFormData)
-              postStoreRegister.mutate(resFormData,{
+              postStoreRegister.mutate(resFormData, {
                 onSuccess: () => navigate('/'),
                 onError: e => console.error('가게 등록 실패: ' + e)
               })
             })
-      });
+        });
     }
   }
 
@@ -118,24 +119,19 @@ export default function StoreRegister() {
   const weekDays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
   const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];
 
-  
 
-  const generateTimeOptions = (startHour, endHour) => {
-    const options = [];
-    for (let hour = startHour; hour <= endHour; hour++) {
-      for (let minute = 0; minute < 60; minute += 30) {
-        if (hour < endHour || (hour === endHour && minute < 30)) { // 24:00과 24:30 제외
-          const formattedHour = (hour === 24 ? '23' : hour).toString().padStart(2, '0');
-          const formattedMinute = (hour === endHour && minute === 0) ? '59' : minute.toString().padStart(2, '0'); // 24:00 대신 23:59 추가
-          options.push(`${formattedHour}:${formattedMinute}`);
-        }
-      }
+  const handleCategoryChange = (event) => {
+    const selectedCategory = event.target.value;
+    const isChecked = event.target.checked;
+  
+    // 체크된 상태인지 확인하여 카테고리 배열을 업데이트합니다.
+    if (isChecked) {
+      setCategory([...category, selectedCategory]); // 기존 배열에 추가
+    } else {
+      setCategory(category.filter(cat => cat !== selectedCategory)); // 해당 카테고리를 배열에서 제거
     }
-    return options;
   };
 
-  const timeOptionsOpen = generateTimeOptions(5, 18);
-  const timeOptionsClose = generateTimeOptions(15, 24).concat(generateTimeOptions(0, 7));
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -192,46 +188,21 @@ export default function StoreRegister() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="h6" gutterBottom>
-                  카테고리
-                </Typography>
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
+              <Typography variant="h6" gutterBottom>
+                카테고리
+              </Typography>
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  {['한식', '중식', '일식', '양식', '패스트', '치킨', '분식', '디저트'].map((cat) => (
                     <FormControlLabel
-                      control={<Checkbox checked={category === '한식'} onChange={() => setCategory('한식')} color="primary" />}
-                      label="한식"
+                      key={cat}
+                      control={<Checkbox checked={category.includes(cat)} onChange={handleCategoryChange} value={cat} color="primary" />}
+                      label={cat}
                     />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '중식'} onChange={() => setCategory('중식')} color="primary" />}
-                      label="중식"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '일식'} onChange={() => setCategory('일식')} color="primary" />}
-                      label="일식"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '양식'} onChange={() => setCategory('양식')} color="primary" />}
-                      label="양식"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '패스트'} onChange={() => setCategory('패스트')} color="primary" />}
-                      label="패스트"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '치킨'} onChange={() => setCategory('치킨')} color="primary" />}
-                      label="치킨"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '분식'} onChange={() => setCategory('분식')} color="primary" />}
-                      label="분식"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox checked={category === '디저트'} onChange={() => setCategory('디저트')} color="primary" />}
-                      label="디저트"
-                    />
-                  </Grid>
+                  ))}
                 </Grid>
               </Grid>
+            </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -307,7 +278,7 @@ export default function StoreRegister() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"  
+                  autoComplete="given-name"
                   name="deliveryTip"
                   required
                   fullWidth
@@ -405,11 +376,9 @@ export default function StoreRegister() {
                   </Select>
                 </FormControl>
               </Grid>
-
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
-                  // name="jibun"
                   required
                   fullWidth
                   id="jibun"
@@ -426,7 +395,7 @@ export default function StoreRegister() {
                 variant="contained"
                 sx={{ mt: 1, mb: 2, ml: 2 }}
               >
-                주소 찾기
+                배달 지역 찾기
               </Button>
               <Grid item xs={12}>
                 <TextField
@@ -442,7 +411,6 @@ export default function StoreRegister() {
                   onChange={e => setContent(e.target.value)}
                 />
               </Grid>
-
               <Grid item xs={12}>
                 <Typography variant="h6" gutterBottom>
                   가게 사진
@@ -454,7 +422,6 @@ export default function StoreRegister() {
                   style={{ display: 'none' }}
                   onChange={handleFileUpload} multiple
                 />
-
                 <TextField
                   autoComplete="given-name"
                   name="storePictureName"
@@ -468,7 +435,6 @@ export default function StoreRegister() {
                 />
                 {/* 아이콘 대신에 "사진 올리기" 텍스트를 사용하고 싶다면 아래 주석 처리된 라인을 사용하세요 */}
                 {/* <span>사진 올리기</span> */}
-
                 <Button
                   type="button"
                   variant="contained"
@@ -477,7 +443,6 @@ export default function StoreRegister() {
                   사진 올리기
                 </Button>
               </Grid>
-
               <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
