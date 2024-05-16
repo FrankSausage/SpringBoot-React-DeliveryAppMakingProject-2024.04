@@ -1,4 +1,4 @@
-package com.team3.DeliveryProject.dto.response.user;
+package com.team3.DeliveryProject.dto.response.order;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,9 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserSignInRoleUserResponseDto {
-
-    private String currentAddress;
-    private String role;
-    private int point;
+public class OrderDetailOwnerInnerMenuOptionsResponseDto {
+    private String menuOptionName;
+    private int menuOptionPrice;
 }

@@ -108,6 +108,7 @@ public class UserController {
             UserSignInRoleUserResponseDto responseDto = UserSignInRoleUserResponseDto.builder()
                 .currentAddress(user.getCurrentAddress())
                 .role(user.getRole())
+                .point(user.getPoint())
                 .build();
             return ResponseEntity.ok().body(responseDto);
         } else if (user.getRole().equals("점주")) {
