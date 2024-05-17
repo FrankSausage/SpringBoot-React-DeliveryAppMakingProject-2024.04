@@ -9,17 +9,15 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import MenuOptionDetail from './MenuOptionDetail';
 import { useMenuUpByEmail } from '../../../utils/storeInfo';
 import SearchHeader from '../../../components/SearchHeader';
-import { useQueryClient } from '@tanstack/react-query';
 
 const defaultTheme = createTheme();
 
 export default function MenuUpdate() {
-  const queryClinet = useQueryClient();
   const location = useLocation();
   const email = localStorage.getItem('email');
   const { storeId, menuId } = location.state;
-  const { storeName } = location.state ? location.state : {storeName : ''} ; // 임시 방편
   const { isLoading, error, menu} = useMenuUpByEmail(email, menuId)
+  console.log(menu)
   const [initialName, setInitialName] = useState('');
   const [initialPrice, setInitialPrice] = useState('');
   const [initialContent, setInitialContent] = useState('');
@@ -33,7 +31,6 @@ export default function MenuUpdate() {
   const [storePictureName, setStorePictureName] = useState('');
 
   useEffect(() => {
-    queryClinet.refetchQueries(['menuList'])
     if (!isLoading && menu) {
       // 초기 값을 설정합니다.
       setInitialName(menu.menus[0].name);
@@ -64,12 +61,7 @@ export default function MenuUpdate() {
 
     const formData = await setFormData(data);
     extractDataFromFormData(formData)
-      .then(resFormData => {
-        // console.log(resFormData)
-        axios.post(`/dp/store/menu/update`, resFormData)
-          .then(() => queryClinet.invalidateQueries(['menuList']))
-          .then(() => queryClinet.refetchQueries(['menuList']))
-      });
+      .then(resFormData => axios.post(`/dp/store/menu/update`, resFormData));
 
     alert('메뉴 업데이트가 완료되었습니다.');
     navigate(`/StoreDetail/${storeId}`);
@@ -81,7 +73,7 @@ export default function MenuUpdate() {
       axios.post(`/dp/store/menu/delete`, { menuId: menuId, storeId: storeId, email: email })
         .then(response => {
           alert('메뉴가 삭제되었습니다.');
-          navigate(`/StoreDetail/${storeId}`, );
+          navigate(`/StoreDetail/${storeId}`);
         })
         .catch(error => {
           console.error('메뉴 삭제 중 에러 발생:', error);
@@ -94,12 +86,13 @@ export default function MenuUpdate() {
     try {
       data.append('menuId', menuId);
       data.append('email', email);
-      data.append('category', category);
-      data.append('content', content);
-      data.append('name', name);
-      data.append('price', price);
+      data.append('category', '');
+      data.append('type', '');
+      data.append('content', '');
+      data.append('name', '');
+      data.append('price', '');
       data.append('menuPictureName', '');
-      data.append('menuOptions', '');
+      data.append('menuOptions', null);
       return data;
     } catch (error) {
       console.error('setFormData Error!: ', error);

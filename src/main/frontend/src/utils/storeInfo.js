@@ -64,7 +64,7 @@ export const useMenuListByStoreId = storeId => {
 
 export const useMenuUpByEmail = ( email, menuId) => {
   const { isLoading, error, data: menu } = useQuery({
-      queryKey: ['menuList',email, menuId],
+      queryKey: ['menuList'],
       queryFn: async () => {
           return axios.get(`/dp/store/menu/update`, { params: { email: email, menuId: menuId }})
           .then(res => res.data)

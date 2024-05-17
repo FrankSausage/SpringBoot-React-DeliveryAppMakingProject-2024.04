@@ -43,7 +43,7 @@ function a11yProps(index) {
 
 export default function StoreDetail() {
   const location = useLocation()
-  const { storeName } = location.state ? location.state : {storeName : ''} ; // 임시 방편(꼭 수정해야하는 부분)
+  const { storeName } = location.state;
   const [value, setValue] = useState(1);
   const [ popularity, setPopularity ] = useState('');
   const [searchOpen, setSearchOpen] = useState(false); // 검색 창의 상태를 추적하는 state
