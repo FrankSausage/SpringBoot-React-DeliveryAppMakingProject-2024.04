@@ -51,7 +51,8 @@ public class UserController {
 
     @PostMapping("/update")
     public ResponseEntity<?> updateUser(@RequestBody UserUpdatePostRequestDto requestDto) {
-        Users user = usersRepository.findById(requestDto.getUserId()).orElseThrow(()->new RuntimeException("User not found"));
+        Users user = usersRepository.findUsersByEmail(requestDto.getEmail())
+            .orElseThrow(() -> new RuntimeException("User not found"));
 
         user.setPhone(requestDto.getPhone());
         user.setName(requestDto.getName());
@@ -68,27 +69,12 @@ public class UserController {
             .orElseThrow(() -> new RuntimeException("User not found"));
         System.out.println(user);
         UserUpdateResponseDto responseDto = UserUpdateResponseDto.builder()
-            .userId(user.getUserId())
             .phone(user.getPhone())
             .currentAddress(user.getCurrentAddress())
             .build();
         System.out.println(responseDto);
         return ResponseEntity.ok().body(responseDto);
     }
-
-//    @PostMapping("/update/new")
-//    public ResponseEntity<?> updateUser(@RequestBody UserUpdateGetRequestDto requestDto) {
-//        System.out.println("진입");
-//        Users user = usersRepository.findUsersByEmail(requestDto.getEmail())
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//        System.out.println(user);
-//        UserUpdateResponseDto responseDto = UserUpdateResponseDto.builder()
-//                .phone(user.getPhone())
-//                .currentAddress(user.getCurrentAddress())
-//                .build();
-//        System.out.println(responseDto);
-//        return ResponseEntity.ok().body(responseDto);
-//    }
 
     @PostMapping("/delete")
     public ResponseEntity<?> deleteUser(@RequestBody UserDeleteRequestDto requestDto) {
@@ -132,17 +118,4 @@ public class UserController {
         // 대응되는 role이 없는 경우
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid user role");
     }
-//    @PostMapping("/update/new")
-//    public ResponseEntity<?> updateUsers(@RequestBody UserUpdateGetRequestDto requestDto) {
-//        System.out.println("진입");
-//        Users user = usersRepository.findUsersByEmail(requestDto.getEmail())
-//            .orElseThrow(() -> new RuntimeException("User not found"));
-//        System.out.println(user);
-//        UserUpdateResponseDto responseDto = UserUpdateResponseDto.builder()
-//            .phone(user.getPhone())
-//            .currentAddress(user.getCurrentAddress())
-//            .build();
-//        System.out.println(responseDto);
-//        return ResponseEntity.ok().body(responseDto);
-//    }
 }
