@@ -15,7 +15,6 @@ import lombok.ToString;
 @Builder
 public class UserUpdatePostRequestDto {
 
-    private Long userId;
     private String currentAddress;
     private String email;
     private String name;

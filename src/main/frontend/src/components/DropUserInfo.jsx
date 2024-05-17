@@ -6,6 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import Cart from '../pages/Cart/View/Cart';
+import OrderList from '../pages/Order/OrderList';
 
 export default function DropUserInfo({ role }) {
 	const navigate = useNavigate();
@@ -73,6 +74,11 @@ export default function DropUserInfo({ role }) {
               <ListItemText primary="내 정보"/>
             </ListItemButton>
           </ListItem>
+          {role!=='점주' &&
+          <ListItem>
+            <OrderList allClose={handleClose} />
+          </ListItem>
+          }
           <Divider />
           <ListItem>
             <ListItemButton onClick={() => handleLogout()}>

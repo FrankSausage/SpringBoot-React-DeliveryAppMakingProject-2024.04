@@ -30,7 +30,6 @@ export default function Update() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const navigate = useNavigate();
-
     useEffect(() => {
       const loadDaumPostcodeScript = () => {
         const script = document.createElement('script');
@@ -51,6 +50,7 @@ export default function Update() {
     useEffect(() => {
         if(user) {
             setPhoneNumber(user.data.phone)
+            setAddressCode(user.data.addressCode)
         }
     }, [isLoading])
 
@@ -78,7 +78,8 @@ export default function Update() {
               updateUser(res);
               extractDataFromFormData(res)
                   .then(resFormData => {
-                  // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}} // 이미지 파일 첨부 대비 코드
+                    console.log(resFormData)
+                //   const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}} // 이미지 파일 첨부 대비 코드
                   axios.post(`/dp/user/update`, resFormData)
                   })
               })
@@ -103,11 +104,13 @@ export default function Update() {
 
     const setFormData = async (data) => {
       try{
+        data.append('email', email)
         data.append('currentAddress', ((updateRoadAddress ? updateRoadAddress : '') + ',' 
         + (updateExtraAddress ? updateExtraAddress : '') + ',' 
         + (updateDetailAddress ? updateDetailAddress : '')
         ));
-        data.append('addressCode', user.role==='회원' ? addressCode.substring(0,8) : '00000000');
+        data.append('addressCode', (role==='회원') ? addressCode.substring(0,8) : '00000000');
+        data.append('userId', user.data.userId);
         return await data;
       }
       catch (error) {
@@ -152,13 +155,11 @@ export default function Update() {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                    required
                                     fullWidth
-                                    id="email"
-                                    name="email"
                                     label="이메일"
                                     defaultValue={email} // 기존 이메일 정보 표시
                                     autoComplete="current-email"
+                                    disabled
                                     />
                             </Grid>
                             <Grid item xs={12}>
@@ -254,6 +255,7 @@ export default function Update() {
                                 <Button 
                                     fullWidth 
                                     variant="contained" 
+                                    color='error'
                                     sx={{ mt: 2 }}
                                     onClick={handleOpen}
                                     >
