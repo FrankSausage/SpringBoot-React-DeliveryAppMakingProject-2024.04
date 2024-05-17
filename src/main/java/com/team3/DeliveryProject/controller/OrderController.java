@@ -2,11 +2,13 @@ package com.team3.DeliveryProject.controller;
 
 import com.team3.DeliveryProject.dto.request.order.OrderAddRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.order.OrderDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderListRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderOwnerDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderOwnerListRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderStatusDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderUpdateRequestDto;
+import com.team3.DeliveryProject.dto.response.order.OrderDetailOwnerResponseDto;
 import com.team3.DeliveryProject.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -57,5 +59,8 @@ public class OrderController {
     public ResponseEntity<?> detailOwnerOrder(@ModelAttribute OrderOwnerDetailRequestDto requestDto) {
         return ResponseEntity.ok().body(orderService.ownerDetailOrder(requestDto));
     }
-
+    @GetMapping("/detail")
+    public ResponseEntity<?> detailOrder(@ModelAttribute OrderDetailRequestDto requestDto) {
+        return ResponseEntity.ok().body(orderService.detailOrder(requestDto));
+    }
 }

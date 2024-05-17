@@ -1,4 +1,4 @@
-package com.team3.DeliveryProject.dto.response.user;
+package com.team3.DeliveryProject.dto.response.order;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,10 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserUpdateResponseDto {
-
-    private Long userId;
-    private String phone;
-    private String currentAddress;
-
+public class OrderDetailInnerMenuOptionsResponseDto {
+    private String menuOptionName;
+    private int menuOptionPrice;
 }

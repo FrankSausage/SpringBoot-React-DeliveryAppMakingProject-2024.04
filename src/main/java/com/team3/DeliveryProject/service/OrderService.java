@@ -3,12 +3,14 @@ package com.team3.DeliveryProject.service;
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.order.OrderAddRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.order.OrderDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderListRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderOwnerDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderOwnerListRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderStatusDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderUpdateRequestDto;
 import com.team3.DeliveryProject.dto.response.order.OrderDetailOwnerResponseDto;
+import com.team3.DeliveryProject.dto.response.order.OrderDetailResponseDto;
 import com.team3.DeliveryProject.dto.response.order.OrderListResponseDto;
 import com.team3.DeliveryProject.dto.response.order.OrderOwnerListResponseDto;
 import com.team3.DeliveryProject.dto.response.order.OrderStatusDetailResponseDto;
@@ -29,4 +31,6 @@ public interface OrderService {
     public OrderListResponseDto listOrder(OrderListRequestDto requestDto);
 
     public OrderDetailOwnerResponseDto ownerDetailOrder(OrderOwnerDetailRequestDto requestDto);
+
+    public OrderDetailResponseDto detailOrder(OrderDetailRequestDto requestDto);
 }
