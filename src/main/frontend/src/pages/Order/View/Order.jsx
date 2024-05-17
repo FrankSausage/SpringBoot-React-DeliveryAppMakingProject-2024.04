@@ -32,7 +32,10 @@ export default function Order() {
 			address: address,
 			menus: cartItems
 		}, {
-			onSuccess: res => {console.log(res)},
+			onSuccess: res => {
+				localStorage.removeItem('cartItems')
+				navigate('/')
+			},
 			onError: e => {console.log(e)},
 		})
 	}
