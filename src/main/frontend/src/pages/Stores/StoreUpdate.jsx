@@ -146,7 +146,7 @@ export default function StoreRegister() {
         .then(res => {
           extractDataFromFormData(res)
             .then(resFormData => {
-              resFormData.addressCodes = addressCodePacker(addressCode.split(','), deliveryAddress);
+              resFormData.addressCodes = addressCodePacker(addressCode.split(','), deliveryAddress.split(','));
               console.log(resFormData)
               postStoreUpdate.mutate(resFormData, {
                 onSuccess: () => navigate('/'),
