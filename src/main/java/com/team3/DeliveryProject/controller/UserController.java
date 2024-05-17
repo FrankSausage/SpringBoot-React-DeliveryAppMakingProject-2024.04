@@ -68,7 +68,6 @@ public class UserController {
             .orElseThrow(() -> new RuntimeException("User not found"));
         System.out.println(user);
         UserUpdateResponseDto responseDto = UserUpdateResponseDto.builder()
-            .userId(user.getUserId())
             .phone(user.getPhone())
             .currentAddress(user.getCurrentAddress())
             .build();
