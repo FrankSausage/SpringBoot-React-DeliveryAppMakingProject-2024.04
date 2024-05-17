@@ -103,11 +103,9 @@ export const findDUpdatePostCode = (setJibunAddress, setExtraAddress, setAddress
             return prev + ',' + data.bcode.substring(0, 8);
           return data.bcode.substring(0, 8)});
           setDeliveryAddress(prev => {
-            const guName = data.bname; // 우만동, 원천동과 같은 구 이름
             if(prev)
-            return prev + ',' + guName;
-          return data.bname
-          });
+            return prev + ',' + data.bname;
+          return data.bname});
       }
     }).open();
   } else {

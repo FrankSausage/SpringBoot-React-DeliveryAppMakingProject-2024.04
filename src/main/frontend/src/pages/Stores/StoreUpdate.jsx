@@ -68,14 +68,14 @@ export default function StoreRegister() {
 
   const handleFindDeliverPostCode = async () => {
     try {
-      setDeliveryAddress([]); // 기존 데이터 초기화
-      setSelectedDeliveryAddresses([]); // 선택된 주소 초기화
-    
+      setDeliveryAddress([]); 
+      setSelectedDeliveryAddresses([]); 
+  
       await findDUpdatePostCode(
         setJibunAddress,
         setExtraAddress,
         setAddressCode,
-        setDeliveryAddress
+        setDeliveryAddress 
       );
     } catch (error) {
       console.error('배달지역 찾기 오류:', error);
@@ -146,7 +146,7 @@ export default function StoreRegister() {
         .then(res => {
           extractDataFromFormData(res)
             .then(resFormData => {
-              resFormData.addressCodes = addressCodePacker(addressCode.split(','), deliveryAddress.join(','));
+              resFormData.addressCodes = addressCodePacker(addressCode.split(','), deliveryAddress);
               console.log(resFormData)
               postStoreUpdate.mutate(resFormData, {
                 onSuccess: () => navigate('/'),
