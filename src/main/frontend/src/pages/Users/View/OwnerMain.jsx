@@ -35,7 +35,7 @@ export default function OwnerMain() {
             <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
               <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
                 <Box key={idx} sx={{ ...boxStyle, position: 'relative', width: { xs: '100%', sm: '70%' }, height: '150px', marginX: 'auto' }}>
-                  <Link to={`/StoreDetail/${data.storeId}`} style={{ textDecoration: 'none', color: 'black' }} >
+                  <Link to={`/StoreDetail/${data.storeId}`} state={{storeName: data.name}} style={{ textDecoration: 'none', color: 'black' }} >
                     <Typography>{idx}</Typography>
                     <div>
                       <img src={'/img/01.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} alt="메뉴 이미지" />
