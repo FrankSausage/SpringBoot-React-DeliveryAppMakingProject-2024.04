@@ -371,5 +371,6 @@ public class OrderServiceImpl implements OrderService {
             .menus(innerMenusResponseDtos)
             .build();
 
-        return responseDto;    }
+        return responseDto;
+    }
 }
