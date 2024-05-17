@@ -5,14 +5,14 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { useOwnerByEmail } from '../../utils/storeInfo';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { findDUpdatePostCode, findPostcodeWithOutBCode } from '../../utils/AddressUtil';
+import { findUpdatePostCode, findPostcodeWithOutBCode } from '../../utils/AddressUtil';
 import { extractDataFromFormData, formatStorePhoneNumber, addressCodePacker, generateTimeOptions, splitAddressFromCurrentUserAddress } from '../../utils/commonUitil';
 import { useStore } from './Hook/useStore';
 import SearchHeader from '../../components/SearchHeader';
 import axios from 'axios';
 const defaultTheme = createTheme();
 
-export default function StoreRegister() {
+export default function StoreUpdate() {
   const email = localStorage.getItem('email')
   const { storeId } = useParams();
   const { isLoading, error, store } = useOwnerByEmail(email, storeId);
@@ -36,16 +36,15 @@ export default function StoreRegister() {
   const [usePreviousData, setUsePreviousData] = useState(true); // 초기에 비활성화
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedDeliveryAddresses, setSelectedDeliveryAddresses] = useState([]);
-  const handleDeliveryAddressesChange = (event) => {
-    setSelectedDeliveryAddresses(event.target.value);
-  };
+  const [ firstDeliveryAddress, setFirstDeliveryAddress ] = useState([])
+  const [ firstAddressCode, setFirstAddressCode ] = useState([])
+
   const [openHours, setOpenHours] = useState('');
   const [closeHours, setCloseHours] = useState('');
   const [jibun, setJibunAddress] = useState([]);
   const timeOptionsOpen = generateTimeOptions(5, 18);
   const timeOptionsClose = generateTimeOptions(15, 24).concat(generateTimeOptions(0, 7));
   const navigate = useNavigate();
-
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
       const script = document.createElement('script');
@@ -68,47 +67,48 @@ export default function StoreRegister() {
 
   const handleFindDeliverPostCode = async () => {
     try {
-      setDeliveryAddress([]); 
-      setSelectedDeliveryAddresses([]); 
-  
-      await findDUpdatePostCode(
-        setJibunAddress,
-        setExtraAddress,
-        setAddressCode,
-        setDeliveryAddress 
-      );
+      if (!usePreviousData) {
+        // setDeliveryAddress([]);
+        // setSelectedDeliveryAddresses([]);
+        await findUpdatePostCode(
+          setJibunAddress,
+          setAddressCode,
+          setDeliveryAddress
+        );
+      }
     } catch (error) {
       console.error('배달지역 찾기 오류:', error);
     }
   };
 
   const handleUsePreviousDataChange = () => {
+    let prevAddresCode = addressCode
+    let prevDeliveryAddress = deliveryAddress
+
     setUsePreviousData(prev => !prev);
-    setDeliveryAddress([]); // 새로운 데이터 입력 시 이전 데이터 초기화
+
+    if (usePreviousData) {
+      setDeliveryAddress(''); // 새로운 데이터 입력 시 이전 데이터 초기화
+      setJibunAddress(''); // 주소 초기화
+      setAddressCode(''); 
+    } else {
+      setDeliveryAddress(firstDeliveryAddress)
+      setAddressCode(firstAddressCode)
+    }
   };
 
 
   useEffect(() => {
     if (store && store.addressCodes && store.closedDays) {
       const { roadAddress, extraAddress, detailAddress } = splitAddressFromCurrentUserAddress(store.address)
-      setRoadAddress(roadAddress)
-      setExtraAddress(extraAddress)
-      setExtraAddress(extractExtraAddress(store.address));
-      setCategory(store.category)
-      setSelectedDays(store.closedDays);
-      setClosedDays(store.closedDays)
-      setContent(store.content)
-      setDeliveryTip(store.deliveryTip)
-      setMaxDeliveryTime(store.maxDeliveryTime)
-      setMinDeliveryPrice(store.minDeliveryPrice)
-      setMinDeliveryTime(store.minDeliveryTime)
-      setName(store.name)
-      setOpenHours(store.openHours)
-      setCloseHours(store.closeHours)
-      setPhone(store.phone)
-      setStorePictureName(store.storePictureName)
-      setType(store.type)
-      setDeliveryAddress(store.addressCodes.map(res => res.deliveryAddress)); // 변경된 부분
+      setRoadAddress(roadAddress); setExtraAddress(extraAddress); setExtraAddress(extractExtraAddress(store.address)); setCategory(store.category);
+      setSelectedDays(store.closedDays); setClosedDays(store.closedDays); setContent(store.content); setDeliveryTip(store.deliveryTip); setMaxDeliveryTime(store.maxDeliveryTime);
+      setMinDeliveryPrice(store.minDeliveryPrice); setMinDeliveryTime(store.minDeliveryTime); setName(store.name); setOpenHours(store.openHours); setCloseHours(store.closeHours);
+      setPhone(store.phone); setStorePictureName(store.storePictureName); setType(store.type);
+      setDeliveryAddress(store.addressCodes.map(res => res.deliveryAddress));
+      setAddressCode(store.addressCodes.map(res => res.addressCode));
+      setFirstDeliveryAddress(store.addressCodes.map(res => res.deliveryAddress));
+      setFirstAddressCode(store.addressCodes.map(res => res.addressCode));
       const addressArray = store.address.split(',');
       const lastPartOfAddress = addressArray[addressArray.length - 1].trim();
       setDetailAddress(lastPartOfAddress);
@@ -502,7 +502,7 @@ export default function StoreRegister() {
                         sx={{ mt: 1, mb: 2, ml: 2 }}
                         disabled={usePreviousData}
                       >
-                        주소 찾기
+                        배달 지역 찾기
                       </Button>
                       <Grid item xs={12}>
                         <TextField

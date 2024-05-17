@@ -78,8 +78,7 @@ export const findDeliverPostCode = (setJibunAddress, setExtraAddress, setAddress
   }
 };
 
-export const findDUpdatePostCode = (setJibunAddress, setExtraAddress, setAddressCode, setDeliveryAddress) => {
-
+export const findUpdatePostCode = (setJibunAddress, setAddressCode, setDeliveryAddress) => {
   if (window.daum && window.daum.Postcode) {
     new window.daum.Postcode({
       oncomplete: (data) => {
@@ -94,7 +93,7 @@ export const findDUpdatePostCode = (setJibunAddress, setExtraAddress, setAddress
           if (prev)
             return prev + ',' + jibunRoadAddr;
           return jibunRoadAddr});
-        setExtraAddress(prev => {
+          setDeliveryAddress(prev => {
           if (prev)
             return prev + ',' + data.bname;
           return data.bname}); 
@@ -102,10 +101,6 @@ export const findDUpdatePostCode = (setJibunAddress, setExtraAddress, setAddress
           if (prev)
             return prev + ',' + data.bcode.substring(0, 8);
           return data.bcode.substring(0, 8)});
-          setDeliveryAddress(prev => {
-            if(prev)
-            return prev + ',' + data.bname;
-          return data.bname});
       }
     }).open();
   } else {
