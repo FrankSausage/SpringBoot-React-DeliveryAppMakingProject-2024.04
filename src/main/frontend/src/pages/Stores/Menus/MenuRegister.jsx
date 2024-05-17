@@ -36,7 +36,7 @@ export default function MenuRegister() {
     extractDataFromFormData(formData)
       .then(resFormData => {
         postMenuRegister.mutate(resFormData, {
-          onSuccess:() => navigate(`/StoreDetail/${storeId}`),
+          onSuccess:() => navigate(`/StoreDetail/${storeId}`, {state: {}}),
           onError: e => {console.error('음식 등록 실패: ' + e)}
         })
     })
