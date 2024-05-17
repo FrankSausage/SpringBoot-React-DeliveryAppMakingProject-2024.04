@@ -2,7 +2,8 @@ import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, GithubAuthProvider,
   signInWithPopup, signOut, updateProfile, signInWithEmailAndPassword,
   onAuthStateChanged, 
-  updatePassword} from "firebase/auth";
+  updatePassword,
+  updateEmail} from "firebase/auth";
 import { extractDataFromFormData } from '../utils/commonUitil';
 
 const firebaseConfig = {
