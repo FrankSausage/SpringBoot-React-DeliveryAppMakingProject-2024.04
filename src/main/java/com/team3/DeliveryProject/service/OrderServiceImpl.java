@@ -10,14 +10,18 @@ import com.team3.DeliveryProject.dto.request.order.OrderAddInnerMenuOptionsReque
 import com.team3.DeliveryProject.dto.request.order.OrderAddInnerMenusRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderAddRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.order.OrderDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderListRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderOwnerDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderOwnerListRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderStatusDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderUpdateRequestDto;
+import com.team3.DeliveryProject.dto.response.order.OrderDetailInnerMenuOptionsResponseDto;
+import com.team3.DeliveryProject.dto.response.order.OrderDetailInnerMenusResponseDto;
 import com.team3.DeliveryProject.dto.response.order.OrderDetailOwnerInnerMenuOptionsResponseDto;
 import com.team3.DeliveryProject.dto.response.order.OrderDetailOwnerInnerMenusResponseDto;
 import com.team3.DeliveryProject.dto.response.order.OrderDetailOwnerResponseDto;
+import com.team3.DeliveryProject.dto.response.order.OrderDetailResponseDto;
 import com.team3.DeliveryProject.dto.response.order.OrderListInnerOrdersResponseDto;
 import com.team3.DeliveryProject.dto.response.order.OrderListResponseDto;
 import com.team3.DeliveryProject.dto.response.order.OrderOwnerListInnerOrdersResponseDto;
@@ -315,4 +319,57 @@ public class OrderServiceImpl implements OrderService {
 
         return responseDto;
     }
+
+    @Override
+    public OrderDetailResponseDto detailOrder(OrderDetailRequestDto requestDto) {
+        Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
+            .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Orders orders = ordersRepository.findById(requestDto.getOrderId())
+            .orElseThrow(() -> new RuntimeException("Orders not found"));
+
+        List<OrderMenu> orderMenuList = orderMenuRepository.findAllByOrderId(orders.getOrderId());
+        List<OrderDetailInnerMenusResponseDto> innerMenusResponseDtos = new ArrayList<>();
+
+        for (OrderMenu orderMenu : orderMenuList) {
+            Menu menu = menuRepository.findById(orderMenu.getMenuId())
+                .orElseThrow(() -> new RuntimeException("Menu not found"));
+
+            MenuOption menuOption = menuOptionRepository.findById(orderMenu.getMenuOptionId())
+                .orElseThrow(() -> new RuntimeException("MenuOption not found"));
+
+            List<OrderDetailInnerMenuOptionsResponseDto> innerMenuOptionsResponseDtos = new ArrayList<>();
+            OrderDetailInnerMenuOptionsResponseDto menuOptionsResponseDto = OrderDetailInnerMenuOptionsResponseDto.builder()
+                .menuOptionName(menuOption.getOptions())
+                .menuOptionPrice(menuOption.getPrice())
+                .build();
+            innerMenuOptionsResponseDtos.add(menuOptionsResponseDto);
+
+            OrderDetailInnerMenusResponseDto innerMenusResponseDto = OrderDetailInnerMenusResponseDto.builder()
+                .menuName(menu.getName())
+                .menuPrice(menu.getPrice())
+                .quantity(orderMenu.getQuantity())
+                .sequence(orderMenu.getSequence())
+                .menuPictureName(menu.getMenuPictureName())
+                .menuOptions(innerMenuOptionsResponseDtos)
+                .build();
+            innerMenusResponseDtos.add(innerMenusResponseDto);
+        }
+        Stores stores = storesRepository.findById(orders.getStoreId())
+            .orElseThrow(() -> new RuntimeException("Store not found"));
+        OrderDetailResponseDto responseDto = OrderDetailResponseDto.builder()
+            .storeId(stores.getStoreId())
+            .storeName(stores.getName())
+            .paymentMethod(orders.getPaymentMethod())
+            .totalPrice(orders.getTotalPrice())
+            .point(orders.getPoint())
+            .requests(orders.getRequests())
+            .status(orders.getStatus())
+            .deliveryTip(stores.getDeliveryTip())
+            .orderDate(orders.getCreatedDate())
+            .address(orders.getAddress())
+            .menus(innerMenusResponseDtos)
+            .build();
+
+        return responseDto;    }
 }
