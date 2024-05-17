@@ -51,7 +51,7 @@ public class UserController {
 
     @PostMapping("/update")
     public ResponseEntity<?> updateUser(@RequestBody UserUpdatePostRequestDto requestDto) {
-        Users user = usersRepository.findUsersByEmail(requestDto.getEmail()).get();
+        Users user = usersRepository.findById(requestDto.getUserId()).orElseThrow(()->new RuntimeException("User not found"));
 
         user.setPhone(requestDto.getPhone());
         user.setName(requestDto.getName());
@@ -68,6 +68,7 @@ public class UserController {
             .orElseThrow(() -> new RuntimeException("User not found"));
         System.out.println(user);
         UserUpdateResponseDto responseDto = UserUpdateResponseDto.builder()
+            .userId(user.getUserId())
             .phone(user.getPhone())
             .currentAddress(user.getCurrentAddress())
             .build();
