@@ -95,175 +95,179 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>    
-          </Typography>
-          <Typography component="h1" variant="h5">
-            회원가입
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="name"
-                  required
-                  fullWidth
-                  id="name"
-                  label="이름"
-                  placeholder='ex)홍길동'
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="이메일"
-                  placeholder='ex)human@example.com'
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="비밀번호"
-                  type="password"
-                  id="password"
-                  placeholder='6자리 이상 입력하세요.(영문,숫자만 입력 가능합니다)'
-                  autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  label="비밀번호 확인"
-                  type="password"
-                  placeholder='위와 일치하게 작성하세요'
-                  onChange={e => {setPasswordCheack(e.target.value)}}
-                  error={!isPasswordMatch}
-                  helperText={!isPasswordMatch && "비밀번호가 일치하지 않습니다"}
-                  autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="phone"
-                  label="휴대전화"
-                  name="phone"
-                  placeholder='ex) 010-1234-5678'
-                  autoComplete="phone"
-                  value={phoneNumber}
-                  onChange={handlePhoneNumberChange}
-                  inputProps={{
-                    maxLength: 13,
-                    inputMode: 'numeric',
-                  }}
-                />
-              </Grid>
-              { role === '회원' &&
-              <Fragment>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="roadAddress"
-                    label="도로명주소"
-                    value={roadAddress}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                  />
-                </Grid>
-                    <Button
-                      type="button"
-                      onClick={handleFindPostcode}
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 1, mb: 2, ml: 2}}
-                    >
-                      주소 찾기
-                    </Button>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    id="extraAddress"
-                    label="참고항목"
-                    value={extraAddress}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="detailAddress"
-                    label="상세주소"
-                    name="detailAddress"
-                    autoComplete="detailAddress"
-                    onChange={e => setDetailAddress(e.target.value)}
-                  />
-                </Grid>
-              </Fragment>
-              }
-              <Grid item xs={12} sm={6}>
-                <FormControlLabel
-                  control={<Checkbox checked={role === '회원'} onChange={() => setRole('회원')} color="primary" />}
-                  label="회원"
-                />
-                <FormControlLabel
-                  control={<Checkbox checked={role === '점주'} onChange={() => setRole('점주')} color="primary" />}
-                  label="점주"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="이메일을 통해 마케팅 프로모션, 업데이트를 받고 싶습니다.(선택)"
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+      <div style={{ backgroundImage: 'linear-gradient(to right, #1e7843, #ffffff, #1e7843)', display: 'flex', justifyContent: 'center', padding: '23px 0' }}>
+        <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
+          <Container component="main" maxWidth="xs" style={{ backgroundColor: '#fff', width: '100%', maxWidth: '600px', padding: '20px' }}>
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
             >
-              회원가입
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link to="/SignIn" variant="body2" style={{ textDecoration: 'none', color: 'black'  }}>
-                  계정이 있으신가요? 로그인
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-        <Footer sx={{ mt: 5 }} />
-      </Container>
+              <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>    
+              </Typography>
+              <Typography component="h1" variant="h5">
+                회원가입
+              </Typography>
+              <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      autoComplete="given-name"
+                      name="name"
+                      required
+                      fullWidth
+                      id="name"
+                      label="이름"
+                      placeholder='ex)홍길동'
+                      autoFocus
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      id="email"
+                      label="이메일"
+                      placeholder='ex)human@example.com'
+                      name="email"
+                      autoComplete="email"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      name="password"
+                      label="비밀번호"
+                      type="password"
+                      id="password"
+                      placeholder='6자리 이상 입력하세요.(영문,숫자만 입력 가능합니다)'
+                      autoComplete="new-password"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      label="비밀번호 확인"
+                      type="password"
+                      placeholder='위와 일치하게 작성하세요'
+                      onChange={e => {setPasswordCheack(e.target.value)}}
+                      error={!isPasswordMatch}
+                      helperText={!isPasswordMatch && "비밀번호가 일치하지 않습니다"}
+                      autoComplete="new-password"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      id="phone"
+                      label="휴대전화"
+                      name="phone"
+                      placeholder='ex) 010-1234-5678'
+                      autoComplete="phone"
+                      value={phoneNumber}
+                      onChange={handlePhoneNumberChange}
+                      inputProps={{
+                        maxLength: 13,
+                        inputMode: 'numeric',
+                      }}
+                    />
+                  </Grid>
+                  { role === '회원' &&
+                  <Fragment>
+                    <Grid item xs={12}>
+                      <TextField
+                        required
+                        fullWidth
+                        id="roadAddress"
+                        label="도로명주소"
+                        value={roadAddress}
+                        InputProps={{
+                          readOnly: true,
+                        }}
+                      />
+                    </Grid>
+                        <Button
+                          type="button"
+                          onClick={handleFindPostcode}
+                          fullWidth
+                          variant="contained"
+                          sx={{ mt: 1, mb: 2, ml: 2}}
+                        >
+                          주소 찾기
+                        </Button>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        id="extraAddress"
+                        label="참고항목"
+                        value={extraAddress}
+                        InputProps={{
+                          readOnly: true,
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        required
+                        fullWidth
+                        id="detailAddress"
+                        label="상세주소"
+                        name="detailAddress"
+                        autoComplete="detailAddress"
+                        onChange={e => setDetailAddress(e.target.value)}
+                      />
+                    </Grid>
+                  </Fragment>
+                  }
+                  <Grid item xs={12} sm={6}>
+                    <FormControlLabel
+                      control={<Checkbox checked={role === '회원'} onChange={() => setRole('회원')} color="primary" />}
+                      label="회원"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox checked={role === '점주'} onChange={() => setRole('점주')} color="primary" />}
+                      label="점주"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControlLabel
+                      control={<Checkbox value="allowExtraEmails" color="primary" />}
+                      label="이메일을 통해 마케팅 프로모션, 업데이트를 받고 싶습니다.(선택)"
+                    />
+                  </Grid>
+                </Grid>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  회원가입
+                </Button>
+                <Grid container justifyContent="flex-end">
+                  <Grid item>
+                    <Link to="/SignIn" variant="body2" style={{ textDecoration: 'none', color: 'black'  }}>
+                      계정이 있으신가요? 로그인
+                    </Link>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
+            <Footer sx={{ mt: 5 }} />
+          </Container>
+        </div>
+      </div>
     </ThemeProvider>
   );
 }

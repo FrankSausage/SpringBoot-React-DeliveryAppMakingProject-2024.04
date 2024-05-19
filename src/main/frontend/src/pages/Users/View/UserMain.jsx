@@ -1,11 +1,12 @@
 import React from "react";
-import { Box, Grid, Stack } from "@mui/material";
+import { Box, Grid, Stack, Container } from "@mui/material";
 import { Link } from "react-router-dom";
 import SearchHeader from "../../../components/SearchHeader";
 
 export default function UserMain() {
 
   return (
+    
       <Box>
         <SearchHeader />
         <Grid container>
@@ -132,6 +133,7 @@ export default function UserMain() {
           <Grid item xs />
         </Grid>
       </Box>
+
   );
 }
 

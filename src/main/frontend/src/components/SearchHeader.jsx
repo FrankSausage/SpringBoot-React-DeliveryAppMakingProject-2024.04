@@ -32,12 +32,12 @@ export default function SearchHeader() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: '#1976D2' }}>
+      <AppBar position="static" sx={{ backgroundColor: '#ffb819' }}>
         <Toolbar>
           <Grid container alignItems="center">
             <Grid item xs={3}>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
+                <Link to="/" style={{ textDecoration: 'none', color: '#1e7843', fontWeight: 'bold' }}>
                   휴먼 딜리버리
                 </Link>
               </Typography>
@@ -72,7 +72,7 @@ export default function SearchHeader() {
                 {user ? (
                   <>
                     <DropUserInfo role={role} />
-                    <Typography variant="body1" sx={{ color: 'white', fontWeight: 'bold' }}>
+                    <Typography variant="body1" sx={{ color: '#1e7843', fontWeight: 'bold' }}>
                       {user.displayName}
                     </Typography>
                   </>
@@ -80,13 +80,13 @@ export default function SearchHeader() {
                   <Fragment>
                     <Link
                       to="/SignIn"
-                      style={{ textDecoration: 'none', color: 'white', fontWeight: 'bold' }}
+                      style={{ textDecoration: 'none', color: '#1e7843', fontWeight: 'bold' }}
                     >
                       로그인
                     </Link>
                     <Link
                       to="/SignUp"
-                      style={{ textDecoration: 'none', color: 'white', fontWeight: 'bold' }}
+                      style={{ textDecoration: 'none', color: '#1e7843', fontWeight: 'bold' }}
                     >
                       회원가입
                     </Link>

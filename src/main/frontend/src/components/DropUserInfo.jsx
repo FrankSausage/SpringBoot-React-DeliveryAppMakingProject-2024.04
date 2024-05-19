@@ -45,7 +45,7 @@ export default function DropUserInfo({ role }) {
 
   return (
   <Box>
-    <MenuIcon aria-describedby={id} variant="contained" onClick={handleClick} sx={{mx: 2}}/>
+    <MenuIcon aria-describedby={id} variant="contained" onClick={handleClick} sx={{ mx: 2, color: '#1e7843' }}/>
       <Popover
         id={id}
         open={open}
