@@ -45,8 +45,8 @@ export default function StoreUpdate() {
   const [jibun, setJibunAddress] = useState([]);
   const timeOptionsOpen = generateTimeOptions(5, 18);
   const timeOptionsClose = generateTimeOptions(15, 24).concat(generateTimeOptions(0, 7));
-  const weekDays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
-  const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];
+  const weekDays = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+  // const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -441,12 +441,12 @@ export default function StoreUpdate() {
                           <ListItemText primary={day} />
                         </MenuItem>
                       ))}
-                      {holidays.map((holiday) => (
+                      {/* {holidays.map((holiday) => (
                         <MenuItem key={holiday} value={holiday}>
                           <Checkbox checked={selectedDays.indexOf(holiday) > -1} />
                           <ListItemText primary={holiday} />
                         </MenuItem>
-                      ))}
+                      ))} */}
                     </Select>
                   </Grid>
                   <Grid item xs={12}>

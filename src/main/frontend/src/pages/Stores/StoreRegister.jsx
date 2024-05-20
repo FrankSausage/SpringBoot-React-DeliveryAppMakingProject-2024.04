@@ -116,8 +116,8 @@ export default function StoreRegister() {
     }
   };
 
-  const weekDays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
-  const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];
+  const weekDays = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+  // const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];
 
 
   const handleCategoryChange = (event) => {
@@ -367,12 +367,12 @@ export default function StoreRegister() {
                         <ListItemText primary={day} />
                       </MenuItem>
                     ))}
-                    {holidays.map(holiday => (
+                    {/* {holidays.map(holiday => (
                       <MenuItem key={holiday} value={holiday}>
                         <Checkbox checked={selectedDays.indexOf(holiday) > -1} />
                         <ListItemText primary={holiday} />
                       </MenuItem>
-                    ))}
+                    ))} */}
                   </Select>
                 </FormControl>
               </Grid>
@@ -386,6 +386,9 @@ export default function StoreRegister() {
                   label="배달 지역"
                   placeholder='ex) 원천동, 우만동'
                   onChange={e => setJibunAddress(e.target.value)}
+                  InputProps={{
+                    readOnly: true,
+                  }}
                 />
               </Grid>
               <Button
