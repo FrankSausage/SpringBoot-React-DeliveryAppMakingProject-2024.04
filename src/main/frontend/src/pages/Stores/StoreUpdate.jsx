@@ -10,10 +10,12 @@ import { extractDataFromFormData, formatStorePhoneNumber, addressCodePacker, gen
 import { useStore } from './Hook/useStore';
 import SearchHeader from '../../components/SearchHeader';
 import axios from 'axios';
+import { useQueryClient } from '@tanstack/react-query';
 const defaultTheme = createTheme();
 
 export default function StoreUpdate() {
   const email = localStorage.getItem('email')
+  const queryClient = useQueryClient();
   const { storeId } = useParams();
   const { isLoading, error, store } = useOwnerByEmail(email, storeId);
   const { postStoreUpdate } = useStore();
@@ -36,8 +38,8 @@ export default function StoreUpdate() {
   const [usePreviousData, setUsePreviousData] = useState(true); // 초기에 비활성화
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedDeliveryAddresses, setSelectedDeliveryAddresses] = useState([]);
-  const [ firstDeliveryAddress, setFirstDeliveryAddress ] = useState([])
-  const [ firstAddressCode, setFirstAddressCode ] = useState([])
+  const [ firstDeliveryAddress, setFirstDeliveryAddress ] = useState('')
+  const [ firstAddressCode, setFirstAddressCode ] = useState('')
   const [openHours, setOpenHours] = useState('');
   const [closeHours, setCloseHours] = useState('');
   const [jibun, setJibunAddress] = useState([]);
@@ -82,9 +84,6 @@ export default function StoreUpdate() {
   };
 
   const handleUsePreviousDataChange = () => {
-    let prevAddresCode = addressCode
-    let prevDeliveryAddress = deliveryAddress
-
     setUsePreviousData(prev => !prev);
 
     if (usePreviousData) {
@@ -145,10 +144,15 @@ export default function StoreUpdate() {
         .then(res => {
           extractDataFromFormData(res)
             .then(resFormData => {
-              resFormData.addressCodes = addressCodePacker(addressCode.split(','), deliveryAddress.split(','));
+              resFormData.addressCodes = 
+              addressCodePacker(typeof(addressCode)==='string' ? addressCode.split(',') : addressCode, 
+                typeof(deliveryAddress)==='string' ? deliveryAddress.split(',') : deliveryAddress);
               console.log(resFormData)
               postStoreUpdate.mutate(resFormData, {
-                onSuccess: () => navigate('/'),
+                onSuccess: () => {
+                  queryClient.refetchQueries(['storeId']);
+                  navigate('/');
+                },
                 onError: e => console.error('가게 수정 실패: ' + e)
               })
             })
