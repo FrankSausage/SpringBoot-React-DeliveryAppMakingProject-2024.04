@@ -95,8 +95,10 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
+      <div style={{ backgroundImage: 'linear-gradient(to right, #FFD77F, #ffffff, #FFD77F)', display: 'flex', justifyContent: 'center', padding: '23px 0' }}>
+        <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
+          <Container component="main" maxWidth="xs" style={{ backgroundColor: '#fff', width: '100%', maxWidth: '600px', padding: '20px' }}>
+            <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
@@ -264,6 +266,8 @@ export default function SignUp() {
         </Box>
         <Footer sx={{ mt: 5 }} />
       </Container>
-    </ThemeProvider>
+     </div>
+    </div>
+  </ThemeProvider>
   );
 }

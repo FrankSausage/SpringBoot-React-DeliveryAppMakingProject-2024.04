@@ -32,7 +32,7 @@ export default function SearchHeader() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: '#1976D2' }}>
+      <AppBar position="static" sx={{ backgroundColor: '#469D6E' }}>
         <Toolbar>
           <Grid container alignItems="center">
             <Grid item xs={3}>
