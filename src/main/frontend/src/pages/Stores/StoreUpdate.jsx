@@ -234,7 +234,7 @@ export default function StoreUpdate() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      {isLoading && <Typography>Loading...</Typography>}
+      {isLoading && <Typography>...Loading</Typography>}
       {error && <Typography>에러 발생!</Typography>}
       {store && store.closedDays && store.addressCodes &&
 
