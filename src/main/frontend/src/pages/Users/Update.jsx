@@ -30,6 +30,7 @@ export default function Update() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const navigate = useNavigate();
+    
     useEffect(() => {
       const loadDaumPostcodeScript = () => {
         const script = document.createElement('script');
