@@ -236,22 +236,26 @@ export default function MenuUpdate() {
                       사진 올리기
                     </Button>
                   </Grid>
-                </Grid>
+                <Grid item xs={6} >
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}>
-                  수정하기
+                  수정
                 </Button>
+                </Grid>
+                <Grid item xs={6} >
                 <Button
                   fullWidth
                   variant="contained"
                   color="error"
                   onClick={() => handleMenuDelete(menuId, email, storeId)}
-                  sx={{ mt: 1, mb: 2 }}>
-                  삭제하기
+                  sx={{ mt: 3, mb: 2 }}>
+                  삭제
                 </Button>
+                </Grid>
+                </Grid>
               </Box>
             </Box>
             <Footer sx={{ mt: 5 }} />
