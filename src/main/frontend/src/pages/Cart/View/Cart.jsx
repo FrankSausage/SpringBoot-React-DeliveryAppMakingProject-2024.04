@@ -75,7 +75,7 @@ export default function Cart({ allClose }) {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle variant='h4' sx={{textAlign:'center', width:500}}>{"장바구니"}</DialogTitle>
-        <Typography sx={{textAlign:'center', mb:1}}>최종 가격: {totalPrice ? totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}원</Typography>
+          <Typography sx={{textAlign:'center', mb:1}}>최종 가격: {totalPrice ? totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}원</Typography>
         <DialogContent sx={{borderTop:1, backgroundColor:'silver'}}>
           <DialogContentText id="주문 목록">
             {!localStorage.getItem('cartItems') && <Typography sx={{textAlign:'center', fontSize: 30}}>아직 주문 내역이 없어요!</Typography>}
