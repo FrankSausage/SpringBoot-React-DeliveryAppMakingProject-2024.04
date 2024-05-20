@@ -119,7 +119,7 @@ export default function StoreMenuList({ storeName }) {
             type="submit"
             variant="contained"
             style={{ textDecoration: 'none', color: 'white' }}
-            sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem', backgroundColor: '#dcdcdc' }}>
+            sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem', backgroundColor: '#a9a9a9' }}>
             <Link Link to={`/MenuRegister/${storeId}`} state={{ storeId: storeId }} style={{ textDecoration: 'none', color: 'white' }}>메뉴 추가하기</Link>
           </Button>
         </div>

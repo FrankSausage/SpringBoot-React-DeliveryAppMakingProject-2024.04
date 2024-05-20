@@ -137,102 +137,36 @@ export default function MenuUpdate() {
               <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      autoComplete="given-name"
-                      name="name"
-                      id="name"
-                      value={name}
-                      placeholder={String(initialName)}
-                      label="음식 이름"
-                      onChange={e => setName(e.target.value)}
-                    />
+                    <TextField required fullWidth autoComplete="given-name" name="name" id="name" value={name} placeholder={String(initialName)} label="음식 이름" onChange={e => setName(e.target.value)} />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      autoComplete="given-name"
-                      name="price"
-                      id="price"
-                      value={price}
-                      placeholder={initialPrice.toString()}
-                      label="음식 가격"
-                      onChange={e => setPrice(e.target.value)}
-                    />
+                    <TextField required fullWidth autoComplete="given-name" name="price" id="price" value={price} placeholder={initialPrice.toString()} label="음식 가격" onChange={e => setPrice(e.target.value)} />
                   </Grid>
-
                   <Grid item xs={12}>
                     <Typography variant="h6" gutterBottom>
                       카테고리
                     </Typography>
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
-                        <FormControlLabel
-                          control={<Checkbox checked={category === '메인 메뉴'} onChange={() => setCategory('메인 메뉴')} color="primary" />}
-                          label="메인 메뉴"
-                        />
-                        <FormControlLabel
-                          control={<Checkbox checked={category === '사이드 메뉴'} onChange={() => setCategory('사이드 메뉴')} color="primary" />}
-                          label="사이드 메뉴"
-                        />
-                        <FormControlLabel
-                          control={<Checkbox checked={category === '세트 메뉴'} onChange={() => setCategory('세트 메뉴')} color="primary" />}
-                          label="세트 메뉴"
-                        />
+                        <FormControlLabel control={<Checkbox checked={category === '메인 메뉴'} onChange={() => setCategory('메인 메뉴')} color="primary" />} label="메인 메뉴" />
+                        <FormControlLabel control={<Checkbox checked={category === '사이드 메뉴'} onChange={() => setCategory('사이드 메뉴')} color="primary" />} label="사이드 메뉴" />
+                        <FormControlLabel control={<Checkbox checked={category === '세트 메뉴'} onChange={() => setCategory('세트 메뉴')} color="primary" />} label="세트 메뉴" />
                       </Grid>
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      autoComplete="given-name"
-                      name="content"
-                      fullWidth
-                      id="content"
-                      label="음식 소개글"
-                      value={content}
-                      placeholder={initialContent.toString()}
-                      multiline
-                      rows={4}
-                      variant='outlined'
-                      onChange={e => setContent(e.target.value)}
-                    />
+                    <TextField autoComplete="given-name" name="content" fullWidth id="content" label="음식 소개글" value={content} placeholder={initialContent.toString()} multiline rows={4} variant='outlined' onChange={e => setContent(e.target.value)} />
                   </Grid>
-
                   <Grid item xs={12}>
                     <Typography variant="h6" gutterBottom>
                       음식 사진
                     </Typography>
-                    <input
-                      accept=".png, .jpeg, .jpg"
-                      id="upload-photo"
-                      type="file"
-                      style={{ display: 'none' }}
-                      onChange={handleFileUpload} multiple
-                    />
-
-                    <TextField
-                      autoComplete="given-name"
-                      name="menuPictureName"
-                      value={storePictureName}
-                      placeholder={initialMenuPictureName.toString()}
-                      fullWidth
-                      id="menuPictureName"
-                      label="음식 사진"
-                      autoFocus
-                      onClick={(e) => {
-                        e.target.value = null;
-                      }}
-                    />
+                    <input accept=".png, .jpeg, .jpg" id="upload-photo" type="file" style={{ display: 'none' }} onChange={handleFileUpload} multiple />
+                    <TextField autoComplete="given-name" name="menuPictureName" value={storePictureName} placeholder={initialMenuPictureName.toString()} fullWidth id="menuPictureName" label="음식 사진" autoFocus onClick={(e) => { e.target.value = null}} />
                     {/* 아이콘 대신에 "사진 올리기" 텍스트를 사용하고 싶다면 아래 주석 처리된 라인을 사용하세요 */}
                     {/* <span>사진 올리기</span> */}
 
-                    <Button
-                      type="button"
-                      variant="contained"
-                      onClick={() => document.getElementById('upload-photo').click()}
-                      sx={{ mt: 3, mb: 2, }}>
+                    <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()}  sx={{ mt: 3, mb: 2, }}>
                       사진 올리기
                     </Button>
                   </Grid>
@@ -246,12 +180,7 @@ export default function MenuUpdate() {
                 </Button>
                 </Grid>
                 <Grid item xs={6} >
-                <Button
-                  fullWidth
-                  variant="contained"
-                  color="error"
-                  onClick={() => handleMenuDelete(menuId, email, storeId)}
-                  sx={{ mt: 3, mb: 2 }}>
+                <Button fullWidth variant="contained" color="error" onClick={() => handleMenuDelete(menuId, email, storeId)} sx={{ mt: 3, mb: 2 }}>
                   삭제
                 </Button>
                 </Grid>
