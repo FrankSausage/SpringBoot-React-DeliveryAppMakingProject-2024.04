@@ -22,8 +22,8 @@ public class StoreListInnerResponseDto {
     private Double rating;
     private int dibsCount;
     private int reviewCount;
-//    private String isDibed;
-//    private int isOpened;
+    private String isDibed;
+    private int isOpened;
 
     @Override
     public boolean equals(Object o) {
