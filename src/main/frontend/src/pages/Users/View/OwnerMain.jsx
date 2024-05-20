@@ -7,13 +7,13 @@ import { useOwnerStoreListByEmail } from '../../../utils/userInfo';
 
 export default function OwnerMain() {
   const { isLoading, error, storeData } = useOwnerStoreListByEmail();
-  
+
   return (
-    <Box sx={{ margin: -1 }}>
+    <Box sx={{ margin: 0, paddingBottom: '100px' }}>
       <SearchHeader />
       <Grid container justifyContent="center" alignItems="center" mt={2}>
         <Grid item xs={10} md={6}>
-          <Box sx={{ display: 'flex', alignItems: 'center', border: 1, borderColor: 'divider', borderRadius: 1, p: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', border: 1, borderColor: 'divider', borderRadius: 10, p: 1 }}>
             <SearchIcon sx={{ m: 1 }} />
             <InputBase
               placeholder="검색"
@@ -54,10 +54,10 @@ export default function OwnerMain() {
       )}
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 5 }}>
         <Button
-          type="submit"
+          type="submit" 
           variant="contained"
-          sx={{ width: '200px', height: '50px', fontSize: '1.2rem' }}>
-          <Link to='/StoreRegister' style={{ textDecoration: 'none', color: 'white' }}>가게 추가하기</Link>
+          sx={{ width: '200px', height: '50px', fontSize: '1.2rem', backgroundColor: '#dcdcdc'  }}>
+          <Link to='/StoreRegister' style={{ textDecoration: 'none', color: 'black' }}>가게 추가하기</Link>
         </Button>
       </Box>
     </Box>

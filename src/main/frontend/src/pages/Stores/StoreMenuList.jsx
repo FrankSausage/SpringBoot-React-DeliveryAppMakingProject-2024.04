@@ -52,21 +52,13 @@ export default function StoreMenuList({ storeName }) {
         email: email,
         status: newStatuses[index] ? '품절' : '일반'
       })
-
-      // const response = await axios.post(`/dp/store/menu/status`, {
-      //   menuId: menuId,
-      //   email: email,
-      //   status: newStatuses[index] ? '품절' : '일반'
-      // });
-
-      // console.log(response.data);
     } catch (error) {
       console.error('에러 발생:', error);
     }
-    // setTimeout(() => {
-    //   // alert("상태가 업데이트되었습니다!");
-    //   console.log('2초 후에 반응');
-    // }, 2000);
+    setTimeout(() => {
+      alert("상태가 업데이트되었습니다!");
+      // console.log('2초 후에 반응');
+    }, 500);
   };
   
   return (
@@ -83,7 +75,8 @@ export default function StoreMenuList({ storeName }) {
                   <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
                     <Box key={res.menuId} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
                         <Box component={Link} to={role==='회원' ? `/MenuDetail` : `/MenuUpdate`} state={{menuId : res.menuId, storeId : storeId, storeName : storeName}}  sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
-                          <img src={res.menuPictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} alt='메뉴 사진' />
+                          {/* <img src={res.menuPictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} /> */}
+                          <img src={res.menuPictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
                           <ul style={{ position: 'absolute', top: '50%', left: '40%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
                             <li style={{ listStyleType: 'none' }}>{res.name}</li>
                             <li style={{ listStyleType: 'none' }}>인기 : {res.popularity} </li>
@@ -126,7 +119,7 @@ export default function StoreMenuList({ storeName }) {
             type="submit"
             variant="contained"
             style={{ textDecoration: 'none', color: 'white' }}
-            sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem', }}>
+            sx={{ mt: 3, mb: 10, width: '200px', height: '50px', fontSize: '1.2rem', backgroundColor: '#dcdcdc' }}>
             <Link Link to={`/MenuRegister/${storeId}`} state={{ storeId: storeId }} style={{ textDecoration: 'none', color: 'white' }}>메뉴 추가하기</Link>
           </Button>
         </div>
@@ -136,14 +129,26 @@ export default function StoreMenuList({ storeName }) {
 }
 
 let boxStyle = {
-  width: 200,
+  width: 300,
   height: 200,
-  border: 1,
-  borderColor: 'rgb(217, 217, 217)',
-  m: 2
+  border: '1px solid rgba(0, 0, 0, 0.1)',
+  borderRadius: '10px',
+  boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+  padding: '16px',
+  margin: '16px',
+  backgroundColor: '#ffffff',
+  position: 'relative',
+  transition: 'box-shadow 0.3s ease',
+  '&:hover': {
+    boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.2)',
+  }
 }
+
 let gridStyle = {
   justifyContent: 'center',
   alignItems: 'center',
-  p: 2
+  p: 2,
+  '& .centerBody': {
+    maxWidth: '1200px',
+  }
 }

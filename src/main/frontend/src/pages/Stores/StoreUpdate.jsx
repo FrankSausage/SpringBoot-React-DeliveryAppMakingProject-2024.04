@@ -38,13 +38,15 @@ export default function StoreUpdate() {
   const [selectedDeliveryAddresses, setSelectedDeliveryAddresses] = useState([]);
   const [ firstDeliveryAddress, setFirstDeliveryAddress ] = useState([])
   const [ firstAddressCode, setFirstAddressCode ] = useState([])
-
   const [openHours, setOpenHours] = useState('');
   const [closeHours, setCloseHours] = useState('');
   const [jibun, setJibunAddress] = useState([]);
   const timeOptionsOpen = generateTimeOptions(5, 18);
   const timeOptionsClose = generateTimeOptions(15, 24).concat(generateTimeOptions(0, 7));
+  const weekDays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
+  const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];
   const navigate = useNavigate();
+
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
       const script = document.createElement('script');
@@ -68,8 +70,6 @@ export default function StoreUpdate() {
   const handleFindDeliverPostCode = async () => {
     try {
       if (!usePreviousData) {
-        // setDeliveryAddress([]);
-        // setSelectedDeliveryAddresses([]);
         await findUpdatePostCode(
           setJibunAddress,
           setAddressCode,
@@ -97,7 +97,6 @@ export default function StoreUpdate() {
     }
   };
 
-
   useEffect(() => {
     if (store && store.addressCodes && store.closedDays) {
       const { roadAddress, extraAddress, detailAddress } = splitAddressFromCurrentUserAddress(store.address)
@@ -123,15 +122,15 @@ export default function StoreUpdate() {
       }
       if (store && store.addressCodes) {
         const addresses = store.addressCodes.map(res => res.deliveryAddress);
-        setDeliveryAddress(addresses); // 변경된 부분
+        setDeliveryAddress(addresses); 
       }
     }
   }, [isLoading])
 
   const extractExtraAddress = (address) => {
-    const regex = /\((.*?)\)/; // 정규식을 사용하여 괄호 안의 내용을 추출
+    const regex = /\((.*?)\)/; 
     const match = regex.exec(address);
-    return match ? match[1] : ''; // 괄호 안의 내용이 있다면 반환, 없으면 빈 문자열 반환
+    return match ? match[1] : ''; 
   };
 
   const handleSubmit = async (e) => {
@@ -188,9 +187,6 @@ export default function StoreUpdate() {
     }
   };
 
-  const weekDays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
-  const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];
-
   const handleCategoryChange = (event) => {
     const selectedCategory = event.target.value;
     setCategory(prevCategory => {
@@ -206,7 +202,6 @@ export default function StoreUpdate() {
       }
     });
   };
-
 
   const splitOperationHours = (operationHours) => {
     const [open, close] = operationHours.split('~').map(str => str.trim());
@@ -237,7 +232,6 @@ export default function StoreUpdate() {
       {isLoading && <Typography>...Loading</Typography>}
       {error && <Typography>에러 발생!</Typography>}
       {store && store.closedDays && store.addressCodes &&
-
         <>
           <SearchHeader />
           <Container component="main" maxWidth="xs">
@@ -262,17 +256,7 @@ export default function StoreUpdate() {
               <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      autoComplete="given-name"
-                      name="name"
-                      id="name"
-                      value={name}
-                      label="가게 이름"
-                      placeholder='ex) 휴먼 딜리버리'
-                      onChange={e => setName(e.target.value)}
-                    />
+                    <TextField required fullWidth autoComplete="given-name" name="name" id="name" value={name} label="가게 이름" placeholder='ex) 휴먼 딜리버리' onChange={e => setName(e.target.value)} />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
@@ -359,28 +343,15 @@ export default function StoreUpdate() {
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
                         <FormControlLabel
-                          control={<Checkbox checked={type === 0} onChange={() => setType(0)} color="primary" />}
-                          label="배달"
-                        />
+                          control={<Checkbox checked={type === 0} onChange={() => setType(0)} color="primary" />} label="배달" />
                         <FormControlLabel
-                          control={<Checkbox checked={type === 1} onChange={() => setType(1)} color="primary" />}
-                          label="배달+포장"
-                        />
+                          control={<Checkbox checked={type === 1} onChange={() => setType(1)} color="primary" />} label="배달+포장" />
                       </Grid>
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      autoComplete="given-name"
-                      name="minDeliveryPrice"
-                      required
-                      fullWidth
-                      id="minDeliveryPrice"
-                      value={minDeliveryPrice}
-                      label="최소 주문금액"
-                      placeholder='ex) 10000'
-                      onChange={e => setMinDeliveryPrice(e.target.value)}
-                    />
+                    <TextField 
+                      autoComplete="given-name" name="minDeliveryPrice" required fullWidth id="minDeliveryPrice" value={minDeliveryPrice} label="최소 주문금액" placeholder='ex) 10000' onChange={e => setMinDeliveryPrice(e.target.value)} />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
@@ -505,10 +476,7 @@ export default function StoreUpdate() {
                         배달 지역 찾기
                       </Button>
                       <Grid item xs={12}>
-                        <TextField
-                          autoComplete="given-name"
-                          name="content"
-                          fullWidth
+                        <TextField autoComplete="given-name" name="content" fullWidth
                           id="content"
                           value={content}
                           label="가게 소개"
@@ -542,34 +510,19 @@ export default function StoreUpdate() {
                         />
                         {/* 아이콘 대신에 "사진 올리기" 텍스트를 사용하고 싶다면 아래 주석 처리된 라인을 사용하세요 */}
                         {/* <span>사진 올리기</span> */}
-                        <Button
-                          type="button"
-                          variant="contained"
-                          onClick={() => document.getElementById('upload-photo').click()}
-                          sx={{ mt: 3, mb: 2, }}>
+                        <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} sx={{ mt: 3, mb: 2, }}>
                           사진 올리기
                         </Button>
                       </Grid>
-
                     </Grid>
                   </Grid>
                   <Grid item xs={6}>
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 3, mb: 2 }}
-                    >
+                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} >
                       수정
                     </Button>
                   </Grid>
                   <Grid item xs={6}>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      color="error"
-                      onClick={() => handleStoreDelete(email, storeId)}
-                      sx={{ mt: 3, mb: 2 }}>
+                    <Button fullWidth variant="contained" color="error" onClick={() => handleStoreDelete(email, storeId)} sx={{ mt: 3, mb: 2 }}>
                       삭제하기
                     </Button>
                   </Grid>
