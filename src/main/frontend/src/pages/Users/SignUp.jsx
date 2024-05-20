@@ -4,23 +4,25 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
-import { findPostcode } from '../../utils/AddressUtil'; 
+import { findPostcode } from '../../utils/AddressUtil';
 import { register } from '../../utils/firebase';
-import { extractDataFromFormData, formatPhoneNumber } from '../../utils/userInfo';
+import { extractDataFromFormData, formatPhoneNumber } from '../../utils/commonUitil';
 import axios from 'axios';
+import { useUser } from './Hook/useUser';
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const [ roadAddress, setRoadAddress ] = useState('');
-  const [ extraAddress, setExtraAddress ] = useState('');
-  const [ detailAddress, setDetailAddress ] = useState('');
-  const [ addressCode, setAddressCode ] = useState('');
-  const [ role, setRole ] = useState('');
-  const [ passwordCheack, setPasswordCheack ] = useState('');
-  const [ isPasswordMatch, setIsPasswordMatch ] = useState(true);
-  const [ phoneNumber, setPhoneNumber ] = useState('');
+  const [roadAddress, setRoadAddress] = useState('');
+  const [extraAddress, setExtraAddress] = useState('');
+  const [detailAddress, setDetailAddress] = useState('');
+  const [addressCode, setAddressCode] = useState('');
+  const [role, setRole] = useState('');
+  const [passwordCheack, setPasswordCheack] = useState('');
+  const [isPasswordMatch, setIsPasswordMatch] = useState(true);
+  const [phoneNumber, setPhoneNumber] = useState('');
   const { setOutletAddress } = useOutletContext();
+  const { postUserSignUp } = useUser();
   const navigate = useNavigate();
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
@@ -47,27 +49,28 @@ export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget)
-    if (data.get('password') !== passwordCheack) {      
+    if (data.get('password') !== passwordCheack) {
       setIsPasswordMatch(false);
-        return;
+      return;
     } else {
       setIsPasswordMatch(true);
-      
-      if(setIsPasswordMatch) {
+
+      if (setIsPasswordMatch) {
         setFormData(data)
           .then(res => {
             register(res);
             extractDataFromFormData(res)
               .then(resFormData => {
                 // const axiosConfig = { headers: {"Content-Type": "multipart/form-data",}} // 이미지 파일 첨부 대비 코드
-                setOutletAddress(resFormData.currentAddress);
-                axios.post(`/dp/user/signup`, resFormData)
+                postUserSignUp.mutate(resFormData, {
+                  onSuccess: () => {
+                    setOutletAddress(resFormData.currentAddress);
+                    navigate('/signin')
+                  },
+                  onError: e => { console.error('회원 가입 실패:' + e) }
+                })
               })
           })
-          .then(() => {
-            alert('가입이 완료되었습니다.');
-            navigate('/signin');
-          });
       }
     }
   };
@@ -78,11 +81,11 @@ export default function SignUp() {
   };
 
   const setFormData = async (data) => {
-    try{
-        data.append('currentAddress', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '') 
-            + ',' + (detailAddress ? detailAddress : '')));
-        data.append('role', role);
-        data.append('addressCode', role==='회원' ? addressCode.substring(0,8) : '00000000');
+    try {
+      data.append('currentAddress', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '')
+        + ',' + (detailAddress ? detailAddress : '')));
+      data.append('role', role);
+      data.append('addressCode', role === '회원' ? addressCode.substring(0, 8) : '00000000');
       return await data;
     }
     catch (error) {
@@ -91,7 +94,7 @@ export default function SignUp() {
   }
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={defaultTheme} >
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -100,15 +103,18 @@ export default function SignUp() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            // background: 'linear-gradient(to bottom, #ff6b6b, #ffe66d)',
+            padding: '20px',
+            borderRadius: '10px'
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>    
+            <Link to="/" style={{ textDecoration: 'none', color: 'black', fontFamily: 'Arial, sans-serif' }}>휴먼 딜리버리</Link>
           </Typography>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" sx={{ fontFamily: 'Arial, sans-serif', color: 'black' }}>
             회원가입
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
@@ -123,6 +129,7 @@ export default function SignUp() {
                   label="이름"
                   placeholder='ex)홍길동'
                   autoFocus
+                  InputProps={{ style: { fontFamily: 'Arial, sans-serif' } }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -137,7 +144,7 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+              <TextField
                   required
                   fullWidth
                   name="password"
@@ -146,10 +153,11 @@ export default function SignUp() {
                   id="password"
                   placeholder='6자리 이상 입력하세요.(영문,숫자만 입력 가능합니다)'
                   autoComplete="new-password"
+                  InputProps={{style: {fontFamily: 'Arial, sans-serif'}}}
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+              <TextField
                   required
                   fullWidth
                   label="비밀번호 확인"
@@ -159,6 +167,7 @@ export default function SignUp() {
                   error={!isPasswordMatch}
                   helperText={!isPasswordMatch && "비밀번호가 일치하지 않습니다"}
                   autoComplete="new-password"
+                  InputProps={{style: {fontFamily: 'Arial, sans-serif'}}}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -178,52 +187,52 @@ export default function SignUp() {
                   }}
                 />
               </Grid>
-              { role === '회원' &&
-              <Fragment>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="roadAddress"
-                    label="도로명주소"
-                    value={roadAddress}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                  />
-                </Grid>
-                    <Button
-                      type="button"
-                      onClick={handleFindPostcode}
+              {role === '회원' &&
+                <Fragment>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
                       fullWidth
-                      variant="contained"
-                      sx={{ mt: 1, mb: 2, ml: 2}}
-                    >
-                      주소 찾기
-                    </Button>
-                <Grid item xs={12}>
-                  <TextField
+                      id="roadAddress"
+                      label="도로명주소"
+                      value={roadAddress}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                    />
+                  </Grid>
+                  <Button
+                    type="button"
+                    onClick={handleFindPostcode}
                     fullWidth
-                    id="extraAddress"
-                    label="참고항목"
-                    value={extraAddress}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="detailAddress"
-                    label="상세주소"
-                    name="detailAddress"
-                    autoComplete="detailAddress"
-                    onChange={e => setDetailAddress(e.target.value)}
-                  />
-                </Grid>
-              </Fragment>
+                    variant="contained"
+                    sx={{ mt: 1, mb: 2, ml: 2 }}
+                  >
+                    주소 찾기
+                  </Button>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      id="extraAddress"
+                      label="참고항목"
+                      value={extraAddress}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      id="detailAddress"
+                      label="상세주소"
+                      name="detailAddress"
+                      autoComplete="detailAddress"
+                      onChange={e => setDetailAddress(e.target.value)}
+                    />
+                  </Grid>
+                </Fragment>
               }
               <Grid item xs={12} sm={6}>
                 <FormControlLabel
@@ -252,7 +261,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link to="/SignIn" variant="body2" style={{ textDecoration: 'none', color: 'black'  }}>
+                <Link to="/SignIn" variant="body2" style={{ textDecoration: 'none', color: 'black' }}>
                   계정이 있으신가요? 로그인
                 </Link>
               </Grid>

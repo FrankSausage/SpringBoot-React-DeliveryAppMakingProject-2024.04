@@ -3,19 +3,16 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox,
     Paper, Grid, Box, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { login, } from '../../utils/firebase';
-import { Link, useNavigate, useOutletContext } from 'react-router-dom';
+import { login } from '../../utils/firebase';
+import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import axios from 'axios';
-import { splitAddressFromCurrentUserAddress } from '../../utils/userInfo';
-
-
+import { splitAddressFromCurrentUserAddress } from '../../utils/commonUitil';
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
   const [userInfo, setUserInfo] = useState({email:'', password:''});
-  const { setOutletAddress } = useOutletContext() // 주소 표시 비동기 임시 처리
   const navigate = useNavigate();
 
   const handleChange = e => {
@@ -37,12 +34,11 @@ export default function SignIn() {
           } else {
             axios.get(`dp/user/signin`, { params: { email: userInfo.email }})
               .then(res => {
-                console.log(res)
+                localStorage.setItem('email', userInfo.email);
                 localStorage.setItem('role', res.data.role);
                 localStorage.setItem('email', userInfo.email);
                 if(res.data.role !== '점주') {
-                  setOutletAddress(res.data.currentAddress);
-                  localStorage.setItem("address", res.data.currentAddress); // 세션 스토리지 리팩터
+                  localStorage.setItem("address", res.data.currentAddress);
                   localStorage.setItem("splitAddress", JSON.stringify(splitAddressFromCurrentUserAddress(res.data.currentAddress)))
                 }
               })
@@ -86,8 +82,8 @@ export default function SignIn() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>    
-          </Typography>
+              <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>    
+            </Typography>
             <Typography component="h1" variant="h5">
               로그인
             </Typography>
@@ -118,7 +114,7 @@ export default function SignIn() {
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
-                label="나를 기억하기"   // 아이디 기억하기 기능이나 로그인 상태 유지하기 구현 예정
+                label="나를 기억하기"
               />
               <Button
                 type="submit" 

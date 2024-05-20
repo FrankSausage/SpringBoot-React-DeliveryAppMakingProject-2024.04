@@ -2,8 +2,9 @@ import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, GithubAuthProvider,
   signInWithPopup, signOut, updateProfile, signInWithEmailAndPassword,
   onAuthStateChanged, 
-  updatePassword} from "firebase/auth";
-import { extractDataFromFormData } from '../utils/userInfo';
+  updatePassword,
+  updateEmail} from "firebase/auth";
+import { extractDataFromFormData } from '../utils/commonUitil';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -68,7 +69,9 @@ export function logout() {
   signOut(auth)
   .then(() => {
     localStorage.clear();
+    sessionStorage.clear();
     window.location.reload();
+    alert('로그아웃 되었습니다.');
   })
   .catch(console.error);
 }

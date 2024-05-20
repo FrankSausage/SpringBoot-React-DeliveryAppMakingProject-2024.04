@@ -1,11 +1,11 @@
-import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
-import { useStore } from "./Hook/useStore";
+import { Box, Grid, Typography } from "@mui/material";
+import { useStoreSearch } from "./Hook/useStoreSearch";
 import { Link } from "react-router-dom";
 
-export default function StoreList({ category, searchText }) {
-		const { getStoreListByCategory: {isLoading, data: storeDatas} } = useStore(searchText ? searchText : category);	
-
+export default function StoreList({ category, searchText, }) {
+	const { getStoreListByCategory: {isLoading, data: storeDatas} } = useStoreSearch(searchText ? searchText : category);	
+	
     return(
 			<Grid container>
 				<Grid item xs />
@@ -17,7 +17,7 @@ export default function StoreList({ category, searchText }) {
 					}
 					{!isLoading && storeDatas && (
 						storeDatas.data.storeList.map((data) => (
-							<Box component={Link} to={`/StoreDetail/${data.storeId}`} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
+							<Box key={data.storeId} component={Link} to={`/StoreDetail/${data.storeId}`} state={{storeName: data.name}} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
 									{data.name}
 							</Box>
 						))
