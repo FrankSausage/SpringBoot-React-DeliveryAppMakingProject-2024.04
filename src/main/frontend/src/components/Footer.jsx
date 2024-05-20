@@ -7,10 +7,10 @@ export default function Footer(props) {
       <Typography variant="body2" color="text.secondary" align="center" {...props}>
         {'Copyright © '}
         <Link color="inherit" href="https://mui.com/">
-          HumanD
+          DP
         </Link>{' '}
-        {new Date().getFullYear()}
-        {'.' + '04'}
+        {/* {new Date().getFullYear()}
+        {'.' + '04'} */}
       </Typography>
     );
   }
