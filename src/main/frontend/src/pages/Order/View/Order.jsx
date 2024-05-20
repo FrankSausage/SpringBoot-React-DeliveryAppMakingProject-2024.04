@@ -50,7 +50,7 @@ export default function Order() {
 						<Grid container key={menuItems.menuId}>
 								<Grid item xs={1}/>
 								<Grid item xs>
-									<Typography>{menuItems.menuName}</Typography>
+									<Typography>{menuItems.menuName}: {menuItems.quantity}개 </Typography>
 									{menuItems.menuOptions && 
 										menuItems.menuOptions.map((optionItems) => (
 										<Grid container>

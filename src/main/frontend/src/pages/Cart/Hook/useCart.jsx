@@ -18,8 +18,65 @@ export function useCart () {
     }
   }
 
-  const minusItemQuantity = () => {
+  const minusItemQuantity = async (index) => {
+    try {
+      const cartItems = JSON.parse(localStorage.getItem('cartItems'));
+      const newCart = [];
+      
+      for(let i = 0; i < cartItems.length; i++){
+        if(cartItems[i] === cartItems[index]){
+          if(cartItems[i].quantity-1 <= 0 ) {
+            deleteItemFromCart(i)
+          } else {
+            newCart.push({...cartItems[i], ['quantity'] : (cartItems[i].quantity-1)})
+          }
+        } else {
+          newCart.push(cartItems[i])
+        }
+      }
+      localStorage.setItem('cartItems', JSON.stringify(newCart))
+      return await true;
     
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  
+  const plusItemQuantity = async (index) => {
+    try {
+      const cartItems = JSON.parse(localStorage.getItem('cartItems'));
+      const newCart = [];
+      
+      for(let i = 0; i < cartItems.length; i++){
+        if(cartItems[i] === cartItems[index]){
+          if(cartItems[i].quantity >= 9 ) {
+            alert('더 이상 담을 수 없습니다.')
+            newCart.push({...cartItems[i], ['quantity'] : (cartItems[i].quantity)})
+          } else {
+            newCart.push({...cartItems[i], ['quantity'] : (cartItems[i].quantity+1)})
+          }
+        } else {
+          newCart.push(cartItems[i])
+        }
+      }
+      localStorage.setItem('cartItems', JSON.stringify(newCart))
+      return await true;
+      
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const deleteItemFromCart = async (index) => {
+    try { 
+      const cartItems = JSON.parse(localStorage.getItem('cartItems'));
+      const newCartItem = cartItems.filter(e => e !== cartItems[index]);
+      localStorage.setItem('cartItems', JSON.stringify(newCartItem))
+      return await true;
+
+    } catch(error) {
+      console.error(error)
+    }
   }
 
   const getPrice = async () => {
@@ -28,9 +85,9 @@ export function useCart () {
       let totalPrice = 0;
 
       items.map((menuItems) => {
-        totalPrice += menuItems.menuPrice;
+        totalPrice += (menuItems.menuPrice * menuItems.quantity);
         menuItems.menuOptions.map((optionItems) =>{
-          totalPrice += optionItems.price;
+          totalPrice += (optionItems.price * menuItems.quantity);
         })
       })
       return await totalPrice;
@@ -40,5 +97,5 @@ export function useCart () {
     }
   }
 
-  return { addItemToCart, getPrice }
+  return { addItemToCart, getPrice, minusItemQuantity, plusItemQuantity, deleteItemFromCart }
 }
