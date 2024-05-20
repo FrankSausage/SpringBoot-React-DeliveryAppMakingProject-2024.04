@@ -13,10 +13,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserUpdateResponseDto {
-
-    private String phone;
-    private String currentAddress;
-    private Long addressCode;
-
+public class UserFavoriteListInnerDibsListResponseDto {
+    private Long storeId;
+    private String storeName;
+    private String storePictureName;
+    private int reviewCount;
+    private Double rating;
 }

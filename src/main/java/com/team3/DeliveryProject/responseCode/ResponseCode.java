@@ -10,6 +10,7 @@ public enum ResponseCode {
     USER_SIGNUP_SUCCESS(HttpStatus.OK, "회원가입 성공"),
     USER_UPDATE_SUCCESS(HttpStatus.OK, "회원수정 성공"),
     USER_DELETE_SUCCESS(HttpStatus.OK, "회원삭제 성공"),
+    USER_DIBS_SUCCESS(HttpStatus.OK, "찜 등록/취소/수정 성공"),
     ADDRESS_ADD_SUCCESS(HttpStatus.OK, "주소 추가 성공"),
     STORE_ADD_SUCCESS(HttpStatus.OK, "가게 추가 성공"),
     STORE_UPDATE_SUCCESS(HttpStatus.OK, "가게 수정 성공"),

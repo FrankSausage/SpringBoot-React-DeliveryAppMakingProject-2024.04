@@ -22,6 +22,12 @@ export function useStore() {
     onError: e => { console.error(e) },
   })
 
+  const postChangeStoreIsOpened = useMutation({
+    mutationFn: (storeIsOpended) => axios.post(`/dp/store/list/search`, storeIsOpended),
+    onSuccess: () => {queryClient.invalidateQueries(['storeList'])},
+    onError: e => { console.error(e) },
+  })
+
   const postStoreUpdate= useMutation({
     mutationFn: storeData => axios.post(`/dp/store/owner/update`, storeData),
     onSuccess: () => {alert('가게 수정에 성공하였습니다.')},

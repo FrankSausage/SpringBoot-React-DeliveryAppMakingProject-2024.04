@@ -32,13 +32,13 @@ export default function SearchHeader() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: '#1976D2' }}>
+      <AppBar position="static" sx={{ backgroundColor: (role === '회원') ? '#469D6E' : (role === '점주') ? '#00cde1' : '#469D6E'}}>
         <Toolbar>
           <Grid container alignItems="center">
             <Grid item xs={3}>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
-                  휴먼 딜리버리
+                  <img src={'/img/000.png'} style={{ width: '50%', height: '50%',position: 'relative', top: 5, left: '-25px'  }}/>
                 </Link>
               </Typography>
             </Grid>
