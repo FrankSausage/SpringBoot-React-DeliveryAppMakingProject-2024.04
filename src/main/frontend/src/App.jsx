@@ -6,11 +6,12 @@ import { useState } from 'react';
 const queryClient = new QueryClient();
 function App() {
 
-  const [ outletAddress, setOutletAddress ] = useState(''); // 주소 표시 비동기 임시 처리
+  const [ outletAddress, setOutletAddress ] = useState('');
+  const [ userPoint, setUserPoint ] = useState('') 
   return (
     <AuthContextProvider>
       <QueryClientProvider client={queryClient}>
-        <Outlet context={{outletAddress, setOutletAddress}} />  {/* context = 주소 표시 비동기 임시 처리*/}
+        <Outlet context={{outletAddress, setOutletAddress, userPoint, setUserPoint}} />
       </QueryClientProvider>
     </AuthContextProvider>
   );

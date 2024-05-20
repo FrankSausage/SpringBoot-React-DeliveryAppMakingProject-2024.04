@@ -1,6 +1,8 @@
 package com.team3.DeliveryProject.controller;
 
 import com.team3.DeliveryProject.dto.request.user.UserDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.user.UserFavoriteListRequestDto;
+import com.team3.DeliveryProject.dto.request.user.UserFavoriteRequestDto;
 import com.team3.DeliveryProject.dto.request.user.UserSignInRequestDto;
 import com.team3.DeliveryProject.dto.request.user.UserSignUpRequestDto;
 import com.team3.DeliveryProject.dto.request.user.UserUpdateGetRequestDto;
@@ -115,5 +117,15 @@ public class UserController {
         }
         // 대응되는 role이 없는 경우
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid user role");
+    }
+    @PostMapping("/favorite")
+    public ResponseEntity<?> userDibs(@RequestBody UserFavoriteRequestDto requestDto) {
+        return ResponseEntity.ok().body(userService.favorite(requestDto).getBody());
+    }
+
+    @GetMapping("/favorite/list")
+    public ResponseEntity<?> getDibsList(
+        @ModelAttribute UserFavoriteListRequestDto requestDto) {
+        return ResponseEntity.ok().body(userService.getFavoriteList(requestDto));
     }
 }

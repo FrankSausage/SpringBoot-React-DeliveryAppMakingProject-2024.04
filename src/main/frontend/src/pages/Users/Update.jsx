@@ -34,45 +34,46 @@ const theme = createTheme({
 });
 
 export default function Update() {
-  const { email, displayName } = getCurrentUser();
-  const { getUserByEmail: { isLoading, error, data: user } } = useUser();
-  const [phone, setPhoneNumber] = useState();
-  const [passwordCheck, setPasswordCheck] = useState('');
-  const [isPasswordMatch, setIsPasswordMatch] = useState(true);
-  const { roadAddress, extraAddress, detailAddress } = (localStorage.getItem("splitAddress") ?
-    JSON.parse(localStorage.getItem("splitAddress")) : ({ roadAddress: '', extraAddress: '', detailAddress: '' }));
-  const [updateRoadAddress, setUpdateRoadAddress] = useState(roadAddress ? roadAddress : '');
-  const [updateExtraAddress, setUpdateExtraAddress] = useState(extraAddress ? extraAddress : '');
-  const [updateDetailAddress, setUpdateDetailAddress] = useState(detailAddress ? detailAddress : '');
-  const [addressCode, setAddressCode] = useState('');
-  const [open, setOpen] = useState(false);
-  const role = localStorage.getItem('role');
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const navigate = useNavigate();
-  useEffect(() => {
-    const loadDaumPostcodeScript = () => {
-      const script = document.createElement('script');
-      script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
-      script.async = true;
-      document.body.appendChild(script);
-      script.onload = () => {
-        console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
+    const { email, displayName } = getCurrentUser();
+    const { getUserByEmail: {isLoading, error, data: user} } = useUser();
+    const [ phone, setPhoneNumber] = useState();
+    const [ passwordCheck, setPasswordCheck ] = useState('');
+    const [ isPasswordMatch, setIsPasswordMatch ] = useState(true);
+    const { roadAddress, extraAddress, detailAddress} = (localStorage.getItem("splitAddress") ? 
+        JSON.parse(localStorage.getItem("splitAddress")) : ({roadAddress: '', extraAddress: '', detailAddress : ''}));
+    const [ updateRoadAddress, setUpdateRoadAddress ] = useState(roadAddress ? roadAddress : '');
+    const [ updateExtraAddress, setUpdateExtraAddress ] = useState(extraAddress ? extraAddress : '');
+    const [ updateDetailAddress ,setUpdateDetailAddress ] = useState(detailAddress ? detailAddress : '');
+    const [ addressCode, setAddressCode ] = useState('');
+    const [open, setOpen] = React.useState(false);
+    const role = localStorage.getItem('role');
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+      const loadDaumPostcodeScript = () => {
+        const script = document.createElement('script');
+        script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+        script.async = true;
+        document.body.appendChild(script);
+        script.onload = () => {
+          console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
+        };
       };
-    };
 
     loadDaumPostcodeScript();
 
     return () => {
     };
-  }, []);
+    }, []);
 
-  useEffect(() => {
-    if (user) {
-      setPhoneNumber(user.data.phone);
-      setAddressCode(user.data.addressCode);
-    }
-  }, [isLoading]);
+    useEffect(() => {
+      if (user) {
+        setPhoneNumber(user.data.phone);
+        setAddressCode(user.data.addressCode);
+      }
+    }, [isLoading]);
 
   const handleFindPostcode = () => {
     findPostcode(setUpdateRoadAddress, setUpdateExtraAddress, setAddressCode);

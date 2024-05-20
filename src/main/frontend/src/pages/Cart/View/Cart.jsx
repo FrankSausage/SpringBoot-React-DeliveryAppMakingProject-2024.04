@@ -24,7 +24,7 @@ export default function Cart({ allClose }) {
   const [ totalPrice, setTotalPrice ] = useState(0);
 
   useEffect(() =>{
-    if(cartItems) {
+    if(cartItems.length!==0) {
       getPrice().then(res=> setTotalPrice(res))
     }
   }, [open])
