@@ -8,14 +8,21 @@ import static com.team3.DeliveryProject.responseCode.ResponseCode.USER_SIGNUP_SU
 import static com.team3.DeliveryProject.responseCode.ResponseCode.USER_UPDATE_SUCCESS;
 
 import com.team3.DeliveryProject.dto.common.Response;
+import com.team3.DeliveryProject.dto.request.user.UserFavoriteListRequestDto;
 import com.team3.DeliveryProject.dto.request.user.UserFavoriteRequestDto;
+import com.team3.DeliveryProject.dto.response.user.UserFavoriteListInnerDibsListResponseDto;
+import com.team3.DeliveryProject.dto.response.user.UserFavoriteListResponseDto;
 import com.team3.DeliveryProject.entity.Address;
 import com.team3.DeliveryProject.entity.Dibs;
+import com.team3.DeliveryProject.entity.Stores;
 import com.team3.DeliveryProject.entity.Users;
 import com.team3.DeliveryProject.repository.AddressRepository;
 import com.team3.DeliveryProject.repository.DibsRepository;
+import com.team3.DeliveryProject.repository.StoresRepository;
 import com.team3.DeliveryProject.repository.UsersRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +35,7 @@ public class UserServiceImpl implements UserService {
     private final UsersRepository usersRepository;
     private final AddressRepository addressRepository;
     private final DibsRepository dibsRepository;
+    private final StoresRepository storesRepository;
 
 
     @Override
@@ -95,5 +103,33 @@ public class UserServiceImpl implements UserService {
         }
 
         return Response.toResponseEntity(USER_DIBS_SUCCESS);
+    }
+
+    @Override
+    public UserFavoriteListResponseDto getFavoriteList(UserFavoriteListRequestDto requestDto) {
+        Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
+            .orElseThrow(() -> new RuntimeException("User not found"));
+        List<Optional<Dibs>> dibs = dibsRepository.findByUserId(users.getUserId());
+        List<UserFavoriteListInnerDibsListResponseDto> dibsList = new ArrayList<>();
+        for(Optional<Dibs> optionalDibs :dibs){
+            if(optionalDibs.isPresent()){
+                Stores stores = storesRepository.findById(optionalDibs.get().getStoreId()).
+                    orElseThrow(()->new RuntimeException("Store not found"));
+                if(optionalDibs.get().getStatus().equals("찜")){
+                    UserFavoriteListInnerDibsListResponseDto innerDto = UserFavoriteListInnerDibsListResponseDto.builder()
+                        .storeId(stores.getStoreId())
+                        .storeName(stores.getName())
+                        .storePictureName(stores.getStorePictureName())
+                        .reviewCount(stores.getReviewCount())
+                        .rating(stores.getRating())
+                        .build();
+                    dibsList.add(innerDto);
+                }
+            }
+        }
+        UserFavoriteListResponseDto responseDto = UserFavoriteListResponseDto.builder()
+            .dibslist(dibsList)
+            .build();
+        return responseDto;
     }
 }
