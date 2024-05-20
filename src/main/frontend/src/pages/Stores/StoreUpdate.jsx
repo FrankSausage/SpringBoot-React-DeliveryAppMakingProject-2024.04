@@ -11,6 +11,7 @@ import { useStore } from './Hook/useStore';
 import SearchHeader from '../../components/SearchHeader';
 import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
+
 const defaultTheme = createTheme();
 
 export default function StoreUpdate() {
@@ -35,11 +36,10 @@ export default function StoreUpdate() {
   const [minDeliveryTime, setMinDeliveryTime] = useState('');
   const [maxDeliveryTime, setMaxDeliveryTime] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState([]);
-  const [usePreviousData, setUsePreviousData] = useState(true); // 초기에 비활성화
+  const [usePreviousData, setUsePreviousData] = useState(true);
   const [selectedDays, setSelectedDays] = useState([]);
-  const [selectedDeliveryAddresses, setSelectedDeliveryAddresses] = useState([]);
-  const [ firstDeliveryAddress, setFirstDeliveryAddress ] = useState('')
-  const [ firstAddressCode, setFirstAddressCode ] = useState('')
+  const [firstDeliveryAddress, setFirstDeliveryAddress] = useState('')
+  const [firstAddressCode, setFirstAddressCode] = useState('')
   const [openHours, setOpenHours] = useState('');
   const [closeHours, setCloseHours] = useState('');
   const [jibun, setJibunAddress] = useState([]);
@@ -89,7 +89,7 @@ export default function StoreUpdate() {
     if (usePreviousData) {
       setDeliveryAddress(''); // 새로운 데이터 입력 시 이전 데이터 초기화
       setJibunAddress(''); // 주소 초기화
-      setAddressCode(''); 
+      setAddressCode('');
     } else {
       setDeliveryAddress(firstDeliveryAddress)
       setAddressCode(firstAddressCode)
@@ -121,15 +121,15 @@ export default function StoreUpdate() {
       }
       if (store && store.addressCodes) {
         const addresses = store.addressCodes.map(res => res.deliveryAddress);
-        setDeliveryAddress(addresses); 
+        setDeliveryAddress(addresses);
       }
     }
   }, [isLoading])
 
   const extractExtraAddress = (address) => {
-    const regex = /\((.*?)\)/; 
+    const regex = /\((.*?)\)/;
     const match = regex.exec(address);
-    return match ? match[1] : ''; 
+    return match ? match[1] : '';
   };
 
   const handleSubmit = async (e) => {
@@ -144,9 +144,9 @@ export default function StoreUpdate() {
         .then(res => {
           extractDataFromFormData(res)
             .then(resFormData => {
-              resFormData.addressCodes = 
-              addressCodePacker(typeof(addressCode)==='string' ? addressCode.split(',') : addressCode, 
-                typeof(deliveryAddress)==='string' ? deliveryAddress.split(',') : deliveryAddress);
+              resFormData.addressCodes =
+                addressCodePacker(typeof (addressCode) === 'string' ? addressCode.split(',') : addressCode,
+                  typeof (deliveryAddress) === 'string' ? deliveryAddress.split(',') : deliveryAddress);
               console.log(resFormData)
               postStoreUpdate.mutate(resFormData, {
                 onSuccess: () => {
@@ -240,14 +240,7 @@ export default function StoreUpdate() {
           <SearchHeader />
           <Container component="main" maxWidth="xs">
             <CssBaseline />
-            <Box
-              sx={{
-                marginTop: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-              }}
-            >
+            <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }} >
               <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                 <LockOutlinedIcon />
               </Avatar>
@@ -263,21 +256,7 @@ export default function StoreUpdate() {
                     <TextField required fullWidth autoComplete="given-name" name="name" id="name" value={name} label="가게 이름" placeholder='ex) 휴먼 딜리버리' onChange={e => setName(e.target.value)} />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="phone"
-                      label="전화번호"
-                      placeholder='ex) 031-123-4567'
-                      name="phone"
-                      autoComplete="phone"
-                      value={phone}
-                      onChange={handlePhoneNumberChange}
-                      inputProps={{
-                        maxLength: 12,
-                        inputMode: 'numeric',
-                      }}
-                    />
+                    <TextField required fullWidth id="phone" label="전화번호" placeholder='ex) 031-123-4567' name="phone" autoComplete="phone" value={phone} onChange={handlePhoneNumberChange} inputProps={{ maxLength: 12, inputMode: 'numeric' }} />
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="h6" gutterBottom>
@@ -286,61 +265,22 @@ export default function StoreUpdate() {
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
                         {['한식', '중식', '일식', '양식', '패스트', '치킨', '분식', '디저트'].map((cat) => (
-                          <FormControlLabel
-                            key={cat}
-                            control={<Checkbox checked={category.includes(cat)} onChange={handleCategoryChange} value={cat} color="primary" />}
-                            label={cat}
-                          />
-                        ))}
+                          <FormControlLabel key={cat} control={<Checkbox checked={category.includes(cat)}
+                            onChange={handleCategoryChange} value={cat} color="primary" />} label={cat} />))}
                       </Grid>
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="roadAddress"
-                      name="roadAddress"
-                      label="도로명 주소"
-                      value={roadAddress}
-                      InputProps={{
-                        readOnly: true,
-                      }}
-                    />
+                    <TextField required fullWidth id="roadAddress" name="roadAddress" label="도로명 주소" value={roadAddress} InputProps={{ readOnly: true }} />
                   </Grid>
-                  <Button
-                    type="button"
-                    onClick={handleFindPostcode}
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 1, mb: 2, ml: 2 }}
-                  >
+                  <Button type="button" onClick={handleFindPostcode} fullWidth variant="contained" sx={{ mt: 1, mb: 2, ml: 2 }} >
                     주소 찾기
                   </Button>
                   <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="extraAddress"
-                      name="extraAddress"
-                      label="참고항목"
-                      value={extraAddress}
-                      InputProps={{
-                        readOnly: true,
-                      }}
-                    />
+                    <TextField required fullWidth id="extraAddress" name="extraAddress" label="참고항목" value={extraAddress} InputProps={{ readOnly: true }} />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="detailAddress"
-                      label="상세주소"
-                      value={detailAddress}
-                      name="detailAddress"
-                      autoComplete="detailAddress"
-                      onChange={e => setDetailAddress(e.target.value)}
-                    />
+                    <TextField required fullWidth id="detailAddress" label="상세주소" value={detailAddress} name="detailAddress" autoComplete="detailAddress" onChange={e => setDetailAddress(e.target.value)} />
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="h6" gutterBottom>배달, 포장</Typography>
@@ -354,56 +294,22 @@ export default function StoreUpdate() {
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField 
+                    <TextField
                       autoComplete="given-name" name="minDeliveryPrice" required fullWidth id="minDeliveryPrice" value={minDeliveryPrice} label="최소 주문금액" placeholder='ex) 10000' onChange={e => setMinDeliveryPrice(e.target.value)} />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      autoComplete="given-name"
-                      name="deliveryTip"
-                      fullWidth
-                      id="deliveryTip"
-                      value={deliveryTip}
-                      label="배달 팁"
-                      placeholder='ex) 3000'
-                      onChange={e => setDeliveryTip(e.target.value)}
-                    />
+                    <TextField autoComplete="given-name" name="deliveryTip" fullWidth id="deliveryTip" value={deliveryTip} label="배달 팁" placeholder='ex) 3000' onChange={e => setDeliveryTip(e.target.value)} />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      autoComplete="given-name"
-                      name="minDeliveryTime"
-                      required
-                      fullWidth
-                      id="minDeliveryTime"
-                      value={minDeliveryTime}
-                      label="최소 배달 예상 시간"
-                      placeholder='10'
-                      onChange={e => setMinDeliveryTime(e.target.value)}
-                    />
+                    <TextField autoComplete="given-name" name="minDeliveryTime" required fullWidth id="minDeliveryTime" value={minDeliveryTime} label="최소 배달 예상 시간" placeholder='10' onChange={e => setMinDeliveryTime(e.target.value)} />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      autoComplete="given-name"
-                      name="maxDeliveryTime"
-                      required
-                      fullWidth
-                      id="maxDeliveryTime"
-                      value={maxDeliveryTime}
-                      label="최대 배달 예상 시간"
-                      placeholder='50'
-                      onChange={e => setMaxDeliveryTime(e.target.value)}
-                    />
+                    <TextField autoComplete="given-name" name="maxDeliveryTime" required fullWidth id="maxDeliveryTime" value={maxDeliveryTime} label="최대 배달 예상 시간" placeholder='50' onChange={e => setMaxDeliveryTime(e.target.value)} />
                   </Grid>
                   <Grid item xs={6}>
                     <FormControl fullWidth required>
                       <InputLabel id="openHours-label">오픈 시간</InputLabel>
-                      <Select
-                        labelId="openHours-label"
-                        id="openHours"
-                        value={openHours}
-                        onChange={e => setOpenHours(e.target.value)}
-                      >
+                      <Select labelId="openHours-label" id="openHours" value={openHours} onChange={e => setOpenHours(e.target.value)} >
                         {timeOptionsOpen.map(time => (
                           <MenuItem key={time} value={time}>
                             {time}
@@ -415,12 +321,7 @@ export default function StoreUpdate() {
                   <Grid item xs={6}>
                     <FormControl fullWidth required>
                       <InputLabel id="closeHours-label">종료 시간</InputLabel>
-                      <Select
-                        labelId="closeHours-label"
-                        id="closeHours"
-                        value={closeHours}
-                        onChange={e => setCloseHours(e.target.value)}
-                      >
+                      <Select labelId="closeHours-label" id="closeHours" value={closeHours} onChange={e => setCloseHours(e.target.value)} >
                         {timeOptionsClose.map(time => (
                           <MenuItem key={time} value={time}>
                             {time}
@@ -431,10 +332,7 @@ export default function StoreUpdate() {
                   </Grid>
                   <Grid item xs={12}>
                     <InputLabel id="demo-multiple-checkbox-label">휴무일 선택</InputLabel>
-                    <Select labelId="demo-multiple-checkbox-label" id="demo-multiple-checkbox" multiple value={selectedDays} onChange={handleClosedDaysChange}
-                      input={<Input />}
-                      renderValue={(selected) => selected.join(', ')}
-                    >
+                    <Select labelId="demo-multiple-checkbox-label" id="demo-multiple-checkbox" multiple value={selectedDays} onChange={handleClosedDaysChange} input={<Input />} renderValue={(selected) => selected.join(', ')}>
                       {weekDays.map((day) => (
                         <MenuItem key={day} value={day}>
                           <Checkbox checked={selectedDays.indexOf(day) > -1} />
@@ -453,65 +351,25 @@ export default function StoreUpdate() {
                     <Typography variant="h6" gutterBottom>배달 가능 지역</Typography>
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
-                        <TextField
-                          fullWidth
-                          id="deliveryAddress"
-                          name="deliveryAddress"
-                          label="배달 가능 지역"
-                          value={deliveryAddress ? deliveryAddress : jibun}
-                        />
+                        <TextField fullWidth id="deliveryAddress" name="deliveryAddress" label="배달 가능 지역" value={deliveryAddress ? deliveryAddress : jibun} />
                       </Grid>
                       <Grid item xs={12}>
                         <Grid container spacing={1}>
-                          <FormControlLabel
-                            control={<Checkbox checked={!usePreviousData} onChange={handleUsePreviousDataChange} color="primary" />}
-                            label="새로운 배달 지역 사용"
-                          />
+                          <FormControlLabel control={<Checkbox checked={!usePreviousData} onChange={handleUsePreviousDataChange} color="primary" />} label="새로운 배달 지역 사용" />
                         </Grid>
                       </Grid>
-                      <Button
-                        type="button"
-                        onClick={handleFindDeliverPostCode}
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 1, mb: 2, ml: 2 }}
-                        disabled={usePreviousData}
-                      >
+                      <Button type="button" onClick={handleFindDeliverPostCode} fullWidth variant="contained" sx={{ mt: 1, mb: 2, ml: 2 }} disabled={usePreviousData} >
                         배달 지역 찾기
                       </Button>
                       <Grid item xs={12}>
-                        <TextField autoComplete="given-name" name="content" fullWidth
-                          id="content"
-                          value={content}
-                          label="가게 소개"
-                          multiline
-                          rows={4}
-                          placeholder='ex) 휴먼 딜리버리에 오신것을 환영합니다.'
-                          onChange={e => setContent(e.target.value)}
-                        />
+                        <TextField autoComplete="given-name" name="content" fullWidth id="content" value={content} label="가게 소개" multiline rows={4} placeholder='ex) 휴먼 딜리버리에 오신것을 환영합니다.' onChange={e => setContent(e.target.value)} />
                       </Grid>
                       <Grid item xs={12}>
                         <Typography variant="h6" gutterBottom>
                           가게 사진
                         </Typography>
-                        <input
-                          accept=".png, .jpeg, .jpg"
-                          id="upload-photo"
-                          type="file" a
-                          style={{ display: 'none' }}
-                          onChange={handleFileUpload} multiple
-                        />
-                        <TextField
-                          autoComplete="given-name"
-                          name="storePictureName"
-                          value={storePictureName}
-                          fullWidth
-                          id="storePictureName"
-                          label="가게 사진"
-                          onClick={(e) => {
-                            e.target.value = null;
-                          }}
-                        />
+                        <input accept=".png, .jpeg, .jpg" id="upload-photo" type="file" a style={{ display: 'none' }} onChange={handleFileUpload} multiple />
+                        <TextField autoComplete="given-name" name="storePictureName" value={storePictureName} fullWidth id="storePictureName" label="가게 사진" onClick={(e) => { e.target.value = null }} />
                         {/* 아이콘 대신에 "사진 올리기" 텍스트를 사용하고 싶다면 아래 주석 처리된 라인을 사용하세요 */}
                         {/* <span>사진 올리기</span> */}
                         <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} sx={{ mt: 3, mb: 2, }}>
