@@ -27,6 +27,7 @@ public class Dibs {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long dibsId;
     private Long userId;
     private Long storeId;
 
@@ -39,4 +40,12 @@ public class Dibs {
     @Column(nullable = false)
     private String status;
 
+    public Dibs(Long userId, Long storeId, LocalDateTime createdDate, LocalDateTime modifiedDate,
+        String status) {
+        this.userId = userId;
+        this.storeId = storeId;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.status = status;
+    }
 }

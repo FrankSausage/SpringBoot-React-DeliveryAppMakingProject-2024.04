@@ -27,6 +27,7 @@ public class CeoReviews {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long CeoReviewId;
     private Long reviewId;
 
     @Column(nullable = true)

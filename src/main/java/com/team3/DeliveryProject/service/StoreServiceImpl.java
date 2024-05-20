@@ -21,15 +21,26 @@ import com.team3.DeliveryProject.dto.response.store.StoreListResponseDto;
 import com.team3.DeliveryProject.dto.response.store.StoreOwnerListInnerResponseDto;
 import com.team3.DeliveryProject.dto.response.store.StoreOwnerListResponseDto;
 import com.team3.DeliveryProject.entity.AddressCode;
+import com.team3.DeliveryProject.entity.Dibs;
+import com.team3.DeliveryProject.entity.Menu;
 import com.team3.DeliveryProject.entity.Stores;
 import com.team3.DeliveryProject.entity.Users;
 import com.team3.DeliveryProject.repository.AddressCodeRepository;
+import com.team3.DeliveryProject.repository.DibsRepository;
+import com.team3.DeliveryProject.repository.MenuRepository;
 import com.team3.DeliveryProject.repository.StoresRepository;
 import com.team3.DeliveryProject.repository.UsersRepository;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +52,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class StoreServiceImpl implements StoreService {
 
     private final StoresRepository storesRepository;
+    private final MenuRepository menuRepository;
     private final UsersRepository usersRepository;
+    private final DibsRepository dibsRepository;
     private final AddressCodeRepository addressCodeRepository;
 
     @Override
@@ -147,9 +160,19 @@ public class StoreServiceImpl implements StoreService {
         }
         List<Stores> storesListByName = storesRepository.findByNameContaining(
             requestDto.getQuery());
+        List<Long> storeIdListByMenu = menuRepository.findDistinctStoreIdsByContainingName(requestDto.getQuery());
+        List<Stores> storesListByMenu = new ArrayList<>();
+        for(Long storeId : storeIdListByMenu){
+            Stores stores = storesRepository.findById(storeId).orElseThrow(()->new RuntimeException("store not found"));
+            storesListByMenu.add(stores);
+        }
 
         List<StoreListInnerResponseDto> filteredStores = new ArrayList<>();
+
         for (Stores store : storesListByCategory) {
+            if(store.getStatus().equals("삭제")){
+                continue;
+            }
             Long storeId = store.getStoreId();
             List<AddressCode> addressCodes = addressCodeRepository.findAllByStoreId(storeId)
                 .orElseThrow(
@@ -157,13 +180,23 @@ public class StoreServiceImpl implements StoreService {
             // AddressCode 리스트에서 유저의 addrCode와 일치하는지 확인 ㅇㅇ
             for (AddressCode addressCode : addressCodes) {
                 if (addressCode.getAddressCode().equals(addrCode)) {
+                    Boolean b = dibsRepository.existsByUserIdAndStoreId(users.getUserId(), storeId);
+                    String isDibs = "";
+                    if(b == true){
+                        isDibs = "찜";
+                    }else{
+                        isDibs = "일반";
+                    }
                     // 조건에 맞는 Store 정보를 DTO로 변환하고 리스트에 추가
-                    filteredStores.add(convertToDto(store));
+                    filteredStores.add(convertToDto(store, isDibs,isOpened(store)));
                     break;  // 일치하는 주소 코드를 찾으면 더 이상 반복하지 않음
                 }
             }
         }
         for (Stores store : storesListByName) {
+            if(store.getStatus().equals("삭제")){
+                continue;
+            }
             Long storeId = store.getStoreId();
             List<AddressCode> addressCodes = addressCodeRepository.findAllByStoreId(storeId)
                 .orElseThrow(
@@ -171,9 +204,44 @@ public class StoreServiceImpl implements StoreService {
             // AddressCode 리스트에서 유저의 addrCode와 일치하는지 확인 ㅇㅇ
             for (AddressCode addressCode : addressCodes) {
                 if (addressCode.getAddressCode().equals(addrCode)) {
+                    Boolean b = dibsRepository.existsByUserIdAndStoreId(users.getUserId(), storeId);
+                    String isDibs = "";
+                    if(b == true){
+                        isDibs = "찜";
+                    }else{
+                        isDibs = "일반";
+                    }
+
                     // 조건에 맞는 Store 정보를 DTO로 변환하고 리스트에 추가
-                    if (!filteredStores.contains(convertToDto(store))) {
-                        filteredStores.add(convertToDto(store));
+                    if (!filteredStores.contains(convertToDto(store, isDibs, isOpened(store)))) {
+                        filteredStores.add(convertToDto(store, isDibs,isOpened(store)));
+                    }
+                    break;  // 일치하는 주소 코드를 찾으면 더 이상 반복하지 않음
+                }
+            }
+        }
+        for (Stores store : storesListByMenu) {
+            if(store.getStatus().equals("삭제")){
+                continue;
+            }
+            Long storeId = store.getStoreId();
+            List<AddressCode> addressCodes = addressCodeRepository.findAllByStoreId(storeId)
+                .orElseThrow(
+                    () -> new RuntimeException("storeId에 해당하는 데이터가 addressCode 테이블에 존재하지 않습니다."));
+            // AddressCode 리스트에서 유저의 addrCode와 일치하는지 확인 ㅇㅇ
+            for (AddressCode addressCode : addressCodes) {
+                if (addressCode.getAddressCode().equals(addrCode)) {
+                    Boolean b = dibsRepository.existsByUserIdAndStoreId(users.getUserId(), storeId);
+                    String isDibs = "";
+                    if(b == true){
+                        isDibs = "찜";
+                    }else{
+                        isDibs = "일반";
+                    }
+
+                    // 조건에 맞는 Store 정보를 DTO로 변환하고 리스트에 추가
+                    if (!filteredStores.contains(convertToDto(store, isDibs, isOpened(store)))) {
+                        filteredStores.add(convertToDto(store, isDibs,isOpened(store)));
                     }
                     break;  // 일치하는 주소 코드를 찾으면 더 이상 반복하지 않음
                 }
@@ -233,6 +301,39 @@ public class StoreServiceImpl implements StoreService {
         return responseDto;
     }
 
+    public int isOpened(Stores stores){
+        // 현재 날짜와 시간 가져오기
+        LocalDate currentDate = LocalDate.now();
+        LocalTime currentTime = LocalTime.now();
+
+        // 현재 요일 가져오기
+        DayOfWeek currentDayOfWeek = currentDate.getDayOfWeek();
+
+        // closedDays 파싱하기
+        String closedDays = stores.getClosedDays();
+        List<String> closedDaysList = Arrays.asList(closedDays.split(","));
+
+        // 현재 요일이 closedDays에 있는지 확인
+        String currentDayOfWeekString = currentDayOfWeek.getDisplayName(TextStyle.FULL, Locale.KOREAN);
+        if (closedDaysList.contains(currentDayOfWeekString)) {
+            return 0;
+        }
+
+        // operationHours 파싱하기
+        String operationHours = stores.getOperationHours();
+        String[] hours = operationHours.split("~");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime openTime = LocalTime.parse(hours[0].trim(), timeFormatter);
+        LocalTime closeTime = LocalTime.parse(hours[1].trim(), timeFormatter);
+
+        // 현재 시간이 영업 시간 내에 있는지 확인
+        if (currentTime.isAfter(openTime) && currentTime.isBefore(closeTime)) {
+            return 1;
+        } else {
+            return 0;
+        }
+
+    }
     @Override
     public StoreOwnerListResponseDto getStoreListForOwner(StoreOwnerListRequestDto requestDto) {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
@@ -258,13 +359,14 @@ public class StoreServiceImpl implements StoreService {
         return resultDto;
     }
 
-    private StoreListInnerResponseDto convertToDto(Stores store) {
+    private StoreListInnerResponseDto convertToDto(Stores store, String isDibed, int isOpened) {
         if (store == null) {
             return null;
         }
         return new StoreListInnerResponseDto(store.getStoreId(), store.getName(),
             store.getStorePictureName(),
-            store.getRating(), store.getDibsCount(), store.getReviewCount());
+            store.getRating(), store.getDibsCount(), store.getReviewCount(), isDibed, isOpened);
     }
+
 
 }

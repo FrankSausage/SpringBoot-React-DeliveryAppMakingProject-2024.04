@@ -52,3 +52,4 @@ export const generateTimeOptions = (startHour, endHour) => {
   }
   return options;
 };
+

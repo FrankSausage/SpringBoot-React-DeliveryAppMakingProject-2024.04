@@ -8,8 +8,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useCart } from '../Hook/useCart';
-import CartDelete from '../CartDelete';
 import { useNavigate } from 'react-router';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -20,33 +20,43 @@ export default function Cart({ allClose }) {
   const navigate = useNavigate();
   const [ open, setOpen ] = useState(false);
   const cartItems = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [];
-  const { getPrice } = useCart();
+  const { getPrice, deleteItemFromCart, minusItemQuantity, plusItemQuantity } = useCart();
   const [ totalPrice, setTotalPrice ] = useState(0);
 
   useEffect(() =>{
-    if(cartItems) {
+    if(cartItems.length!==0) {
       getPrice().then(res=> setTotalPrice(res))
     }
-  }, [allClose])
+  }, [open])
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  }
+  const handleClickOpen = () => setOpen(true);
+  
   const handleClose = () => {
     allClose();
     setOpen(false)
   };
 
-  const handleMinus = () => {
-
+  const handleMinus = index => {
+    setOpen(false)
+    minusItemQuantity(index).then(() => setOpen(true))
   }
 
-  const handlePlus = () => {
-
+  const handlePlus = index => {
+    setOpen(false)
+    plusItemQuantity(index).then(() => setOpen(true))
   }
 
   const handleOrder = () => {
     navigate('/Order', {state: {totalPrice: totalPrice}})
+  }
+
+  const handleDelete = index => {
+   if(!window.confirm('메뉴를 삭제 하시겠습니까?')){
+    return;
+   } else {
+    setOpen(false)
+    deleteItemFromCart(index).then(() => setOpen(true))
+   }
   }
   
   return (
@@ -65,13 +75,13 @@ export default function Cart({ allClose }) {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle variant='h4' sx={{textAlign:'center', width:500}}>{"장바구니"}</DialogTitle>
-        <Typography sx={{textAlign:'center', mb:1}}>최종 가격: {totalPrice ? totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}원</Typography>
+          <Typography sx={{textAlign:'center', mb:1}}>최종 가격: {totalPrice ? totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}원</Typography>
         <DialogContent sx={{borderTop:1, backgroundColor:'silver'}}>
           <DialogContentText id="주문 목록">
             {!localStorage.getItem('cartItems') && <Typography sx={{textAlign:'center', fontSize: 30}}>아직 주문 내역이 없어요!</Typography>}
             {cartItems &&
-              cartItems.map((menuItems) => (
-                <Card key={menuItems.sequence} sx={{mb:1}}>
+              cartItems.map((menuItems, idx) => (
+                <Card key={idx} sx={{mb:1}}>
                   <CardContent sx={{mb:1, borderWidth:10, borderRadius:'1%'}}>
                     <Typography variant='h5' sx={{mb:1, textAlign:'center'}}>{menuItems.menuName}</Typography>
                     <Divider sx={{mb:2}}/>
@@ -92,13 +102,15 @@ export default function Cart({ allClose }) {
                       ))}
                     <Divider sx={{mt: 2}}/>
                     <Stack direction={'row'} sx={{justifyContent:'center', mt:3}}>
-                      {menuItems.quantity===1 ? 
-                      <CartDelete /> 
+                      {menuItems.quantity<=1 ? 
+                      <Button sx={{border:1}} onClick={() => handleDelete(idx)} color='error' >
+                      <DeleteIcon/> 
+                      </Button>
                       :
-                      <Button sx={{border:1}} onClick={handleMinus} color='error' >-</Button>
+                      <Button sx={{border:1}} onClick={() => handleMinus(idx)} color='error' >-</Button>
                       }
                       <Typography sx={{textAlign:'center', alignContent:'center', mx: 2}}>수량 : {menuItems.quantity}</Typography>
-                      <Button sx={{border:1}} onClick={handlePlus} >+</Button>
+                      <Button sx={{border:1}} onClick={() => handlePlus(idx)}>+</Button>
                     </Stack>
                   </CardContent>
                 </Card>

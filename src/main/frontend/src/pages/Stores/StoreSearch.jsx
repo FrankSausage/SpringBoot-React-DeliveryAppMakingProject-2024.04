@@ -20,19 +20,12 @@ export default function StoreSearch() {
 	return (
 		<Box sx={{margin: -1}}>
 			<SearchHeader />
-				<Typography component={Link} to={'/Store'}>뒤로가기</Typography>
+				<Typography component={Link} to={'/Store'}  style={{ textDecoration: 'none', color: 'inherit' }}>◀ 돌아가기 </Typography>
 				<Grid container justifyContent="center" alignItems="center" mt={2}>
 				<Grid item xs={6} md={4}>
 				<Box sx={{ display: 'flex', alignItems: 'center', border: 1, borderColor: 'divider', borderRadius: 1 }}>
 					<SearchIcon sx={{ m: 1 }} />
-					<InputBase
-					placeholder="검색"
-					inputProps={{ 'aria-label': 'search' }}
-					value={searchText}
-					onChange={e => setSearchText(e.target.value)}
-					fullWidth
-					autoFocus
-					/>
+					<InputBase placeholder="검색" inputProps={{ 'aria-label': 'search' }} value={searchText} onChange={e => setSearchText(e.target.value)} fullWidth autoFocus/>
 					<Button onClick={handleSubmit}>검색</Button>
 				</Box>
 				</Grid>

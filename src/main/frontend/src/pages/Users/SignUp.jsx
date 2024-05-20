@@ -24,6 +24,21 @@ export default function SignUp() {
   const { setOutletAddress } = useOutletContext();
   const { postUserSignUp } = useUser();
   const navigate = useNavigate();
+  const CustomCheckbox = ({ checked, onChange }) => {
+    return (
+      <Checkbox
+        checked={checked}
+        onChange={onChange}
+        sx={{
+          color: '002500',
+          '&.Mui-checked': {
+            color: '#66BB6A',
+          },
+        }}
+      />
+    );
+  };
+
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
       const script = document.createElement('script');
@@ -94,9 +109,40 @@ export default function SignUp() {
   }
 
   return (
-    <ThemeProvider theme={defaultTheme} >
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
+    <ThemeProvider theme={defaultTheme}>
+      {/* <div style={{
+        backgroundImage: 'linear-gradient(to right, #f09032, #FFFFFF, #f09032)', // 주황색 배경을 양쪽에 추가
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+      }}>
+        <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
+          <CssBaseline /> */}
+
+      {/* <div style={{
+        backgroundImage: 'linear-gradient(to right, #ee6e0b, #FFFFFF, #ee6e0b)', // 주황색 배경을 양쪽에 추가
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+      }}>
+        <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
+          <CssBaseline /> */}
+      
+      <div style={{
+        backgroundImage: 'url(/img/kitchen.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        padding: '23px 0',
+        backgroundBlendMode: 'lighten',
+        backgroundColor: 'rgba(255, 255, 255, 0.6)' // This makes the background image appear lighter
+      }}>
+        <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
+          <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
+            <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
@@ -108,7 +154,7 @@ export default function SignUp() {
             borderRadius: '10px'
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: '#f09032' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -204,14 +250,13 @@ export default function SignUp() {
                   <Button
                     type="button"
                     onClick={handleFindPostcode}
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 1, mb: 2, ml: 2 }}
-                  >
-                    주소 찾기
-                  </Button>
-                  <Grid item xs={12}>
-                    <TextField
+                      variant="contained"
+                      sx={{ mt: 3, mb: 2, backgroundColor: '#66BB6A', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#41df78', // 호버 시 버튼 배경색
+                    }}}>
+                      주소 찾기
+                    </Button>
+                <Grid item xs={12}>
+                  <TextField
                       fullWidth
                       id="extraAddress"
                       label="참고항목"
@@ -236,17 +281,17 @@ export default function SignUp() {
               }
               <Grid item xs={12} sm={6}>
                 <FormControlLabel
-                  control={<Checkbox checked={role === '회원'} onChange={() => setRole('회원')} color="primary" />}
+                  control={<CustomCheckbox checked={role === '회원'} onChange={() => setRole('회원')} color="primary" />}
                   label="회원"
                 />
                 <FormControlLabel
-                  control={<Checkbox checked={role === '점주'} onChange={() => setRole('점주')} color="primary" />}
+                  control={<CustomCheckbox checked={role === '점주'} onChange={() => setRole('점주')} color="primary" />}
                   label="점주"
                 />
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
+                  control={<CustomCheckbox value="allowExtraEmails" color="primary" />}
                   label="이메일을 통해 마케팅 프로모션, 업데이트를 받고 싶습니다.(선택)"
                 />
               </Grid>
@@ -255,9 +300,12 @@ export default function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              회원가입
+              sx={{ mt: 3, mb: 2, backgroundColor: '#66BB6A', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#41df78'},
+              fontFamily: 'Arial', 
+              fontWeight: 'bold', 
+              fontSize: '1.2rem'}}>
+                
+              회원 가입
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
@@ -270,6 +318,8 @@ export default function SignUp() {
         </Box>
         <Footer sx={{ mt: 5 }} />
       </Container>
-    </ThemeProvider>
+      </div>
+    </div>
+  </ThemeProvider>
   );
 }

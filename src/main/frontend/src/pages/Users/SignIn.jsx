@@ -4,7 +4,7 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox,
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { login } from '../../utils/firebase';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import axios from 'axios';
 import { splitAddressFromCurrentUserAddress } from '../../utils/commonUitil';
@@ -13,6 +13,7 @@ const defaultTheme = createTheme();
 
 export default function SignIn() {
   const [userInfo, setUserInfo] = useState({email:'', password:''});
+  const { setUserPoint } = useOutletContext();
   const navigate = useNavigate();
 
   const handleChange = e => {
@@ -37,6 +38,7 @@ export default function SignIn() {
                 localStorage.setItem('email', userInfo.email);
                 localStorage.setItem('role', res.data.role);
                 localStorage.setItem('email', userInfo.email);
+                setUserPoint(userInfo.point);
                 if(res.data.role !== '점주') {
                   localStorage.setItem("address", res.data.currentAddress);
                   localStorage.setItem("splitAddress", JSON.stringify(splitAddressFromCurrentUserAddress(res.data.currentAddress)))

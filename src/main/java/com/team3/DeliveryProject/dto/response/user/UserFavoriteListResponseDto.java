@@ -1,5 +1,6 @@
 package com.team3.DeliveryProject.dto.response.user;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,10 +14,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserUpdateResponseDto {
-
-    private String phone;
-    private String currentAddress;
-    private Long addressCode;
-
+public class UserFavoriteListResponseDto {
+    private List<UserFavoriteListInnerDibsListResponseDto> dibslist;
 }
