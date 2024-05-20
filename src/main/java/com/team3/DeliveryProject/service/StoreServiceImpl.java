@@ -21,9 +21,11 @@ import com.team3.DeliveryProject.dto.response.store.StoreListResponseDto;
 import com.team3.DeliveryProject.dto.response.store.StoreOwnerListInnerResponseDto;
 import com.team3.DeliveryProject.dto.response.store.StoreOwnerListResponseDto;
 import com.team3.DeliveryProject.entity.AddressCode;
+import com.team3.DeliveryProject.entity.Menu;
 import com.team3.DeliveryProject.entity.Stores;
 import com.team3.DeliveryProject.entity.Users;
 import com.team3.DeliveryProject.repository.AddressCodeRepository;
+import com.team3.DeliveryProject.repository.MenuRepository;
 import com.team3.DeliveryProject.repository.StoresRepository;
 import com.team3.DeliveryProject.repository.UsersRepository;
 import java.time.LocalDateTime;
@@ -41,6 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class StoreServiceImpl implements StoreService {
 
     private final StoresRepository storesRepository;
+    private final MenuRepository menuRepository;
     private final UsersRepository usersRepository;
     private final AddressCodeRepository addressCodeRepository;
 
@@ -147,9 +150,19 @@ public class StoreServiceImpl implements StoreService {
         }
         List<Stores> storesListByName = storesRepository.findByNameContaining(
             requestDto.getQuery());
+        List<Long> storeIdListByMenu = menuRepository.findDistinctStoreIdsByContainingName(requestDto.getQuery());
+        List<Stores> storesListByMenu = new ArrayList<>();
+        for(Long storeId : storeIdListByMenu){
+            Stores stores = storesRepository.findById(storeId).orElseThrow(()->new RuntimeException("store not found"));
+            storesListByMenu.add(stores);
+        }
 
         List<StoreListInnerResponseDto> filteredStores = new ArrayList<>();
+
         for (Stores store : storesListByCategory) {
+            if(store.getStatus().equals("삭제")){
+                continue;
+            }
             Long storeId = store.getStoreId();
             List<AddressCode> addressCodes = addressCodeRepository.findAllByStoreId(storeId)
                 .orElseThrow(
@@ -164,6 +177,28 @@ public class StoreServiceImpl implements StoreService {
             }
         }
         for (Stores store : storesListByName) {
+            if(store.getStatus().equals("삭제")){
+                continue;
+            }
+            Long storeId = store.getStoreId();
+            List<AddressCode> addressCodes = addressCodeRepository.findAllByStoreId(storeId)
+                .orElseThrow(
+                    () -> new RuntimeException("storeId에 해당하는 데이터가 addressCode 테이블에 존재하지 않습니다."));
+            // AddressCode 리스트에서 유저의 addrCode와 일치하는지 확인 ㅇㅇ
+            for (AddressCode addressCode : addressCodes) {
+                if (addressCode.getAddressCode().equals(addrCode)) {
+                    // 조건에 맞는 Store 정보를 DTO로 변환하고 리스트에 추가
+                    if (!filteredStores.contains(convertToDto(store))) {
+                        filteredStores.add(convertToDto(store));
+                    }
+                    break;  // 일치하는 주소 코드를 찾으면 더 이상 반복하지 않음
+                }
+            }
+        }
+        for (Stores store : storesListByMenu) {
+            if(store.getStatus().equals("삭제")){
+                continue;
+            }
             Long storeId = store.getStoreId();
             List<AddressCode> addressCodes = addressCodeRepository.findAllByStoreId(storeId)
                 .orElseThrow(
