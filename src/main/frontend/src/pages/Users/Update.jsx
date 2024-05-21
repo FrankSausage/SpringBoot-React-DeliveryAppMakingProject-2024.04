@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container, Modal } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import RestorePageIcon from '@mui/icons-material/RestorePage';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import axios from 'axios';
@@ -19,6 +19,10 @@ const theme = createTheme({
     secondary: {
       main: '#ff9800',
     },
+    tertiary: {
+      main: '#f09032'
+    },
+
     background: {
       default: '#f5f5f5',
     },
@@ -50,6 +54,7 @@ export default function Update() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const navigate = useNavigate();
+    const backgroundImage = role === '회원' ? 'url(/img/kitchen.jpg)' : 'url(/img/Okitchen.jpg)';
     
     useEffect(() => {
       const loadDaumPostcodeScript = () => {
@@ -143,7 +148,17 @@ export default function Update() {
       {error && <Typography>에러 발생!</Typography>}
       {user && user.data &&
         <>
-          <SearchHeader />
+      <SearchHeader />
+        <div style={{
+        backgroundImage: backgroundImage,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        padding: '23px 0',
+        backgroundBlendMode: 'lighten',
+        backgroundColor: 'rgba(255, 255, 255, 0.6)' // This makes the background image appear lighter
+      }}>
           <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Box
@@ -157,8 +172,8 @@ export default function Update() {
                 borderRadius: 2,
               }}
             >
-              <Avatar sx={{ m: 1, bgcolor: 'primary' }}>
-                <LockOutlinedIcon />
+              <Avatar sx={{ m: 1, bgcolor: (role === '회원') ? 'tertiary.main' : (role === '점주') ? 'primary.main' : 'default' }}>
+                <RestorePageIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
                 회원정보 수정
@@ -213,8 +228,7 @@ export default function Update() {
                         onClick={handleFindPostcode}
                         fullWidth
                         variant="contained"
-                        sx={{ mt: 1, mb: 2, ml: 2 }}
-                      >
+                        sx={{ mt: 1, mb: 2, ml: 2, backgroundColor: '#66BB6A', color: '#FFFFFF', '&:hover': {backgroundColor: '#41df78'}}}>
                         주소 찾기
                       </Button>
                       <Grid item xs={12}>
@@ -242,7 +256,7 @@ export default function Update() {
                     </Fragment>
                   }
                   <Grid item xs={12}>
-                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                    <Button type="submit" fullWidth variant="contained" sx={role === '회원' ? { mt: 3, mb: 2, backgroundColor: '#66BB6A', color: '#FFFFFF', '&:hover': { backgroundColor: '#41df78' }} : {mt: 3, mb: 2 }}>
                       정보 수정
                     </Button>
                     <Button fullWidth variant="contained" color='error' sx={{ mt: 2 }} onClick={handleOpen}>
@@ -254,6 +268,7 @@ export default function Update() {
             </Box>
             <Footer sx={{ mt: 5 }} />
           </Container>
+          </div>
           <Modal
             open={open}
             onClose={handleClose}

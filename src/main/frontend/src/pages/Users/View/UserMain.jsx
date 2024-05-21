@@ -44,15 +44,15 @@ export default function UserMain() {
 }
 
 const categories = [
-  { label: '전체', link: '/Store', state: 0, img: '/img/00.jpg' },
-  { label: '한식', link: '/Store/HanSick', state: 1, img: '/img/01.jpg' },
-  { label: '중식', link: '/Store/Chinesefood', state: 2, img: '/img/11.jpg' },
-  { label: '일식', link: '/Store/Japanese', state: 3, img: '/img/21.jpg' },
-  { label: '양식', link: '/Store/WesternStyle', state: 4, img: '/img/31.jpg' },
-  { label: '패스트', link: '/Store/FastFood', state: 5, img: '/img/41.jpg' },
-  { label: '치킨', link: '/Store/Chicken', state: 6, img: '/img/51.jpg' },
-  { label: '분식', link: '/Store/SnackBar', state: 7, img: '/img/61.jpg' },
-  { label: '디저트', link: '/Store/Dessert', state: 8, img: '/img/71.jpg' }
+  { label: '전체', link: '/Store', state: 0, img: '/img/00.png' },
+  { label: '한식', link: '/Store/HanSick', state: 1, img: '/img/01.png' },
+  { label: '중식', link: '/Store/Chinesefood', state: 2, img: '/img/11.png' },
+  { label: '일식', link: '/Store/Japanese', state: 3, img: '/img/21.png' },
+  { label: '양식', link: '/Store/WesternStyle', state: 4, img: '/img/31.png' },
+  { label: '패스트', link: '/Store/FastFood', state: 5, img: '/img/41.png' },
+  { label: '치킨', link: '/Store/Chicken', state: 6, img: '/img/51.png' },
+  { label: '분식', link: '/Store/SnackBar', state: 7, img: '/img/61.png' },
+  { label: '디저트', link: '/Store/Dessert', state: 8, img: '/img/71.png' }
 ];
 
 const boxStyle = {
