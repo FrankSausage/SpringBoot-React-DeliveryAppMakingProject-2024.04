@@ -124,8 +124,18 @@ export default function Update() {
         {error && <Typography>에러 발생!</Typography>}
         {user && user.data &&
         <>
-          <SearchHeader />  
-           <Container component="main" maxWidth="xs">
+          <SearchHeader />
+          <div style={{
+        backgroundImage: 'url(/img/kitchen.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        padding: '23px 0',
+        backgroundBlendMode: 'lighten',
+        backgroundColor: 'rgba(255, 255, 255, 0.6)' // This makes the background image appear lighter
+      }}>
+          <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
                 <CssBaseline />
                 <Box
                     sx={{
@@ -275,6 +285,7 @@ export default function Update() {
                 </Box>
             <Footer sx={{ mt: 5 }} />
         </Container>
+        </div>
         <Modal
         open={open}
         onClose={handleClose}

@@ -10,7 +10,7 @@ export default function UserMain() {
       <Box>
         <SearchHeader />
         <Grid container>
-          <Grid item xs={12} sx={{ border: 1 }}>
+          <Grid item xs={12} sx={{ border: 0 }}>
             <Stack sx={{ maxHeight: 200 }}>
             <Box
               sx={{

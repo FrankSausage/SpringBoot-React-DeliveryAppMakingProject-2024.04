@@ -10,7 +10,7 @@ export default function OwnerMain() {
   const  { isLoading, error, storeData } = useOwnerStoreListByEmail()
   
   return (
-    <Box sx={{ margin: -1 }}>
+    <Box>
       <SearchHeader />
       <Grid container justifyContent="center" alignItems="center" mt={2}>
         <Grid item xs={6} md={4}>
