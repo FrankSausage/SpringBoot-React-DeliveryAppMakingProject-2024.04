@@ -11,6 +11,7 @@ import { useStore } from './Hook/useStore';
 import SearchHeader from '../../components/SearchHeader';
 import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
+import { uploadImageToCloudinary } from '../../utils/uploader';
 
 const defaultTheme = createTheme();
 
@@ -33,6 +34,7 @@ export default function StoreUpdate() {
   const [deliveryTip, setDeliveryTip] = useState('');
   const [content, setContent] = useState('');
   const [storePictureName, setStorePictureName] = useState('');
+  const [storePictureUrl, setStorePictureUrl] = useState('');  // 업로드된 이미지 URL을 저장할 상태 추가
   const [minDeliveryTime, setMinDeliveryTime] = useState('');
   const [maxDeliveryTime, setMaxDeliveryTime] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState([]);
@@ -183,13 +185,21 @@ export default function StoreUpdate() {
     }
   };
 
-  const handleFileUpload = (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length > 0) {
-      const fileNames = files.map(file => file.name);
-      setStorePictureName(fileNames);
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const fileName = file.name;
+      setStorePictureName(fileName);
+      try {
+        const url = await uploadImageToCloudinary(file); // 클라우드니어리에 이미지 업로드
+        setStorePictureUrl(url); // 업로드된 이미지 URL 저장
+      } catch (error) {
+        console.error('Failed to upload image to Cloudinary:', error);
+        // 업로드 실패 처리
+      }
     }
   };
+
 
   const handleCategoryChange = (event) => {
     const selectedCategory = event.target.value;
@@ -366,15 +376,28 @@ export default function StoreUpdate() {
                       </Grid>
                       <Grid item xs={12}>
                         <Typography variant="h6" gutterBottom>
-                          가게 사진
+                          가게 사진 업로드
                         </Typography>
-                        <input accept=".png, .jpeg, .jpg" id="upload-photo" type="file" a style={{ display: 'none' }} onChange={handleFileUpload} multiple />
-                        <TextField autoComplete="given-name" name="storePictureName" value={storePictureName} fullWidth id="storePictureName" label="가게 사진" onClick={(e) => { e.target.value = null }} />
-                        {/* 아이콘 대신에 "사진 올리기" 텍스트를 사용하고 싶다면 아래 주석 처리된 라인을 사용하세요 */}
-                        {/* <span>사진 올리기</span> */}
-                        <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} sx={{ mt: 3, mb: 2, }}>
+                        <input accept=".png, .jpeg, .jpg" id="upload-photo" type="file" style={{ display: 'none' }} onChange={handleFileUpload} multiple />
+                        <TextField
+                          autoComplete="given-name"
+                          name="storePictureName"
+                          value={storePictureName}
+                          fullWidth
+                          id="storePictureName"
+                          label="가게 사진"
+                          onClick={() => document.getElementById('upload-photo').click()}
+                          InputProps={{ readOnly: true }}
+                          sx={{ mb: 2 }}
+                        />
+                        <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
                           사진 올리기
                         </Button>
+                        {storePictureName && (
+                          <Typography variant="body1" gutterBottom>
+                            업로드된 파일: {storePictureName}
+                          </Typography>
+                        )}
                       </Grid>
                     </Grid>
                   </Grid>

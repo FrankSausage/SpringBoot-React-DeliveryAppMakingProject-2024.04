@@ -55,7 +55,6 @@ export default function Update() {
     const handleClose = () => setOpen(false);
     const navigate = useNavigate();
     const backgroundImage = role === '회원' ? 'url(/img/kitchen.jpg)' : 'url(/img/Okitchen.jpg)';
-    
     useEffect(() => {
       const loadDaumPostcodeScript = () => {
         const script = document.createElement('script');
@@ -63,7 +62,6 @@ export default function Update() {
         script.async = true;
         document.body.appendChild(script);
         script.onload = () => {
-          console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
         };
       };
 
@@ -194,20 +192,7 @@ export default function Update() {
                       required fullWidth label="비밀번호 확인" type="password" onChange={e => { setPasswordCheck(e.target.value); }} error={!isPasswordMatch} helperText={!isPasswordMatch && "비밀번호가 일치하지 않습니다"} autoComplete="second-current-password" />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="phone"
-                      name="phone"
-                      label="휴대전화"
-                      defaultValue={user.data.phone}
-                      value={phone}
-                      onChange={handlePhoneNumberChange}
-                      inputProps={{
-                        maxLength: 13,
-                        inputMode: 'numeric',
-                      }}
-                    />
+                    <TextField required fullWidth id="phone" name="phone" label="휴대전화" defaultValue={user.data.phone} value={phone} onChange={handlePhoneNumberChange} inputProps={{ maxLength: 13, inputMode: 'numeric'}}/>
                   </Grid>
                   {role === '회원' &&
                     <Fragment>

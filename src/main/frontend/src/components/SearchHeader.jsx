@@ -38,7 +38,7 @@ export default function SearchHeader() {
             <Grid item xs={3}>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
-                  <img src={'/img/000.png'} style={{ width: '50%', height: '50%',position: 'relative', top: 5, left: '-30px'  }}/>
+                  <img src={'/img/000.png'} style={{ width: '20%', height: '20%',position: 'relative', top: 5, left: '-30px'  }}/>
                 </Link>
               </Typography>
             </Grid>
