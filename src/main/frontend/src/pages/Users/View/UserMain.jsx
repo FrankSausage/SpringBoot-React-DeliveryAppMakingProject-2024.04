@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Grid, Stack } from "@mui/material";
+import { Box, Grid, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import SearchHeader from "../../../components/SearchHeader";
 
@@ -25,17 +25,20 @@ export default function UserMain() {
       </Grid>
       <Grid container spacing={2} justifyContent="center" alignItems="center">
         {categories.map((category, index) => (
-          <Grid item key={index} xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Grid item key={index} xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center', flexDirection:'column', alignItems:'center' }}>
             <Box sx={{ ...boxStyle, position: 'relative', overflow: 'hidden', borderRadius: 2 }}>
               <Link to={category.link} state={category.state} style={{ textDecoration: 'none', color: 'black', display: 'block', height: '100%' }}>
                 <Box sx={{ width: '100%', height: '100%', position: 'relative' }}>
-                  <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', position: 'absolute', top: 0, right: 0 }}>
+                  {/* <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', position: 'absolute', top: 0, right: 0 }}>
                     <li style={{ textAlign: 'right', writingMode: 'vertical-rl', textOrientation: 'mixed', marginTop: 15, marginRight: 7, color: '#fff', fontWeight: 'bold', textShadow: '1px 1px 2px rgba(0,0,0,0.7)' }}>{category.label}</li>
-                  </ul>
+                  </ul> */}
                   <img src={category.img} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s', borderRadius: 'inherit' }} alt={category.label} />
                 </Box>
               </Link>
             </Box>
+            <Typography variant="h6" sx={{ mt: 1, fontWeight:'bold', color:'black', textAling:'center' }}>
+              {category.label}
+            </Typography>
           </Grid>
         ))}
       </Grid>

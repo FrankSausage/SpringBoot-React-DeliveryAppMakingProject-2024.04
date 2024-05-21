@@ -11,6 +11,7 @@ import { getCurrentUser } from "../../../utils/firebase";
 import axios from "axios";
 import AddressUpdate from "../AddressUpdate";
 import AddressDelete from "../AddressDelete";
+import SearchHeader from "../../../components/SearchHeader";
 
 
 export default function Address() {
@@ -100,6 +101,7 @@ export default function Address() {
     }
 
     return(
+      
       <Box sx={{  marginTop: 8,
                   display: 'flex',
                   justifyContent: 'center',
@@ -108,7 +110,7 @@ export default function Address() {
                   textAlign: 'center',
                   width: '100%',
                   }}>
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main',
+        <Avatar sx={{ m: 1, bgcolor: '#f09032',
                     alignSelf: 'center' }}>
           <MailSharpIcon />
         </Avatar>

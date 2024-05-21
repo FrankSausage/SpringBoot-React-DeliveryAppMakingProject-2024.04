@@ -61,7 +61,9 @@ export default function SearchHeader() {
                       borderRadius: '30px',
                       padding: '1px 15px',
                       fontSize: '1rem',
+                      textAlign: 'center'
                     }}
+                    inputProps={{ style: { textAlign: 'center' }}}
                     onClick={handleNavigate}
                   />
                 </Box>
