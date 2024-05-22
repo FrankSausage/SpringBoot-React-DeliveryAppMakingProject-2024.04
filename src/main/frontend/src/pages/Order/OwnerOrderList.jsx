@@ -34,8 +34,9 @@ export default function OwnerOrderList() {
                 <CardContent onClick={() => handleClick(menu.orderId)}>
                   <Typography>메뉴 명: {menu.menuName} {(menu.count!==0) ? '외 ' + menu.count + '개': ''}</Typography>
                   <Typography>최종 금액: {menu.totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
+                  <Typography sx={{color: (menu.status==='완료' ? 'green' : 'blue')}}>주문 상태: {menu.status}</Typography>
                 </CardContent>
-                {openPortal && activeIndex === idx && <OwnerOrderDetail isPortalOpen={{openPortal}} email={email} orderId={menu.orderId}/>}
+                {openPortal && activeIndex === menu.orderId && <OwnerOrderDetail isPortalOpen={{openPortal}} email={email} orderId={menu.orderId}/>}
               </Card>
               ))
             }

@@ -14,17 +14,12 @@ export function useOrderOwner(email, storeId) {
   return { getOwnerOrderListByEmail }
 }
 
-export const useOrderStatusAndDetail = (email, orderId) => {
-  console.log(email)
-  console.log(orderId)
+export const useOrderDetail = (email, orderId) => {
+  
   const getOwnerOrderDetail = useQuery({
     queryKey: ['ownerOrderDetail', orderId],
     queryFn: () => {return axios.get(`/dp/order/owner/detail`, {params: {email: email, orderId: orderId}})}
   })
   
-  const getOrderStatus = useQuery({
-    queryKey: ['orderStatus', orderId],
-    queryFn: () => { return axios.get(`/dp/order/status/detail`, {params: {orderId: orderId}})},
-  })
-  return { getOwnerOrderDetail, getOrderStatus }
+  return { getOwnerOrderDetail }
 }
