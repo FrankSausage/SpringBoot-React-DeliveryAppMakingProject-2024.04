@@ -22,7 +22,7 @@ export default function OrderDetail({ isPortalOpen, email, orderId }) {
       onSuccess: () => {navigate('/')}
     })
   }
-  console.log(orderDetailData)
+  
   return (
     <Fragment>
       {show ? 

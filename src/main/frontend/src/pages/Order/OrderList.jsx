@@ -14,7 +14,7 @@ export default function OrderList() {
 
   const handleClick = index => {
     setOpenPortal(!openPortal);
-    setActiveIndex(index)
+    setActiveIndex(index);
   }
 
   return (

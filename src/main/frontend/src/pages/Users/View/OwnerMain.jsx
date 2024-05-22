@@ -87,6 +87,9 @@ export default function OwnerMain() {
                       <Link to={`/StoreUpdate/${data.storeId}`} style={{ textDecoration: 'none' }}>
                         <Button variant="outlined">가게 수정하기</Button>
                       </Link>
+                      <Link to={`/OwnerOrderList`} state={{storeId: data.storeId, storeName: data.name}} style={{ textDecoration: 'none' }}>
+                        <Button variant="outlined">가게 주문확인</Button>
+                      </Link>
                     </Stack>
                   }
                 </Box>
