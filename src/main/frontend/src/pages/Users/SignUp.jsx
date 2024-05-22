@@ -101,26 +101,6 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      {/* <div style={{
-        backgroundImage: 'linear-gradient(to right, #f09032, #FFFFFF, #f09032)', // 주황색 배경을 양쪽에 추가
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-      }}>
-        <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
-          <CssBaseline /> */}
-
-      {/* <div style={{
-        backgroundImage: 'linear-gradient(to right, #ee6e0b, #FFFFFF, #ee6e0b)', // 주황색 배경을 양쪽에 추가
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-      }}>
-        <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
-          <CssBaseline /> */}
-      
       <div style={{
         backgroundImage: 'url(/img/kitchen.jpg)',
         backgroundSize: 'cover',

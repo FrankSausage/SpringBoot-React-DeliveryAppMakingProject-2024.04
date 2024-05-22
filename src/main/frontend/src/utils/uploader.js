@@ -19,3 +19,4 @@ export function uploadImageToCloudinary(file) {
     throw error;
   });
 }
+

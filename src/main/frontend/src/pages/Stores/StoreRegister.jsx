@@ -111,6 +111,7 @@ export default function StoreRegister() {
       data.append('type', type);
       data.append('operationHours', `${openHours}~${closeHours}`);
       data.append('closedDays', selectedDays.join(','));
+      data.append('storePictureName', storePictureUrl);
       return await data;
     }
     catch (error) {
@@ -129,11 +130,9 @@ export default function StoreRegister() {
         setStorePictureUrl(url); // 업로드된 이미지 URL 저장
       } catch (error) {
         console.error('Failed to upload image to Cloudinary:', error);
-        // 업로드 실패 처리
       }
     }
   };
-
 
   const weekDays = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
   // const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];

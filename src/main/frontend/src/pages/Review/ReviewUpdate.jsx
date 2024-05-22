@@ -8,6 +8,7 @@ import { extractDataFromFormData  } from '../../utils/commonUitil';
 import axios from 'axios';
 import SearchHeader from '../../components/SearchHeader';
 import Footer from '../../components/Footer';
+import { uploadImageToCloudinary } from '../../utils/uploader';
 
 const defaultTheme = createTheme();
 
@@ -15,10 +16,9 @@ export default function ReviewUpdate() {
   const { email } = getCurrentUser(); 
   const [rating, setRating] = useState('');
   const [content, setContent] = useState('');
-  const [storePictureName, setStorePictureName] = useState('');
+  const [reviewPictureName, setReviewPictureName] = useState('');
+  const [reviewPictureUrl, setReviewPictureUrl] = useState('');  // 업로드된 이미지 URL을 저장할 상태 추가
   const navigate = useNavigate();
-  // const [userInfo, setUserInfo] = useState({email: '', password: '', })
-  // const [storeInfo, setStoreInfo] = useState({deliveryAddress: '', closedDays: '',}) // 나중에 이런식으로 이팩토리 할것 이유 업데이트 할때 정보 받기 편해지기 위해서
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,10 +52,17 @@ export default function ReviewUpdate() {
   };
 
   const handleFileUpload = (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length > 0) {
-      const fileNames = files.map(file => file.name);
-      setStorePictureName(fileNames);
+    const file = e.target.files[0];
+    if (file) {
+      const fileName = file.name;
+      setReviewPictureName(fileName);
+      uploadImageToCloudinary(file) // 클라우드니어리에 이미지 업로드
+        .then((url) => {
+          setReviewPictureUrl(url); // 업로드된 이미지 URL 저장
+        })
+        .catch((error) => {
+          console.error('Failed to upload image to Cloudinary:', error);
+        });
     }
   };
 
@@ -118,36 +125,20 @@ export default function ReviewUpdate() {
                   onChange={e => setContent(e.target.value)}
                 />
               </Grid>
-
               <Grid item xs={12}>
-                <input
-                  accept=".png, .jpeg, .jpg"
-                  id="upload-photo"
-                  type="file"
-                  style={{ display: 'none' }}
-                  onChange={handleFileUpload} multiple
-                />
-
-                <TextField
-                  name="storePictureName"
-                  value={storePictureName}
-                  fullWidth
-                  id="storePictureName"
-                  label="리뷰 사진"
-                  onClick={(e) => {
-                    e.target.value = null;
-                  }}
-                />
-                {/* 아이콘 대신에 "사진 올리기" 텍스트를 사용하고 싶다면 아래 주석 처리된 라인을 사용하세요 */}
-                {/* <span>사진 올리기</span> */}
-
-                <Button
-                  type="button"
-                  variant="contained"
-                  onClick={() => document.getElementById('upload-photo').click()}
-                  sx={{ mt: 3, mb: 2, }}>
+                <Typography variant="h6" gutterBottom>
+                  리뷰 사진 업로드
+                </Typography>
+                <input accept=".png, .jpeg, .jpg" id="upload-photo" type="file" style={{ display: 'none' }} onChange={handleFileUpload} multiple />
+                {/* <TextField autoComplete="given-name" name="reviewPictureName" value={reviewPictureName} fullWidth id="menuPictureName" label="리뷰 사진" onClick={() => document.getElementById('upload-photo').click()} InputProps={{ readOnly: true }} sx={{ mb: 2 }} /> */}
+                <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
                   사진 올리기
                 </Button>
+                {reviewPictureName && (
+                  <Typography variant="body1" gutterBottom>
+                    {/* 업로드된 파일: {reviewPictureName} */}
+                  </Typography>
+                )}
               </Grid>
             </Grid>
             <Box sx={{...boxStyle, position: 'relative', width: { xs: '90%', sm: '100%' }, height: '65px', marginX: 'auto'}}>
