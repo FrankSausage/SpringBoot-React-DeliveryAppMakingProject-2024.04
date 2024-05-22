@@ -12,7 +12,7 @@ export function useOrder (email, orderId) {
   const getOrderDetailByOrderId = useQuery({
     queryKey: ['userOrderDetail', orderId],
     queryFn: () => { return axios.get(`/dp/order/detail`, {params: {email: email, orderId: orderId}})},
-    enabled: !!orderId
+    enabled: !!orderId 
   })
   
   const postOrderRegist = useMutation({
