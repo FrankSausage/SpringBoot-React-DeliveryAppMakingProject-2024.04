@@ -30,7 +30,8 @@ export function useStore() {
 
   const postStoreUpdate= useMutation({
     mutationFn: storeData => axios.post(`/dp/store/owner/update`, storeData),
-    onSuccess: () => {alert('가게 수정에 성공하였습니다.')},
+    onSuccess: (resFormData) => {queryClient.invalidateQueries(['storeId'], resFormData)
+                      alert('가게 수정에 성공하였습니다.')},
     onError: () => {alert('가게 수정에 실패하였습니다!')},
   })
 

@@ -35,6 +35,7 @@ export default function StoreUpdate() {
   const [content, setContent] = useState('');
   const [storePictureName, setStorePictureName] = useState('');
   const [storePictureUrl, setStorePictureUrl] = useState('');  // 업로드된 이미지 URL을 저장할 상태 추가
+  const [isFileUploading, setIsFileUploading] = useState(false);
   const [minDeliveryTime, setMinDeliveryTime] = useState('');
   const [maxDeliveryTime, setMaxDeliveryTime] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState([]);
@@ -149,10 +150,11 @@ export default function StoreUpdate() {
               resFormData.addressCodes =
                 addressCodePacker(typeof (addressCode) === 'string' ? addressCode.split(',') : addressCode,
                   typeof (deliveryAddress) === 'string' ? deliveryAddress.split(',') : deliveryAddress);
-              console.log(resFormData)
+
               postStoreUpdate.mutate(resFormData, {
                 onSuccess: () => {
                   queryClient.refetchQueries(['storeId']);
+                  // alert('가게 수정이 완료 되었습니다.')
                   navigate('/');
                 },
                 onError: e => console.error('가게 수정 실패: ' + e)
@@ -186,18 +188,22 @@ export default function StoreUpdate() {
     }
   };
 
-  const handleFileUpload = async (e) => {
+
+  const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
       const fileName = file.name;
+      setIsFileUploading(true);
       setStorePictureName(fileName);
-      try {
-        const url = await uploadImageToCloudinary(file); // 클라우드니어리에 이미지 업로드
-        setStorePictureUrl(url); // 업로드된 이미지 URL 저장
-      } catch (error) {
-        console.error('Failed to upload image to Cloudinary:', error);
-        // 업로드 실패 처리
-      }
+      uploadImageToCloudinary(file) // 클라우드니어리에 이미지 업로드
+        .then((url) => {
+          setStorePictureUrl(url); // 업로드된 이미지 URL 저장
+        })
+        .then(() => setIsFileUploading(false)
+        )
+        .catch((error) => {
+          console.error('Failed to upload image to Cloudinary:', error);
+        });
     }
   };
 
@@ -393,9 +399,15 @@ export default function StoreUpdate() {
                     </Grid>
                   </Grid>
                   <Grid item xs={6}>
-                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} >
-                      수정
-                    </Button>
+                    {isFileUploading ?
+                      <Button type="submit" fullWidth disabled variant="contained" sx={{ mt: 3, mb: 2 }}>
+                        수정
+                      </Button>
+                      :
+                      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                        수정
+                      </Button>
+                    }
                   </Grid>
                   <Grid item xs={6}>
                     <Button fullWidth variant="contained" color="error" onClick={() => handleStoreDelete(email, storeId)} sx={{ mt: 3, mb: 2 }}>

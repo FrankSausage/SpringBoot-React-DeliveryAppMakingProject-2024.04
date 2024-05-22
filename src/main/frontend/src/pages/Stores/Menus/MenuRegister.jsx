@@ -21,9 +21,9 @@ export default function MenuRegister() {
   const [content, setContent] = useState('');
   const [menuPictureName, setMenuPictureName] = useState('');
   const { postMenuRegister } = useStore();
-  const [ menuPictureUrl, setMenuPictureUrl] = useState('');  // 업로드된 이미지 URL을 저장할 상태 추가
+  const [menuPictureUrl, setMenuPictureUrl] = useState('');  // 업로드된 이미지 URL을 저장할 상태 추가
   const navigate = useNavigate();
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -37,10 +37,10 @@ export default function MenuRegister() {
     extractDataFromFormData(formData)
       .then(resFormData => {
         postMenuRegister.mutate(resFormData, {
-          onSuccess:() => navigate(`/StoreDetail/${storeId}`, {state: {storeId: storeId}}),
-          onError: e => {console.error('음식 등록 실패: ' + e)}
+          onSuccess: () => navigate(`/StoreDetail/${storeId}`, { state: { storeId: storeId } }),
+          onError: e => { console.error('음식 등록 실패: ' + e) }
         })
-    })
+      })
   };
 
   const setFormData = async (data) => {
@@ -63,52 +63,38 @@ export default function MenuRegister() {
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-        const fileName = file.name;
-        setMenuPictureName(fileName);
-        uploadImageToCloudinary(file) // 클라우드니어리에 이미지 업로드
-            .then((url) => {
-              setMenuPictureUrl(url); // 업로드된 이미지 URL 저장
-            })
-            .catch((error) => {
-                console.error('Failed to upload image to Cloudinary:', error);
-                // 업로드 실패 처리
-            });
+      const fileName = file.name;
+      setMenuPictureName(fileName);
+      uploadImageToCloudinary(file) // 클라우드니어리에 이미지 업로드
+        .then((url) => {
+          setMenuPictureUrl(url); // 업로드된 이미지 URL 저장
+        })
+        .catch((error) => {
+          console.error('Failed to upload image to Cloudinary:', error);
+        });
     }
-};
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <SearchHeader />
       <Container component="main" maxWidth="xs">
-        <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column',  alignItems: 'center', backgroundColor: '#ffffff', padding: '10px 10px', borderRadius: '10px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)'}}>
-          <Avatar sx={{ 
-            m: 1, 
-            bgcolor: 'secondary', 
-            width: '40px', 
-            height: '40px' 
-          }}>
+        <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#ffffff', padding: '10px 10px', borderRadius: '10px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
+          <Avatar sx={{ m: 1, bgcolor: 'secondary', width: '40px', height: '40px'}}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography variant="h6" component="div" sx={{ 
-            flexGrow: 1, 
-            marginBottom: '20px', 
-            fontWeight: 'bold', 
-            color: '#333' 
+          <Typography variant="h6" component="div" sx={{
+            flexGrow: 1,
+            marginBottom: '20px',
+            fontWeight: 'bold',
+            color: '#333'
           }}>
-            <Link to={`/StoreDetail/${storeId}`} state={{storeId: storeId}} style={{ 
-              textDecoration: 'none', 
-              color: '#333', 
-              fontSize: '1.2rem' 
-            }}>
+            <Link to={`/StoreDetail/${storeId}`} state={{ storeId: storeId }} style={{ textDecoration: 'none', color: '#333', fontSize: '1.2rem' }}>
               가게 이동
             </Link>
           </Typography>
-          <Typography component="h1" variant="h5" sx={{ 
-            marginBottom: '20px', 
-            fontWeight: 'bold', 
-            color: '#333' 
-          }}>
+          <Typography component="h1" variant="h5" sx={{ marginBottom: '20px', fontWeight: 'bold', color: '#333' }}>
             메뉴 등록(단건)
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
@@ -117,7 +103,7 @@ export default function MenuRegister() {
                 <TextField required fullWidth autoComplete="given-name" name="name" id="name" value={name} label="음식 이름" placeholder='ex) 휴먼 버거' onChange={e => setName(e.target.value)} />
               </Grid>
               <Grid item xs={12}>
-                <TextField required fullWidth id="price" label="음식 가격" name="price" autoComplete="price" placeholder='ex) 10000' value={price} onChange={e => setPrice(e.target.value)}  />
+                <TextField required fullWidth id="price" label="음식 가격" name="price" autoComplete="price" placeholder='ex) 10000' value={price} onChange={e => setPrice(e.target.value)} />
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="h6" gutterBottom>
