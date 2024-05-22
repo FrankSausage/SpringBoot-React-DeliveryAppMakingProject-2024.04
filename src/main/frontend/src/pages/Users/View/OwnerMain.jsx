@@ -65,7 +65,8 @@ export default function OwnerMain() {
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Link to={`/StoreDetail/${data.storeId}`} style={{ textDecoration: 'none', color: 'inherit', flex: 1 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <img src={'/img/01.jpg'} style={{ width: '100px', height: '100px', borderRadius: '8px', objectFit: 'cover' }} alt="메뉴 이미지" />
+                    {/* <img src={'/img/01.jpg'} style={{ width: '100px', height: '100px', borderRadius: '8px', objectFit: 'cover' }} alt="가게 이미지" /> */}
+                    <img src={data.storePictureName} style={{ width: '100px', height: '100px', borderRadius: '8px', objectFit: 'cover' }} alt="가게 이미지" />
                       <Box sx={{ ml: 2 }}>
                         <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{data.name}</Typography>
                         <Typography variant="body2" color="textSecondary">별점: {data.rating}</Typography>

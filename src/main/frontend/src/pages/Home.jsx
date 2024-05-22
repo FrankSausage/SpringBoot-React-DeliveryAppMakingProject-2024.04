@@ -11,7 +11,7 @@ export default function Home() {
     const backgroundImage = role === '회원' ? 'url(/img/kitchen.jpg)' : 'url(/img/Okitchen.jpg)';
     return(
     // <div style={{ backgroundImage: 'linear-gradient(to right, #FFD77F, #ffffff 20%, #ffffff 80%, #FFD77F)', display: 'flex', justifyContent: 'center', padding: '23px 0' }}>
-    <div style={{
+    <Box style={{
         backgroundImage: backgroundImage,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -19,19 +19,19 @@ export default function Home() {
         justifyContent: 'center',
         padding: '23px 0',
         backgroundBlendMode: 'lighten',
-        backgroundColor: 'rgba(255, 255, 255, 0.6)', // This makes the background image appear lighter
+        backgroundColor: 'rgba(255, 255, 255, 0.6)', 
         minHeight: '100vh'
       }}>
-      <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
-        <Container component="main" maxWidth="lg" style={{ backgroundColor: '#fff', padding: '8px' }}>
+      {/* <Box style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}> */}
+        {/* <Container component="main" maxWidth="lg" style={{ backgroundColor: '#fff', padding: '8px' }}> */}
         <CssBaseline />
-        <Box sx={{ margin: -1}} >
+        <Box sx={{ mt: -3}} >
             {role==='회원' && <UserMain />}
             {role==='점주' && <OwnerMain />}
             <Footer />
         </Box>
-        </Container>
-      </div>
-    </div>
+        {/* </Container> */}
+      {/* </Box> */}
+    </Box>
   )
 }
