@@ -59,9 +59,10 @@ export default function StoreDetail() {
   };
 
   return (
-    <Box sx={{ margin: -1 }}>
+    // <Box sx={{ margin: -1 }}>
+    <Box sx={{ height: '100vh', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'auto', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column' }}>
       <SearchHeader />
-      <Box sx={{ borderBottom: 1, borderColor: 'black', display: 'flex', justifyContent: 'center' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'black', display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -98,6 +99,7 @@ export default function StoreDetail() {
           <Tab label="가게·원산지 정보" {...a11yProps(2)} autoFocus sx={{ marginLeft: 2, marginRight: 2 }} />
         </Tabs>
       </Box>
+      
       <CustomTabPanel value={value} index={1}>
         <StoreMenuList storeName={storeName} />
       </CustomTabPanel>
