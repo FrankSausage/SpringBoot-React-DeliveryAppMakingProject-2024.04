@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid,  Typography, Button, Stack } from '@mui/material';
+import { Box, Grid,  Typography, Button, Stack, CssBaseline } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
 import { useMenuListByStoreId } from '../../utils/storeInfo';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -71,15 +71,14 @@ export default function StoreMenuList({ storeName }) {
             <Box>
               <Grid container>
                 <Grid item xs />
+                <CssBaseline />
                 <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
                   <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
                     <Box key={res.menuId} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
                         <Box component={Link} to={role==='회원' ? `/MenuDetail` : `/MenuUpdate`} state={{menuId : res.menuId, storeId : storeId, storeName : storeName}}  sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
-                          {/* <img src={res.menuPictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} /> */}
                           <img src={res.menuPictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
                           <ul style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
                             <li style={{ listStyleType: 'none' }}>{res.name}</li>
-                            <li style={{ listStyleType: 'none' }}>인기 : {res.popularity} </li>
                             <li style={{ listStyleType: 'none' }}>구성 : {res.content} </li>
                             {status[idx] && (
                               <li style={{ listStyleType: 'none' }}>{res.status}</li>

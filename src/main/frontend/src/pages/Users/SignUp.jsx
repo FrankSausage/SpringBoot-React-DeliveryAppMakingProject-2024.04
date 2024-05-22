@@ -107,24 +107,22 @@ export default function SignUp() {
         backgroundPosition: 'center',
         display: 'flex',
         justifyContent: 'center',
+        flexDirection: 'column',
         padding: '23px 0',
         backgroundBlendMode: 'lighten',
         backgroundColor: 'rgba(255, 255, 255, 0.6)' // This makes the background image appear lighter
-      }}>
-        <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
+        }}>
           <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
             <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 0,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            // background: 'linear-gradient(to bottom, #ff6b6b, #ffe66d)',
-            padding: '20px',
-            borderRadius: '10px'
-          }}
-        >
+          <Box
+            sx={{
+              marginTop: 0, display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              // background: 'linear-gradient(to bottom, #ff6b6b, #ffe66d)',
+              padding: '20px',
+              borderRadius: '10px'
+            }}>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', color: 'black', fontFamily: 'Arial, sans-serif', display: 'flex', justifyContent: 'center' }}>
               <img src={'/img/001.png'} style={{ width: '50%', height: '50%',position: 'relative', top: 5, marginBottom: '20px'}}/>
@@ -289,9 +287,8 @@ export default function SignUp() {
             </Grid>
           </Box>
         </Box>
-        <Footer sx={{ mt: 5 }} />
       </Container>
-      </div>
+      <Footer sx={{ mt: 3 }}/>
     </div>
   </ThemeProvider>
   );

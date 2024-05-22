@@ -267,25 +267,42 @@ public class OrderServiceImpl implements OrderService {
             Menu menu = menuRepository.findById(orderMenu.getMenuId())
                 .orElseThrow(() -> new RuntimeException("Menu not found"));
 
-            MenuOption menuOption = menuOptionRepository.findById(orderMenu.getMenuOptionId())
-                .orElseThrow(() -> new RuntimeException("MenuOption not found"));
+            if(orderMenu.getMenuOptionId() != null){
+                MenuOption menuOption = menuOptionRepository.findById(orderMenu.getMenuOptionId())
+                    .orElseThrow(() -> new RuntimeException("MenuOption not found"));
 
-            List<OrderDetailOwnerInnerMenuOptionsResponseDto> innerMenuOptionsResponseDtos = new ArrayList<>();
-            OrderDetailOwnerInnerMenuOptionsResponseDto menuOptionsResponseDto = OrderDetailOwnerInnerMenuOptionsResponseDto.builder()
-                .menuOptionName(menuOption.getOptions())
-                .menuOptionPrice(menuOption.getPrice())
-                .build();
-            innerMenuOptionsResponseDtos.add(menuOptionsResponseDto);
+                List<OrderDetailOwnerInnerMenuOptionsResponseDto> innerMenuOptionsResponseDtos = new ArrayList<>();
+                OrderDetailOwnerInnerMenuOptionsResponseDto menuOptionsResponseDto = OrderDetailOwnerInnerMenuOptionsResponseDto.builder()
+                    .menuOptionName(menuOption.getOptions())
+                    .menuOptionPrice(menuOption.getPrice())
+                    .build();
+                innerMenuOptionsResponseDtos.add(menuOptionsResponseDto);
 
-            OrderDetailOwnerInnerMenusResponseDto innerMenusResponseDto = OrderDetailOwnerInnerMenusResponseDto.builder()
-                .menuName(menu.getName())
-                .menuPrice(menu.getPrice())
-                .quantity(orderMenu.getQuantity())
-                .sequence(orderMenu.getSequence())
-                .menuPictureName(menu.getMenuPictureName())
-                .menuOptions(innerMenuOptionsResponseDtos)
-                .build();
-            innerMenusResponseDtos.add(innerMenusResponseDto);
+                OrderDetailOwnerInnerMenusResponseDto innerMenusResponseDto = OrderDetailOwnerInnerMenusResponseDto.builder()
+                    .menuName(menu.getName())
+                    .menuPrice(menu.getPrice())
+                    .quantity(orderMenu.getQuantity())
+                    .sequence(orderMenu.getSequence())
+                    .menuPictureName(menu.getMenuPictureName())
+                    .menuOptions(innerMenuOptionsResponseDtos)
+                    .build();
+                innerMenusResponseDtos.add(innerMenusResponseDto);
+            }else{
+                List<OrderDetailOwnerInnerMenuOptionsResponseDto> innerMenuOptionsResponseDtos = new ArrayList<>();
+                OrderDetailOwnerInnerMenuOptionsResponseDto menuOptionsResponseDto = OrderDetailOwnerInnerMenuOptionsResponseDto.builder()
+                    .build();
+                innerMenuOptionsResponseDtos.add(menuOptionsResponseDto);
+
+                OrderDetailOwnerInnerMenusResponseDto innerMenusResponseDto = OrderDetailOwnerInnerMenusResponseDto.builder()
+                    .menuName(menu.getName())
+                    .menuPrice(menu.getPrice())
+                    .quantity(orderMenu.getQuantity())
+                    .sequence(orderMenu.getSequence())
+                    .menuPictureName(menu.getMenuPictureName())
+                    .menuOptions(innerMenuOptionsResponseDtos)
+                    .build();
+                innerMenusResponseDtos.add(innerMenusResponseDto);
+            }
         }
 
         OrderDetailOwnerResponseDto responseDto = OrderDetailOwnerResponseDto.builder()

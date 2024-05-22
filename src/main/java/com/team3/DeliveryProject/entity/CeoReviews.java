@@ -35,4 +35,10 @@ public class CeoReviews {
 
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdDate;
+
+    public CeoReviews(Long reviewId, String content, LocalDateTime createdDate) {
+        this.reviewId = reviewId;
+        this.content = content;
+        this.createdDate = createdDate;
+    }
 }

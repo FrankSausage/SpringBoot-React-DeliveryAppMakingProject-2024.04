@@ -243,7 +243,7 @@ export default function Update() {
                 </Grid>
               </Box>
             </Box>
-            <Footer sx={{ mt: 5 }} />
+            <Footer sx={{ mt: 3 }} />
           </Container>
           </div>
           <Modal

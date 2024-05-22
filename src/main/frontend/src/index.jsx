@@ -32,6 +32,7 @@ import MenuDetail from './pages/Stores/Menus/MenuDetail';
 // Order
 import Order from './pages/Order/View/Order';
 import OrderList from './pages/Order/OrderList';
+import OwnerOrderList from './pages/Order/OwnerOrderList';
 // Cart
 
 
@@ -65,6 +66,7 @@ const router = createBrowserRouter([
       { path: 'ReviewRating', element: <ReviewRating />},
       { path: 'Order', element: <Order />},
       { path: 'OrderList', element: <OrderList />},
+      { path: 'OwnerOrderList', element: <OwnerOrderList />},
     ]
   }
 ]);
