@@ -29,9 +29,6 @@ export default function UserMain() {
             <Box sx={{ ...boxStyle, position: 'relative', overflow: 'hidden', borderRadius: 2 }}>
               <Link to={category.link} state={category.state} style={{ textDecoration: 'none', color: 'black', display: 'block', height: '100%' }}>
                 <Box sx={{ width: '100%', height: '100%', position: 'relative' }}>
-                  {/* <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', position: 'absolute', top: 0, right: 0 }}>
-                    <li style={{ textAlign: 'right', writingMode: 'vertical-rl', textOrientation: 'mixed', marginTop: 15, marginRight: 7, color: '#fff', fontWeight: 'bold', textShadow: '1px 1px 2px rgba(0,0,0,0.7)' }}>{category.label}</li>
-                  </ul> */}
                   <img src={category.img} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s', borderRadius: 'inherit' }} alt={category.label} />
                 </Box>
               </Link>
