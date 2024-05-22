@@ -7,6 +7,7 @@ export function useOrder (email, orderId) {
   const getOrderListByEmail = useQuery({
     queryKey: ['userOrderList'],
     queryFn: () => { return axios.get(`/dp/order/list`, {params: {email: email}}) },
+    enabled: !!email
   })
 
   const getOrderDetailByOrderId = useQuery({
