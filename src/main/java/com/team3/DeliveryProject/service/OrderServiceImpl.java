@@ -346,6 +346,7 @@ public class OrderServiceImpl implements OrderService {
             innerMenuOptionsResponseDtos.add(menuOptionsResponseDto);
 
             OrderDetailInnerMenusResponseDto innerMenusResponseDto = OrderDetailInnerMenusResponseDto.builder()
+                .menuId(menu.getMenuId())
                 .menuName(menu.getName())
                 .menuPrice(menu.getPrice())
                 .quantity(orderMenu.getQuantity())

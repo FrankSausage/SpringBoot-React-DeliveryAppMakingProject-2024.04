@@ -15,6 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class OrderDetailInnerMenusResponseDto {
+    private Long menuId;
     private String menuName;
     private int menuPrice;
     private int quantity;
