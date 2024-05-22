@@ -1,6 +1,7 @@
 package com.team3.DeliveryProject.controller;
 
 import com.team3.DeliveryProject.dto.request.review.ReviewAddRequestDto;
+import com.team3.DeliveryProject.dto.request.review.ReviewDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreDeleteRequestDto;
 import com.team3.DeliveryProject.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,5 +18,9 @@ public class ReviewController {
     @PostMapping("/user/review/register")
     public ResponseEntity<?> addReview(@RequestBody ReviewAddRequestDto requestDto) {
         return ResponseEntity.ok().body(reviewService.addReview(requestDto).getBody());
+    }
+    @PostMapping("/user/review/delete")
+    public ResponseEntity<?> deleteReview(@RequestBody ReviewDeleteRequestDto requestDto){
+        return ResponseEntity.ok().body(reviewService.deleteReview(requestDto).getBody());
     }
 }
