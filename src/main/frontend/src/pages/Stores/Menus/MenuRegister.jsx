@@ -51,7 +51,7 @@ export default function MenuRegister() {
       data.append('content', content);
       data.append('name', name);
       data.append('price', price);
-      data.append('menuPictureName', menuPictureUrl);
+      data.append('menuPictureName', menuPictureUrl + ', ' + menuPictureName);
       // data.append('menuPictureUrl', menuPictureUrl);
       return data;
     } catch (error) {
@@ -79,6 +79,9 @@ export default function MenuRegister() {
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <SearchHeader />
+          <div style={{ backgroundImage: 'url(/img/kitchenO.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)'}}>
+          <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
+          <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
       <Container component="main" maxWidth="xs">
         <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#ffffff', padding: '10px 10px', borderRadius: '10px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
           <Avatar sx={{ m: 1, bgcolor: 'secondary', width: '40px', height: '40px'}}>
@@ -152,6 +155,9 @@ export default function MenuRegister() {
         </Box>
         <Footer sx={{ mt: 5 }} />
       </Container>
+      </Container>
+      </div>
+      </div>
     </ThemeProvider>
   );
 }

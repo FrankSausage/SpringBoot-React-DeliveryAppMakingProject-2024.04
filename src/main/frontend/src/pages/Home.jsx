@@ -8,7 +8,7 @@ import OwnerMain from "./Users/View/OwnerMain";
 export default function Home() {
     const role = localStorage.getItem('role') ? localStorage.getItem('role') : '회원';
     
-    const backgroundImage = role === '회원' ? 'url(/img/kitchen.jpg)' : 'url(/img/Okitchen.jpg)';
+    // const backgroundImage = role === '회원' ? 'url(/img/kitchen.jpg)' : 'url(/img/Okitchen.jpg)';
     return(
     // <div style={{ backgroundImage: 'linear-gradient(to right, #FFD77F, #ffffff 20%, #ffffff 80%, #FFD77F)', display: 'flex', justifyContent: 'center', padding: '23px 0' }}>
     // <Box style={{
