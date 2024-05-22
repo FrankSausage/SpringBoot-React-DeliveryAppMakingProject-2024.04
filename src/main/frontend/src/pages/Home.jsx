@@ -1,4 +1,4 @@
-import { Box, Container, CssBaseline } from "@mui/material";
+import { Box } from "@mui/material";
 import Footer from "../components/Footer"
 import UserMain from "./Users/View/UserMain";
 import OwnerMain from "./Users/View/OwnerMain"; 
@@ -10,6 +10,14 @@ export default function Home() {
     
     // const backgroundImage = role === '회원' ? 'url(/img/kitchen.jpg)' : 'url(/img/Okitchen.jpg)';
     return(
+        
+        <Box sx={{ width: '100%', marginTop: -1 }}>
+          {role==='회원' && <UserMain />}
+          {role==='점주' && <OwnerMain />}
+          <Footer sx={{ marginTop: 7}}/>
+        </Box>
+  )
+}
     // <div style={{ backgroundImage: 'linear-gradient(to right, #FFD77F, #ffffff 20%, #ffffff 80%, #FFD77F)', display: 'flex', justifyContent: 'center', padding: '23px 0' }}>
     // <Box sx={{
     //   backgroundImage: backgroundImage,
@@ -39,11 +47,6 @@ export default function Home() {
     //     }}
     //   >
     //     <CssBaseline />
-        <Box sx={{ width: '100%', marginTop: -1 }}>
-          {role==='회원' && <UserMain />}
-          {role==='점주' && <OwnerMain />}
-          <Footer />
-        </Box>
     //   </Container>
     // </Box>
     // <div style={{
@@ -68,5 +71,3 @@ export default function Home() {
     //     </Container>
     //   </div>
     // </div>
-  )
-}

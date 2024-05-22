@@ -67,8 +67,9 @@ export default function Store() {
       </Box>
       <Grid container justifyContent="center" alignItems="center" mt={2}>
         <Grid item xs={10} md={6} lg={4}>
-          <Box sx={{ display: 'flex', alignItems: 'center', border: 1, borderColor: 'divider', borderRadius: 3, p: 1, bgcolor: '#fff', boxShadow: 1 }}>
-            <SearchIcon sx={{ ml: 1, color: 'grey.500' }} />
+          <Box sx={{ display: 'flex', justifyContent: 'center', border: 1, borderColor: 'divider', borderRadius: 3, p: 1, bgcolor: '#fff', boxShadow: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: 5 }}>
+            <SearchIcon sx={{ color: 'grey.500' }} />
             <InputBase
               placeholder="가게 / 메뉴 이름 입력"
               inputProps={{ 'aria-label': 'search' }}
@@ -76,6 +77,7 @@ export default function Store() {
               fullWidth
               sx={{ ml: 1 }}
             />
+            </Box>
           </Box>
         </Grid>
       </Grid>

@@ -36,9 +36,11 @@ export default function UserMain() {
                 </Box>
               </Link>
             </Box>
-            <Typography variant="h6" sx={{ mt: 1, fontWeight:'bold', color:'black', textAling:'center' }}>
-              {category.label}
-            </Typography>
+            <Link to={category.link} state={category.state} style={{textDecoration:'none', color:'black'}}>
+              <Typography variant="h6" sx={{ mt: 1, fontWeight:'bold', color:'black', textAling:'center' }}>
+                {category.label}
+              </Typography>
+            </Link>
           </Grid>
         ))}
       </Grid>
