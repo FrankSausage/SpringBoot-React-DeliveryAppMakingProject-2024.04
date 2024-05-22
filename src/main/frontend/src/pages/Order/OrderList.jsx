@@ -8,8 +8,8 @@ import OrderDetail from "./OrderDetail";
 export default function OrderList() {
   const email = localStorage.getItem('email')
   const navigate = useNavigate();
-  const [ openPortal, setOpenPortal ] = useState(false);
   const { getOrderListByEmail: {isLoading, data: orderData}} = useOrder(email);
+  const [ openPortal, setOpenPortal ] = useState(false);
   const [ activeIndex, setActiveIndex ] = useState('');
 
   const handleClick = index => {

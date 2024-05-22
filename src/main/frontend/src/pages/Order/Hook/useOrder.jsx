@@ -5,15 +5,15 @@ export function useOrder (email, orderId) {
   const queryClinet = useQueryClient();
 
   const getOrderListByEmail = useQuery({
-    queryKey: ['userOrderList'],
+    queryKey: ['userOrderList', email],
     queryFn: () => { return axios.get(`/dp/order/list`, {params: {email: email}}) },
-    enabled: !!email
+    enabled: !!email && !orderId,
   })
 
   const getOrderDetailByOrderId = useQuery({
     queryKey: ['userOrderDetail', orderId],
     queryFn: () => { return axios.get(`/dp/order/detail`, {params: {email: email, orderId: orderId}})},
-    enabled: !!orderId 
+    enabled: !!orderId
   })
   
   const postOrderRegist = useMutation({
