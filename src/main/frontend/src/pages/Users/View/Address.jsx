@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router";
 import { Avatar, Box, Button,Divider, Grid, Input, Stack,  Typography, Container, CssBaseline} from "@mui/material";
+import { Link } from 'react-router-dom';
 import RoomIcon from '@mui/icons-material/Room';
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
 import MailSharpIcon from '@mui/icons-material/MailSharp';
@@ -102,7 +103,7 @@ export default function Address() {
 
     return(
       <div style={{
-        backgroundImage: 'url(/img/kitchen.jpg)',
+        backgroundImage: 'url(/img/a0.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         display: 'flex',
@@ -112,7 +113,7 @@ export default function Address() {
         backgroundBlendMode: 'lighten',
         backgroundColor: 'rgba(255, 255, 255, 0.6)' // This makes the background image appear lighter
         }}>
-        <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
+        <Container component="main" maxWidth="sm" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px', }}>
           <CssBaseline />
         <Box sx={{  marginTop: 8,
                     display: 'flex',
@@ -122,7 +123,12 @@ export default function Address() {
                     textAlign: 'center',
                     width: '100%',
                     }}>
-          <Avatar sx={{ m: 1, bgcolor: '#f09032', alignSelf: 'center' }}>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Link to="/" style={{ textDecoration: 'none', color: 'black', fontFamily: 'Arial, sans-serif', display: 'flex', justifyContent: 'center' }}>
+              <img src={'/img/001.png'} style={{ width: '30%', position: 'relative', marginBottom: '20px'}}/>
+            </Link>
+          </Typography>
+          <Avatar sx={{ m: 1, bgcolor: '#f09032', alignSelf: 'center', marginLeft: '20px'}}>
             <MailSharpIcon />
           </Avatar>
           <Stack sx={{ maxWidth:'500px', width:'100%', textAlign: 'center', marginLeft: '85px' }}>
@@ -133,43 +139,45 @@ export default function Address() {
               <Grid container justifyContent="center" alignItems="center">
                 <Stack component='form' onSubmit={handleSubmit} sx={{my: 3}}>
                   <Grid item sx={{mb: 3}}>
-                    <Typography variant="h5"> 주소 목록 </Typography>
-                    <Stack direction={"row"}  sx={{my: 4}}>
+                    <Typography variant="h5" sx={{ marginLeft: '-75px' }}> 주소 목록 </Typography>
+                    <Stack direction={"row"}  sx={{my: 4, marginLeft: '-70px'}}>
                       <Input type="text" 
                       value={roadAddress + extraAddress} 
                       name='cuAddress'
                       id='cuAddress'
-                      sx={{width: 400}} 
+                      sx={{width: 430}} 
                       placeholder="주소를 입력하세요..." 
                       required
                       />
                       <Button sx={{border: 1, mx: 1}} onClick={handleFindPostcode}> 검색 </Button>
                     </Stack>
-                    <Stack direction={"row"}  sx={{my: 4}}>
+                    <Stack direction={"row"}  sx={{my: 4, marginLeft: '-69px' }}>
                       <Input type="text" value={detailAddress} 
-                      onChange={e => setDetailAddress(e.target.value)} sx={{width: 400}} 
+                      onChange={e => setDetailAddress(e.target.value)} sx={{width: 429}} 
                       placeholder="상세 주소"/>
                     </Stack>
                   </Grid>
-                  <Grid item sx={{ mb: 3 }}>
+                  <Grid item sx={{ mb: 3, marginLeft: '-70px' }}>
                       { !roadAddress && <Button disabled sx={{fontSize: '1.2rem', height: '3rem'}}>추가</Button> }
-                      { roadAddress && <Button sx={{border: 0, mx: 1, fontSize: '1.2rem', height: '3rem'}} type="submit" variant="contained" >주소 추가</Button> }
+                      { roadAddress && <Button sx={{border: 0, mx: 1, fontSize: '1.2rem', height: '3rem',
+                        backgroundColor: '#66BB6A', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#41df78'}
+                        }} type="submit" variant="contained" >주소 추가</Button> }
                   </Grid>
                 </Stack>
               </Grid>
             </Box>
             }
-            <Divider sx={{my: 5}} />
+            {/* <Divider sx={{my: 5}} /> */}
             {address && (
               address.map((data, idx) => (
-                <Stack key={idx} direction={"row"} sx={{my: 3}} justifyContent="center" alignItems="center">
+                <Stack key={idx} direction={"row"} sx={{my: 3, marginLeft: '-35px'}} justifyContent="center" alignItems="center">
                   {
                     data.address===currentAddress ? 
                       <>
-                      <Input value={data.address} sx={{width: 400}}/>  
+                      <Input value={data.address} sx={{width: 500}}/>  
                       <AddressUpdate addressData={data.address} addressId={data.addressId} 
                         email={email} currentAddress={currentAddress}/>
-                      <RoomIcon sx={{ml: 10}}/>
+                      <RoomIcon sx={{ml: 0}}/>
                       </>
                     : 
                       <>
