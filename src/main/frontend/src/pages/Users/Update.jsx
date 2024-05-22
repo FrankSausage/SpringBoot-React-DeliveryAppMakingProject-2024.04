@@ -148,15 +148,7 @@ export default function Update() {
         <>
       <SearchHeader />
         <div style={{
-        backgroundImage: backgroundImage,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-        padding: '23px 0',
-        backgroundBlendMode: 'lighten',
-        backgroundColor: 'rgba(255, 255, 255, 0.6)' // This makes the background image appear lighter
-      }}>
+        backgroundImage: backgroundImage,backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
           <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Box
