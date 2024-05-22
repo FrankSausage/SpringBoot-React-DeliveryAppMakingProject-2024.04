@@ -4,7 +4,7 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox,
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { login } from '../../utils/firebase';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import axios from 'axios';
 import { splitAddressFromCurrentUserAddress } from '../../utils/commonUitil';
@@ -13,12 +13,19 @@ const defaultTheme = createTheme();
 
 export default function SignIn() {
   const [userInfo, setUserInfo] = useState({email:'', password:''});
+  const { setUserPoint } = useOutletContext();
   const navigate = useNavigate();
 
   const handleChange = e => {
     setUserInfo({...userInfo, [e.target.name]: e.target.value});
   }
   
+  const CustomCheckbox = ({ checked, onChange}) => {
+    return (
+      <Checkbox checked={checked} onChange={onChange} sx={{color: '002500', '&.Mui-checked': {color: '#66BB6A'}}}/>
+        );
+      };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if(!userInfo.email){
@@ -37,6 +44,7 @@ export default function SignIn() {
                 localStorage.setItem('email', userInfo.email);
                 localStorage.setItem('role', res.data.role);
                 localStorage.setItem('email', userInfo.email);
+                setUserPoint(userInfo.point);
                 if(res.data.role !== '점주') {
                   localStorage.setItem("address", res.data.currentAddress);
                   localStorage.setItem("splitAddress", JSON.stringify(splitAddressFromCurrentUserAddress(res.data.currentAddress)))
@@ -78,12 +86,14 @@ export default function SignIn() {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              <Link to="/" style={{ textDecoration: 'none', color: 'black', fontFamily: 'Arial, sans-serif', display: 'flex', justifyContent: 'center' }}>
+                <img src={'/img/001.png'} style={{ width: '50%', height: '50%',position: 'relative', top: 5, marginBottom: '20px'}}/>
+              </Link> 
+            </Typography>
+            <Avatar sx={{ m: 1, bgcolor: '#f09032', marginBottom: '10px' }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>    
-            </Typography>
             <Typography component="h1" variant="h5">
               로그인
             </Typography>
@@ -113,15 +123,17 @@ export default function SignIn() {
                 onChange={handleChange}
               />
               <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
+                control={<CustomCheckbox value="remember" color="primary" />}
                 label="나를 기억하기"
               />
               <Button
                 type="submit" 
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
+                sx={{ mt: 3, mb: 2, backgroundColor: '#66BB6A', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#41df78'},
+                fontFamily: 'Arial', 
+                fontWeight: 'bold', 
+                fontSize: '1.2rem'}}>
                 로그인
               </Button>
               <Grid container>

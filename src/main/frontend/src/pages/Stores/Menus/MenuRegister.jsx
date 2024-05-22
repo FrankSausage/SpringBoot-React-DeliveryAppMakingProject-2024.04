@@ -7,7 +7,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import SearchHeader from '../../../components/SearchHeader';
-
+import { uploadImageToCloudinary } from '../../../utils/uploader';
 
 const defaultTheme = createTheme();
 
@@ -21,6 +21,7 @@ export default function MenuRegister() {
   const [content, setContent] = useState('');
   const [menuPictureName, setMenuPictureName] = useState('');
   const { postMenuRegister } = useStore();
+  const [ menuPictureUrl, setMenuPictureUrl] = useState('');  // 업로드된 이미지 URL을 저장할 상태 추가
   const navigate = useNavigate();
   
   const handleSubmit = async (e) => {
@@ -50,7 +51,8 @@ export default function MenuRegister() {
       data.append('content', content);
       data.append('name', name);
       data.append('price', price);
-      data.append('menuPictureName', menuPictureName);
+      data.append('menuPictureName', menuPictureUrl);
+      // data.append('menuPictureUrl', menuPictureUrl);
       return data;
     } catch (error) {
       console.error('setFormData Error!: ', error);
@@ -59,62 +61,63 @@ export default function MenuRegister() {
   };
 
   const handleFileUpload = (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length > 0) {
-      const fileNames = files.map(file => file.name);
-      setMenuPictureName(fileNames);
+    const file = e.target.files[0];
+    if (file) {
+        const fileName = file.name;
+        setMenuPictureName(fileName);
+        uploadImageToCloudinary(file) // 클라우드니어리에 이미지 업로드
+            .then((url) => {
+              setMenuPictureUrl(url); // 업로드된 이미지 URL 저장
+            })
+            .catch((error) => {
+                console.error('Failed to upload image to Cloudinary:', error);
+                // 업로드 실패 처리
+            });
     }
-  };
+};
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      <CssBaseline />
       <SearchHeader />
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column',  alignItems: 'center', backgroundColor: '#ffffff', padding: '10px 10px', borderRadius: '10px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)'}}>
+          <Avatar sx={{ 
+            m: 1, 
+            bgcolor: 'secondary', 
+            width: '40px', 
+            height: '40px' 
+          }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to={`/StoreDetail/${storeId}`} state={{storeId: storeId}} style={{ textDecoration: 'none', color: 'black' }}>가게 이동</Link>
+          <Typography variant="h6" component="div" sx={{ 
+            flexGrow: 1, 
+            marginBottom: '20px', 
+            fontWeight: 'bold', 
+            color: '#333' 
+          }}>
+            <Link to={`/StoreDetail/${storeId}`} state={{storeId: storeId}} style={{ 
+              textDecoration: 'none', 
+              color: '#333', 
+              fontSize: '1.2rem' 
+            }}>
+              가게 이동
+            </Link>
           </Typography>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" sx={{ 
+            marginBottom: '20px', 
+            fontWeight: 'bold', 
+            color: '#333' 
+          }}>
             메뉴 등록(단건)
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  autoComplete="given-name"
-                  name="name"
-                  id="name"
-                  value={name}
-                  label="음식 이름"
-                  placeholder='ex) 휴먼 버거'
-                  onChange={e => setName(e.target.value)}
-                />
+                <TextField required fullWidth autoComplete="given-name" name="name" id="name" value={name} label="음식 이름" placeholder='ex) 휴먼 버거' onChange={e => setName(e.target.value)} />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="price"
-                  label="음식 가격"
-                  name="price"
-                  autoComplete="price"
-                  placeholder='ex) 10000'
-                  value={price}
-                  onChange={e => setPrice(e.target.value)}
-                />
+                <TextField required fullWidth id="price" label="음식 가격" name="price" autoComplete="price" placeholder='ex) 10000' value={price} onChange={e => setPrice(e.target.value)}  />
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="h6" gutterBottom>
@@ -138,58 +141,25 @@ export default function MenuRegister() {
                 </Grid>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="content"
-                  fullWidth
-                  id="content"
-                  label="음식 소개"
-                  multiline
-                  rows={4}
-                  variant='outlined'
-                  onChange={e => setContent(e.target.value)}
-                />
+                <TextField autoComplete="given-name" name="content" fullWidth id="content" label="음식 소개" multiline rows={4} variant='outlined' onChange={e => setContent(e.target.value)} />
               </Grid>
-
               <Grid item xs={12}>
                 <Typography variant="h6" gutterBottom>
-                  음식 사진
+                  메뉴 사진 업로드
                 </Typography>
-                <input
-                  accept=".png, .jpeg, .jpg"
-                  id="upload-photo"
-                  type="file"
-                  style={{ display: 'none' }}
-                  onChange={handleFileUpload} multiple
-                />
-
-                <TextField
-                  autoComplete="given-name"
-                  name="menuPictureName"
-                  value={menuPictureName}
-                  fullWidth
-                  id="menuPictureName"
-                  label="음식 사진"
-                  autoFocus
-                  onClick={(e) => {
-                    e.target.value = setMenuPictureName(e.target.value)
-                  }}
-                />
-
-                <Button
-                  type="button"
-                  variant="contained"
-                  onClick={() => document.getElementById('upload-photo').click()}
-                  sx={{ mt: 3, mb: 2, }}>
+                <input accept=".png, .jpeg, .jpg" id="upload-photo" type="file" style={{ display: 'none' }} onChange={handleFileUpload} multiple />
+                <TextField autoComplete="given-name" name="menuPictureName" value={menuPictureName} fullWidth id="menuPictureName" label="메뉴 사진" onClick={() => document.getElementById('upload-photo').click()} InputProps={{ readOnly: true }} sx={{ mb: 2 }} />
+                <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
                   사진 올리기
                 </Button>
+                {menuPictureName && (
+                  <Typography variant="body1" gutterBottom>
+                    업로드된 파일: {menuPictureName}
+                  </Typography>
+                )}
               </Grid>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
               음식 등록 하기
             </Button>
           </Box>

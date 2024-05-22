@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { Button, Card,  Divider, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import { useOrder } from "../Hook/useOrder";
 
@@ -8,6 +8,7 @@ export default function Order() {
 	const navigate = useNavigate();
 	const address = localStorage.getItem('address');
 	const email = localStorage.getItem('email');
+	const { userPoint } = useOutletContext();
 	const { totalPrice } = location.state;
 	const { postOrderRegist } = useOrder();
 	const [ request, setRequest ] = useState('');
@@ -18,6 +19,10 @@ export default function Order() {
 	const handleSubmit = () => {
 		if(!paymentMethod) {
 			alert('결제 방식을 선택 해 주세요.')
+			return;
+		} 
+		if (userPoint && point > userPoint) {
+			alert('보유 포인트보다 더 많은 포인트를 사용 할 수 없습니다.')
 			return;
 		}
 
@@ -32,7 +37,10 @@ export default function Order() {
 			address: address,
 			menus: cartItems
 		}, {
-			onSuccess: res => {localStorage.removeItem('cartItems')},
+			onSuccess: () => {
+				localStorage.removeItem('cartItems');
+				navigate('/')
+			},
 			onError: e => {console.log(e)},
 		})
 	}
@@ -50,7 +58,7 @@ export default function Order() {
 						<Grid container key={menuItems.menuId}>
 								<Grid item xs={1}/>
 								<Grid item xs>
-									<Typography>{menuItems.menuName}</Typography>
+									<Typography>{menuItems.menuName}: {menuItems.quantity}개 </Typography>
 									{menuItems.menuOptions && 
 										menuItems.menuOptions.map((optionItems) => (
 										<Grid container>
@@ -86,7 +94,7 @@ export default function Order() {
 							labelId='paymentMethod'
 							id='paymentMethod-select'
 							value={paymentMethod}
-							label='결제 방식'
+							label='결제 방식 선택'
 							onChange={e => setPaymentMethod(e.target.value)}
 						>
 							<MenuItem value={'현금결제'}>만나서 현금 결제</MenuItem>
@@ -98,7 +106,8 @@ export default function Order() {
 			</Grid>
 			<Stack direction={'row'} sx={{alignContent:'center', alignItems:'center', justifyContent:'center'}}>
 				<Typography>포인트 사용: </Typography>
-				<TextField type='number' id='point' name='point' sx={{ml:1, width:'10%'}} maxRows={1} placeholder='0' onChange={e=> {setPoint(e.target.value)}} value={setPoint} autoComplete="point-text"/>/ {point}
+				<TextField type='number' id='point' name='point' sx={{ml:1, width:'10%'}} maxRows={1} 
+				placeholder='0' onChange={e=> {setPoint(e.target.value)}} value={(point >= userPoint) ? userPoint : point} autoComplete="point-text"/>/ {userPoint ? userPoint : 0}
 			</Stack>
 			<Typography variant="h5" sx={{textAlign:'center', my:2}}>최종 금액: {totalPrice ? totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}원</Typography>
 			<Stack direction={'row'} sx={{justifyContent:'space-around'}}>
