@@ -177,6 +177,7 @@ export default function StoreUpdate() {
       data.append('type', type);
       data.append('operationHours', `${openHours}~${closeHours}`);
       data.append('closedDays', selectedDays.join(','));
+      data.append('storePictureName', storePictureUrl);
       return await data;
     }
     catch (error) {
@@ -395,7 +396,7 @@ export default function StoreUpdate() {
                         </Button>
                         {storePictureName && (
                           <Typography variant="body1" gutterBottom>
-                            업로드된 파일: {storePictureName}
+                            {/* 업로드된 파일: {storePictureName} */}
                           </Typography>
                         )}
                       </Grid>

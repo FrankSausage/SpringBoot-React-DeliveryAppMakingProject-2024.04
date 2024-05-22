@@ -225,12 +225,7 @@ export default function StoreRegister() {
               <Grid item xs={6}>
                 <FormControl fullWidth required>
                   <InputLabel id="openHours-label">오픈 시간</InputLabel>
-                  <Select
-                    labelId="openHours-label"
-                    id="openHours"
-                    value={openHours}
-                    onChange={e => setOpenHours(e.target.value)}
-                  >
+                  <Select labelId="openHours-label" id="openHours" value={openHours} onChange={e => setOpenHours(e.target.value)}>
                     {timeOptionsOpen.map(time => (
                       <MenuItem key={time} value={time}>
                         {time}
@@ -285,31 +280,9 @@ export default function StoreRegister() {
                 <Typography variant="h6" gutterBottom>
                   가게 사진 업로드
                 </Typography>
-                <input
-                  accept=".png, .jpeg, .jpg"
-                  id="upload-photo"
-                  type="file"
-                  style={{ display: 'none' }}
-                  onChange={handleFileUpload}
-                  multiple
-                />
-                <TextField
-                  autoComplete="given-name"
-                  name="storePictureName"
-                  value={storePictureName}
-                  fullWidth
-                  id="storePictureName"
-                  label="가게 사진"
-                  onClick={() => document.getElementById('upload-photo').click()}
-                  InputProps={{ readOnly: true }}
-                  sx={{ mb: 2 }}
-                />
-                <Button
-                  type="button"
-                  variant="contained"
-                  onClick={() => document.getElementById('upload-photo').click()}
-                  fullWidth
-                >
+                <input accept=".png, .jpeg, .jpg" id="upload-photo" type="file" style={{ display: 'none' }} onChange={handleFileUpload} multiple />
+                <TextField autoComplete="given-name" name="storePictureName" value={storePictureName} fullWidth id="storePictureName" label="가게 사진" onClick={() => document.getElementById('upload-photo').click()} InputProps={{ readOnly: true }} sx={{ mb: 2 }} />
+                <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
                   사진 올리기
                 </Button>
                 {storePictureName && (

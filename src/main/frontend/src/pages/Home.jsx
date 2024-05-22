@@ -25,7 +25,7 @@ export default function Home() {
       {/* <Box style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}> */}
         {/* <Container component="main" maxWidth="lg" style={{ backgroundColor: '#fff', padding: '8px' }}> */}
         <CssBaseline />
-        <Box sx={{ margin: -3}} >
+        <Box sx={{ mt: -3}} >
             {role==='회원' && <UserMain />}
             {role==='점주' && <OwnerMain />}
             <Footer />
