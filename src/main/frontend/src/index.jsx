@@ -11,7 +11,6 @@ import OwnerMain from './pages/Users/View/OwnerMain';
 import Address from './pages/Users/View/Address';
 import SignIn from './pages/Users/SignIn';
 import SignUp from './pages/Users/SignUp';
-import SignUp2 from './pages/Users/SignUp2';
 import Update from './pages/Users/Update';
 // Stores
 import Store from './pages/Stores/View/Store';
@@ -44,7 +43,6 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'Signin', element: <SignIn />},
       { path: 'SignUp', element: <SignUp />},
-      { path: 'SignUp2', element: <SignUp2 />},
       { path: 'Update', element: <ProtectedRoute><Update /></ProtectedRoute>},
       { path: 'Address', element: <Address />},
       { path: 'Store', element: <ProtectedRoute><Store /></ProtectedRoute>},
