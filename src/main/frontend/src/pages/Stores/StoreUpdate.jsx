@@ -396,7 +396,7 @@ export default function StoreUpdate() {
                               </Button>
                               {storePictureName && (
                                 <Typography variant="body1" gutterBottom>
-                                  업로드된 파일: {storePictureName.split(',')[0]}
+                                  {/* 업로드된 파일: {storePictureName.split(',')[0]} */}
                                 </Typography>
                               )}
                             </Grid>
