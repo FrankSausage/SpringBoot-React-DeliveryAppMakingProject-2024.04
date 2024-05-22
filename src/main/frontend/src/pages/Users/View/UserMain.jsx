@@ -1,17 +1,15 @@
 import React from "react";
-import { Box, Grid, Stack, Container } from "@mui/material";
+import { Box, Grid, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import SearchHeader from "../../../components/SearchHeader";
 
 export default function UserMain() {
-
   return (
-    
-      <Box>
-        <SearchHeader />
-        <Grid container>
-          <Grid item xs={12} sx={{ border: 0 }}>
-            <Stack sx={{ maxHeight: 200 }}>
+    <Box sx={{ bgcolor: '#f8f8f8', minHeight: '100vh', p: 0 }}>
+      <SearchHeader />
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Stack sx={{ maxHeight: 200, borderRadius: 0, overflow: 'hidden', mb: 2 }}>
             <Box
               sx={{
                 width: '100%',
@@ -22,130 +20,56 @@ export default function UserMain() {
                 backgroundPosition: 'center',
               }}
             />
-            </Stack>
-          </Grid>
+          </Stack>
         </Grid>
-        <Grid container>
-          <Grid item xs />
-          <Grid container sx={{ border: 1, borderColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
-            <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
-              <Box sx={{ ...boxStyle, position: 'relative' }}>
-                <Link to="/Store" state={0} style={{ textDecoration: 'none', color: 'black' }}>
-                  <div>
-                    <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                      <li style={{ textAlign: 'right', writingMode: 'vertical-rl', textOrientation: 'mixed', marginTop: 15, marginRight: 7 }}>전체</li>
-                    </ul>
-                    <img src={'/img/00.jpg'} style={{ width: '82%', height: '82%', position: 'absolute', top: 35, left: 0 }} alt="전체" />
-                  </div>
-                </Link>
-              </Box>
-              <Box sx={{ ...boxStyle, position: 'relative' }}>
-                <Link to="/Store/HanSick" state={1} style={{ textDecoration: 'none', color: 'black' }}>
-                  <div>
-                    <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                      <li style={{ textAlign: 'right', writingMode: 'vertical-rl', textOrientation: 'mixed', marginTop: 15, marginRight: 7 }}>한식</li>
-                    </ul>
-                    <img src={'/img/01.jpg'} style={{ width: '82%', height: '82%', position: 'absolute', top: 35, left: 0 }} alt="한식" />
-                  </div>
-                </Link>
-              </Box>
-              <Box sx={{ ...boxStyle, position: 'relative' }}>
-                <Link to="/Store/Chinesefood" state={2} style={{ textDecoration: 'none', color: 'black' }}>
-                  <div>
-                    <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                      <li style={{ textAlign: 'right', writingMode: 'vertical-rl', textOrientation: 'mixed', marginTop: 15, marginRight: 7 }}>중식</li>
-                    </ul>
-                    <img src={'/img/11.jpg'} style={{ width: '82%', height: '82%', position: 'absolute', top: 35, left: 0 }} alt="중식"/>
-                  </div>
-                </Link>
-              </Box>
-              <Box sx={{ ...boxStyle, position: 'relative' }}>
-                <Link to="/Store/Japanese" state={3} style={{ textDecoration: 'none', color: 'black' }}>
-                  <div>
-                    <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                      <li style={{ textAlign: 'right', writingMode: 'vertical-rl', textOrientation: 'mixed', marginTop: 15, marginRight: 7 }}>일식</li>
-                    </ul>
-                    <img src={'/img/21.jpg'} style={{ width: '82%', height: '82%', position: 'absolute', top: 35, left: 0 }} alt="일식" />
-                  </div>
-                </Link>
-              </Box>
-            </Grid>
-            <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }}
-              sx={gridStyle}>
-              <Box sx={{ ...boxStyle, position: 'relative' }}>
-                <Link to="/Store/WesternStyle" state={4} style={{ textDecoration: 'none', color: 'black' }}>
-                  <div>
-                    <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                      <li style={{ textAlign: 'right', writingMode: 'vertical-rl', textOrientation: 'mixed', marginTop: 15, marginRight: 7 }}>양식</li>
-                    </ul>
-                    <img src={'/img/31.jpg'} style={{ width: '82%', height: '82%', position: 'absolute', top: 35, left: 0 }} alt="양식"/>
-                  </div>
-                </Link>
-              </Box>
-              <Box sx={{ ...boxStyle, position: 'relative' }}>
-                <Link to="/Store/FastFood" state={5} style={{ textDecoration: 'none', color: 'black' }}>
-                  <div>
-                    <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                      <li style={{ textAlign: 'right', writingMode: 'vertical-rl', textOrientation: 'mixed', marginTop: 15, marginRight: 7 }}>패스트</li>
-                    </ul>
-                    <img src={'/img/41.jpg'} style={{ width: '82%', height: '82%', position: 'absolute', top: 35, left: 0 }} alt="패스트"/>
-                  </div>
-                </Link>
-              </Box>
-              <Box sx={{ ...boxStyle, position: 'relative' }}>
-                <Link to="/Store/Chicken" state={6} style={{ textDecoration: 'none', color: 'black' }}>
-                  <div>
-                    <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                      <li style={{ textAlign: 'right', writingMode: 'vertical-rl', textOrientation: 'mixed', marginTop: 15, marginRight: 7 }}>치킨</li>
-                    </ul>
-                    <img src={'/img/51.jpg'} style={{ width: '82%', height: '82%', position: 'absolute', top: 35, left: 0 }} alt="치킨"/>
-                  </div>
-                </Link>
-              </Box>
-              <Box sx={{ ...boxStyle, position: 'relative' }}>
-                <Link to="/Store/SnackBar" state={7} style={{ textDecoration: 'none', color: 'black' }}>
-                  <div>
-                    <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                      <li style={{ textAlign: 'right', writingMode: 'vertical-rl', textOrientation: 'mixed', marginTop: 15, marginRight: 7 }}>분식</li>
-                    </ul>
-                    <img src={'/img/61.jpg'} style={{ width: '82%', height: '82%', position: 'absolute', top: 35, left: 0 }} alt="분식"/>
-                  </div>
-                </Link>
-              </Box>
-            </Grid>
-            <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }}
-              sx={gridStyle}>
-              <Box sx={{ ...boxStyle, position: 'relative' }}>
-                <Link to="/Store/Dessert" state={8} style={{ textDecoration: 'none', color: 'black' }}>
-                  <div>
-                    <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                      <li style={{ textAlign: 'right', writingMode: 'vertical-rl', textOrientation: 'mixed', marginTop: 15, marginRight: 7 }}>디저트</li>
-                    </ul>
-                    <img src={'/img/71.jpg'} style={{ width: '82%', height: '82%', position: 'absolute', top: 35, left: 0 }} alt="디저트"/>
-                  </div>
-                </Link>
-              </Box>
-              <Box sx={boxStyle}></Box>
-              <Box sx={boxStyle}></Box>
-              <Box sx={boxStyle}></Box>
-            </Grid>
+      </Grid>
+      <Grid container spacing={2} justifyContent="center" alignItems="center">
+        {categories.map((category, index) => (
+          <Grid item key={index} xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center', flexDirection:'column', alignItems:'center' }}>
+            <Box sx={{ ...boxStyle, position: 'relative', overflow: 'hidden', borderRadius: 2 }}>
+              <Link to={category.link} state={category.state} style={{ textDecoration: 'none', color: 'black', display: 'block', height: '100%' }}>
+                <Box sx={{ width: '100%', height: '100%', position: 'relative' }}>
+                  <img src={category.img} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s', borderRadius: 'inherit' }} alt={category.label} />
+                </Box>
+              </Link>
+            </Box>
+            <Link to={category.link} state={category.state} style={{textDecoration:'none', color:'black'}}>
+              <Typography variant="h6" sx={{ mt: 1, fontWeight:'bold', color:'black', textAling:'center' }}>
+                {category.label}
+              </Typography>
+            </Link>
           </Grid>
-          <Grid item xs />
-        </Grid>
-      </Box>
-
+        ))}
+      </Grid>
+    </Box>
   );
 }
 
-let boxStyle = {
-  width: 200,
+const categories = [
+  { label: '전체', link: '/Store', state: 0, img: '/img/00.png' },
+  { label: '한식', link: '/Store/HanSick', state: 1, img: '/img/01.png' },
+  { label: '중식', link: '/Store/Chinesefood', state: 2, img: '/img/11.png' },
+  { label: '일식', link: '/Store/Japanese', state: 3, img: '/img/21.png' },
+  { label: '양식', link: '/Store/WesternStyle', state: 4, img: '/img/31.png' },
+  { label: '패스트', link: '/Store/FastFood', state: 5, img: '/img/41.png' },
+  { label: '치킨', link: '/Store/Chicken', state: 6, img: '/img/51.png' },
+  { label: '분식', link: '/Store/SnackBar', state: 7, img: '/img/61.png' },
+  { label: '디저트', link: '/Store/Dessert', state: 8, img: '/img/71.png' }
+];
+
+const boxStyle = {
+  width: '100%',
   height: 200,
   border: 1,
-  borderColor: 'black',
-  m: 1
-}
-let gridStyle = {
+  borderColor: 'transparent',
+  m: 1,
+  boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+  transition: 'transform 0.3s, box-shadow 0.3s',
+  '&:hover': {
+    transform: 'scale(1.05)',
+    boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
+  },
+  display: 'flex',
   justifyContent: 'center',
-  alignItems: 'center',
-  p: 2
-}
+  alignItems: 'center'
+};
