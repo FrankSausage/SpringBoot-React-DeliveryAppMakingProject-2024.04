@@ -131,7 +131,6 @@ export default function Address() {
                     placeholder="주소를 입력하세요..." 
                     required
                     />
-                    <Button sx={{border: 1, mx: 1}} onClick={handleFindPostcode}> 검색 </Button>
                   </Stack>
                   <Stack direction={"row"}  sx={{my: 4}}>
                     <Input type="text" value={detailAddress} 
@@ -139,18 +138,19 @@ export default function Address() {
                     placeholder="상세 주소"/>
                   </Stack>
                 </Grid>
-                <Grid item sx={{marginLeft: '-60px', mb: 3}}>
-                    { !roadAddress && <Button disabled sx={{fontSize: '1.2rem', height: '3rem'}}>추가</Button> }
+                    <Button sx={{border: 1, mx: 1}} onClick={handleFindPostcode}> 검색 </Button>
+                {/* <Grid item sx={{marginLeft: '-60px', mb: 3}}>
+                    { !roadAddress && <Button disabled sx={{fontSize: '1.2rem', height: '3rem'}}>주소 목록</Button> }
                     { roadAddress && <Button sx={{border: 0, mx: 1, fontSize: '1.2rem', height: '3rem'}} type="submit" variant="contained" >주소 추가</Button> }
-                </Grid>
+                </Grid> */}
               </Stack>
             </Grid>
           </Box>
           }
-          <Divider sx={{my: 5}} />
+          {/* <Divider sx={{my: 5}} /> */}
           {address && (
             address.map((data, idx) => (
-              <Stack key={idx} direction={"row"} sx={{my: 3}}>
+              <Stack key={idx} direction={"row"} sx={{my: 3}}> 
                 {
                   data.address===currentAddress ? 
                     <>
