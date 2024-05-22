@@ -29,10 +29,8 @@ public class Reviews {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
-    private Long storeId;
     private Long userId;
-    private Long menuId;
-
+    private Long orderId;
     @Column(nullable = false)
     private int rating;
 
@@ -45,11 +43,4 @@ public class Reviews {
 
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdDate;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime modifiedDate;
-
-    @Column(nullable = false)
-    private String status;
-
 }

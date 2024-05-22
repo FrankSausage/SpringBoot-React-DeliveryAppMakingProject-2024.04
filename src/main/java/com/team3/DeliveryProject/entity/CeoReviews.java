@@ -35,11 +35,4 @@ public class CeoReviews {
 
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdDate;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime modifiedDate;
-
-    @Column(nullable = false)
-    private String status;
-
 }
