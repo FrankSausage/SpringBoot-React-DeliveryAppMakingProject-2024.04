@@ -43,4 +43,14 @@ public class Reviews {
 
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdDate;
+
+    public Reviews(Long userId, Long orderId, int rating, String content, String reviewPictureName,
+        LocalDateTime createdDate) {
+        this.userId = userId;
+        this.orderId = orderId;
+        this.rating = rating;
+        this.content = content;
+        this.reviewPictureName = reviewPictureName;
+        this.createdDate = createdDate;
+    }
 }
