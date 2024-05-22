@@ -2,11 +2,13 @@ package com.team3.DeliveryProject.service;
 
 import static com.team3.DeliveryProject.responseCode.ErrorCode.REVIEW_NOT_EXIST;
 import static com.team3.DeliveryProject.responseCode.ErrorCode.USERNAME_IS_ALREADY_EXIST;
+import static com.team3.DeliveryProject.responseCode.ResponseCode.CEO_REVIEW_ADD_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.REVIEW_ADD_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.REVIEW_DELETE_SUCCESS;
 
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.review.ReviewAddRequestDto;
+import com.team3.DeliveryProject.dto.request.review.ReviewCeoAddRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewDeleteRequestDto;
 import com.team3.DeliveryProject.entity.CeoReviews;
 import com.team3.DeliveryProject.entity.Reviews;
@@ -51,5 +53,15 @@ public class ReviewServiceImpl implements ReviewService{
             reviewsRepository.deleteById(requestDto.getReviewId());
             return Response.toResponseEntity(REVIEW_DELETE_SUCCESS);
         }
+    }
+
+    @Override
+    public ResponseEntity<Response> addCeoRivew(ReviewCeoAddRequestDto requestDto) {
+        if(!reviewsRepository.findById(requestDto.getReviewId()).isPresent()){
+            return Response.toResponseEntity(REVIEW_NOT_EXIST);
+        }
+        CeoReviews ceoReviews = new CeoReviews(requestDto.getReviewId(), requestDto.getContent(), LocalDateTime.now());
+        ceoReviewsRepository.save(ceoReviews);
+        return Response.toResponseEntity(CEO_REVIEW_ADD_SUCCESS);
     }
 }
