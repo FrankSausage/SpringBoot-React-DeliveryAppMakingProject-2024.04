@@ -77,7 +77,7 @@ export default function StoreMenuList({ storeName }) {
                         <Box component={Link} to={role==='회원' ? `/MenuDetail` : `/MenuUpdate`} state={{menuId : res.menuId, storeId : storeId, storeName : storeName}}  sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
                           {/* <img src={res.menuPictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} /> */}
                           <img src={res.menuPictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
-                          <ul style={{ position: 'absolute', top: '50%', left: '40%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
+                          <ul style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
                             <li style={{ listStyleType: 'none' }}>{res.name}</li>
                             <li style={{ listStyleType: 'none' }}>인기 : {res.popularity} </li>
                             <li style={{ listStyleType: 'none' }}>구성 : {res.content} </li>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
@@ -26,18 +26,9 @@ export default function SignUp() {
   const navigate = useNavigate();
   const CustomCheckbox = ({ checked, onChange }) => {
     return (
-      <Checkbox
-        checked={checked}
-        onChange={onChange}
-        sx={{
-          color: '002500',
-          '&.Mui-checked': {
-            color: '#66BB6A',
-          },
-        }}
-      />
-    );
-  };
+      <Checkbox checked={checked} onChange={onChange} sx={{ color: '002500', '&.Mui-checked': { color: '#66BB6A' }}}/>
+        );
+      };
 
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
@@ -145,7 +136,7 @@ export default function SignUp() {
             <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 0,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -154,13 +145,15 @@ export default function SignUp() {
             borderRadius: '10px'
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: '#f09032' }}>
-            <LockOutlinedIcon />
-          </Avatar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/" style={{ textDecoration: 'none', color: 'black', fontFamily: 'Arial, sans-serif' }}>휴먼 딜리버리</Link>
+            <Link to="/" style={{ textDecoration: 'none', color: 'black', fontFamily: 'Arial, sans-serif', display: 'flex', justifyContent: 'center' }}>
+              <img src={'/img/001.png'} style={{ width: '50%', height: '50%',position: 'relative', top: 5, marginBottom: '20px'}}/>
+            </Link>
           </Typography>
-          <Typography component="h1" variant="h5" sx={{ fontFamily: 'Arial, sans-serif', color: 'black' }}>
+          <Avatar sx={{ m: 1, bgcolor: '#f09032', marginBottom: '10px' }}>
+            <EditNoteIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5" sx={{ fontFamily: 'Arial, sans-serif', color: 'black', marginBottom: '20px' }}>
             회원가입
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>

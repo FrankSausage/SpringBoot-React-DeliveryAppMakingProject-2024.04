@@ -8,18 +8,19 @@ import { findDeliverPostCode, findPostcodeWithOutBCode } from '../../utils/Addre
 import { extractDataFromFormData, formatStorePhoneNumber, addressCodePacker, generateTimeOptions } from '../../utils/commonUitil';
 import { useStore } from './Hook/useStore';
 import SearchHeader from '../../components/SearchHeader';
+import { uploadImageToCloudinary } from '../../utils/uploader';
 
 const defaultTheme = createTheme({
-  palette: { primary: { main: '#1976d2'}, secondary: { main: '#dc004e'}},
-  typography: { fontFamily: 'Roboto, sans-serif', h5: { fontWeight: 600}},
+  palette: { primary: { main: '#1976d2' }, secondary: { main: '#dc004e' } },
+  typography: { fontFamily: 'Roboto, sans-serif', h5: { fontWeight: 600 } },
 });
 
 const styles = {
-  container: { marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center',},
-  paper: { marginTop: 8, padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.1)', borderRadius: '10px'},
-  form: { width: '100%', marginTop: 3},
-  submit: { marginTop: 3, marginBottom: 2, fontSize: '1.1rem'},
-  textField: { backgroundColor: 'white'}
+  container: { marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', },
+  paper: { marginTop: 8, padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.1)', borderRadius: '10px' },
+  form: { width: '100%', marginTop: 3 },
+  submit: { marginTop: 3, marginBottom: 2, fontSize: '1.1rem' },
+  textField: { backgroundColor: 'white' }
 };
 
 export default function StoreRegister() {
@@ -37,6 +38,7 @@ export default function StoreRegister() {
   const [deliveryTip, setDeliveryTip] = useState('');
   const [content, setContent] = useState('');
   const [storePictureName, setStorePictureName] = useState('');
+  const [storePictureUrl, setStorePictureUrl] = useState('');  // 업로드된 이미지 URL을 저장할 상태 추가
   const [minDeliveryTime, setMinDeliveryTime] = useState('');
   const [maxDeliveryTime, setMaxDeliveryTime] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
@@ -117,13 +119,21 @@ export default function StoreRegister() {
     }
   };
 
-  const handleFileUpload = (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length > 0) {
-      const fileNames = files.map(file => file.name);
-      setStorePictureName(fileNames);
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const fileName = file.name;
+      setStorePictureName(fileName);
+      try {
+        const url = await uploadImageToCloudinary(file); // 클라우드니어리에 이미지 업로드
+        setStorePictureUrl(url); // 업로드된 이미지 URL 저장
+      } catch (error) {
+        console.error('Failed to upload image to Cloudinary:', error);
+        // 업로드 실패 처리
+      }
     }
   };
+
 
   const weekDays = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
   // const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];
@@ -145,7 +155,7 @@ export default function StoreRegister() {
       <SearchHeader />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center'}} >
+        <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }} >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
@@ -204,7 +214,7 @@ export default function StoreRegister() {
                 <TextField autoComplete="given-name" name="minDeliveryPrice" required fullWidth id="minDeliveryPrice" label="최소 주문금액" placeholder='ex) 10000' onChange={e => setMinDeliveryPrice(e.target.value)} />
               </Grid>
               <Grid item xs={12}>
-                <TextField autoComplete="given-name" name="deliveryTip" required fullWidth id="deliveryTip" label="배달팁" placeholder='ex) 2000' value={deliveryTip} onChange={e => setDeliveryTip(e.target.value)}/>
+                <TextField autoComplete="given-name" name="deliveryTip" required fullWidth id="deliveryTip" label="배달팁" placeholder='ex) 2000' value={deliveryTip} onChange={e => setDeliveryTip(e.target.value)} />
               </Grid>
               <Grid item xs={12}>
                 <TextField autoComplete="given-name" name="minDeliveryTime" required fullWidth id="minDeliveryTime" value={minDeliveryTime} label="최소 배달 예상 시간" placeholder='10' onChange={e => setMinDeliveryTime(e.target.value)} />
@@ -215,12 +225,7 @@ export default function StoreRegister() {
               <Grid item xs={6}>
                 <FormControl fullWidth required>
                   <InputLabel id="openHours-label">오픈 시간</InputLabel>
-                  <Select
-                    labelId="openHours-label"
-                    id="openHours"
-                    value={openHours}
-                    onChange={e => setOpenHours(e.target.value)}
-                  >
+                  <Select labelId="openHours-label" id="openHours" value={openHours} onChange={e => setOpenHours(e.target.value)}>
                     {timeOptionsOpen.map(time => (
                       <MenuItem key={time} value={time}>
                         {time}
@@ -273,15 +278,18 @@ export default function StoreRegister() {
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="h6" gutterBottom>
-                  가게 사진
+                  가게 사진 업로드
                 </Typography>
-                <input accept=".png, .jpeg, .jpg" id="upload-photo" type="file" a style={{ display: 'none' }} onChange={handleFileUpload} multiple />
-                <TextField autoComplete="given-name" name="storePictureName" value={storePictureName} fullWidth id="storePictureName" label="가게 사진" onClick={(e) => { e.target.value = null }} />
-                {/* 아이콘 대신에 "사진 올리기" 텍스트를 사용하고 싶다면 아래 주석 처리된 라인을 사용하세요 */}
-                {/* <span>사진 올리기</span> */}
-                <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} sx={{ mt: 3, mb: 2, }}>
+                <input accept=".png, .jpeg, .jpg" id="upload-photo" type="file" style={{ display: 'none' }} onChange={handleFileUpload} multiple />
+                <TextField autoComplete="given-name" name="storePictureName" value={storePictureName} fullWidth id="storePictureName" label="가게 사진" onClick={() => document.getElementById('upload-photo').click()} InputProps={{ readOnly: true }} sx={{ mb: 2 }} />
+                <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
                   사진 올리기
                 </Button>
+                {storePictureName && (
+                  <Typography variant="body1" gutterBottom>
+                    업로드된 파일: {storePictureName}
+                  </Typography>
+                )}
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel control={<Checkbox value="allowExtraEmails" color="primary" />} label="개인정보 수집 및 이용에 동의합니다" />
