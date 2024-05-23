@@ -32,7 +32,7 @@ export default function OrderList() {
                   <Typography>메뉴: {data.menuName} {(data.count > 0) ? ('외 ' + data.count + ' 건') : ''}</Typography>
                   <Typography>가격: {data.totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
                   <Typography>주문일자: {data.orderDate.replace('T', ' ')}</Typography>
-                  <Typography>상태: {data.status}</Typography>
+                  <Typography sx={{color: (data.status==='완료' ? 'green' : 'blue')}}>상태: {data.status}</Typography>
                 </CardContent>
                 {openPortal && activeIndex === idx && <OrderDetail isPortalOpen={{openPortal}} email={email} orderId={data.orderId}/>}
               </Card>

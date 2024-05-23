@@ -8,7 +8,7 @@ export default function OwnerOrderDetail({ isPortalOpen, email, orderId }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [ show, setShow ] = useState(false)
-  const { getOwnerOrderDetail: {isLoading, data: orderDetail}} = useOrderDetail(email, orderId)
+  const { getOwnerOrderDetail: {isLoading, data: orderDetail} } = useOrderDetail(email, orderId)
 
   useEffect(() =>{
     setShow(isPortalOpen.openPortal)
@@ -16,6 +16,7 @@ export default function OwnerOrderDetail({ isPortalOpen, email, orderId }) {
       queryClient.invalidateQueries(['ownerOrderList'])
     }
   }, [isPortalOpen.openPortal])
+
   return(
     <Fragment>
       {show ? 
