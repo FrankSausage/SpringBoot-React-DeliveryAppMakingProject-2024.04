@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import Footer from "../../components/Footer";
-import { Box, Grid, InputBase, Tab, Tabs, Typography, } from '@mui/material/';
+import { Box, Grid, InputBase, Stack, Tab, Tabs, Typography, } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
-import { useLocation, useNavigate } from 'react-router-dom';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import StoreInfo from './StoreInfo';
 import StoreMenuList from './StoreMenuList';
 import SearchHeader from '../../components/SearchHeader';
-
+import { useDibs } from '../Dibs/Hook/useDibs';
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -43,25 +45,44 @@ function a11yProps(index) {
 
 export default function StoreDetail() {
   const location = useLocation()
-  const { storeName } = location.state ? location.state : '';
+  const { storeId } = useParams()
+  const { storeName, isDibed } = location.state ? location.state : '';
+  const { postDibStore } = useDibs();
   const [value, setValue] = useState(1);
   const [popularity, setPopularity] = useState('');
   const [searchOpen, setSearchOpen] = useState(false); // 검색 창의 상태를 추적하는 state
   const navigate = useNavigate();
-
+  
   const handleChange = (e, newValue) => {
     setValue(newValue);
     setSearchOpen(false); // 다른 탭을 클릭할 때 검색 창 닫기
   };
-
+  
   const handleSearchTabClick = () => {
     setSearchOpen(!searchOpen); // 메뉴 검색 탭을 클릭할 때마다 검색 창 열기/닫기
   };
+
+  const handleDib = () => {
+
+  }
 
   return (
     // <Box sx={{ margin: -1 }}>
     <Box sx={{ height: '100vh', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'auto', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column' }}>
       <SearchHeader />
+        <Grid container>
+          <Grid item xs={4}/>
+          <Grid item xs={2.5}>
+            <Typography variant='h4' sx={{textAlign:'end'}}>{storeName}</Typography>
+          </Grid>
+          <Grid item sx={{ml:2}} xs> 
+            {isDibed==='일반' ? 
+              <FavoriteBorderIcon sx={{cursor:'pointer', fontSize:30,}} onClick={() => handleDib} />
+              :
+              <FavoriteIcon sx={{cursor:'pointer', fontSize:30, color:'red'}} onClick={() => handleDib} />
+            } 
+          </Grid>
+        </Grid>
       <Box sx={{ borderBottom: 1, borderColor: 'black', display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
         <Tabs
           value={value}

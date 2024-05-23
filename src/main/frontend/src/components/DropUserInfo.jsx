@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { logout } from '../utils/firebase';
 import {Popover,  Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Typography,} from '@mui/material';
@@ -39,6 +39,7 @@ export default function DropUserInfo({ role }) {
 				navigate('/OrderList')
 			break;
 			default :
+      break;
 		}
 		
 	}
@@ -64,11 +65,6 @@ export default function DropUserInfo({ role }) {
         }}
           >
         <List>
-          {role!=='점주' &&
-          <ListItem>
-						<Cart allClose={handleClose} />
-          </ListItem>
-          }
           <ListItem>
             <ListItemButton onClick={() => {handleNavigate('Update')}}>
               <ListItemIcon>
@@ -78,6 +74,13 @@ export default function DropUserInfo({ role }) {
             </ListItemButton>
           </ListItem>
           {role!=='점주' &&
+          <Fragment>
+          <ListItem>
+						<Cart allClose={handleClose} />
+          </ListItem>
+          <ListItem>
+						<Typography>찜 목록 자리</Typography>
+          </ListItem>
           <ListItem>
             <ListItemButton onClick={() => {handleNavigate('OrderList')}}>
               <ListItemIcon>
@@ -86,6 +89,7 @@ export default function DropUserInfo({ role }) {
               <ListItemText primary="주문내역"/>
             </ListItemButton>
           </ListItem>
+          </Fragment>
           }
           <Divider />
           <ListItem>
