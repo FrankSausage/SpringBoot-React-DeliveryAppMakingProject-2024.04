@@ -61,29 +61,16 @@ export default function StoreDetail() {
   return (
     <Box sx={{ margin: -1 }}>
       <SearchHeader />
-      {/* <Box sx={{ height: '100vh', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'auto', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column' }}> */}
-      <div style={{
-        backgroundImage: 'url(/img/sl0.jpg)',
-        backgroundSize: 'auto',
-        backgroundPosition: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        padding: '23px 0',
-        backgroundBlendMode: 'lighten',
-        backgroundColor: 'rgba(255, 255, 255, 0.6)' // This makes the background image appear lighter
-        }}>
+      <Box sx={{ height: 'auto', minHeight: '100vh', backgroundImage: 'url(/img/s01.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'black', display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
           <Tabs
             value={value}
             onChange={handleChange}
-            aria-label="basic tabs example"
-          >
+            aria-label="basic tabs example">
             <Box sx={{ display: 'flex', alignItems: 'center', mt: 0 }}>
               <Tab label="메뉴 검색" onClick={handleSearchTabClick} autoFocus sx={{
                 borderBottom: searchOpen ? '1px solid black' : 'none',
-                marginRight: 2,
-              }} />
+                marginRight: 2,}} />
               <Grid item xs={searchOpen ? 6 : 0} md={4}>
                 <Box
                   sx={{
@@ -110,7 +97,17 @@ export default function StoreDetail() {
             <Tab label="가게·원산지 정보" {...a11yProps(2)} autoFocus sx={{ marginLeft: 2, marginRight: 2 }} />
           </Tabs>
         </Box>
-      
+        {/* <div style={{
+        backgroundImage: 'url(/img/s0.jpg)',
+        backgroundSize: 'auto',
+        backgroundPosition: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        padding: '23px 0',
+        backgroundBlendMode: 'lighten',
+        backgroundColor: 'rgba(255, 255, 255, 0.6)' // This makes the background image appear lighter
+        }}> */}
         <CustomTabPanel value={value} index={1}>
           <StoreMenuList storeName={storeName} />
         </CustomTabPanel>
@@ -118,8 +115,8 @@ export default function StoreDetail() {
           <StoreInfo />
         </CustomTabPanel>
         <Footer />
-        </div>
-      {/* </Box> */}
+      {/* </div> */}
+      </Box>
     </Box>
   );
 }
