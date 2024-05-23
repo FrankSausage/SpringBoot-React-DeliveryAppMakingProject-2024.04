@@ -50,7 +50,7 @@ export default function Store() {
   };
 
   return (
-     <Box sx={{ bgcolor: '#f8f8f8', minHeight: '100vh', pb: 6,  m: -1}}>
+    <Box sx={{ margin: -1 }}>
       <SearchHeader />
       <Box sx={{ height: 'auto', minHeight: '100vh', backgroundImage: 'url(/img/s01.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: 'center', bgcolor: '#fff' }}>

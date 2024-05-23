@@ -61,7 +61,23 @@ export default function StoreDetail() {
   return (
     <Box sx={{ margin: -1 }}>
       <SearchHeader />
-      <Box sx={{ height: 'auto', minHeight: '100vh', backgroundImage: 'url(/img/s01.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <Box
+      sx={{
+        height: 'auto', // 전체 페이지 높이를 늘려서 스크롤 가능하게 설정
+        minHeight: '100vh',
+        backgroundImage: 'url(/img/s01.jpg)',
+        backgroundSize: 'auto', // 배경 이미지 크기 조정
+        backgroundPosition: 'center',
+        backgroundRepeat: 'repeat', // 배경 이미지 반복 설정
+        backgroundBlendMode: 'lighten',
+        backgroundColor: 'rgba(255, 255, 255, 0.6)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+      }}
+    >
+      {/* <Box sx={{ height: 'auto', minHeight: '100vh', backgroundImage: 'url(/img/s01.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}> */}
+
         <Box sx={{ borderBottom: 1, borderColor: 'black', display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
           <Tabs
             value={value}

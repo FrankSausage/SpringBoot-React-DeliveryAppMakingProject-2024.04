@@ -17,9 +17,10 @@ export default function StoreList({ category, searchText, }) {
 					}
 					{!isLoading && storeDatas && (
 						storeDatas.data.storeList.map((data) => (
-							<Box key={data.storeId} component={Link} to={`/StoreDetail/${data.storeId}`} state={{ storeName: data.name }} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
-								<img src={data.storePictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
-								<ul style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
+							<Box key={data.storeId} component={Link} to={`/StoreDetail/${data.storeId}`} state={{ storeName: data.name }} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto', 
+												backgroundColor: 'rgba(255, 255, 255)', display: 'flex', alignItems: 'center', padding: '0 10px' }}>
+								<img src={data.storePictureName} style={{ width: '20%', height: '100%',marginRight: '10px' }} />
+								<ul style={{ padding: 0, margin: 0, listStyle: 'none' }}>
 									<li style={{ listStyleType: 'none' }}>{data.name}</li>
 								</ul>
 							</Box>
