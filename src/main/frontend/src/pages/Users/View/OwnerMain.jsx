@@ -37,8 +37,9 @@ export default function OwnerMain() {
   };
 
   return (
-    <Box sx={{ margin: 0, paddingBottom: '100px' }}>
+    <Box sx={{ margin: -1, paddingBottom: '100px' }}>
       <SearchHeader />
+      <Box sx={{ height: '100vh', backgroundImage: 'url(/img/Okitchen.jpg)', backgroundSize: 'auto', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column' }}>
       <Grid container justifyContent="center" alignItems="center" mt={2}>
         <Grid item xs={10} md={6}>
           <Box sx={{ display: 'flex', alignItems: 'center', border: 1, borderColor: 'divider', borderRadius: 10, p: 1, boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' }}>
@@ -107,5 +108,6 @@ export default function OwnerMain() {
         </Button>
       </Box>
     </Box>
+  </Box>
   );
 }
