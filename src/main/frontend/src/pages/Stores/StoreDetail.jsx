@@ -59,54 +59,67 @@ export default function StoreDetail() {
   };
 
   return (
-    // <Box sx={{ margin: -1 }}>
-    <Box sx={{ height: '100vh', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'auto', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ margin: -1 }}>
       <SearchHeader />
-      <Box sx={{ borderBottom: 1, borderColor: 'black', display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center', mt: 0 }}>
-            <Tab label="메뉴 검색" onClick={handleSearchTabClick} autoFocus sx={{
-              borderBottom: searchOpen ? '1px solid black' : 'none',
-              marginRight: 2,
-            }} />
-            <Grid item xs={searchOpen ? 6 : 0} md={4}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  border: searchOpen ? '1px solid black' : 'none',
-                  borderRadius: 1,
-                  transition: 'width 0.3s ease-in-out', // 애니메이션 효과 추가
-                  width: searchOpen ? 'auto' : 0, // 검색창이 열릴 때만 너비 적용
-                  overflow: 'hidden', // 컨텐츠가 넘치면 숨김
-                }}
-              >
-                <SearchIcon sx={{ m: 1 }} />
-                <InputBase
-                  placeholder="검색"
-                  inputProps={{ 'aria-label': 'search' }}
-                  fullWidth
-                  autoFocus={searchOpen} // 검색창이 열릴 때 자동 포커스
-                />
-              </Box>
-            </Grid>
-          </Box>
-          <Tab label="메뉴" {...a11yProps(1)} sx={{ marginLeft: 2, marginRight: 2 }} />
-          <Tab label="가게·원산지 정보" {...a11yProps(2)} autoFocus sx={{ marginLeft: 2, marginRight: 2 }} />
-        </Tabs>
-      </Box>
+      {/* <Box sx={{ height: '100vh', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'auto', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column' }}> */}
+      <div style={{
+        backgroundImage: 'url(/img/sl0.jpg)',
+        backgroundSize: 'auto',
+        backgroundPosition: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        padding: '23px 0',
+        backgroundBlendMode: 'lighten',
+        backgroundColor: 'rgba(255, 255, 255, 0.6)' // This makes the background image appear lighter
+        }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'black', display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', mt: 0 }}>
+              <Tab label="메뉴 검색" onClick={handleSearchTabClick} autoFocus sx={{
+                borderBottom: searchOpen ? '1px solid black' : 'none',
+                marginRight: 2,
+              }} />
+              <Grid item xs={searchOpen ? 6 : 0} md={4}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    border: searchOpen ? '1px solid black' : 'none',
+                    borderRadius: 1,
+                    transition: 'width 0.3s ease-in-out', // 애니메이션 효과 추가
+                    width: searchOpen ? 'auto' : 0, // 검색창이 열릴 때만 너비 적용
+                    overflow: 'hidden', // 컨텐츠가 넘치면 숨김
+                  }}
+                >
+                  <SearchIcon sx={{ m: 1 }} />
+                  <InputBase
+                    placeholder="검색"
+                    inputProps={{ 'aria-label': 'search' }}
+                    fullWidth
+                    autoFocus={searchOpen} // 검색창이 열릴 때 자동 포커스
+                  />
+                </Box>
+              </Grid>
+            </Box>
+            <Tab label="메뉴" {...a11yProps(1)} sx={{ marginLeft: 2, marginRight: 2 }} />
+            <Tab label="가게·원산지 정보" {...a11yProps(2)} autoFocus sx={{ marginLeft: 2, marginRight: 2 }} />
+          </Tabs>
+        </Box>
       
-      <CustomTabPanel value={value} index={1}>
-        <StoreMenuList storeName={storeName} />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        <StoreInfo />
-      </CustomTabPanel>
-      <Footer />
+        <CustomTabPanel value={value} index={1}>
+          <StoreMenuList storeName={storeName} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={2}>
+          <StoreInfo />
+        </CustomTabPanel>
+        <Footer />
+        </div>
+      {/* </Box> */}
     </Box>
   );
 }

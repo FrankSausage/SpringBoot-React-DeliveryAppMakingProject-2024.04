@@ -112,6 +112,7 @@ export default function SignUp() {
         backgroundBlendMode: 'lighten',
         backgroundColor: 'rgba(255, 255, 255, 0.6)' // This makes the background image appear lighter
         }}>
+        {/* <Box sx={{ height: '120vh', backgroundImage: 'url(/img/kitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column' }}> */}
           <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
             <CssBaseline />
           <Box
@@ -289,6 +290,7 @@ export default function SignUp() {
         </Box>
       </Container>
       <Footer sx={{ mt: 3 }}/>
+    {/* </Box> */}
     </div>
   </ThemeProvider>
   );
