@@ -278,9 +278,11 @@ public class StoreServiceImpl implements StoreService {
         Stores stores = storesRepository.findById(requestDto.getStoreId())
             .orElseThrow(() -> new RuntimeException("store not found"));
         Boolean dibs = dibsRepository.existsByUserIdAndStoreId(users.getUserId(), stores.getStoreId());
-        String isDibed = "일반";
+        String isDibed = "";
         if(dibs){
             isDibed = "찜";
+        }else{
+            isDibed = "일반";
         }
         StoreDetailResponseDto responseDto = StoreDetailResponseDto.builder()
             .role(users.getRole())
