@@ -410,12 +410,12 @@ public class OrderServiceImpl implements OrderService {
         List<OrderDetailInnerMenusResponseDto> innerMenusResponseDtos = new ArrayList<>();
 
         int currentSequence = -1;
-        List<OrderDetailInnerMenuOptionsResponseDto> innerMenuOptionsResponseDtos = null;
+        List<OrderDetailInnerMenuOptionsResponseDto> innerMenuOptionsResponseDtos = new ArrayList<>();
         OrderMenu lastOrderMenu = null;
 
         for (OrderMenu orderMenu : orderMenuList) {
             if (currentSequence != orderMenu.getSequence()) {
-                if (innerMenuOptionsResponseDtos != null && lastOrderMenu != null) {
+                if (lastOrderMenu != null) {
                     Menu lastMenu = menuRepository.findById(lastOrderMenu.getMenuId())
                         .orElseThrow(() -> new RuntimeException("Menu not found"));
 
@@ -426,12 +426,12 @@ public class OrderServiceImpl implements OrderService {
                         .quantity(lastOrderMenu.getQuantity())
                         .sequence(lastOrderMenu.getSequence())
                         .menuPictureName(lastMenu.getMenuPictureName())
-                        .menuOptions(innerMenuOptionsResponseDtos)
+                        .menuOptions(new ArrayList<>(innerMenuOptionsResponseDtos)) // 빈 리스트로 초기화
                         .build();
                     innerMenusResponseDtos.add(innerMenusResponseDto);
+                    innerMenuOptionsResponseDtos.clear();
                 }
                 currentSequence = orderMenu.getSequence();
-                innerMenuOptionsResponseDtos = new ArrayList<>();
             }
 
             if (orderMenu.getMenuOptionId() != null) {
@@ -444,10 +444,12 @@ public class OrderServiceImpl implements OrderService {
                     .build();
                 innerMenuOptionsResponseDtos.add(menuOptionsResponseDto);
             }
+
             lastOrderMenu = orderMenu;
         }
 
-        if (innerMenuOptionsResponseDtos != null && lastOrderMenu != null) {
+        // Process the last menu in the list
+        if (lastOrderMenu != null) {
             Menu lastMenu = menuRepository.findById(lastOrderMenu.getMenuId())
                 .orElseThrow(() -> new RuntimeException("Menu not found"));
 
@@ -458,7 +460,7 @@ public class OrderServiceImpl implements OrderService {
                 .quantity(lastOrderMenu.getQuantity())
                 .sequence(lastOrderMenu.getSequence())
                 .menuPictureName(lastMenu.getMenuPictureName())
-                .menuOptions(innerMenuOptionsResponseDtos)
+                .menuOptions(new ArrayList<>(innerMenuOptionsResponseDtos)) // 빈 리스트로 초기화
                 .build();
             innerMenusResponseDtos.add(innerMenusResponseDto);
         }
