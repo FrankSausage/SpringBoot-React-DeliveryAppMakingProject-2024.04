@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import Footer from "../../components/Footer";
 import { Box, Grid, InputBase, Stack, Tab, Tabs, Typography, } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
@@ -10,6 +10,8 @@ import StoreInfo from './StoreInfo';
 import StoreMenuList from './StoreMenuList';
 import SearchHeader from '../../components/SearchHeader';
 import { useDibs } from '../Dibs/Hook/useDibs';
+import { useStoreDeatilByEmail } from '../../utils/storeInfo';
+import { useQueryClient } from '@tanstack/react-query';
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -44,15 +46,16 @@ function a11yProps(index) {
 }
 
 export default function StoreDetail() {
-  const location = useLocation()
+  const queryClient = useQueryClient();
+  const email = localStorage.getItem('email')
   const { storeId } = useParams()
-  const { storeName, isDibed } = location.state ? location.state : '';
+  const { isLoading, storeDetail } = useStoreDeatilByEmail(email, storeId);
   const { postDibStore } = useDibs();
   const [value, setValue] = useState(1);
   const [popularity, setPopularity] = useState('');
   const [searchOpen, setSearchOpen] = useState(false); // 검색 창의 상태를 추적하는 state
   const navigate = useNavigate();
-  
+  console.log(storeDetail)
   const handleChange = (e, newValue) => {
     setValue(newValue);
     setSearchOpen(false); // 다른 탭을 클릭할 때 검색 창 닫기
@@ -62,24 +65,42 @@ export default function StoreDetail() {
     setSearchOpen(!searchOpen); // 메뉴 검색 탭을 클릭할 때마다 검색 창 열기/닫기
   };
 
-  const handleDib = () => {
+  const handleDib = (isDibed) => {
+    if(isDibed===null) {
+      return;
+    }
+    console.log(isDibed)
 
+    if(isDibed==='일반') {
+      postDibStore.mutate({email: email, storeId: storeId, status: '찜'}, {
+        onSuccess: () => {console.log('찜 성공'); queryClient.invalidateQueries(['storeDetail', {storeId: storeId}])},
+        onError: e => {alert('찜 등록에 문제가 발생했습니다.'); console.error(e)}
+      })
+    } else if (isDibed==='찜') {
+      postDibStore.mutate({email: email, storeId: storeId, status: '일반'}, {
+        onSuccess: () => {console.log('일반 성공'); queryClient.invalidateQueries(['storeDetail', {storeId: storeId}])},
+        onError: e => {alert('찜 등록에 문제가 발생했습니다.'); console.error(e)}
+      })
+    }
   }
 
   return (
     // <Box sx={{ margin: -1 }}>
     <Box sx={{ height: '100vh', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'auto', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column' }}>
       <SearchHeader />
+      {isLoading && <Typography>로딩 중...</Typography>}
+      {!isLoading && storeDetail && 
+      <Fragment>
         <Grid container>
           <Grid item xs={4}/>
           <Grid item xs={2.5}>
-            <Typography variant='h4' sx={{textAlign:'end'}}>{storeName}</Typography>
+            <Typography variant='h4' sx={{textAlign:'end'}}>{storeDetail.name} {storeDetail.isDibed} </Typography>
           </Grid>
           <Grid item sx={{ml:2}} xs> 
-            {isDibed==='일반' ? 
-              <FavoriteBorderIcon sx={{cursor:'pointer', fontSize:30,}} onClick={() => handleDib} />
+            {storeDetail.isDibed==='일반' ? 
+              <FavoriteBorderIcon sx={{cursor:'pointer', fontSize:30,}} onClick={() => handleDib(storeDetail.isDibed)} />
               :
-              <FavoriteIcon sx={{cursor:'pointer', fontSize:30, color:'red'}} onClick={() => handleDib} />
+              <FavoriteIcon sx={{cursor:'pointer', fontSize:30, color:'red'}} onClick={() => handleDib(storeDetail.isDibed)} />
             } 
           </Grid>
         </Grid>
@@ -122,12 +143,14 @@ export default function StoreDetail() {
       </Box>
       
       <CustomTabPanel value={value} index={1}>
-        <StoreMenuList storeName={storeName} />
+        <StoreMenuList storeName={storeDetail.name} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <StoreInfo />
+        <StoreInfo storeDetail={storeDetail} />
       </CustomTabPanel>
       <Footer />
+      </Fragment>
+      }
     </Box>
   );
 }
