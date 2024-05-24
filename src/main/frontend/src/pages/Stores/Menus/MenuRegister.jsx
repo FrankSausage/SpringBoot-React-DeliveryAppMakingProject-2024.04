@@ -60,18 +60,17 @@ export default function MenuRegister() {
     }
   };
 
-  const handleFileUpload = (e) => {
+  const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (file) {
       const fileName = file.name;
       setMenuPictureName(fileName);
-      uploadImageToCloudinary(file) // 클라우드니어리에 이미지 업로드
-        .then((url) => {
-          setMenuPictureUrl(url); // 업로드된 이미지 URL 저장
-        })
-        .catch((error) => {
-          console.error('Failed to upload image to Cloudinary:', error);
-        });
+      try {
+        const url = await uploadImageToCloudinary(file); // 클라우드니어리에 이미지 업로드
+        setMenuPictureUrl(url); // 업로드된 이미지 URL 저장
+      } catch (error) {
+        console.error('Failed to upload image to Cloudinary:', error);
+      }
     }
   };
 

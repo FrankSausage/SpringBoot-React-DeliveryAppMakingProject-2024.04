@@ -147,11 +147,19 @@ export default function Update() {
       {user && user.data &&
         <>
       <SearchHeader />
-        <div style={{
-        backgroundImage: backgroundImage,backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
-          <Container component="main" maxWidth="xs">
+      <Box sx={{ height: 'auto', minHeight: '100vh', backgroundImage: 'url(/img/kitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '28px 0',}}>
+          <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
+          {/* <Container component="main" maxWidth="xs"> */}
             <CssBaseline />
             <Box
+            sx={{
+              marginTop: 0, display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              padding: '20px',
+              borderRadius: '10px'
+            }}>
+            {/* <Box
               sx={{
                 marginTop: 8, display: 'flex',
                 flexDirection: 'column',
@@ -160,8 +168,7 @@ export default function Update() {
                 boxShadow: 1,
                 p: 4,
                 borderRadius: 2,
-              }}
-            >
+              }}> */}
               <Avatar sx={{ m: 1, bgcolor: (role === '회원') ? 'tertiary.main' : (role === '점주') ? 'primary.main' : 'default' }}>
                 <RestorePageIcon />
               </Avatar>
@@ -245,7 +252,8 @@ export default function Update() {
             </Box>
             <Footer sx={{ mt: 3 }} />
           </Container>
-          </div>
+          </Box>
+          {/* </div> */}
           <Modal
             open={open}
             onClose={handleClose}
