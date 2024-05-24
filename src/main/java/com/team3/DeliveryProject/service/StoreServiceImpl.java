@@ -278,58 +278,36 @@ public class StoreServiceImpl implements StoreService {
         Stores stores = storesRepository.findById(requestDto.getStoreId())
             .orElseThrow(() -> new RuntimeException("store not found"));
         Optional<Dibs> dibs = dibsRepository.findByUserIdAndStoreId(users.getUserId(), stores.getStoreId());
+        String isDibed = "";
         if(dibs.isPresent()){
-
-            StoreDetailUserResponseDto responseDto = StoreDetailUserResponseDto.builder()
-                .role(users.getRole())
-                .name(stores.getName())
-                .type(stores.getType())
-                .category(stores.getCategory())
-                .address(stores.getAddress())
-                .storePictureName(stores.getStorePictureName())
-                .phone(stores.getPhone())
-                .content(stores.getContent())
-                .minDeliveryPrice(stores.getMinDeliveryPrice())
-                .deliveryTip(stores.getDeliveryTip())
-                .minDeliveryTime(stores.getMinDeliveryTime())
-                .maxDeliveryTime(stores.getMaxDeliveryTime())
-                .rating(stores.getRating())
-                .dibsCount(stores.getDibsCount())
-                .reviewCount(stores.getReviewCount())
-                .operationHours(stores.getOperationHours())
-                .closedDays(stores.getClosedDays())
-                .createdDate(stores.getCreatedDate())
-                .modifiedDate(stores.getModifiedDate())
-                .isDibed(dibs.get().getStatus())
-                .isOpened(isOpened(stores))
-                .build();
-            return responseDto;
+            isDibed = dibs.get().getStatus();
         }else{
-            StoreDetailUserResponseDto responseDto = StoreDetailUserResponseDto.builder()
-                .role(users.getRole())
-                .name(stores.getName())
-                .type(stores.getType())
-                .category(stores.getCategory())
-                .address(stores.getAddress())
-                .storePictureName(stores.getStorePictureName())
-                .phone(stores.getPhone())
-                .content(stores.getContent())
-                .minDeliveryPrice(stores.getMinDeliveryPrice())
-                .deliveryTip(stores.getDeliveryTip())
-                .minDeliveryTime(stores.getMinDeliveryTime())
-                .maxDeliveryTime(stores.getMaxDeliveryTime())
-                .rating(stores.getRating())
-                .dibsCount(stores.getDibsCount())
-                .reviewCount(stores.getReviewCount())
-                .operationHours(stores.getOperationHours())
-                .closedDays(stores.getClosedDays())
-                .createdDate(stores.getCreatedDate())
-                .modifiedDate(stores.getModifiedDate())
-                .isDibed(null)
-                .isOpened(isOpened(stores))
-                .build();
-            return responseDto;
+            isDibed = null;
         }
+        StoreDetailUserResponseDto responseDto = StoreDetailUserResponseDto.builder()
+            .role(users.getRole())
+            .name(stores.getName())
+            .type(stores.getType())
+            .category(stores.getCategory())
+            .address(stores.getAddress())
+            .storePictureName(stores.getStorePictureName())
+            .phone(stores.getPhone())
+            .content(stores.getContent())
+            .minDeliveryPrice(stores.getMinDeliveryPrice())
+            .deliveryTip(stores.getDeliveryTip())
+            .minDeliveryTime(stores.getMinDeliveryTime())
+            .maxDeliveryTime(stores.getMaxDeliveryTime())
+            .rating(stores.getRating())
+            .dibsCount(stores.getDibsCount())
+            .reviewCount(stores.getReviewCount())
+            .operationHours(stores.getOperationHours())
+            .closedDays(stores.getClosedDays())
+            .createdDate(stores.getCreatedDate())
+            .modifiedDate(stores.getModifiedDate())
+            .isDibed(isDibed)
+            .isOpened(isOpened(stores))
+            .build();
+        return responseDto;
     }
 
     @Override
