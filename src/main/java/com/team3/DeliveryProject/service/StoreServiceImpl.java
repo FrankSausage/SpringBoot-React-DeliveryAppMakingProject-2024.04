@@ -277,32 +277,59 @@ public class StoreServiceImpl implements StoreService {
             .orElseThrow(() -> new RuntimeException("user not found"));
         Stores stores = storesRepository.findById(requestDto.getStoreId())
             .orElseThrow(() -> new RuntimeException("store not found"));
-        Dibs dibs = dibsRepository.findByUserIdAndStoreId(users.getUserId(), stores.getStoreId()).orElseThrow(()->new RuntimeException("Dibs not found"));
+        Optional<Dibs> dibs = dibsRepository.findByUserIdAndStoreId(users.getUserId(), stores.getStoreId());
+        if(dibs.isPresent()){
 
-        StoreDetailUserResponseDto responseDto = StoreDetailUserResponseDto.builder()
-            .role(users.getRole())
-            .name(stores.getName())
-            .type(stores.getType())
-            .category(stores.getCategory())
-            .address(stores.getAddress())
-            .storePictureName(stores.getStorePictureName())
-            .phone(stores.getPhone())
-            .content(stores.getContent())
-            .minDeliveryPrice(stores.getMinDeliveryPrice())
-            .deliveryTip(stores.getDeliveryTip())
-            .minDeliveryTime(stores.getMinDeliveryTime())
-            .maxDeliveryTime(stores.getMaxDeliveryTime())
-            .rating(stores.getRating())
-            .dibsCount(stores.getDibsCount())
-            .reviewCount(stores.getReviewCount())
-            .operationHours(stores.getOperationHours())
-            .closedDays(stores.getClosedDays())
-            .createdDate(stores.getCreatedDate())
-            .modifiedDate(stores.getModifiedDate())
-            .isDibed(dibs.getStatus())
-            .isOpened(isOpened(stores))
-            .build();
-        return responseDto;
+            StoreDetailUserResponseDto responseDto = StoreDetailUserResponseDto.builder()
+                .role(users.getRole())
+                .name(stores.getName())
+                .type(stores.getType())
+                .category(stores.getCategory())
+                .address(stores.getAddress())
+                .storePictureName(stores.getStorePictureName())
+                .phone(stores.getPhone())
+                .content(stores.getContent())
+                .minDeliveryPrice(stores.getMinDeliveryPrice())
+                .deliveryTip(stores.getDeliveryTip())
+                .minDeliveryTime(stores.getMinDeliveryTime())
+                .maxDeliveryTime(stores.getMaxDeliveryTime())
+                .rating(stores.getRating())
+                .dibsCount(stores.getDibsCount())
+                .reviewCount(stores.getReviewCount())
+                .operationHours(stores.getOperationHours())
+                .closedDays(stores.getClosedDays())
+                .createdDate(stores.getCreatedDate())
+                .modifiedDate(stores.getModifiedDate())
+                .isDibed(dibs.get().getStatus())
+                .isOpened(isOpened(stores))
+                .build();
+            return responseDto;
+        }else{
+            StoreDetailUserResponseDto responseDto = StoreDetailUserResponseDto.builder()
+                .role(users.getRole())
+                .name(stores.getName())
+                .type(stores.getType())
+                .category(stores.getCategory())
+                .address(stores.getAddress())
+                .storePictureName(stores.getStorePictureName())
+                .phone(stores.getPhone())
+                .content(stores.getContent())
+                .minDeliveryPrice(stores.getMinDeliveryPrice())
+                .deliveryTip(stores.getDeliveryTip())
+                .minDeliveryTime(stores.getMinDeliveryTime())
+                .maxDeliveryTime(stores.getMaxDeliveryTime())
+                .rating(stores.getRating())
+                .dibsCount(stores.getDibsCount())
+                .reviewCount(stores.getReviewCount())
+                .operationHours(stores.getOperationHours())
+                .closedDays(stores.getClosedDays())
+                .createdDate(stores.getCreatedDate())
+                .modifiedDate(stores.getModifiedDate())
+                .isDibed(null)
+                .isOpened(isOpened(stores))
+                .build();
+            return responseDto;
+        }
     }
 
     @Override
