@@ -48,6 +48,7 @@ function a11yProps(index) {
 export default function StoreDetail() {
   const queryClient = useQueryClient();
   const email = localStorage.getItem('email')
+  const role = localStorage.getItem('role')
   const { storeId } = useParams()
   const { isLoading, storeDetail } = useStoreDeatilByEmail(email, storeId);
   const { postDibStore } = useDibs();
@@ -67,6 +68,10 @@ export default function StoreDetail() {
 
   const handleDib = (isDibed) => {
     if(isDibed===null) {
+      postDibStore.mutate({email: email, storeId: storeId, status: '찜'}, {
+        onSuccess: () => {console.log('찜 성공'); queryClient.invalidateQueries(['storeDetail', {storeId: storeId}])},
+        onError: e => {alert('찜 등록에 문제가 발생했습니다.'); console.error(e)}
+      })
       return;
     }
 
@@ -95,7 +100,7 @@ export default function StoreDetail() {
             <Typography variant='h4' sx={{textAlign:'end'}}>{storeDetail.name}</Typography>
           </Grid>
           <Grid item sx={{ml:2}} xs> 
-            {storeDetail.isDibed==='일반' ? 
+            {role!=='점주' && storeDetail.isDibed==='일반' || storeDetail.isDibed===null ? 
               <FavoriteBorderIcon sx={{cursor:'pointer', fontSize:30,}} onClick={() => handleDib(storeDetail.isDibed)} />
               :
               <FavoriteIcon sx={{cursor:'pointer', fontSize:30, color:'red'}} onClick={() => handleDib(storeDetail.isDibed)} />
