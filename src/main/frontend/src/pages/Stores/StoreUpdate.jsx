@@ -103,7 +103,7 @@ export default function StoreUpdate() {
     if (store && store.addressCodes && store.closedDays) {
       const { roadAddress, extraAddress, detailAddress } = splitAddressFromCurrentUserAddress(store.address)
       setRoadAddress(roadAddress); setExtraAddress(extraAddress); setExtraAddress(extractExtraAddress(store.address)); setCategory(store.category);
-      setSelectedDays(store.closedDays); setClosedDays(store.closedDays); setContent(store.content); setDeliveryTip(store.deliveryTip); setMaxDeliveryTime(store.maxDeliveryTime);
+      setSelectedDays(store.closedDays ? store.closedDays : []); setClosedDays(store.closedDays ? store.closedDays : []); setContent(store.content); setDeliveryTip(store.deliveryTip); setMaxDeliveryTime(store.maxDeliveryTime);
       setMinDeliveryPrice(store.minDeliveryPrice); setMinDeliveryTime(store.minDeliveryTime); setName(store.name); setOpenHours(store.openHours); setCloseHours(store.closeHours);
       setPhone(store.phone); setStorePictureName(store.storePictureName); setType(store.type);
       setDeliveryAddress(store.addressCodes.map(res => res.deliveryAddress));

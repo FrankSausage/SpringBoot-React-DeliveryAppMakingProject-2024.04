@@ -18,6 +18,7 @@ export default function ReviewUpdate() {
   const [content, setContent] = useState('');
   const [reviewPictureName, setReviewPictureName] = useState('');
   const [reviewPictureUrl, setReviewPictureUrl] = useState('');  // 업로드된 이미지 URL을 저장할 상태 추가
+  const [isFileUploading, setIsFileUploading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -43,6 +44,7 @@ export default function ReviewUpdate() {
   const setFormData = async (data) => {
     try {
       data.append('email', email);
+      data.appen('reviewPictureName', reviewPictureUrl ? reviewPictureUrl : reviewPictureName )
       return await data;
     }
     catch (error) {
@@ -55,6 +57,7 @@ export default function ReviewUpdate() {
     const file = e.target.files[0];
     if (file) {
       const fileName = file.name;
+      setIsFileUploading(true);
       setReviewPictureName(fileName);
       uploadImageToCloudinary(file) // 클라우드니어리에 이미지 업로드
         .then((url) => {
@@ -150,14 +153,15 @@ export default function ReviewUpdate() {
                   </ul>
                 </div> 
             </Box>
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
-              리뷰 등록하기
-            </Button>
+              {isFileUploading ? 
+                  <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
+                  리뷰 수정
+                  </Button>
+                    :
+                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
+              리뷰 수정
+              </Button>
+                    }
           </Box>
         </Box>
         <Footer sx={{ mt: 5 }} />

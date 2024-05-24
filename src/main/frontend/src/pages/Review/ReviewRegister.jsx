@@ -4,7 +4,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
 import { getCurrentUser } from '../../utils/firebase';
-import { extractDataFromFormData  } from '../../utils/commonUitil';
+import { extractDataFromFormData } from '../../utils/commonUitil';
 import axios from 'axios';
 import SearchHeader from '../../components/SearchHeader';
 import Footer from '../../components/Footer';
@@ -13,32 +13,33 @@ import { uploadImageToCloudinary } from '../../utils/uploader';
 const defaultTheme = createTheme();
 
 export default function ReviewRegister() {
-  const { email } = getCurrentUser(); 
+  const { email } = getCurrentUser();
   const [rating, setRating] = useState('');
   const [content, setContent] = useState('');
   const [reviewPictureName, setReviewPictureName] = useState('');
   const [reviewPictureUrl, setReviewPictureUrl] = useState('');  // 업로드된 이미지 URL을 저장할 상태 추가
+  const [isFileUploading, setIsFileUploading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    extractDataFromFormData(data).then(res=>console.log(res))
-      setFormData(data)
-        .then(res => {
-          extractDataFromFormData(res)
-            .then(resFormData => {
-              axios.post(`/dp/store/review/register`, resFormData)
-            })
-            .then(() => {
-              alert('리뷰 등록이 완료되었습니다.');
-              navigate('/');
-            })
-        })
-        .catch(console.error);
-    };
+    extractDataFromFormData(data).then(res => console.log(res))
+    setFormData(data)
+      .then(res => {
+        extractDataFromFormData(res)
+          .then(resFormData => {
+            axios.post(`/dp/store/review/register`, resFormData)
+          })
+          .then(() => {
+            alert('리뷰 등록이 완료되었습니다.');
+            navigate('/');
+          })
+      })
+      .catch(console.error);
+  };
 
-  
+
 
   const setFormData = async (data) => {
     try {
@@ -55,6 +56,7 @@ export default function ReviewRegister() {
     const file = e.target.files[0];
     if (file) {
       const fileName = file.name;
+      setIsFileUploading(true);
       setReviewPictureName(fileName);
       uploadImageToCloudinary(file) // 클라우드니어리에 이미지 업로드
         .then((url) => {
@@ -99,18 +101,15 @@ export default function ReviewRegister() {
           <Typography component="h1" variant="h5">
             가게 이름
           </Typography>
-          
-          <div style={{marginTop: '5%', textAlign: 'center'}}>
-            <Box sx={{'& > legend': {mt: 2}}}>
-              <Rating name="rating" value={rating} 
+          <div style={{ marginTop: '5%', textAlign: 'center' }}>
+            <Box sx={{ '& > legend': { mt: 2 } }}>
+              <Rating name="rating" value={rating}
                 defaultValue={0} precision={0.5} size="large"
-                onChange={handleRatingChange}>        
+                onChange={handleRatingChange}>
               </Rating>
               <br />
             </Box>
           </div>
-          
-
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -141,23 +140,24 @@ export default function ReviewRegister() {
                 )}
               </Grid>
             </Grid>
-            <Box sx={{...boxStyle, position: 'relative', width: { xs: '90%', sm: '100%' }, height: '65px', marginX: 'auto'}}>
-                <div>
-                  <ul style={{ display: 'flex', justifyContent: 'space-between', position: 'absolute', top: '50%', left: '40%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
-                    <li style={{ listStyleType: 'none', marginLeft:'-140px', marginRight: '100px' }}>메뉴 이름</li>
-                    {/* <li style={{ listStyleType: 'none', marginLeft:'100px', marginRight: '10px' }}> O </li>
+            <Box sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '100%' }, height: '65px', marginX: 'auto' }}>
+              <div>
+                <ul style={{ display: 'flex', justifyContent: 'space-between', position: 'absolute', top: '50%', left: '40%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
+                  <li style={{ listStyleType: 'none', marginLeft: '-140px', marginRight: '100px' }}>메뉴 이름</li>
+                  {/* <li style={{ listStyleType: 'none', marginLeft:'100px', marginRight: '10px' }}> O </li>
                     <li style={{ listStyleType: 'none', marginRight: '-220px'}}> X </li> */}
-                  </ul>
-                </div> 
+                </ul>
+              </div>
             </Box>
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
+            {isFileUploading ?
+              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
               리뷰 등록하기
             </Button>
+              :
+              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
+              리뷰 등록하기
+            </Button>
+            }
           </Box>
         </Box>
         <Footer sx={{ mt: 5 }} />
@@ -167,14 +167,14 @@ export default function ReviewRegister() {
 }
 
 let boxStyle = {
-  width: 200, 
-  height: 200, 
-  border:1, 
-  borderColor: 'rgb(217, 217, 217)', 
-  m:2
+  width: 200,
+  height: 200,
+  border: 1,
+  borderColor: 'rgb(217, 217, 217)',
+  m: 2
 }
-let gridStyle ={
-  justifyContent:'center',
-  alignItems:'center',
-  p:2
+let gridStyle = {
+  justifyContent: 'center',
+  alignItems: 'center',
+  p: 2
 }
