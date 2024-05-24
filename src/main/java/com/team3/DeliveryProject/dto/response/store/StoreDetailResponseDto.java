@@ -35,5 +35,7 @@ public class StoreDetailResponseDto {
     private String closedDays;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
+    private String isDibed;
+    private int isOpened;
 
 }
