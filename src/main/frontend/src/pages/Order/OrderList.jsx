@@ -16,6 +16,9 @@ export default function OrderList() {
     setOpenPortal(!openPortal);
     setActiveIndex(index);
   }
+  const handleNav = storeId => {
+    navigate(`/StoreDetail/${storeId}`)
+  }
 
   return (
     <Box>
@@ -26,13 +29,13 @@ export default function OrderList() {
           { orderData.data.orders.map((data, idx) => (
             <Fragment key={idx}>
               <Card sx={{mb: 1, border:1, cursor:'pointer'}} >
-                  <Typography>가게 이름: {data.storeName}</Typography>
+                  <Typography onClick={() => handleNav(data.storeId)}>가게 이름: {data.storeName}</Typography>
                 <CardContent onClick={() => handleClick(idx)}>
                   <Typography>주문 번호: {data.orderId}</Typography>
                   <Typography>메뉴: {data.menuName} {(data.count > 0) ? ('외 ' + data.count + ' 건') : ''}</Typography>
                   <Typography>가격: {data.totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
                   <Typography>주문일자: {data.orderDate.replace('T', ' ')}</Typography>
-                  <Typography>상태: {data.status}</Typography>
+                  <Typography sx={{color: (data.status==='완료' ? 'green' : 'blue')}}>상태: {data.status}</Typography>
                 </CardContent>
                 {openPortal && activeIndex === idx && <OrderDetail isPortalOpen={{openPortal}} email={email} orderId={data.orderId}/>}
               </Card>

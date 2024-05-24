@@ -1,11 +1,13 @@
 import React from "react";
-import { Box, Grid, Typography } from "@mui/material";
 import { useStoreSearch } from "./Hook/useStoreSearch";
 import { Link } from "react-router-dom";
+import { Box, Grid, Typography } from "@mui/material";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 export default function StoreList({ category, searchText, }) {
 	const { getStoreListByCategory: { isLoading, data: storeDatas } } = useStoreSearch(searchText ? searchText : category);
-	console.log(storeDatas)
+
 	return (
 		<Grid container>
 			<Grid item xs />
@@ -17,10 +19,14 @@ export default function StoreList({ category, searchText, }) {
 					}
 					{!isLoading && storeDatas && (
 						storeDatas.data.storeList.map((data) => (
-							<Box key={data.storeId} component={Link} to={`/StoreDetail/${data.storeId}`} state={{ storeName: data.name }} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
+							<Box key={data.storeId} component={Link} to={`/StoreDetail/${data.storeId}`} state={{ storeName: data.name, isDibed: data.isDibed }} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
 								<img src={data.storePictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
 								<ul style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
-									<li style={{ listStyleType: 'none' }}>{data.name}</li>
+									<li style={{ listStyleType: 'none' }}>가게명:{data.name}</li>
+									<li style={{ listStyleType: 'none' }}>별점:{data.rating}</li>
+									<li style={{ listStyleType: 'none' }}>찜 수: {data.dibsCount} {data.isDibed==='찜' ? <FavoriteIcon sx={{color:'red'}} /> : <FavoriteBorderIcon />}</li>
+									<li style={{ listStyleType: 'none' }}>리뷰 수:{data.reviewCount}</li>
+									<li style={{ listStyleType: 'none' }}>{data.isOpened===0 ? '영업 준비 중' : '영업 중'}</li>
 								</ul>
 							</Box>
 						))

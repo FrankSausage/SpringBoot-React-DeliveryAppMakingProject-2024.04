@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { logout } from '../utils/firebase';
 import {Popover,  Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Typography,} from '@mui/material';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import Cart from '../pages/Cart/View/Cart';
-import ListAltIcon from '@mui/icons-material/ListAlt';
 
 export default function DropUserInfo({ role }) {
 	const navigate = useNavigate();
@@ -31,14 +32,18 @@ export default function DropUserInfo({ role }) {
 		switch(loc) {
 			case 'Update':
 				navigate('/Update')
-			break;
+			  break;
 			case 'Cart' :
 				navigate('/Cart')
-			break;
+			  break;
 			case 'OrderList' :
 				navigate('/OrderList')
-			break;
+			  break;
+      case 'Dibs' :
+        navigate('/Dibs')
+        break;
 			default :
+        break;
 		}
 		
 	}
@@ -64,33 +69,46 @@ export default function DropUserInfo({ role }) {
         }}
           >
         <List>
-          {role!=='점주' &&
           <ListItem>
-						<Cart allClose={handleClose} />
-          </ListItem>
-          }
-          <ListItem>
-            <ListItemButton onClick={() => {handleNavigate('Update')}}>
-              <ListItemIcon>
+            <ListItemButton onClick={() => handleNavigate('Update')}>
+              <ListItemIcon sx={{color:'black'}}>
                 <PermIdentityIcon />
               </ListItemIcon>
               <ListItemText primary="내 정보"/>
             </ListItemButton>
           </ListItem>
           {role!=='점주' &&
+          <Fragment>
           <ListItem>
-            <ListItemButton onClick={() => {handleNavigate('OrderList')}}>
-              <ListItemIcon>
+            <ListItemButton>
+              <ListItemIcon sx={{color:'black'}}>
+                <Cart allClose={handleClose} />
+              </ListItemIcon>
+              <ListItemText primary="장바구니"/>
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton onClick={() => handleNavigate('Dibs')}>
+              <ListItemIcon sx={{color:'black'}}>
+  						  <FavoriteIcon />
+              </ListItemIcon>
+                <ListItemText primary="찜 목록" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton onClick={() => handleNavigate('OrderList')}>
+              <ListItemIcon sx={{color:'black'}}>
                 <ListAltIcon/>
               </ListItemIcon>
               <ListItemText primary="주문내역"/>
             </ListItemButton>
           </ListItem>
+          </Fragment>
           }
           <Divider />
           <ListItem>
             <ListItemButton onClick={() => handleLogout()}>
-              <ListItemIcon>
+              <ListItemIcon sx={{color:'black'}}>
                 <LogoutIcon />
               </ListItemIcon>
               <ListItemText sx={{cursor:'pointer'}} primary="로그아웃" />
