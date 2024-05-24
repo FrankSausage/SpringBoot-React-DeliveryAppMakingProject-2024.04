@@ -1,6 +1,5 @@
-package com.team3.DeliveryProject.dto.response.user;
+package com.team3.DeliveryProject.dto.request.review;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +13,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserFavoriteListResponseDto {
-    private List<UserFavoriteListInnerDibsListResponseDto> dibsList;
+public class ReviewListOwnerRequestDto {
+    private Long storeId;
 }

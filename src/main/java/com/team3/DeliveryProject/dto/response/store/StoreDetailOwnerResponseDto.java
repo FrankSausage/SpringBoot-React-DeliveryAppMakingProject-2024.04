@@ -14,7 +14,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StoreDetailResponseDto {
+public class StoreDetailOwnerResponseDto {
 
     private String role;
     private String name;
@@ -35,7 +35,5 @@ public class StoreDetailResponseDto {
     private String closedDays;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-    private String isDibed;
-    private int isOpened;
 
 }
