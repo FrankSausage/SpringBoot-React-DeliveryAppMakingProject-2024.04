@@ -3,6 +3,7 @@ package com.team3.DeliveryProject.controller;
 import com.team3.DeliveryProject.dto.request.review.ReviewAddRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewCeoAddRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewDeleteRequestDto;
+import com.team3.DeliveryProject.dto.request.review.ReviewListOwnerRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewListUserRequestDto;
 import com.team3.DeliveryProject.dto.response.review.ReviewListUserResponseDto;
 import com.team3.DeliveryProject.service.ReviewService;
@@ -34,5 +35,9 @@ public class ReviewController {
     @GetMapping("/user/review/list")
     public ResponseEntity<?> listReview(@ModelAttribute ReviewListUserRequestDto requestDto){
         return ResponseEntity.ok().body(reviewService.listUserReview(requestDto));
+    }
+    @GetMapping("/store/review/list")
+    public ResponseEntity<?> listOwnerReview(@ModelAttribute ReviewListOwnerRequestDto requestDto){
+        return ResponseEntity.ok().body(reviewService.listOwnerReview(requestDto));
     }
 }
