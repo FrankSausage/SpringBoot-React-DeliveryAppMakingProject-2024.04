@@ -88,7 +88,7 @@ export default function SignIn() {
           >
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               <Link to="/" style={{ textDecoration: 'none', color: 'black', fontFamily: 'Arial, sans-serif', display: 'flex', justifyContent: 'center' }}>
-                <img src={'/img/001.png'} style={{ width: '40%', height: '50%',position: 'relative', top: 5, marginBottom: '20px'}}/>
+                <img src={'/img/logo01.png'} style={{ width: '40%', height: '50%',position: 'relative', top: 5, marginBottom: '20px'}}/>
               </Link> 
             </Typography>
             <Avatar sx={{ m: 1, bgcolor: '#f09032', marginBottom: '10px' }}>
