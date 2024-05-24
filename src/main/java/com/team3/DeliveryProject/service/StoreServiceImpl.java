@@ -15,14 +15,14 @@ import com.team3.DeliveryProject.dto.request.store.StoreListRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreOwnerListRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateInnerDeliveryAddressesRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateRequestDto;
-import com.team3.DeliveryProject.dto.response.store.StoreDetailResponseDto;
+import com.team3.DeliveryProject.dto.response.store.StoreDetailOwnerResponseDto;
+import com.team3.DeliveryProject.dto.response.store.StoreDetailUserResponseDto;
 import com.team3.DeliveryProject.dto.response.store.StoreListInnerResponseDto;
 import com.team3.DeliveryProject.dto.response.store.StoreListResponseDto;
 import com.team3.DeliveryProject.dto.response.store.StoreOwnerListInnerResponseDto;
 import com.team3.DeliveryProject.dto.response.store.StoreOwnerListResponseDto;
 import com.team3.DeliveryProject.entity.AddressCode;
 import com.team3.DeliveryProject.entity.Dibs;
-import com.team3.DeliveryProject.entity.Menu;
 import com.team3.DeliveryProject.entity.Stores;
 import com.team3.DeliveryProject.entity.Users;
 import com.team3.DeliveryProject.repository.AddressCodeRepository;
@@ -272,14 +272,14 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public StoreDetailResponseDto getStoreDetail(StoreDetailRequestDto requestDto) {
+    public StoreDetailUserResponseDto getStoreDetailUser(StoreDetailRequestDto requestDto) {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
             .orElseThrow(() -> new RuntimeException("user not found"));
         Stores stores = storesRepository.findById(requestDto.getStoreId())
             .orElseThrow(() -> new RuntimeException("store not found"));
         Dibs dibs = dibsRepository.findByUserIdAndStoreId(users.getUserId(), stores.getStoreId()).orElseThrow(()->new RuntimeException("Dibs not found"));
 
-        StoreDetailResponseDto responseDto = StoreDetailResponseDto.builder()
+        StoreDetailUserResponseDto responseDto = StoreDetailUserResponseDto.builder()
             .role(users.getRole())
             .name(stores.getName())
             .type(stores.getType())
@@ -304,6 +304,37 @@ public class StoreServiceImpl implements StoreService {
             .build();
         return responseDto;
     }
+
+    @Override
+    public StoreDetailOwnerResponseDto getStoreDetailOwner(StoreDetailRequestDto requestDto) {
+        Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
+            .orElseThrow(() -> new RuntimeException("user not found"));
+        Stores stores = storesRepository.findById(requestDto.getStoreId())
+            .orElseThrow(() -> new RuntimeException("store not found"));
+        Dibs dibs = dibsRepository.findByUserIdAndStoreId(users.getUserId(), stores.getStoreId()).orElseThrow(()->new RuntimeException("Dibs not found"));
+
+        StoreDetailOwnerResponseDto responseDto = StoreDetailOwnerResponseDto.builder()
+            .role(users.getRole())
+            .name(stores.getName())
+            .type(stores.getType())
+            .category(stores.getCategory())
+            .address(stores.getAddress())
+            .storePictureName(stores.getStorePictureName())
+            .phone(stores.getPhone())
+            .content(stores.getContent())
+            .minDeliveryPrice(stores.getMinDeliveryPrice())
+            .deliveryTip(stores.getDeliveryTip())
+            .minDeliveryTime(stores.getMinDeliveryTime())
+            .maxDeliveryTime(stores.getMaxDeliveryTime())
+            .rating(stores.getRating())
+            .dibsCount(stores.getDibsCount())
+            .reviewCount(stores.getReviewCount())
+            .operationHours(stores.getOperationHours())
+            .closedDays(stores.getClosedDays())
+            .createdDate(stores.getCreatedDate())
+            .modifiedDate(stores.getModifiedDate())
+            .build();
+        return responseDto;    }
 
     public int isOpened(Stores stores){
         // 현재 날짜와 시간 가져오기

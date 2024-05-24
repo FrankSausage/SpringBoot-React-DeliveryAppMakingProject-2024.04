@@ -7,7 +7,8 @@ import com.team3.DeliveryProject.dto.request.store.StoreDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreListRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreOwnerListRequestDto;
 import com.team3.DeliveryProject.dto.request.store.StoreUpdateRequestDto;
-import com.team3.DeliveryProject.dto.response.store.StoreDetailResponseDto;
+import com.team3.DeliveryProject.dto.response.store.StoreDetailOwnerResponseDto;
+import com.team3.DeliveryProject.dto.response.store.StoreDetailUserResponseDto;
 import com.team3.DeliveryProject.dto.response.store.StoreListResponseDto;
 import com.team3.DeliveryProject.dto.response.store.StoreOwnerListResponseDto;
 import com.team3.DeliveryProject.entity.Stores;
@@ -26,7 +27,8 @@ public interface StoreService {
 
     StoreListResponseDto getStoreList(StoreListRequestDto requestDto);
 
-    StoreDetailResponseDto getStoreDetail(StoreDetailRequestDto requestDto);
+    StoreDetailUserResponseDto getStoreDetailUser(StoreDetailRequestDto requestDto);
+    StoreDetailOwnerResponseDto getStoreDetailOwner(StoreDetailRequestDto requestDto);
 
     StoreOwnerListResponseDto getStoreListForOwner(StoreOwnerListRequestDto requestDto);
 }
