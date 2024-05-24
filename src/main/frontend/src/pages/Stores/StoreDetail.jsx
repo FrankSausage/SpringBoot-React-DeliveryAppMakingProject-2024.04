@@ -69,7 +69,6 @@ export default function StoreDetail() {
     if(isDibed===null) {
       return;
     }
-    console.log(isDibed)
 
     if(isDibed==='일반') {
       postDibStore.mutate({email: email, storeId: storeId, status: '찜'}, {
@@ -94,7 +93,7 @@ export default function StoreDetail() {
         <Grid container>
           <Grid item xs={4}/>
           <Grid item xs={2.5}>
-            <Typography variant='h4' sx={{textAlign:'end'}}>{storeDetail.name} {storeDetail.isDibed} </Typography>
+            <Typography variant='h4' sx={{textAlign:'end'}}>{storeDetail.name}</Typography>
           </Grid>
           <Grid item sx={{ml:2}} xs> 
             {storeDetail.isDibed==='일반' ? 

@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { Box, Grid, createTheme, ThemeProvider, Typography } from '@mui/material';
-import { useStoreDeatilByEmail } from '../../utils/storeInfo';
-import { useParams } from 'react-router';
 
 const defaultTheme = createTheme();
 
 export default function StoreInfo({storeDetail}) {
-  
+
   return (
     <ThemeProvider theme={defaultTheme}>
       {storeDetail && (
