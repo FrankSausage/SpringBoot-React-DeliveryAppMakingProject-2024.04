@@ -82,7 +82,7 @@ export default function StoreMenuList({ storeName }) {
       return (
         <React.Fragment key={res.menuId}>
           {isFirstInCategory && (
-            <Box sx={{ width: '60%', mt: 4, mb: 2, ml: 30 }}>
+            <Box sx={{ width: '60%', mt: 3, mb: 2, ml: 30 }}>
               <Typography variant="h5" component="div">
                 {currentCategory}
               </Typography>

@@ -8,7 +8,7 @@ export default function StoreInfo({storeDetail}) {
   return (
     <ThemeProvider theme={defaultTheme}>
       {storeDetail && (
-        <Box sx={{ margin: 1 }}>
+        <Box sx={{ m: 1 }}>
           {/* 가게·원산지 정보 */}
           <Grid container>
             <Grid item xs />
@@ -23,26 +23,6 @@ export default function StoreInfo({storeDetail}) {
               }}
             >
               <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
-                {/* <Box
-                  className="storeIntro"
-                  sx={{
-                    ...boxStyle,
-                    position: 'relative',
-                    width: { xs: '100%', sm: '70%' },
-                    height: '350px',
-                    marginX: 'auto',
-                    marginBottom: '10px',
-                    overflow: 'hidden',
-                    borderRadius: '10px',
-                    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-                    backgroundColor: '#f9f9f9',
-                    padding: '20px',
-                  }}
-                >
-                  <div>
-                    <img src={'/img/01.jpg'} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
-                  </div>
-                </Box> */}
                 <Box
                   className="storeIntro"
                   sx={{
@@ -96,30 +76,6 @@ export default function StoreInfo({storeDetail}) {
                     </ul>
                   </div>
                 </Box>
-
-                {/* <Box
-                  className="originIntro"
-                  sx={{
-                    ...boxStyle,
-                    position: 'relative',
-                    width: { xs: '100%', sm: '70%' },
-                    height: '300px',
-                    marginX: 'auto',
-                    marginBottom: '10px',
-                    borderRadius: '10px',
-                    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-                    backgroundColor: '#f9f9f9',
-                    padding: '20px',
-                  }}
-                > */}
-                  {/* <div style={{ position: 'absolute', top: '50%', left: '15%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}> */}
-                    {/* <h2 style={{ marginBottom: '15px', color: '#333' }}>원산지 정보</h2> */}
-                    {/* <ul style={{ padding: '0', margin: '0', textAlign: 'left' }}> */}
-                      {/* 원산지 정보에 대한 세부 정보 추가 */}
-                    {/* </ul> */}
-                  {/* </div> */}
-                {/* </Box> */}
-
               </Grid>
             </Grid>
             <Grid item xs />
