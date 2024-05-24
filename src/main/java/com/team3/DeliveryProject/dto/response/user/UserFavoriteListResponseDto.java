@@ -15,5 +15,5 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class UserFavoriteListResponseDto {
-    private List<UserFavoriteListInnerDibsListResponseDto> dibslist;
+    private List<UserFavoriteListInnerDibsListResponseDto> dibsList;
 }
