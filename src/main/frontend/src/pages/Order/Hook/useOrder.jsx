@@ -5,8 +5,10 @@ export function useOrder (email, orderId) {
   const queryClinet = useQueryClient();
 
   const getOrderListByEmail = useQuery({
-    queryKey: ['userOrderList', email],
+    queryKey: ['orderList'],
     queryFn: () => { return axios.get(`/dp/order/list`, {params: {email: email}}) },
+    refetchInterval: 6000,
+    refetchIntervalInBackground: true,
     enabled: !!email && !orderId,
   })
 
@@ -28,7 +30,10 @@ export function useOrder (email, orderId) {
     mutationFn: orderId => {
       axios.post(`/dp/order/delete`, {orderId: orderId})
     },
-    onSuccess: () => {alert('주문내역 삭제 요청에 성공 하였습니다.'); queryClinet.invalidateQueries(['userOrderList'])},
+    onSuccess: () => {
+      alert('주문내역 삭제 요청에 성공 하였습니다.'); 
+      queryClinet.invalidateQueries(['userOrderList'])
+    },
     onError: () => {alert('주문내역 삭제 요청에 실패 하였습니다.')},
   })
 

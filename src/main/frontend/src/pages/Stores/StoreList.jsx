@@ -1,11 +1,13 @@
 import React from "react";
-import { Box, Grid, Typography } from "@mui/material";
 import { useStoreSearch } from "./Hook/useStoreSearch";
 import { Link } from "react-router-dom";
+import { Box, Grid, Typography } from "@mui/material";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 export default function StoreList({ category, searchText, }) {
 	const { getStoreListByCategory: { isLoading, data: storeDatas } } = useStoreSearch(searchText ? searchText : category);
-	console.log(storeDatas)
+
 	return (
 		<Grid container>
 			<Grid item xs />

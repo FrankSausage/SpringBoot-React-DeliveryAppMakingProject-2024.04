@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import Footer from "../../components/Footer";
-import { Box, Grid, InputBase, Tab, Tabs, Typography, } from '@mui/material/';
+import { Box, Grid, InputBase, Stack, Tab, Tabs, Typography, } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
-import { useLocation, useNavigate } from 'react-router-dom';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import StoreInfo from './StoreInfo';
 import StoreMenuList from './StoreMenuList';
 import SearchHeader from '../../components/SearchHeader';
-
+import { useDibs } from '../Dibs/Hook/useDibs';
+import { useStoreDeatilByEmail } from '../../utils/storeInfo';
+import { useQueryClient } from '@tanstack/react-query';
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -42,21 +46,42 @@ function a11yProps(index) {
 }
 
 export default function StoreDetail() {
-  const location = useLocation()
-  const { storeName } = location.state ? location.state : '';
+  const queryClient = useQueryClient();
+  const email = localStorage.getItem('email')
+  const { storeId } = useParams()
+  const { isLoading, storeDetail } = useStoreDeatilByEmail(email, storeId);
+  const { postDibStore } = useDibs();
   const [value, setValue] = useState(1);
   const [popularity, setPopularity] = useState('');
   const [searchOpen, setSearchOpen] = useState(false); // 검색 창의 상태를 추적하는 state
   const navigate = useNavigate();
-
+  console.log(storeDetail)
   const handleChange = (e, newValue) => {
     setValue(newValue);
     setSearchOpen(false); // 다른 탭을 클릭할 때 검색 창 닫기
   };
-
+  
   const handleSearchTabClick = () => {
     setSearchOpen(!searchOpen); // 메뉴 검색 탭을 클릭할 때마다 검색 창 열기/닫기
   };
+
+  const handleDib = (isDibed) => {
+    if(isDibed===null) {
+      return;
+    }
+
+    if(isDibed==='일반') {
+      postDibStore.mutate({email: email, storeId: storeId, status: '찜'}, {
+        onSuccess: () => {console.log('찜 성공'); queryClient.invalidateQueries(['storeDetail', {storeId: storeId}])},
+        onError: e => {alert('찜 등록에 문제가 발생했습니다.'); console.error(e)}
+      })
+    } else if (isDibed==='찜') {
+      postDibStore.mutate({email: email, storeId: storeId, status: '일반'}, {
+        onSuccess: () => {console.log('일반 성공'); queryClient.invalidateQueries(['storeDetail', {storeId: storeId}])},
+        onError: e => {alert('찜 등록에 문제가 발생했습니다.'); console.error(e)}
+      })
+    }
+  }
 
   return (
     <Box sx={{ margin: -1 }}>
