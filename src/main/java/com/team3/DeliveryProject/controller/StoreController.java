@@ -12,7 +12,6 @@ import com.team3.DeliveryProject.dto.response.store.StoreUpdateResponseDto;
 import com.team3.DeliveryProject.entity.AddressCode;
 import com.team3.DeliveryProject.entity.Stores;
 import com.team3.DeliveryProject.repository.AddressCodeRepository;
-import com.team3.DeliveryProject.repository.MenuOptionRepository;
 import com.team3.DeliveryProject.repository.UsersRepository;
 import com.team3.DeliveryProject.service.StoreService;
 import java.util.ArrayList;
@@ -97,7 +96,6 @@ public class StoreController {
 
     @GetMapping("/list/search")
     public ResponseEntity<?> getStoreList(@ModelAttribute StoreListRequestDto requestDto) {
-        System.out.println(requestDto);
         return ResponseEntity.ok().body(storeService.getStoreList(requestDto));
     }
 
