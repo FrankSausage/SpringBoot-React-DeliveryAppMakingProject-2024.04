@@ -277,6 +277,11 @@ public class StoreServiceImpl implements StoreService {
             .orElseThrow(() -> new RuntimeException("user not found"));
         Stores stores = storesRepository.findById(requestDto.getStoreId())
             .orElseThrow(() -> new RuntimeException("store not found"));
+        Boolean dibs = dibsRepository.existsByUserIdAndStoreId(users.getUserId(), stores.getStoreId());
+        String isDibed = "일반";
+        if(dibs){
+            isDibed = "찜";
+        }
         StoreDetailResponseDto responseDto = StoreDetailResponseDto.builder()
             .role(users.getRole())
             .name(stores.getName())
@@ -297,6 +302,8 @@ public class StoreServiceImpl implements StoreService {
             .closedDays(stores.getClosedDays())
             .createdDate(stores.getCreatedDate())
             .modifiedDate(stores.getModifiedDate())
+            .isDibed(isDibed)
+            .isOpened(isOpened(stores))
             .build();
         return responseDto;
     }
