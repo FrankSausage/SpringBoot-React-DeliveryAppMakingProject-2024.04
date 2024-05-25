@@ -9,25 +9,34 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import MenuOptionDetail from './MenuOptionDetail';
 import { useMenuUpByEmail } from '../../../utils/storeInfo';
 import SearchHeader from '../../../components/SearchHeader';
+import { uploadImageToCloudinary } from '../../../utils/uploader';
+import { QueryClient, useQueryClient } from '@tanstack/react-query';
+import { useMenu } from '../Hook/useMenu';
 
 const defaultTheme = createTheme();
 
 export default function MenuUpdate() {
   const location = useLocation();
   const email = localStorage.getItem('email');
+  const queryClient = useQueryClient();
   const { storeId, menuId } = location.state;
-  const { isLoading, error, menu} = useMenuUpByEmail(email, menuId)
+  const { isLoading, error, menu } = useMenuUpByEmail(email, menuId)
+  const { updateMenu } = useMenu();
   const [initialName, setInitialName] = useState('');
   const [initialPrice, setInitialPrice] = useState('');
   const [initialContent, setInitialContent] = useState('');
   const [initialCategory, setInitialCategory] = useState('');
   const [initialMenuPictureName, setInitialMenuPictureName] = useState('');
-
+  const [menuPictureUrl, setMenuPictureUrl] = useState('');  // 업로드된 이미지 URL을 저장할 상태 추가
+  const [isFileUploading, setIsFileUploading] = useState(false);
+  console.log(isFileUploading)
+  console.log(menuPictureUrl)
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
+  const [type , setType ] = useState('');
   const [category, setCategory] = useState('');
   const [content, setContent] = useState('');
-  const [storePictureName, setStorePictureName] = useState('');
+  const [menuPictureName, setMenuPictureName] = useState('');
 
   useEffect(() => {
     if (!isLoading && menu) {
@@ -43,7 +52,7 @@ export default function MenuUpdate() {
       setPrice(menu.menus[0].price);
       setContent(menu.menus[0].content);
       setCategory(menu.menus[0].category);
-      setStorePictureName(menu.menus[0].menuPictureName);
+      setMenuPictureName(menu.menus[0].menuPictureName);
     }
   }, [isLoading]);
 
@@ -60,10 +69,12 @@ export default function MenuUpdate() {
 
     const formData = await setFormData(data);
     extractDataFromFormData(formData)
-      .then(resFormData => axios.post(`/dp/store/menu/update`, resFormData));
-
-    alert('메뉴 업데이트가 완료되었습니다.');
-    navigate(`/StoreDetail/${storeId}`);
+      .then(resFormData => updateMenu.mutate(resFormData,{
+        onSuccess: () => {
+          alert('메뉴 업데이트가 완료되었습니다.');
+          navigate(`/StoreDetail/${storeId}`);
+        }
+      }))
   };
 
   const handleMenuDelete = () => {
@@ -85,13 +96,14 @@ export default function MenuUpdate() {
     try {
       data.append('menuId', menuId);
       data.append('email', email);
-      data.append('category', '');
-      data.append('type', '');
-      data.append('content', '');
-      data.append('name', '');
-      data.append('price', '');
-      data.append('menuPictureName', '');
+      data.append('category', category);
+      data.append('type', type);
+      data.append('content', content);
+      data.append('name', name);
+      data.append('price', price);
+      // data.append('menuPictureName', menuPictureName);
       data.append('menuOptions', null);
+      data.append('menuPictureName', menuPictureUrl);
       return data;
     } catch (error) {
       console.error('setFormData Error!: ', error);
@@ -100,12 +112,22 @@ export default function MenuUpdate() {
   };
 
   const handleFileUpload = (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length > 0) {
-      const fileNames = files.map(file => file.name);
-      setStorePictureName(fileNames);
+    const file = e.target.files[0];
+    if (file) {
+        const fileName = file.name;
+        setIsFileUploading(true);
+        setInitialMenuPictureName(fileName);
+        uploadImageToCloudinary(file) // 클라우드니어리에 이미지 업로드
+            .then((url) => {
+              setMenuPictureUrl(url); // 업로드된 이미지 URL 저장
+            })
+            .then(() => setIsFileUploading(false)
+            )
+            .catch((error) => {
+                console.error('Failed to upload image to Cloudinary:', error);
+            });
     }
-  };
+};
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -114,6 +136,9 @@ export default function MenuUpdate() {
       {!isLoading && menu.menus &&
         <Box>
           <SearchHeader />
+          <div style={{ backgroundImage: 'url(/img/kitchenO.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)'}}>
+          <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
+          <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
           <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Box
@@ -159,36 +184,43 @@ export default function MenuUpdate() {
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="h6" gutterBottom>
-                      음식 사진
+                      메뉴 사진 업로드
                     </Typography>
                     <input accept=".png, .jpeg, .jpg" id="upload-photo" type="file" style={{ display: 'none' }} onChange={handleFileUpload} multiple />
-                    <TextField autoComplete="given-name" name="menuPictureName" value={storePictureName} placeholder={initialMenuPictureName.toString()} fullWidth id="menuPictureName" label="음식 사진" autoFocus onClick={(e) => { e.target.value = null}} />
-                    {/* 아이콘 대신에 "사진 올리기" 텍스트를 사용하고 싶다면 아래 주석 처리된 라인을 사용하세요 */}
-                    {/* <span>사진 올리기</span> */}
-
-                    <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()}  sx={{ mt: 3, mb: 2, }}>
+                    <TextField autoComplete="given-name" name="menuPictureName" value={menuPictureName} fullWidth id="menuPictureName" label="메뉴 사진" onClick={() => document.getElementById('upload-photo').click()} InputProps={{ readOnly: true }} sx={{ mb: 2 }} />
+                    <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
                       사진 올리기
                     </Button>
+                    {initialMenuPictureName && (
+                      <Typography variant="body1" gutterBottom sx={{maxWidth:400}}>
+                        {/* 업로드된 파일: {initialMenuPictureName.split(',')[]} */}
+                      </Typography>
+                    )}
                   </Grid>
-                <Grid item xs={6} >
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}>
-                  수정
-                </Button>
-                </Grid>
-                <Grid item xs={6} >
-                <Button fullWidth variant="contained" color="error" onClick={() => handleMenuDelete(menuId, email, storeId)} sx={{ mt: 3, mb: 2 }}>
-                  삭제
-                </Button>
-                </Grid>
+                  <Grid item xs={6} >
+                    {isFileUploading ? 
+                    <Button type="submit" fullWidth disabled variant="contained" sx={{ mt: 3, mb: 2 }}>
+                      수정
+                    </Button>
+                    :
+                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                      수정
+                    </Button>
+                    }
+                  </Grid>
+                  <Grid item xs={6} >
+                    <Button fullWidth variant="contained" color="error" onClick={() => handleMenuDelete(menuId, email, storeId)} sx={{ mt: 3, mb: 2 }}>
+                      삭제
+                    </Button>
+                  </Grid>
                 </Grid>
               </Box>
             </Box>
             <Footer sx={{ mt: 5 }} />
           </Container>
+          </Container>
+          </div>
+        </div>
         </Box>
       }
     </ThemeProvider>

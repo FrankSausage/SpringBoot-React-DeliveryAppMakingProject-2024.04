@@ -55,7 +55,6 @@ export default function Update() {
     const handleClose = () => setOpen(false);
     const navigate = useNavigate();
     const backgroundImage = role === '회원' ? 'url(/img/kitchen.jpg)' : 'url(/img/Okitchen.jpg)';
-    
     useEffect(() => {
       const loadDaumPostcodeScript = () => {
         const script = document.createElement('script');
@@ -63,7 +62,6 @@ export default function Update() {
         script.async = true;
         document.body.appendChild(script);
         script.onload = () => {
-          console.log('Daum 우편번호 API 스크립트가 로드되었습니다.');
         };
       };
 
@@ -149,19 +147,19 @@ export default function Update() {
       {user && user.data &&
         <>
       <SearchHeader />
-        <div style={{
-        backgroundImage: backgroundImage,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-        padding: '23px 0',
-        backgroundBlendMode: 'lighten',
-        backgroundColor: 'rgba(255, 255, 255, 0.6)' // This makes the background image appear lighter
-      }}>
-          <Container component="main" maxWidth="xs">
+      <Box sx={{ height: 'auto', minHeight: '100vh', backgroundImage: 'url(/img/kitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '28px 0',}}>
+          <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
+          {/* <Container component="main" maxWidth="xs"> */}
             <CssBaseline />
             <Box
+            sx={{
+              marginTop: 0, display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              padding: '20px',
+              borderRadius: '10px'
+            }}>
+            {/* <Box
               sx={{
                 marginTop: 8, display: 'flex',
                 flexDirection: 'column',
@@ -170,8 +168,7 @@ export default function Update() {
                 boxShadow: 1,
                 p: 4,
                 borderRadius: 2,
-              }}
-            >
+              }}> */}
               <Avatar sx={{ m: 1, bgcolor: (role === '회원') ? 'tertiary.main' : (role === '점주') ? 'primary.main' : 'default' }}>
                 <RestorePageIcon />
               </Avatar>
@@ -194,20 +191,7 @@ export default function Update() {
                       required fullWidth label="비밀번호 확인" type="password" onChange={e => { setPasswordCheck(e.target.value); }} error={!isPasswordMatch} helperText={!isPasswordMatch && "비밀번호가 일치하지 않습니다"} autoComplete="second-current-password" />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="phone"
-                      name="phone"
-                      label="휴대전화"
-                      defaultValue={user.data.phone}
-                      value={phone}
-                      onChange={handlePhoneNumberChange}
-                      inputProps={{
-                        maxLength: 13,
-                        inputMode: 'numeric',
-                      }}
-                    />
+                    <TextField required fullWidth id="phone" name="phone" label="휴대전화" defaultValue={user.data.phone} value={phone} onChange={handlePhoneNumberChange} inputProps={{ maxLength: 13, inputMode: 'numeric'}}/>
                   </Grid>
                   {role === '회원' &&
                     <Fragment>
@@ -268,7 +252,8 @@ export default function Update() {
             </Box>
             <Footer sx={{ mt: 3 }} />
           </Container>
-          </div>
+          </Box>
+          {/* </div> */}
           <Modal
             open={open}
             onClose={handleClose}

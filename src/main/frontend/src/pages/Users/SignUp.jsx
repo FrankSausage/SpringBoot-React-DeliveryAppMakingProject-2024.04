@@ -101,37 +101,7 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      {/* <div style={{
-        backgroundImage: 'linear-gradient(to right, #f09032, #FFFFFF, #f09032)', // 주황색 배경을 양쪽에 추가
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-      }}>
-        <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
-          <CssBaseline /> */}
-
-      {/* <div style={{
-        backgroundImage: 'linear-gradient(to right, #ee6e0b, #FFFFFF, #ee6e0b)', // 주황색 배경을 양쪽에 추가
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-      }}>
-        <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
-          <CssBaseline /> */}
-      
-      <div style={{
-        backgroundImage: 'url(/img/kitchen.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        padding: '23px 0',
-        backgroundBlendMode: 'lighten',
-        backgroundColor: 'rgba(255, 255, 255, 0.6)' // This makes the background image appear lighter
-        }}>
+     <Box sx={{ height: 'auto', minHeight: '100vh', backgroundImage: 'url(/img/kitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '28px 0',}}>
           <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
             <CssBaseline />
           <Box
@@ -145,7 +115,7 @@ export default function SignUp() {
             }}>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', color: 'black', fontFamily: 'Arial, sans-serif', display: 'flex', justifyContent: 'center' }}>
-              <img src={'/img/001.png'} style={{ width: '50%', height: '50%',position: 'relative', top: 5, marginBottom: '20px'}}/>
+              <img src={'/img/logo01.png'} style={{ width: '50%', height: '50%',position: 'relative', top: 5, marginBottom: '20px'}}/>
             </Link>
           </Typography>
           <Avatar sx={{ m: 1, bgcolor: '#f09032', marginBottom: '10px' }}>
@@ -309,7 +279,8 @@ export default function SignUp() {
         </Box>
       </Container>
       <Footer sx={{ mt: 3 }}/>
-    </div>
+    </Box>
+    {/* </div> */}
   </ThemeProvider>
   );
 }

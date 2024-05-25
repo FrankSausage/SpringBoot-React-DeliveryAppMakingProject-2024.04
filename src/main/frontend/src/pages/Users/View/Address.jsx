@@ -102,30 +102,14 @@ export default function Address() {
     }
 
     return(
-      <div style={{
-        backgroundImage: 'url(/img/a0.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        padding: '23px 0',
-        backgroundBlendMode: 'lighten',
-        backgroundColor: 'rgba(255, 255, 255, 0.6)' // This makes the background image appear lighter
-        }}>
+      
+      <Box sx={{ height: 'auto', minHeight: '100vh', backgroundImage: 'url(/img/a0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '28px 0',}}>
         <Container component="main" maxWidth="sm" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px', }}>
           <CssBaseline />
-        <Box sx={{  marginTop: 8,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    textAlign: 'center',
-                    width: '100%',
-                    }}>
+        <Box sx={{  marginTop: 8, display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', textAlign: 'center', width: '100%' }}>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', color: 'black', fontFamily: 'Arial, sans-serif', display: 'flex', justifyContent: 'center' }}>
-              <img src={'/img/001.png'} style={{ width: '30%', position: 'relative', marginBottom: '20px'}}/>
+              <img src={'/img/logo01.png'} style={{ width: '30%', position: 'relative', marginBottom: '20px'}}/>
             </Link>
           </Typography>
           <Avatar sx={{ m: 1, bgcolor: '#f09032', alignSelf: 'center', marginLeft: '20px'}}>
@@ -147,8 +131,7 @@ export default function Address() {
                       id='cuAddress'
                       sx={{width: 430}} 
                       placeholder="주소를 입력하세요..." 
-                      required
-                      />
+                      required/>
                       <Button sx={{border: 1, mx: 1}} onClick={handleFindPostcode}> 검색 </Button>
                     </Stack>
                     <Stack direction={"row"}  sx={{my: 4, marginLeft: '-69px' }}>
@@ -160,8 +143,8 @@ export default function Address() {
                   <Grid item sx={{ mb: 3, marginLeft: '-70px' }}>
                       { !roadAddress && <Button disabled sx={{fontSize: '1.2rem', height: '3rem'}}>추가</Button> }
                       { roadAddress && <Button sx={{border: 0, mx: 1, fontSize: '1.2rem', height: '3rem',
-                        backgroundColor: '#66BB6A', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#41df78'}
-                        }} type="submit" variant="contained" >주소 추가</Button> }
+                        backgroundColor: '#66BB6A', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#41df78'}}} 
+                        type="submit" variant="contained" >주소 추가</Button> }
                   </Grid>
                 </Stack>
               </Grid>
@@ -193,6 +176,7 @@ export default function Address() {
           </Stack>
         </Box>
         </Container>
-      </div>
+      </Box>
+
     );
 }

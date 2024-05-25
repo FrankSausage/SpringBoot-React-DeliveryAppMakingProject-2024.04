@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, InputBase, Button, Typography, Stack } from '@mui/material/';
+import { Box, Grid, InputBase, Button, Typography, Stack, Container } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link, useParams } from 'react-router-dom';
 import SearchHeader from '../../../components/SearchHeader';
@@ -37,8 +37,9 @@ export default function OwnerMain() {
   };
 
   return (
-    <Box sx={{ margin: 0, paddingBottom: '100px' }}>
+    <Box sx={{ margin: -1, paddingBottom: '100px' }}>
       <SearchHeader />
+      <Box sx={{ height: '100vh', backgroundImage: 'url(/img/Okitchen.jpg)', backgroundSize: 'auto', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column' }}>
       <Grid container justifyContent="center" alignItems="center" mt={2}>
         <Grid item xs={10} md={6}>
           <Box sx={{ display: 'flex', alignItems: 'center', border: 1, borderColor: 'divider', borderRadius: 10, p: 1, boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' }}>
@@ -65,7 +66,8 @@ export default function OwnerMain() {
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Link to={`/StoreDetail/${data.storeId}`} style={{ textDecoration: 'none', color: 'inherit', flex: 1 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <img src={'/img/01.jpg'} style={{ width: '100px', height: '100px', borderRadius: '8px', objectFit: 'cover' }} alt="메뉴 이미지" />
+                      {/* <img src={'/img/01.jpg'} style={{ width: '100px', height: '100px', borderRadius: '8px', objectFit: 'cover' }} alt="가게 이미지" /> */}
+                      <img src={data.storePictureName.split(',')[0]} style={{ width: '100px', height: '100px', borderRadius: '8px', objectFit: 'cover' }} alt="가게 이미지" />
                       <Box sx={{ ml: 2 }}>
                         <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{data.name}</Typography>
                         <Typography variant="body2" color="textSecondary">별점: {data.rating}</Typography>
@@ -80,11 +82,14 @@ export default function OwnerMain() {
                         variant="contained"
                         sx={{ backgroundColor: isOpened[idx] ? 'green' : 'red', color: 'white', ':hover': { backgroundColor: isOpened[idx] ? 'darkgreen' : 'darkred' } }}
                         onClick={() => handleCheckboxChange(idx)}
-                      >
+                        >
                         {isOpened[idx] ? '가게 오픈' : '가게 휴업'}
                       </Button> */}
                       <Link to={`/StoreUpdate/${data.storeId}`} style={{ textDecoration: 'none' }}>
                         <Button variant="outlined">가게 수정하기</Button>
+                      </Link>
+                      <Link to={`/OwnerOrderList`} state={{storeId: data.storeId, storeName: data.name}} style={{ textDecoration: 'none' }}>
+                        <Button variant="outlined">가게 주문확인</Button>
                       </Link>
                     </Stack>
                   }
@@ -103,5 +108,6 @@ export default function OwnerMain() {
         </Button>
       </Box>
     </Box>
+  </Box>
   );
 }

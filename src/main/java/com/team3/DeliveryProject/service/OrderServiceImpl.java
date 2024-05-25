@@ -42,7 +42,9 @@ import com.team3.DeliveryProject.repository.UsersRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -60,6 +62,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ResponseEntity<Response> addOrder(OrderAddRequestDto requestDto) {
+
         Stores stores = storesRepository.findById(requestDto.getStoreId()).orElseThrow(() ->
             new RuntimeException("Store not found"));
         Users users = usersRepository.findUsersByEmail(requestDto.getUserEmail()).orElseThrow(() ->
@@ -93,13 +96,18 @@ public class OrderServiceImpl implements OrderService {
         for (OrderAddInnerMenusRequestDto menusRequestDto : menuList) {
             Menu menu = menuRepository.findById(menusRequestDto.getMenuId())
                 .orElseThrow(() -> new RuntimeException("Menu not found"));
-            for (OrderAddInnerMenuOptionsRequestDto menuOptionsRequestDto : menusRequestDto.getMenuOptions()) {
-                MenuOption menuOption = menuOptionRepository.findById(
-                        menuOptionsRequestDto.getMenuOptionId())
-                    .orElseThrow(() -> new RuntimeException("MenuOption not found"));
-                OrderMenu orderMenu = new OrderMenu(orderId, menuOption.getMenuOptionId(),
-                    menu.getMenuId(), menusRequestDto.getSequence(), menusRequestDto.getQuantity());
+            if(menusRequestDto.getMenuOptions().isEmpty()){
+                OrderMenu orderMenu = new OrderMenu(orderId, menu.getMenuId(), menusRequestDto.getSequence(), menusRequestDto.getQuantity());
                 orderMenuRepository.save(orderMenu);
+            }else{
+                for (OrderAddInnerMenuOptionsRequestDto menuOptionsRequestDto : menusRequestDto.getMenuOptions()) {
+                    MenuOption menuOption = menuOptionRepository.findById(
+                            menuOptionsRequestDto.getMenuOptionId())
+                        .orElseThrow(() -> new RuntimeException("MenuOption not found"));
+                    OrderMenu orderMenu = new OrderMenu(orderId, menuOption.getMenuOptionId(),
+                        menu.getMenuId(), menusRequestDto.getSequence(), menusRequestDto.getQuantity());
+                    orderMenuRepository.save(orderMenu);
+                }
             }
         }
 
@@ -246,28 +254,6 @@ public class OrderServiceImpl implements OrderService {
         return responseDto;
     }
 
-    //    @Override
-//    public OrderDetailResponseDto ownerDetailOrder(OrderOwnerDetailRequestDto requestDto) {
-//        Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
-//            .orElseThrow(() -> new RuntimeException("User not found"));
-//        Orders orders = ordersRepository.findById(requestDto.getOrderId())
-//            .orElseThrow(() -> new RuntimeException("Orders not found"));
-//        List<OrderMenu> orderMenuList = orderMenuRepository.findAllByOrderId(orders.getOrderId());
-//        List<OrderDetailInnerMenusResponseDto> innerMenusResponseDtos = new ArrayList<>();
-//        List<OrderDetailInnerMenuOptionsResponseDto> innerMenuOptionsResponseDtos = new ArrayList<>();
-//
-//        for(OrderMenu orderMenu : orderMenuList){
-//            Menu menu = menuRepository.findById(orderMenu.getMenuId()).orElseThrow(()-> new RuntimeException("Menu not found"));
-//            MenuOption menuOption = menuOptionRepository.findById(orderMenu.getMenuOptionId()).orElseThrow(()-> new RuntimeException("MenuOption not found"));
-//
-//            OrderDetailInnerMenuOptionsResponseDto menuOptionsResponseDto = OrderDetailInnerMenuOptionsResponseDto.builder()
-//                .menuOptionName(menuOption.getOptions())
-//                .menuOptionPrice(menuOption.getPrice())
-//                .build();
-//            innerMenuOptionsResponseDtos.add(menuOptionsResponseDto);
-//        }
-//        return null;
-//    }
     @Override
     public OrderDetailOwnerResponseDto ownerDetailOrder(OrderOwnerDetailRequestDto requestDto) {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
@@ -283,25 +269,42 @@ public class OrderServiceImpl implements OrderService {
             Menu menu = menuRepository.findById(orderMenu.getMenuId())
                 .orElseThrow(() -> new RuntimeException("Menu not found"));
 
-            MenuOption menuOption = menuOptionRepository.findById(orderMenu.getMenuOptionId())
-                .orElseThrow(() -> new RuntimeException("MenuOption not found"));
+            if(orderMenu.getMenuOptionId() != null){
+                MenuOption menuOption = menuOptionRepository.findById(orderMenu.getMenuOptionId())
+                    .orElseThrow(() -> new RuntimeException("MenuOption not found"));
 
-            List<OrderDetailOwnerInnerMenuOptionsResponseDto> innerMenuOptionsResponseDtos = new ArrayList<>();
-            OrderDetailOwnerInnerMenuOptionsResponseDto menuOptionsResponseDto = OrderDetailOwnerInnerMenuOptionsResponseDto.builder()
-                .menuOptionName(menuOption.getOptions())
-                .menuOptionPrice(menuOption.getPrice())
-                .build();
-            innerMenuOptionsResponseDtos.add(menuOptionsResponseDto);
+                List<OrderDetailOwnerInnerMenuOptionsResponseDto> innerMenuOptionsResponseDtos = new ArrayList<>();
+                OrderDetailOwnerInnerMenuOptionsResponseDto menuOptionsResponseDto = OrderDetailOwnerInnerMenuOptionsResponseDto.builder()
+                    .menuOptionName(menuOption.getOptions())
+                    .menuOptionPrice(menuOption.getPrice())
+                    .build();
+                innerMenuOptionsResponseDtos.add(menuOptionsResponseDto);
 
-            OrderDetailOwnerInnerMenusResponseDto innerMenusResponseDto = OrderDetailOwnerInnerMenusResponseDto.builder()
-                .menuName(menu.getName())
-                .menuPrice(menu.getPrice())
-                .quantity(orderMenu.getQuantity())
-                .sequence(orderMenu.getSequence())
-                .menuPictureName(menu.getMenuPictureName())
-                .menuOptions(innerMenuOptionsResponseDtos)
-                .build();
-            innerMenusResponseDtos.add(innerMenusResponseDto);
+                OrderDetailOwnerInnerMenusResponseDto innerMenusResponseDto = OrderDetailOwnerInnerMenusResponseDto.builder()
+                    .menuName(menu.getName())
+                    .menuPrice(menu.getPrice())
+                    .quantity(orderMenu.getQuantity())
+                    .sequence(orderMenu.getSequence())
+                    .menuPictureName(menu.getMenuPictureName())
+                    .menuOptions(innerMenuOptionsResponseDtos)
+                    .build();
+                innerMenusResponseDtos.add(innerMenusResponseDto);
+            }else{
+                List<OrderDetailOwnerInnerMenuOptionsResponseDto> innerMenuOptionsResponseDtos = new ArrayList<>();
+                OrderDetailOwnerInnerMenuOptionsResponseDto menuOptionsResponseDto = OrderDetailOwnerInnerMenuOptionsResponseDto.builder()
+                    .build();
+                innerMenuOptionsResponseDtos.add(menuOptionsResponseDto);
+
+                OrderDetailOwnerInnerMenusResponseDto innerMenusResponseDto = OrderDetailOwnerInnerMenusResponseDto.builder()
+                    .menuName(menu.getName())
+                    .menuPrice(menu.getPrice())
+                    .quantity(orderMenu.getQuantity())
+                    .sequence(orderMenu.getSequence())
+                    .menuPictureName(menu.getMenuPictureName())
+                    .menuOptions(innerMenuOptionsResponseDtos)
+                    .build();
+                innerMenusResponseDtos.add(innerMenusResponseDto);
+            }
         }
 
         OrderDetailOwnerResponseDto responseDto = OrderDetailOwnerResponseDto.builder()
@@ -320,6 +323,81 @@ public class OrderServiceImpl implements OrderService {
         return responseDto;
     }
 
+//    @Override
+//    public OrderDetailResponseDto detailOrder(OrderDetailRequestDto requestDto) {
+//        Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
+//            .orElseThrow(() -> new RuntimeException("User not found"));
+//
+//        Orders orders = ordersRepository.findById(requestDto.getOrderId())
+//            .orElseThrow(() -> new RuntimeException("Orders not found"));
+//
+//        List<OrderMenu> orderMenuList = orderMenuRepository.findAllByOrderId(orders.getOrderId());
+//        List<OrderDetailInnerMenusResponseDto> innerMenusResponseDtos = new ArrayList<>();
+//        int sequence = 0;
+//        for (OrderMenu orderMenu : orderMenuList) {
+//            if (sequence != orderMenu.getSequence()){
+//                sequence = orderMenu.getSequence();
+//                Menu menu = menuRepository.findById(orderMenu.getMenuId())
+//                    .orElseThrow(() -> new RuntimeException("Menu not found"));
+//                if(orderMenu.getMenuOptionId() != null){
+//                    MenuOption menuOption = menuOptionRepository.findById(orderMenu.getMenuOptionId())
+//                        .orElseThrow(() -> new RuntimeException("MenuOption not found"));
+//                    List<OrderDetailInnerMenuOptionsResponseDto> innerMenuOptionsResponseDtos = new ArrayList<>();
+//                    OrderDetailInnerMenuOptionsResponseDto menuOptionsResponseDto = OrderDetailInnerMenuOptionsResponseDto.builder()
+//                        .menuOptionName(menuOption.getOptions())
+//                        .menuOptionPrice(menuOption.getPrice())
+//                        .build();
+//                    innerMenuOptionsResponseDtos.add(menuOptionsResponseDto);
+//
+//                    OrderDetailInnerMenusResponseDto innerMenusResponseDto = OrderDetailInnerMenusResponseDto.builder()
+//                        .menuId(menu.getMenuId())
+//                        .menuName(menu.getName())
+//                        .menuPrice(menu.getPrice())
+//                        .quantity(orderMenu.getQuantity())
+//                        .sequence(orderMenu.getSequence())
+//                        .menuPictureName(menu.getMenuPictureName())
+//                        .menuOptions(innerMenuOptionsResponseDtos)
+//                        .build();
+//                    innerMenusResponseDtos.add(innerMenusResponseDto);
+//                }else{
+//                    List<OrderDetailInnerMenuOptionsResponseDto> innerMenuOptionsResponseDtos = new ArrayList<>();
+//                    OrderDetailInnerMenuOptionsResponseDto menuOptionsResponseDto = OrderDetailInnerMenuOptionsResponseDto.builder()
+//                        .build();
+//                    innerMenuOptionsResponseDtos.add(menuOptionsResponseDto);
+//
+//                    OrderDetailInnerMenusResponseDto innerMenusResponseDto = OrderDetailInnerMenusResponseDto.builder()
+//                        .menuId(menu.getMenuId())
+//                        .menuName(menu.getName())
+//                        .menuPrice(menu.getPrice())
+//                        .quantity(orderMenu.getQuantity())
+//                        .sequence(orderMenu.getSequence())
+//                        .menuPictureName(menu.getMenuPictureName())
+//                        .menuOptions(innerMenuOptionsResponseDtos)
+//                        .build();
+//                    innerMenusResponseDtos.add(innerMenusResponseDto);
+//                }
+//            }
+//
+//        }
+//        Stores stores = storesRepository.findById(orders.getStoreId())
+//            .orElseThrow(() -> new RuntimeException("Store not found"));
+//        OrderDetailResponseDto responseDto = OrderDetailResponseDto.builder()
+//            .storeId(stores.getStoreId())
+//            .storeName(stores.getName())
+//            .paymentMethod(orders.getPaymentMethod())
+//            .totalPrice(orders.getTotalPrice())
+//            .point(orders.getPoint())
+//            .requests(orders.getRequests())
+//            .status(orders.getStatus())
+//            .deliveryTip(stores.getDeliveryTip())
+//            .orderDate(orders.getCreatedDate())
+//            .address(orders.getAddress())
+//            .menus(innerMenusResponseDtos)
+//            .build();
+//
+//        return responseDto;
+//    }
+
     @Override
     public OrderDetailResponseDto detailOrder(OrderDetailRequestDto requestDto) {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
@@ -331,32 +409,65 @@ public class OrderServiceImpl implements OrderService {
         List<OrderMenu> orderMenuList = orderMenuRepository.findAllByOrderId(orders.getOrderId());
         List<OrderDetailInnerMenusResponseDto> innerMenusResponseDtos = new ArrayList<>();
 
+        int currentSequence = -1;
+        List<OrderDetailInnerMenuOptionsResponseDto> innerMenuOptionsResponseDtos = new ArrayList<>();
+        OrderMenu lastOrderMenu = null;
+
         for (OrderMenu orderMenu : orderMenuList) {
-            Menu menu = menuRepository.findById(orderMenu.getMenuId())
+            if (currentSequence != orderMenu.getSequence()) {
+                if (lastOrderMenu != null) {
+                    Menu lastMenu = menuRepository.findById(lastOrderMenu.getMenuId())
+                        .orElseThrow(() -> new RuntimeException("Menu not found"));
+
+                    OrderDetailInnerMenusResponseDto innerMenusResponseDto = OrderDetailInnerMenusResponseDto.builder()
+                        .menuId(lastMenu.getMenuId())
+                        .menuName(lastMenu.getName())
+                        .menuPrice(lastMenu.getPrice())
+                        .quantity(lastOrderMenu.getQuantity())
+                        .sequence(lastOrderMenu.getSequence())
+                        .menuPictureName(lastMenu.getMenuPictureName())
+                        .menuOptions(new ArrayList<>(innerMenuOptionsResponseDtos)) // 빈 리스트로 초기화
+                        .build();
+                    innerMenusResponseDtos.add(innerMenusResponseDto);
+                    innerMenuOptionsResponseDtos.clear();
+                }
+                currentSequence = orderMenu.getSequence();
+            }
+
+            if (orderMenu.getMenuOptionId() != null) {
+                MenuOption menuOption = menuOptionRepository.findById(orderMenu.getMenuOptionId())
+                    .orElseThrow(() -> new RuntimeException("MenuOption not found"));
+
+                OrderDetailInnerMenuOptionsResponseDto menuOptionsResponseDto = OrderDetailInnerMenuOptionsResponseDto.builder()
+                    .menuOptionName(menuOption.getOptions())
+                    .menuOptionPrice(menuOption.getPrice())
+                    .build();
+                innerMenuOptionsResponseDtos.add(menuOptionsResponseDto);
+            }
+
+            lastOrderMenu = orderMenu;
+        }
+
+        // Process the last menu in the list
+        if (lastOrderMenu != null) {
+            Menu lastMenu = menuRepository.findById(lastOrderMenu.getMenuId())
                 .orElseThrow(() -> new RuntimeException("Menu not found"));
 
-            MenuOption menuOption = menuOptionRepository.findById(orderMenu.getMenuOptionId())
-                .orElseThrow(() -> new RuntimeException("MenuOption not found"));
-
-            List<OrderDetailInnerMenuOptionsResponseDto> innerMenuOptionsResponseDtos = new ArrayList<>();
-            OrderDetailInnerMenuOptionsResponseDto menuOptionsResponseDto = OrderDetailInnerMenuOptionsResponseDto.builder()
-                .menuOptionName(menuOption.getOptions())
-                .menuOptionPrice(menuOption.getPrice())
-                .build();
-            innerMenuOptionsResponseDtos.add(menuOptionsResponseDto);
-
             OrderDetailInnerMenusResponseDto innerMenusResponseDto = OrderDetailInnerMenusResponseDto.builder()
-                .menuName(menu.getName())
-                .menuPrice(menu.getPrice())
-                .quantity(orderMenu.getQuantity())
-                .sequence(orderMenu.getSequence())
-                .menuPictureName(menu.getMenuPictureName())
-                .menuOptions(innerMenuOptionsResponseDtos)
+                .menuId(lastMenu.getMenuId())
+                .menuName(lastMenu.getName())
+                .menuPrice(lastMenu.getPrice())
+                .quantity(lastOrderMenu.getQuantity())
+                .sequence(lastOrderMenu.getSequence())
+                .menuPictureName(lastMenu.getMenuPictureName())
+                .menuOptions(new ArrayList<>(innerMenuOptionsResponseDtos)) // 빈 리스트로 초기화
                 .build();
             innerMenusResponseDtos.add(innerMenusResponseDto);
         }
+
         Stores stores = storesRepository.findById(orders.getStoreId())
             .orElseThrow(() -> new RuntimeException("Store not found"));
+
         OrderDetailResponseDto responseDto = OrderDetailResponseDto.builder()
             .storeId(stores.getStoreId())
             .storeName(stores.getName())
@@ -373,4 +484,6 @@ public class OrderServiceImpl implements OrderService {
 
         return responseDto;
     }
+
+
 }

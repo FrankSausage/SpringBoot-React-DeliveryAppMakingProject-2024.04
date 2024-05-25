@@ -24,6 +24,12 @@ export const useMenu = (menuId) => {
     onError: () => {alert('메뉴 옵션 삭제에 실패하였습니다!')}
   })
 
+  const updateMenu = useMutation({
+    mutationFn: resFormData => {axios.post(`/dp/store/menu/update`, resFormData)},
+    onSuccess: () => {queryClient.invalidateQueries(['storeMenuList'])},
+    onError: () => {alert('업데이트에 실패하였습니다.')}
+  })
+
   const updateMenuOption = useMutation({
     mutationFn: (menuOption) => { axios.post(`/dp/store/menuoption/update`, 
     menuOption)},
@@ -34,5 +40,5 @@ export const useMenu = (menuId) => {
     onError: () => {alert('메뉴 옵션 수정에 실패하였습니다!')}
   })
 
-  return { postMenuOption, deleteMenuOption, updateMenuOption }
+  return { postMenuOption, deleteMenuOption, updateMenuOption, updateMenu }
 }

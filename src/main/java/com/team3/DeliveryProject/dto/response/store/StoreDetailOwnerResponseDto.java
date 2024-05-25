@@ -14,7 +14,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StoreDetailResponseDto {
+public class StoreDetailOwnerResponseDto {
 
     private String role;
     private String name;

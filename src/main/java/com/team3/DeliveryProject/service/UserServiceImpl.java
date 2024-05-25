@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
             }
         }
         UserFavoriteListResponseDto responseDto = UserFavoriteListResponseDto.builder()
-            .dibslist(dibsList)
+            .dibsList(dibsList)
             .build();
         return responseDto;
     }
