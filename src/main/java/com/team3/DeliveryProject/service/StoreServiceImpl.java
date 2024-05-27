@@ -74,8 +74,10 @@ public class StoreServiceImpl implements StoreService {
 
         List<StoreAddInnerAddressCodesRequestDto> addressCodes = requestDto.getAddressCodes();
 
-        for(StoreAddInnerAddressCodesRequestDto storeAddInnerAddressCodesRequestDto : addressCodes){
-            AddressCode addressCode = new AddressCode(storeId, storeAddInnerAddressCodesRequestDto.getAddressCode(), storeAddInnerAddressCodesRequestDto.getDeliveryAddress());
+        for (StoreAddInnerAddressCodesRequestDto storeAddInnerAddressCodesRequestDto : addressCodes) {
+            AddressCode addressCode = new AddressCode(storeId,
+                storeAddInnerAddressCodesRequestDto.getAddressCode(),
+                storeAddInnerAddressCodesRequestDto.getDeliveryAddress());
             addressCodeRepository.save(addressCode);
         }
 
@@ -83,6 +85,7 @@ public class StoreServiceImpl implements StoreService {
         System.out.println(storesRepository.findById(storeId));
         return Response.toResponseEntity(STORE_ADD_SUCCESS);
     }
+
     @Transactional
     @Override
     public ResponseEntity<Response> updateStore(StoreUpdateRequestDto requestDto) {
@@ -115,8 +118,9 @@ public class StoreServiceImpl implements StoreService {
             //기존 옵션 삭제후 작업 시작하기
             addressCodeRepository.deleteAllByStoreId(requestDto.getStoreId());
 
-            for(StoreUpdateInnerDeliveryAddressesRequestDto innerDto : addressCodes){
-                AddressCode addressCode = new AddressCode(requestDto.getStoreId(), innerDto.getAddressCode(),
+            for (StoreUpdateInnerDeliveryAddressesRequestDto innerDto : addressCodes) {
+                AddressCode addressCode = new AddressCode(requestDto.getStoreId(),
+                    innerDto.getAddressCode(),
                     innerDto.getDeliveryAddress());
                 addressCodeRepository.save(addressCode);
             }
@@ -152,25 +156,27 @@ public class StoreServiceImpl implements StoreService {
             .orElseThrow(() -> new RuntimeException("user not found"));
         Long addrCode = users.getAddressCode();
         List<Stores> storesListByCategory = new ArrayList<>();
-        if(requestDto.getQuery().equals("전체")){
+        if (requestDto.getQuery().equals("전체")) {
             storesListByCategory = storesRepository.findAll();
-        }else{
+        } else {
             storesListByCategory = storesRepository.findByCategoryContaining(
                 requestDto.getQuery());
         }
         List<Stores> storesListByName = storesRepository.findByNameContaining(
             requestDto.getQuery());
-        List<Long> storeIdListByMenu = menuRepository.findDistinctStoreIdsByContainingName(requestDto.getQuery());
+        List<Long> storeIdListByMenu = menuRepository.findDistinctStoreIdsByContainingName(
+            requestDto.getQuery());
         List<Stores> storesListByMenu = new ArrayList<>();
-        for(Long storeId : storeIdListByMenu){
-            Stores stores = storesRepository.findById(storeId).orElseThrow(()->new RuntimeException("store not found"));
+        for (Long storeId : storeIdListByMenu) {
+            Stores stores = storesRepository.findById(storeId)
+                .orElseThrow(() -> new RuntimeException("store not found"));
             storesListByMenu.add(stores);
         }
 
         List<StoreListInnerResponseDto> filteredStores = new ArrayList<>();
 
         for (Stores store : storesListByCategory) {
-            if(store.getStatus().equals("삭제")){
+            if (store.getStatus().equals("삭제")) {
                 continue;
             }
             Long storeId = store.getStoreId();
@@ -182,19 +188,19 @@ public class StoreServiceImpl implements StoreService {
                 if (addressCode.getAddressCode().equals(addrCode)) {
                     Boolean b = dibsRepository.existsByUserIdAndStoreId(users.getUserId(), storeId);
                     String isDibs = "";
-                    if(b == true){
+                    if (b == true) {
                         isDibs = "찜";
-                    }else{
+                    } else {
                         isDibs = "일반";
                     }
                     // 조건에 맞는 Store 정보를 DTO로 변환하고 리스트에 추가
-                    filteredStores.add(convertToDto(store, isDibs,isOpened(store)));
+                    filteredStores.add(convertToDto(store, isDibs, isOpened(store)));
                     break;  // 일치하는 주소 코드를 찾으면 더 이상 반복하지 않음
                 }
             }
         }
         for (Stores store : storesListByName) {
-            if(store.getStatus().equals("삭제")){
+            if (store.getStatus().equals("삭제")) {
                 continue;
             }
             Long storeId = store.getStoreId();
@@ -206,22 +212,22 @@ public class StoreServiceImpl implements StoreService {
                 if (addressCode.getAddressCode().equals(addrCode)) {
                     Boolean b = dibsRepository.existsByUserIdAndStoreId(users.getUserId(), storeId);
                     String isDibs = "";
-                    if(b == true){
+                    if (b == true) {
                         isDibs = "찜";
-                    }else{
+                    } else {
                         isDibs = "일반";
                     }
 
                     // 조건에 맞는 Store 정보를 DTO로 변환하고 리스트에 추가
                     if (!filteredStores.contains(convertToDto(store, isDibs, isOpened(store)))) {
-                        filteredStores.add(convertToDto(store, isDibs,isOpened(store)));
+                        filteredStores.add(convertToDto(store, isDibs, isOpened(store)));
                     }
                     break;  // 일치하는 주소 코드를 찾으면 더 이상 반복하지 않음
                 }
             }
         }
         for (Stores store : storesListByMenu) {
-            if(store.getStatus().equals("삭제")){
+            if (store.getStatus().equals("삭제")) {
                 continue;
             }
             Long storeId = store.getStoreId();
@@ -233,15 +239,15 @@ public class StoreServiceImpl implements StoreService {
                 if (addressCode.getAddressCode().equals(addrCode)) {
                     Boolean b = dibsRepository.existsByUserIdAndStoreId(users.getUserId(), storeId);
                     String isDibs = "";
-                    if(b == true){
+                    if (b == true) {
                         isDibs = "찜";
-                    }else{
+                    } else {
                         isDibs = "일반";
                     }
 
                     // 조건에 맞는 Store 정보를 DTO로 변환하고 리스트에 추가
                     if (!filteredStores.contains(convertToDto(store, isDibs, isOpened(store)))) {
-                        filteredStores.add(convertToDto(store, isDibs,isOpened(store)));
+                        filteredStores.add(convertToDto(store, isDibs, isOpened(store)));
                     }
                     break;  // 일치하는 주소 코드를 찾으면 더 이상 반복하지 않음
                 }
@@ -277,11 +283,12 @@ public class StoreServiceImpl implements StoreService {
             .orElseThrow(() -> new RuntimeException("user not found"));
         Stores stores = storesRepository.findById(requestDto.getStoreId())
             .orElseThrow(() -> new RuntimeException("store not found"));
-        Optional<Dibs> dibs = dibsRepository.findByUserIdAndStoreId(users.getUserId(), stores.getStoreId());
+        Optional<Dibs> dibs = dibsRepository.findByUserIdAndStoreId(users.getUserId(),
+            stores.getStoreId());
         String isDibed = "";
-        if(dibs.isPresent()){
+        if (dibs.isPresent()) {
             isDibed = dibs.get().getStatus();
-        }else{
+        } else {
             isDibed = null;
         }
         StoreDetailUserResponseDto responseDto = StoreDetailUserResponseDto.builder()
@@ -316,7 +323,6 @@ public class StoreServiceImpl implements StoreService {
             .orElseThrow(() -> new RuntimeException("user not found"));
         Stores stores = storesRepository.findById(requestDto.getStoreId())
             .orElseThrow(() -> new RuntimeException("store not found"));
-        Dibs dibs = dibsRepository.findByUserIdAndStoreId(users.getUserId(), stores.getStoreId()).orElseThrow(()->new RuntimeException("Dibs not found"));
 
         StoreDetailOwnerResponseDto responseDto = StoreDetailOwnerResponseDto.builder()
             .role(users.getRole())
@@ -339,9 +345,10 @@ public class StoreServiceImpl implements StoreService {
             .createdDate(stores.getCreatedDate())
             .modifiedDate(stores.getModifiedDate())
             .build();
-        return responseDto;    }
+        return responseDto;
+    }
 
-    public int isOpened(Stores stores){
+    public int isOpened(Stores stores) {
         // 현재 날짜와 시간 가져오기
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
@@ -354,7 +361,8 @@ public class StoreServiceImpl implements StoreService {
         List<String> closedDaysList = Arrays.asList(closedDays.split(","));
 
         // 현재 요일이 closedDays에 있는지 확인
-        String currentDayOfWeekString = currentDayOfWeek.getDisplayName(TextStyle.FULL, Locale.KOREAN);
+        String currentDayOfWeekString = currentDayOfWeek.getDisplayName(TextStyle.FULL,
+            Locale.KOREAN);
         if (closedDaysList.contains(currentDayOfWeekString)) {
             return 0;
         }
@@ -374,6 +382,7 @@ public class StoreServiceImpl implements StoreService {
         }
 
     }
+
     @Override
     public StoreOwnerListResponseDto getStoreListForOwner(StoreOwnerListRequestDto requestDto) {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
