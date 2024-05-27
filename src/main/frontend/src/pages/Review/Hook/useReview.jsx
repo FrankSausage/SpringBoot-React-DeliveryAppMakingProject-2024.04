@@ -24,7 +24,7 @@ export function useStoreReviewList(storeId) {
 
   const getStoreReviewList = useQuery({
     queryKey: ['reviewList', {storeId: storeId}],
-    queryFn: () => {return axios.get(`/dp/user/review/list`, { params: { storeId: storeId }})},
+    queryFn: () => {return axios.get(`/dp/store/review/list`, { params: { storeId: storeId }})},
     enabled: !!storeId
   })
 

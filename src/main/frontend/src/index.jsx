@@ -19,7 +19,8 @@ import StoreUpdate from './pages/Stores/StoreUpdate';
 import StoreDetail from './pages/Stores/StoreDetail';
 import StoreSearch from './pages/Stores/StoreSearch';
 // Reviews
-
+import MyReviews from './pages/Review/View/MyReviews';
+import StoreReviews from './pages/Review/View/StoreReviews';
 // Menus
 import MenuRegister from './pages/Stores/Menus/MenuRegister';
 import MenuUpdate from './pages/Stores/Menus/MenuUpdate';
@@ -48,6 +49,8 @@ const router = createBrowserRouter([
       { path: 'StoreUpdate', element: <StoreUpdate />},
       { path: 'StoreUpdate/:storeId', element: <StoreUpdate />},
       { path: 'StoreDetail/:storeId', element: <StoreDetail />},
+      { path: 'MyReviews', element: <MyReviews />},
+      { path: 'StoreReviews', element: <StoreReviews />},
       { path: 'MenuRegister/:storeId', element: <MenuRegister />},
       { path: 'MenuDetail', element: <MenuDetail />},
       { path: 'MenuUpdate', element: <MenuUpdate />},
