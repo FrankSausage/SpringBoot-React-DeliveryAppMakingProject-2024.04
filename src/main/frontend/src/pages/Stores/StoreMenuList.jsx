@@ -113,8 +113,7 @@ export default function StoreMenuList({ storeName }) {
                     <Button
                       variant="contained"
                       color={status[idx] ? 'primary' : 'secondary'}
-                      onClick={() => handleCheckboxChange(idx)}
-                    >
+                      onClick={() => handleCheckboxChange(idx)} sx={{width: '100px'}}>
                       {status[idx] ? '상품 판매' : '품절'}
                     </Button>
                     <Button color={'info'}>

@@ -3,6 +3,7 @@ import { useStoreSearch } from "./Hook/useStoreSearch";
 import { Link } from "react-router-dom";
 import { Box, Grid, Typography } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import StarRateIcon from '@mui/icons-material/StarRate';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 export default function StoreList({ category, searchText, }) {
@@ -24,7 +25,7 @@ export default function StoreList({ category, searchText, }) {
 								<ul style={{ position: 'absolute', top: '50%', left: '15%', transform: 'translateY(-50%)', padding: 0, margin: 0 , textAlign: 'left'}}>
 									<li style={{ listStyleType: 'none' }}>가게명:{data.name}</li>
 									<li style={{ listStyleType: 'none' }}>별점:{data.rating}</li>
-									<li style={{ listStyleType: 'none' }}>찜 수: {data.dibsCount} {data.isDibed==='찜' ? <FavoriteIcon sx={{color:'red'}} /> : <FavoriteBorderIcon />}</li>
+									<li style={{ listStyleType: 'none' }}>{data.isDibed==='찜' ? <FavoriteIcon sx={{color:'red', fontSize:'small'}} /> : <FavoriteBorderIcon />}찜 수: {data.dibsCount} </li>
 									<li style={{ listStyleType: 'none' }}>리뷰 수:{data.reviewCount}</li>
 									<li style={{ listStyleType: 'none' }}>{data.isOpened===0 ? '영업 준비 중' : '영업 중'}</li>
 								</ul>
