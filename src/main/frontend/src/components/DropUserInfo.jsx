@@ -42,6 +42,9 @@ export default function DropUserInfo({ role }) {
       case 'Dibs' :
         navigate('/Dibs')
         break;
+      case 'MyReviews' :
+        navigate('/MyReviews')
+        break;
 			default :
         break;
 		}
@@ -101,6 +104,14 @@ export default function DropUserInfo({ role }) {
                 <ListAltIcon/>
               </ListItemIcon>
               <ListItemText primary="주문내역"/>
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton onClick={() => handleNavigate('MyReviews')}>
+              <ListItemIcon sx={{color:'black'}}>
+                <ListAltIcon/>
+              </ListItemIcon>
+              <ListItemText primary="리뷰 관리"/>
             </ListItemButton>
           </ListItem>
           </Fragment>

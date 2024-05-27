@@ -85,14 +85,17 @@ export default function OwnerMain() {
                         >
                         {isOpened[idx] ? '가게 오픈' : '가게 휴업'}
                       </Button> */}
-                        <Link to={`/StoreUpdate/${data.storeId}`} style={{ textDecoration: 'none' }}>
-                          <Button variant="outlined">가게 수정하기</Button>
-                        </Link>
-                        <Link to={`/OwnerOrderList`} state={{ storeId: data.storeId, storeName: data.name }} style={{ textDecoration: 'none' }}>
-                          <Button variant="outlined">가게 주문확인</Button>
-                        </Link>
-                      </Stack>
-                    }
+                      <Link to={`/StoreUpdate/${data.storeId}`} style={{ textDecoration: 'none' }}>
+                        <Button variant="outlined">가게 수정하기</Button>
+                      </Link>
+                      <Link to={`/OwnerOrderList`} state={{storeId: data.storeId, storeName: data.name}} style={{ textDecoration: 'none' }}>
+                        <Button variant="outlined">가게 주문확인</Button>
+                      </Link>
+                      <Link to={`/StoreReviews`} state={{storeId: data.storeId}} style={{ textDecoration: 'none' }}>
+                        <Button variant="outlined">가게 리뷰</Button>
+                      </Link>
+                    </Stack>
+                  }
                   </Box>
                 </Box>
               </Grid>

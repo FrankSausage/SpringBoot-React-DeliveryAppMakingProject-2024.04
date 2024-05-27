@@ -4,6 +4,7 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import { useOrder } from "./Hook/useOrder";
 import { useNavigate } from "react-router";
 import OrderDetail from "./OrderDetail";
+import ReviewRegister from "../Review/ReviewRegister";
 
 export default function OrderList() {
   const email = localStorage.getItem('email')
@@ -37,6 +38,7 @@ export default function OrderList() {
                   <Typography>주문일자: {data.orderDate.replace('T', ' ')}</Typography>
                   <Typography sx={{color: (data.status==='완료' ? 'green' : 'blue')}}>상태: {data.status}</Typography>
                 </CardContent>
+                <ReviewRegister orderId={data.orderId} status={data.status} email={email} />
                 {openPortal && activeIndex === idx && <OrderDetail isPortalOpen={{openPortal}} email={email} orderId={data.orderId}/>}
               </Card>
             </Fragment>
