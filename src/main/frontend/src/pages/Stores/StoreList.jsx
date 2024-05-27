@@ -3,7 +3,6 @@ import { useStoreSearch } from "./Hook/useStoreSearch";
 import { Link } from "react-router-dom";
 import { Box, Grid, Typography } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import StarRateIcon from '@mui/icons-material/StarRate';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 export default function StoreList({ category, searchText, }) {
