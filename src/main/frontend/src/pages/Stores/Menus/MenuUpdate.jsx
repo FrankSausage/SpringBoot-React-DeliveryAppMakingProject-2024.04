@@ -103,7 +103,7 @@ export default function MenuUpdate() {
       data.append('price', price);
       // data.append('menuPictureName', menuPictureName);
       data.append('menuOptions', null);
-      data.append('menuPictureName', menuPictureUrl);
+      data.append('menuPictureName', menuPictureUrl ? menuPictureUrl : menuPictureName);
       return data;
     } catch (error) {
       console.error('setFormData Error!: ', error);

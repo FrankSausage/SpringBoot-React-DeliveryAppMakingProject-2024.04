@@ -102,17 +102,16 @@ export default function StoreRegister() {
     const formattedPhoneNumber = formatStorePhoneNumber(event.target.value);
     setPhoneNumber(formattedPhoneNumber);
   };
-
   const setFormData = async (data) => {
     try {
       data.append('address', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '')
-        + ',' + (detailAddress ? detailAddress : '')));
+      + ',' + (detailAddress ? detailAddress : '')));
       data.append('email', email);
       data.append('category', category);
       data.append('type', type);
       data.append('operationHours', `${openHours}~${closeHours}`);
       data.append('closedDays', selectedDays.join(','));
-      data.append('storePictureName', storePictureUrl + ', ' + storePictureName);
+      data.append('storePictureName', storePictureUrl ? storePictureUrl : storePictureUrl );
       return await data;
     }
     catch (error) {

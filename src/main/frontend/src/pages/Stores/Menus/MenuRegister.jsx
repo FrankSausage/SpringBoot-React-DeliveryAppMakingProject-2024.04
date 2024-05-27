@@ -52,7 +52,7 @@ export default function MenuRegister() {
       data.append('content', content);
       data.append('name', name);
       data.append('price', price);
-      data.append('menuPictureName', menuPictureUrl + ', ' + menuPictureName);
+      data.append('menuPictureName', menuPictureUrl);
       // data.append('menuPictureUrl', menuPictureUrl);
       return data;
     } catch (error) {
