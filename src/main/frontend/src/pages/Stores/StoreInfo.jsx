@@ -12,16 +12,7 @@ export default function StoreInfo({storeDetail}) {
           {/* 가게·원산지 정보 */}
           <Grid container>
             <Grid item xs />
-            <Grid
-              container
-              sx={{
-                position: 'relative',
-                border: 1,
-                borderColor: 'rgba(255, 0, 0, 0)',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
+            <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center', }}>
               <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
                 <Box
                   className="storeIntro"
