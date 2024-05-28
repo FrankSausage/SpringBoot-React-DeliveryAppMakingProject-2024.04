@@ -95,13 +95,29 @@ public class UserServiceImpl implements UserService {
         if (optionalDibs.isPresent()) {
             // Dibs 엔티티가 존재한다면 status 업데이트
             Dibs existingDibs = optionalDibs.get();
+            if(requestDto.getStatus().equals("찜")){
+                if(existingDibs.getStatus().equals("일반")){
+                    Stores stores = storesRepository.findById(existingDibs.getStoreId()).orElseThrow(()->new RuntimeException("Stores not found"));
+                    stores.setDibsCount(stores.getDibsCount()+1);
+                }
+            }else {
+                if(existingDibs.getStatus().equals("찜")){
+                    Stores stores = storesRepository.findById(existingDibs.getStoreId()).orElseThrow(()->new RuntimeException("Stores not found"));
+                    stores.setDibsCount(stores.getDibsCount()-1);
+                }
+            }
             existingDibs.setStatus(requestDto.getStatus());
             existingDibs.setModifiedDate(LocalDateTime.now());
             dibsRepository.save(existingDibs);
+
         } else {
             // Dibs 엔티티가 존재하지 않으면 새로운 엔티티 생성
             Dibs newDibs = new Dibs(users.getUserId(), requestDto.getStoreId(), LocalDateTime.now(), LocalDateTime.now(), requestDto.getStatus());
             dibsRepository.save(newDibs);
+            Stores stores = storesRepository.findById(requestDto.getStoreId()).orElseThrow(()->new RuntimeException("Stores not found"));
+            // 찜 카운트 수정
+            stores.setDibsCount(stores.getDibsCount()+1);
+            storesRepository.save(stores);
         }
 
         return Response.toResponseEntity(USER_DIBS_SUCCESS);
