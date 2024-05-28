@@ -43,17 +43,7 @@ export default function SearchHeader() {
                         <GpsFixedIcon style={{ color: 'gray' }} />
                       </InputAdornment>
                     }
-                    sx={{
-                      mt: 1, mb: 1,
-                      width: '100%',
-                      maxWidth: 550,
-                      backgroundColor: 'white',
-                      cursor: 'pointer',
-                      borderRadius: '30px',
-                      padding: '1px 15px',
-                      fontSize: '1rem',
-                      textAlign: 'center'
-                    }}
+                    sx={{ mt: 1, mb: 1, width: '100%', maxWidth: 550, backgroundColor: 'white', cursor: 'pointer', borderRadius: '30px', padding: '1px 15px', fontSize: '1rem', textAlign: 'center'}}
                     inputProps={{ style: { textAlign: 'center' }}}
                     onClick={handleNavigate}
                   />

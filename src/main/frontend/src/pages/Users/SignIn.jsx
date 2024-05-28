@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox,
-    Paper, Grid, Box, Typography } from '@mui/material';
+    Paper, Grid, Box, Typography, 
+    IconButton} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { login } from '../../utils/firebase';
+import { login, loginWithGoogle, loginWithKakao } from '../../utils/firebase';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import axios from 'axios';
@@ -57,6 +58,36 @@ export default function SignIn() {
         })
     }
   }
+  const handleGoogleLogin = () => {
+    loginWithGoogle()
+      .then((result) => {
+        if (result) {
+          navigate("/SignUp", { state: userInfo.email }); // 로그인 성공 후 "/"로 이동
+        }
+      })
+      .catch((error) => {
+        console.error("Google 로그인 실패", error);
+      });
+  };
+
+  const handleKakaoLogin = () => {
+    loginWithKakao()
+      .then((result) => {
+        if (result) {
+          navigate("/", { state: userInfo.email }); // 로그인 성공 후 "/"로 이동
+        }
+      })
+      .catch((error) => {
+        console.error("Kakao 로그인 실패", error);
+      });
+  };
+ 
+
+  // const handleNaverSuccess = (userInfo) => {
+  //   console.log("네이버 로그인 성공!", userInfo);
+  //   localStorage.setItem("email", userInfo.email);
+  //   navigate("/", { state: userInfo.email });
+  // };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -98,44 +129,21 @@ export default function SignIn() {
               로그인
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="이메일"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                value={userInfo.email}
-                onChange={handleChange}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="비밀번호"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={userInfo.password}
-                onChange={handleChange}
-              />
+              <TextField margin="normal" required fullWidth id="email" label="이메일" name="email" autoComplete="email" autoFocus value={userInfo.email} onChange={handleChange} />
+              <TextField margin="normal" required fullWidth name="password" label="비밀번호" type="password" id="password" autoComplete="current-password" value={userInfo.password} onChange={handleChange} />
               <FormControlLabel
                 control={<CustomCheckbox value="remember" color="primary" />}
                 label="나를 기억하기"
               />
-              <Button
-                type="submit" 
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2, backgroundColor: '#66BB6A', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#41df78'},
-                fontFamily: 'Arial', 
-                fontWeight: 'bold', 
-                fontSize: '1.2rem'}}>
+              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, backgroundColor: '#66BB6A', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#41df78'}, fontFamily: 'Arial',  fontWeight: 'bold', fontSize: '1.2rem'}}>
                 로그인
               </Button>
+              <IconButton onClick={handleGoogleLogin} fullWidth sx={{ mt: 3, mb: 2, backgroundColor: '#FFFFFF', borderRadius: '20px', border: '1px'}}>
+                <img src={'/img/google.png'} alt="Google 로고" style={{ width: '35px', height: '35px' }} />
+              </IconButton>
+              <IconButton onClick={handleKakaoLogin} fullWidth sx={{ mt: 3, mb: 2, backgroundColor: '#FFFFFF', borderRadius: '20px', border: '1px'}}>
+                <img src={'/img/google.png'} alt="Google 로고" style={{ width: '35px', height: '35px' }} />
+              </IconButton>
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2" style={{ textDecoration: 'none', color: 'black'  }}>
