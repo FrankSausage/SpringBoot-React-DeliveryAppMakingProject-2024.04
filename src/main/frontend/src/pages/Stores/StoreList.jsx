@@ -5,8 +5,8 @@ import { Box, Grid, Typography } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
-export default function StoreList({ category, searchText, }) {
-	const { getStoreListByCategory: { isLoading, data: storeDatas } } = useStoreSearch(searchText ? searchText : category);
+export default function StoreList({ category, searchText, sort }) {
+	const { getStoreListByCategory: { isLoading, data: storeDatas } } = useStoreSearch((searchText ? searchText : category), 'sort');
 
 	return (
 		<Grid container>

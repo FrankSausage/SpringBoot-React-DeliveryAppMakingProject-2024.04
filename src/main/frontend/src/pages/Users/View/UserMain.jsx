@@ -28,13 +28,13 @@ export default function UserMain() {
           <Grid item key={index} xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center', flexDirection:'column', alignItems:'center' }}>
             <Box sx={{ ...boxStyle, position: 'relative', overflow: 'hidden', borderRadius: 2 }}>
               <Link to={category.link} state={category.state} style={{ textDecoration: 'none', color: 'black', display: 'block', height: '100%' }}>
-                <Box sx={{ width: '100%', height: '100%', position: 'relative' }}>
-                  <img src={category.img} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s', borderRadius: 'inherit' }} alt={category.label} />
+                <Box sx={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden', '$hover img': {transform: 'scale(1.05)'}}}>
+                  <img src={category.img} style={imgStyle} alt={category.label} />
                 </Box>
               </Link>
             </Box>
-            <Link to={category.link} state={category.state} style={{textDecoration:'none', color:'black'}}>
-              <Typography variant="h6" sx={{ mt: 1, fontWeight:'bold', color:'black', textAling:'center' }}>
+            <Link to={category.link} state={category.state} style={{textDecoration:'none', color:'black', width: '100%', textAlign:'center'}}>
+              <Typography variant="h6" sx={{ mt: -1, fontWeight:'bold', color:'#ffffff', textAling:'center', bgcolor:'#222831', p:1, borderRadius:1 }}>
                 {category.label}
               </Typography>
             </Link>
@@ -64,12 +64,19 @@ const boxStyle = {
   borderColor: 'transparent',
   m: 1,
   boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-  transition: 'transform 0.3s, box-shadow 0.3s',
+  transition: ' box-shadow 0.3s',
   '&:hover': {
-    transform: 'scale(1.05)',
     boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
   },
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center'
+};
+
+const imgStyle = {
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+  transition: 'transform 0.3s',
+  borderRadius: 'inherit',
 };
