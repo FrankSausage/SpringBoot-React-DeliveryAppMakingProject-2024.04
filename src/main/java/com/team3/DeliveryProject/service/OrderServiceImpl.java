@@ -31,20 +31,21 @@ import com.team3.DeliveryProject.entity.Menu;
 import com.team3.DeliveryProject.entity.MenuOption;
 import com.team3.DeliveryProject.entity.OrderMenu;
 import com.team3.DeliveryProject.entity.Orders;
+import com.team3.DeliveryProject.entity.Reviews;
 import com.team3.DeliveryProject.entity.Stores;
 import com.team3.DeliveryProject.entity.Users;
 import com.team3.DeliveryProject.repository.MenuOptionRepository;
 import com.team3.DeliveryProject.repository.MenuRepository;
 import com.team3.DeliveryProject.repository.OrderMenuRepository;
 import com.team3.DeliveryProject.repository.OrdersRepository;
+import com.team3.DeliveryProject.repository.ReviewsRepository;
 import com.team3.DeliveryProject.repository.StoresRepository;
 import com.team3.DeliveryProject.repository.UsersRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -59,6 +60,7 @@ public class OrderServiceImpl implements OrderService {
     private final MenuRepository menuRepository;
     private final MenuOptionRepository menuOptionRepository;
     private final OrderMenuRepository orderMenuRepository;
+    private final ReviewsRepository reviewsRepository;
 
     @Override
     public ResponseEntity<Response> addOrder(OrderAddRequestDto requestDto) {
@@ -235,7 +237,11 @@ public class OrderServiceImpl implements OrderService {
                     .orElseThrow(() -> new RuntimeException("Menu not found"));
                 menuName = menu.getName();
             }
-
+            Optional<Reviews> reviews = reviewsRepository.findByOrderId(orders.getOrderId());
+            boolean isReviewed = false;
+            if(reviews.isPresent()){
+                isReviewed = true;
+            }
             OrderListInnerOrdersResponseDto innerOrdersResponseDto = OrderListInnerOrdersResponseDto.builder()
                 .orderId(orders.getOrderId())
                 .storeId(orders.getStoreId())
@@ -245,6 +251,7 @@ public class OrderServiceImpl implements OrderService {
                 .totalPrice(orders.getTotalPrice())
                 .orderDate(orders.getCreatedDate())
                 .status(orders.getStatus())
+                .reviewed(isReviewed)
                 .build();
             innerOrdersResponseDtoList.add(innerOrdersResponseDto);
         }
@@ -269,7 +276,7 @@ public class OrderServiceImpl implements OrderService {
             Menu menu = menuRepository.findById(orderMenu.getMenuId())
                 .orElseThrow(() -> new RuntimeException("Menu not found"));
 
-            if(orderMenu.getMenuOptionId() != null){
+            if (orderMenu.getMenuOptionId() != null) {
                 MenuOption menuOption = menuOptionRepository.findById(orderMenu.getMenuOptionId())
                     .orElseThrow(() -> new RuntimeException("MenuOption not found"));
 
@@ -289,7 +296,7 @@ public class OrderServiceImpl implements OrderService {
                     .menuOptions(innerMenuOptionsResponseDtos)
                     .build();
                 innerMenusResponseDtos.add(innerMenusResponseDto);
-            }else{
+            } else {
                 List<OrderDetailOwnerInnerMenuOptionsResponseDto> innerMenuOptionsResponseDtos = new ArrayList<>();
                 OrderDetailOwnerInnerMenuOptionsResponseDto menuOptionsResponseDto = OrderDetailOwnerInnerMenuOptionsResponseDto.builder()
                     .build();
