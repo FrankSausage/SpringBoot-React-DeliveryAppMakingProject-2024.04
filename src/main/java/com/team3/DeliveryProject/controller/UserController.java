@@ -87,8 +87,6 @@ public class UserController {
 
     @GetMapping("/signin")
     public ResponseEntity<?> signIn(@ModelAttribute UserSignInRequestDto requestDto) {
-        System.out.println(requestDto);
-        System.out.println(requestDto.getEmail());
         Users user = usersRepository.findUsersByEmail(requestDto.getEmail())
             .orElseThrow(() -> new RuntimeException("User not found"));
         if (user.getRole().equals("회원")) {
