@@ -27,6 +27,7 @@ public enum ResponseCode {
     ADDRESS_CHANGE_SUCCESS(HttpStatus.OK, "주소 변경 성공"),
     REVIEW_ADD_SUCCESS(HttpStatus.OK, "리뷰 등록 성공"),
     REVIEW_DELETE_SUCCESS(HttpStatus.OK, "리뷰, 사장님 리뷰 삭제 성공"),
+    CEO_REVIEW_DELETE_SUCCESS(HttpStatus.OK, "사장님 리뷰 삭제 성공"),
     CEO_REVIEW_ADD_SUCCESS(HttpStatus.OK, "사장님 리뷰 등록 성공"),
     ORDER_ADD_SUCCESS(HttpStatus.OK, "주문 추가 성공"),
     ORDER_STATUS_UPDATE_SUCCESS(HttpStatus.OK, "주문 상태 수정 성공"),

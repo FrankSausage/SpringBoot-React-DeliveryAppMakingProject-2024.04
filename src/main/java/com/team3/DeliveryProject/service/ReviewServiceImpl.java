@@ -2,12 +2,14 @@ package com.team3.DeliveryProject.service;
 
 import static com.team3.DeliveryProject.responseCode.ErrorCode.REVIEW_NOT_EXIST;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.CEO_REVIEW_ADD_SUCCESS;
+import static com.team3.DeliveryProject.responseCode.ResponseCode.CEO_REVIEW_DELETE_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.REVIEW_ADD_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.REVIEW_DELETE_SUCCESS;
 
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.review.ReviewAddRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewCeoAddRequestDto;
+import com.team3.DeliveryProject.dto.request.review.ReviewCeoDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewListOwnerRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewListUserRequestDto;
@@ -56,6 +58,12 @@ public class ReviewServiceImpl implements ReviewService{
         Reviews reviews = new Reviews(users.getUserId(), requestDto.getOrderId(), requestDto.getRating(),
             requestDto.getContent(), requestDto.getReviewPictureName(), LocalDateTime.now());
         reviewsRepository.save(reviews);
+
+        //리뷰수 증가
+        Orders orders = ordersRepository.findById(requestDto.getOrderId()).orElseThrow(()->new RuntimeException("Orders not found"));
+        Stores stores = storesRepository.findById(orders.getStoreId()).orElseThrow(()->new RuntimeException("Stores not found"));
+        stores.setReviewCount(stores.getReviewCount()+1);
+        storesRepository.save(stores);
         return Response.toResponseEntity(REVIEW_ADD_SUCCESS);
     }
 
@@ -71,6 +79,11 @@ public class ReviewServiceImpl implements ReviewService{
             return Response.toResponseEntity(REVIEW_NOT_EXIST);
         }else{
             reviewsRepository.deleteById(requestDto.getReviewId());
+            // 리뷰수 감소
+            Reviews reviews = reviewsRepository.findById(requestDto.getReviewId()).orElseThrow(()->new RuntimeException("Reviews not found"));
+            Orders orders = ordersRepository.findById(reviews.getOrderId()).orElseThrow(()->new RuntimeException("Orders not found"));
+            Stores stores = storesRepository.findById(orders.getStoreId()).orElseThrow(()->new RuntimeException("Stores not found"));
+            stores.setReviewCount(stores.getReviewCount()-1);
             return Response.toResponseEntity(REVIEW_DELETE_SUCCESS);
         }
     }
@@ -149,9 +162,11 @@ public class ReviewServiceImpl implements ReviewService{
             Optional<CeoReviews> ceoReviews = ceoReviewsRepository.findByReviewId(reviews.getReviewId());
             String ceoContent = null;
             LocalDateTime ceoCreatedDate = null;
+            Long ceoRiviewId = 0L;
             if(ceoReviews.isPresent()){
                 ceoContent = ceoReviews.get().getContent();
                 ceoCreatedDate = ceoReviews.get().getCreatedDate();
+                ceoRiviewId = ceoReviews.get().getCeoReviewId();
             }
             ReviewListOwnerInnerReviewListResponseDto innerReviewListResponseDto = ReviewListOwnerInnerReviewListResponseDto.builder()
                 .reviewId(reviews.getReviewId())
@@ -164,6 +179,7 @@ public class ReviewServiceImpl implements ReviewService{
                 .reviewPictureName(reviews.getReviewPictureName())
                 .ceoReviewContent(ceoContent)
                 .ceoReviewCreatedDate(ceoCreatedDate)
+                .ceoReviewId(ceoRiviewId)
                 .build();
             innerReviewListResponseDtos.add(innerReviewListResponseDto);
         }
@@ -172,5 +188,13 @@ public class ReviewServiceImpl implements ReviewService{
             .build();
 
         return responseDto;
+    }
+
+    @Override
+    public ResponseEntity<Response> deleteCeoReview(ReviewCeoDeleteRequestDto requestDto) {
+        CeoReviews ceoReviews = ceoReviewsRepository.findById(requestDto.getCeoReviewId())
+            .orElseThrow(()-> new RuntimeException("CeoReviews not found"));
+        ceoReviewsRepository.delete(ceoReviews);
+        return Response.toResponseEntity(CEO_REVIEW_DELETE_SUCCESS);
     }
 }
