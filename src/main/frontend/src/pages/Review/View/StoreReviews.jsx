@@ -10,11 +10,17 @@ export default function StoreReviews() {
   const { storeId } = location.state
   const [ openPortal, setOpenPortal ] = useState(false);
   const [ activeIndex, setActiveIndex ] = useState(0); 
-  const { getStoreReviewList: {isLoading, data: storeReviewData } } = useStoreReviewList(storeId);
+  const { getStoreReviewList: {isLoading, data: storeReviewData }, deleteOwnerReview } = useStoreReviewList(storeId);
 
   const handleClick = (idx) => {
     setOpenPortal(!openPortal);
     setActiveIndex(idx);
+  }
+
+  const handleDelete = ceoReviewId => {
+    deleteOwnerReview.mutate(ceoReviewId, {
+      onSuccess: () => {alert('삭제에 성공했습니다.')},
+    })
   }
 
   return(
@@ -49,10 +55,13 @@ export default function StoreReviews() {
                       </Box>
                     }
                     { openPortal ?
-                      (!data.ceoReviewContent && <Button onClick={() => handleClick(idx)} variant="contained">접기</Button> 
-                        )
+                      (!data.ceoReviewContent && <Button onClick={() => handleClick(idx)} variant="contained">접기</Button>)
                       :
-                      (!data.ceoReviewContent && <Button onClick={() => handleClick(idx)} variant="contained">댓글 달기</Button>)
+                      (!data.ceoReviewContent ? 
+                        <Button onClick={() => handleClick(idx)} variant="contained">댓글 달기</Button> 
+                        : 
+                        <Button onClick={() => handleDelete(data.cewReviewId ? data.cewReviewId : '')} color="error" variant="contained">댓글 삭제</Button>
+                      )
                     }
                   {!data.ceoReviewContent && openPortal && activeIndex === idx && <OwnerReviewRegister isPortalOpen={{openPortal}} reviewId={data.reviewId}/>}
                 </Card>
