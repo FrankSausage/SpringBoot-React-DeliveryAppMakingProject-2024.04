@@ -60,7 +60,7 @@ export default function StoreReviews() {
                       (!data.ceoReviewContent ? 
                         <Button onClick={() => handleClick(idx)} variant="contained">댓글 달기</Button> 
                         : 
-                        <Button onClick={() => handleDelete(data.cewReviewId ? data.cewReviewId : '')} color="error" variant="contained">댓글 삭제</Button>
+                        <Button onClick={() => handleDelete(data.ceoReviewId)} color="error" variant="contained">댓글 삭제</Button>
                       )
                     }
                   {!data.ceoReviewContent && openPortal && activeIndex === idx && <OwnerReviewRegister isPortalOpen={{openPortal}} reviewId={data.reviewId}/>}

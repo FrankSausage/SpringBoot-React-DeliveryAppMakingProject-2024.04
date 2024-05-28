@@ -30,13 +30,13 @@ export function useStoreReviewList(storeId) {
 
   const postOwnerReview = useMutation({
     mutationFn: reviewData => {axios.post(`/dp/store/review/reply`, reviewData)},
-    onSuccess: () => {queryClient.invalidateQueries(['reviewList'], { storeId: storeId })},
+    onSuccess: () => {queryClient.invalidateQueries(['reviewList'])},
     onError: e => {alert('사장님 댓글 작성에 실패하였습니다.'); console.error(e)}
   })
 
   const deleteOwnerReview = useMutation({
     mutationFn: ceoReviewId => {axios.post(`/dp/store/review/reply/delete`, {ceoReviewId: ceoReviewId})},
-    onSuccess: () => {queryClient.invalidateQueries(['reviewList'], { storeId: storeId})},
+    onSuccess: () => {queryClient.invalidateQueries(['reviewList'])},
     onError: e => {alert('사장님 댓글 삭제에 실패하였습니다.'); console.error(e)}
   })
 
