@@ -99,8 +99,8 @@ export default function Order() {
 						>
 							<MenuItem value={'현금결제'}>만나서 현금 결제</MenuItem>
 							<MenuItem value={'카드결제'}>만나서 카드 결제</MenuItem>
-							<Link to={'/ChekoutPage'}>
-								<MenuItem value={'카드결제'}>만나서 카드 결제</MenuItem>
+							<Link to="/checkout" state={totalPrice}>
+								<MenuItem value={'카드결제'}> 선결제</MenuItem>
 							</Link>
 						</Select>
 					</FormControl>
