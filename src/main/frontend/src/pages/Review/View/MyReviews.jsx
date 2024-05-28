@@ -6,12 +6,17 @@ import { useNavigate } from "react-router";
 export default function MyReviews() { 
   const email = localStorage.getItem('email')
   const navigate = useNavigate()
-  const { getMyReviewList: {isLoading, data: reviewData } } = useReview(email);
-
+  const { getMyReviewList: {isLoading, data: reviewData }, deleteMyReview } = useReview(email);
+  console.log(reviewData)
+  const handleDelete = reviewId => {
+    deleteMyReview.mutate(reviewId, {
+      onSuccess: () => {alert('리뷰 삭제에 성공했습니다.')},
+    })
+  }
   return(
     <Box>
       {isLoading && <Typography>로딩 중...</Typography>}
-      {!isLoading && !reviewData && 
+      {!isLoading && reviewData && reviewData.data.reviewList.length===0 &&
       <Fragment>
       <Typography>아직 리뷰를 남긴 가게가 없어요!</Typography>
       <Button variant="contained" onClick={() => navigate('/OrderList')}>리뷰 쓰러 가기</Button>
@@ -32,6 +37,7 @@ export default function MyReviews() {
                     <TextField value={data.content} sx={{width:500}} maxRows={4} minRows={4} 
                           multiline InputProps={{ readOnly:true,}}/>
                   </CardContent>
+                  <Button onClick={() => handleDelete(data.reviewId)} color="error" variant="contained">리뷰 삭제</Button>
                     {data.ceoReviewContent &&
                       <Box>
                         <Typography>작성 일: {data.ceoReviewCreatedDate.replace('T', ' ')}</Typography>
