@@ -78,12 +78,12 @@ public class ReviewServiceImpl implements ReviewService{
         if (!reviewsRepository.findById(requestDto.getReviewId()).isPresent()) {
             return Response.toResponseEntity(REVIEW_NOT_EXIST);
         }else{
-            reviewsRepository.deleteById(requestDto.getReviewId());
             // 리뷰수 감소
             Reviews reviews = reviewsRepository.findById(requestDto.getReviewId()).orElseThrow(()->new RuntimeException("Reviews not found"));
             Orders orders = ordersRepository.findById(reviews.getOrderId()).orElseThrow(()->new RuntimeException("Orders not found"));
             Stores stores = storesRepository.findById(orders.getStoreId()).orElseThrow(()->new RuntimeException("Stores not found"));
             stores.setReviewCount(stores.getReviewCount()-1);
+            reviewsRepository.deleteById(requestDto.getReviewId());
             return Response.toResponseEntity(REVIEW_DELETE_SUCCESS);
         }
     }
@@ -102,6 +102,8 @@ public class ReviewServiceImpl implements ReviewService{
     public ReviewListUserResponseDto listUserReview(ReviewListUserRequestDto requestDto) {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()-> new RuntimeException("User not found"));
         List<Reviews> reviewsList = reviewsRepository.findAllByUserId(users.getUserId());
+        reviewsList.sort((r1, r2) -> r2.getCreatedDate().compareTo(r1.getCreatedDate()));
+
         List<ReviewListUserInnerReviewListResponseDto> innerReviewListResponseDtos = new ArrayList<>();
         for(Reviews reviews : reviewsList){
             Optional<CeoReviews> ceoReviews = ceoReviewsRepository.findByReviewId(reviews.getReviewId());

@@ -24,4 +24,5 @@ public class OrderListInnerOrdersResponseDto {
     private int totalPrice;
     private LocalDateTime orderDate;
     private String status;
+    private boolean isReviewed;
 }
