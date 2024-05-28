@@ -91,24 +91,38 @@ public class ReviewServiceImpl implements ReviewService{
         List<Reviews> reviewsList = reviewsRepository.findAllByUserId(users.getUserId());
         List<ReviewListUserInnerReviewListResponseDto> innerReviewListResponseDtos = new ArrayList<>();
         for(Reviews reviews : reviewsList){
-            CeoReviews ceoReviews = ceoReviewsRepository.findByReviewId(reviews.getReviewId())
-                .orElseThrow(()->new RuntimeException("CeoReviews not found"));
+            Optional<CeoReviews> ceoReviews = ceoReviewsRepository.findByReviewId(reviews.getReviewId());
             Long orderId = reviews.getOrderId();
             Orders orders = ordersRepository.findById(orderId).orElseThrow(()-> new RuntimeException("Orders not found"));
             Stores stores = storesRepository.findById(orders.getStoreId()).orElseThrow(()-> new RuntimeException("Stores not found"));
-            ReviewListUserInnerReviewListResponseDto innerReviewListResponseDto = ReviewListUserInnerReviewListResponseDto.builder()
-                .reviewId(reviews.getReviewId())
-                .storeName(stores.getName())
-                .storeId(stores.getStoreId())
-                .content(reviews.getContent())
-                .rating(reviews.getRating())
-                .storeType(stores.getType())
-                .createdDate(reviews.getCreatedDate())
-                .reviewPictureName(reviews.getReviewPictureName())
-                .ceoReviewContent(ceoReviews.getContent())
-                .ceoReviewCreatedDate(ceoReviews.getCreatedDate())
-                .build();
-            innerReviewListResponseDtos.add(innerReviewListResponseDto);
+
+            if(ceoReviews.isPresent()){
+                ReviewListUserInnerReviewListResponseDto innerReviewListResponseDto = ReviewListUserInnerReviewListResponseDto.builder()
+                    .reviewId(reviews.getReviewId())
+                    .storeName(stores.getName())
+                    .storeId(stores.getStoreId())
+                    .content(reviews.getContent())
+                    .rating(reviews.getRating())
+                    .storeType(stores.getType())
+                    .createdDate(reviews.getCreatedDate())
+                    .reviewPictureName(reviews.getReviewPictureName())
+                    .ceoReviewContent(ceoReviews.get().getContent())
+                    .ceoReviewCreatedDate(ceoReviews.get().getCreatedDate())
+                    .build();
+                innerReviewListResponseDtos.add(innerReviewListResponseDto);
+            }else{
+                ReviewListUserInnerReviewListResponseDto innerReviewListResponseDto = ReviewListUserInnerReviewListResponseDto.builder()
+                    .reviewId(reviews.getReviewId())
+                    .storeName(stores.getName())
+                    .storeId(stores.getStoreId())
+                    .content(reviews.getContent())
+                    .rating(reviews.getRating())
+                    .storeType(stores.getType())
+                    .createdDate(reviews.getCreatedDate())
+                    .reviewPictureName(reviews.getReviewPictureName())
+                    .build();
+                innerReviewListResponseDtos.add(innerReviewListResponseDto);
+            }
         }
         ReviewListUserResponseDto responseDto = ReviewListUserResponseDto.builder()
             .reviewList(innerReviewListResponseDtos)
