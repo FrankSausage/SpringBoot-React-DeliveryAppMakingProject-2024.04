@@ -186,9 +186,10 @@ public class StoreServiceImpl implements StoreService {
             // AddressCode 리스트에서 유저의 addrCode와 일치하는지 확인 ㅇㅇ
             for (AddressCode addressCode : addressCodes) {
                 if (addressCode.getAddressCode().equals(addrCode)) {
-                    Boolean b = dibsRepository.existsByUserIdAndStoreId(users.getUserId(), storeId);
+                    Dibs dibs = dibsRepository.findByUserIdAndStoreId(users.getUserId(), storeId)
+                        .orElseThrow(()->new RuntimeException("Dibs not found"));
                     String isDibs = "";
-                    if (b == true) {
+                    if (dibs.getStatus().equals("찜")) {
                         isDibs = "찜";
                     } else {
                         isDibs = "일반";
@@ -210,9 +211,10 @@ public class StoreServiceImpl implements StoreService {
             // AddressCode 리스트에서 유저의 addrCode와 일치하는지 확인 ㅇㅇ
             for (AddressCode addressCode : addressCodes) {
                 if (addressCode.getAddressCode().equals(addrCode)) {
-                    Boolean b = dibsRepository.existsByUserIdAndStoreId(users.getUserId(), storeId);
+                    Dibs dibs = dibsRepository.findByUserIdAndStoreId(users.getUserId(), storeId)
+                        .orElseThrow(()->new RuntimeException("Dibs not found"));
                     String isDibs = "";
-                    if (b == true) {
+                    if (dibs.getStatus().equals("찜")) {
                         isDibs = "찜";
                     } else {
                         isDibs = "일반";
@@ -237,9 +239,10 @@ public class StoreServiceImpl implements StoreService {
             // AddressCode 리스트에서 유저의 addrCode와 일치하는지 확인 ㅇㅇ
             for (AddressCode addressCode : addressCodes) {
                 if (addressCode.getAddressCode().equals(addrCode)) {
-                    Boolean b = dibsRepository.existsByUserIdAndStoreId(users.getUserId(), storeId);
+                    Dibs dibs = dibsRepository.findByUserIdAndStoreId(users.getUserId(), storeId)
+                        .orElseThrow(()->new RuntimeException("Dibs not found"));
                     String isDibs = "";
-                    if (b == true) {
+                    if (dibs.getStatus().equals("찜")) {
                         isDibs = "찜";
                     } else {
                         isDibs = "일반";
