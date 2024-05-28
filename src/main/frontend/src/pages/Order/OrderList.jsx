@@ -17,6 +17,7 @@ export default function OrderList() {
     setOpenPortal(!openPortal);
     setActiveIndex(index);
   }
+
   const handleNav = storeId => {
     navigate(`/StoreDetail/${storeId}`)
   }
@@ -24,6 +25,7 @@ export default function OrderList() {
   return (
     <Box>
       {isLoading && <Typography>로딩 중...</Typography>}
+      {!isLoading && !orderData && <Typography>아직 주문한 내역이 없어요!</Typography>}
       {!isLoading && orderData && orderData.data.orders &&
         <Fragment>
           <Typography variant="h5">주문 내역</Typography>
@@ -38,7 +40,11 @@ export default function OrderList() {
                   <Typography>주문일자: {data.orderDate.replace('T', ' ')}</Typography>
                   <Typography sx={{color: (data.status==='완료' ? 'green' : 'blue')}}>상태: {data.status}</Typography>
                 </CardContent>
-                <ReviewRegister orderId={data.orderId} status={data.status} email={email} />
+                {!data.reviewed ? 
+                  <ReviewRegister orderId={data.orderId} status={data.status} email={email} />
+                  :
+                  null
+                }
                 {openPortal && activeIndex === idx && <OrderDetail isPortalOpen={{openPortal}} email={email} orderId={data.orderId}/>}
               </Card>
             </Fragment>
