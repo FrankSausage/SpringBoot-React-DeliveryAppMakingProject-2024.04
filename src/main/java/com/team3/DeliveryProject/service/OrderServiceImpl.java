@@ -251,7 +251,7 @@ public class OrderServiceImpl implements OrderService {
                 .totalPrice(orders.getTotalPrice())
                 .orderDate(orders.getCreatedDate())
                 .status(orders.getStatus())
-                .isReviewed(isReviewed)
+                .reviewed(isReviewed)
                 .build();
             innerOrdersResponseDtoList.add(innerOrdersResponseDto);
         }
