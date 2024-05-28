@@ -2,12 +2,14 @@ package com.team3.DeliveryProject.service;
 
 import static com.team3.DeliveryProject.responseCode.ErrorCode.REVIEW_NOT_EXIST;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.CEO_REVIEW_ADD_SUCCESS;
+import static com.team3.DeliveryProject.responseCode.ResponseCode.CEO_REVIEW_DELETE_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.REVIEW_ADD_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.REVIEW_DELETE_SUCCESS;
 
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.review.ReviewAddRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewCeoAddRequestDto;
+import com.team3.DeliveryProject.dto.request.review.ReviewCeoDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewListOwnerRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewListUserRequestDto;
@@ -172,5 +174,13 @@ public class ReviewServiceImpl implements ReviewService{
             .build();
 
         return responseDto;
+    }
+
+    @Override
+    public ResponseEntity<Response> deleteCeoReview(ReviewCeoDeleteRequestDto requestDto) {
+        CeoReviews ceoReviews = ceoReviewsRepository.findById(requestDto.getCeoReviewId())
+            .orElseThrow(()-> new RuntimeException("CeoReviews not found"));
+        ceoReviewsRepository.delete(ceoReviews);
+        return Response.toResponseEntity(CEO_REVIEW_DELETE_SUCCESS);
     }
 }
