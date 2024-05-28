@@ -26,7 +26,7 @@ export default function SignUp() {
   const navigate = useNavigate();
   const CustomCheckbox = ({ checked, onChange }) => {
     return (
-      <Checkbox checked={checked} onChange={onChange} sx={{ color: '002500', '&.Mui-checked': { color: '#66BB6A' }}}/>
+      <Checkbox checked={checked} onChange={onChange} sx={{ color: '002500', '&.Mui-checked': { color: '#ffbe33' }}}/>
         );
       };
 
@@ -118,7 +118,7 @@ export default function SignUp() {
               <img src={'/img/logo01.png'} style={{ width: '50%', height: '50%',position: 'relative', top: 5, marginBottom: '20px'}}/>
             </Link>
           </Typography>
-          <Avatar sx={{ m: 1, bgcolor: '#f09032', marginBottom: '10px' }}>
+          <Avatar sx={{ m: 1, bgcolor: '#ffbe33', marginBottom: '10px' }}>
             <EditNoteIcon />
           </Avatar>
           <Typography component="h1" variant="h5" sx={{ fontFamily: 'Arial, sans-serif', color: 'black', marginBottom: '20px' }}>
@@ -136,8 +136,7 @@ export default function SignUp() {
                   label="이름"
                   placeholder='ex)홍길동'
                   autoFocus
-                  InputProps={{ style: { fontFamily: 'Arial, sans-serif' } }}
-                />
+                  InputProps={{ style: { fontFamily: 'Arial, sans-serif' } }}/>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -212,10 +211,10 @@ export default function SignUp() {
                     type="button"
                     onClick={handleFindPostcode}
                       variant="contained"
-                      sx={{ mt: 3, mb: 2, backgroundColor: '#66BB6A', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#41df78', // 호버 시 버튼 배경색
-                    }}}>
+                      sx={{ mt: 3, mb: 2, ml:2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33', // 호버 시 버튼 배경색
+                       }}}>
                       주소 찾기
-                    </Button>
+                  </Button>
                 <Grid item xs={12}>
                   <TextField
                       fullWidth
@@ -261,7 +260,7 @@ export default function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, backgroundColor: '#66BB6A', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#41df78'},
+              sx={{ mt: 3, mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'},
               fontFamily: 'Arial', 
               fontWeight: 'bold', 
               fontSize: '1.2rem'}}>

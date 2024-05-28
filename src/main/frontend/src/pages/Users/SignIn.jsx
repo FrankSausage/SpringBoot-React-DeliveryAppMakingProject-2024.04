@@ -91,7 +91,7 @@ export default function SignIn() {
                 <img src={'/img/logo01.png'} style={{ width: '40%', height: '50%',position: 'relative', top: 5, marginBottom: '20px'}}/>
               </Link> 
             </Typography>
-            <Avatar sx={{ m: 1, bgcolor: '#f09032', marginBottom: '10px' }}>
+            <Avatar sx={{ m: 1, bgcolor: '#ffbe33', marginBottom: '10px' }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -130,7 +130,7 @@ export default function SignIn() {
                 type="submit" 
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2, backgroundColor: '#66BB6A', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#41df78'},
+                sx={{ mt: 3, mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'},
                 fontFamily: 'Arial', 
                 fontWeight: 'bold', 
                 fontSize: '1.2rem'}}>

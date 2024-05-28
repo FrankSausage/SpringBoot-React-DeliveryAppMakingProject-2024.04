@@ -85,7 +85,7 @@ export default function MenuDetail() {
               <Grid item xs={1}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                   <Button onClick={handleSubmit} variant="contained" 
-                    sx={{ mt: 3, mb: 2, backgroundColor: '#66BB6A', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#41df78'}, fontSize: '1rem'}}>장바구니 담기</Button>
+                    sx={{ mt: 3, mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'}, fontSize: '1rem'}}>장바구니 담기</Button>
                   {/* <Button onClick={handleSubmit}>장바구니 담기</Button> */}
                 </Box>
               </Grid>
