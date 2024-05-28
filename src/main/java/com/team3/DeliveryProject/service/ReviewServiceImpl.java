@@ -58,6 +58,12 @@ public class ReviewServiceImpl implements ReviewService{
         Reviews reviews = new Reviews(users.getUserId(), requestDto.getOrderId(), requestDto.getRating(),
             requestDto.getContent(), requestDto.getReviewPictureName(), LocalDateTime.now());
         reviewsRepository.save(reviews);
+
+        //리뷰수 증가
+        Orders orders = ordersRepository.findById(requestDto.getOrderId()).orElseThrow(()->new RuntimeException("Orders not found"));
+        Stores stores = storesRepository.findById(orders.getStoreId()).orElseThrow(()->new RuntimeException("Stores not found"));
+        stores.setReviewCount(stores.getReviewCount()+1);
+        storesRepository.save(stores);
         return Response.toResponseEntity(REVIEW_ADD_SUCCESS);
     }
 
@@ -73,6 +79,11 @@ public class ReviewServiceImpl implements ReviewService{
             return Response.toResponseEntity(REVIEW_NOT_EXIST);
         }else{
             reviewsRepository.deleteById(requestDto.getReviewId());
+            // 리뷰수 감소
+            Reviews reviews = reviewsRepository.findById(requestDto.getReviewId()).orElseThrow(()->new RuntimeException("Reviews not found"));
+            Orders orders = ordersRepository.findById(reviews.getOrderId()).orElseThrow(()->new RuntimeException("Orders not found"));
+            Stores stores = storesRepository.findById(orders.getStoreId()).orElseThrow(()->new RuntimeException("Stores not found"));
+            stores.setReviewCount(stores.getReviewCount()-1);
             return Response.toResponseEntity(REVIEW_DELETE_SUCCESS);
         }
     }
