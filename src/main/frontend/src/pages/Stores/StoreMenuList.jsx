@@ -97,7 +97,7 @@ export default function StoreMenuList({ storeName }) {
                 </Box>
               </Grid>
               <Grid item xs={12} md={7} sx={{ position: 'relative' }}>
-                <Box component={Link} to={role === '회원' ? `/MenuDetail` : `/MenuUpdate`} state={{ menuId: res.menuId, storeId: storeId, storeName: storeName }} sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0, whiteSpace: 'nowrap', maxWidth: '80%', overflow: 'hidden', textOverflow: 'ellipsis', textDecoration: 'none', color: 'black' }}>
+                <Box component={Link} to={role === '회원' ? `/MenuDetail` : `/MenuUpdate`} state={{ menuId: res.menuId, storeId: storeId, storeName: storeName }} sx={{ position: 'absolute', top: '50%', left: '6%', transform: 'translateY(-50%)', padding: 0, margin: 0, textAlign: 'left' ,whiteSpace: 'nowrap', maxWidth: '80%', overflow: 'hidden', textOverflow: 'ellipsis', textDecoration: 'none', color: 'black' }}>
                   <ul style={{ padding: 0, margin: 0 }}>
                     <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.name}</li>
                     <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>구성 : {res.content} </li>
@@ -113,8 +113,7 @@ export default function StoreMenuList({ storeName }) {
                     <Button
                       variant="contained"
                       color={status[idx] ? 'primary' : 'secondary'}
-                      onClick={() => handleCheckboxChange(idx)}
-                    >
+                      onClick={() => handleCheckboxChange(idx)} sx={{width: '100px'}}>
                       {status[idx] ? '상품 판매' : '품절'}
                     </Button>
                     <Button color={'info'}>

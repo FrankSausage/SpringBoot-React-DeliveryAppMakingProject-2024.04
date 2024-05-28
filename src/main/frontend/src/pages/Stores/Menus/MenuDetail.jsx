@@ -38,7 +38,7 @@ export default function MenuDetail() {
         {!isLoading && menuDetailData && 
             <Grid container sx={{backgroundColor: 'rgba(255, 255, 255, 0.6)', mt:10 }}>
               <Grid item xs/>
-              <Grid item xs={4}>
+              <Grid item xs={4} sx={{ml: '70px', mr: 2}}>
                 <Card sx={{my:1}}>
                   <CardContent sx={{m:1}}>
                     <Typography variant="h6">가격</Typography>
@@ -82,6 +82,13 @@ export default function MenuDetail() {
                   </CardContent>
                 </Card>
               </Grid>
+              <Grid item xs={1}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                  <Button onClick={handleSubmit} variant="contained" 
+                    sx={{ mt: 3, mb: 2, backgroundColor: '#66BB6A', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#41df78'}, fontSize: '1rem'}}>장바구니 담기</Button>
+                  {/* <Button onClick={handleSubmit}>장바구니 담기</Button> */}
+                </Box>
+              </Grid>
               {items && items.map((data, idx) => (
                   <Stack key={idx}>
                     <Typography>{data.menuOptionId}</Typography>
@@ -90,7 +97,6 @@ export default function MenuDetail() {
               <Grid item xs/>
             </Grid>
         }
-        <Button onClick={handleSubmit}>장바구니 담기</Button>
       </Fragment>
     </Box>
   );
