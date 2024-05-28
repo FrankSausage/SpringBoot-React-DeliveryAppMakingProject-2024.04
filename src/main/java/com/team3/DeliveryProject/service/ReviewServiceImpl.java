@@ -102,6 +102,8 @@ public class ReviewServiceImpl implements ReviewService{
     public ReviewListUserResponseDto listUserReview(ReviewListUserRequestDto requestDto) {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()-> new RuntimeException("User not found"));
         List<Reviews> reviewsList = reviewsRepository.findAllByUserId(users.getUserId());
+        reviewsList.sort((r1, r2) -> r2.getCreatedDate().compareTo(r1.getCreatedDate()));
+
         List<ReviewListUserInnerReviewListResponseDto> innerReviewListResponseDtos = new ArrayList<>();
         for(Reviews reviews : reviewsList){
             Optional<CeoReviews> ceoReviews = ceoReviewsRepository.findByReviewId(reviews.getReviewId());
