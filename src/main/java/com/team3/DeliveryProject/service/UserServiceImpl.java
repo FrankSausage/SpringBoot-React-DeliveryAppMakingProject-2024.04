@@ -99,11 +99,13 @@ public class UserServiceImpl implements UserService {
                 if(existingDibs.getStatus().equals("일반")){
                     Stores stores = storesRepository.findById(existingDibs.getStoreId()).orElseThrow(()->new RuntimeException("Stores not found"));
                     stores.setDibsCount(stores.getDibsCount()+1);
+                    storesRepository.save(stores);
                 }
             }else {
                 if(existingDibs.getStatus().equals("찜")){
                     Stores stores = storesRepository.findById(existingDibs.getStoreId()).orElseThrow(()->new RuntimeException("Stores not found"));
                     stores.setDibsCount(stores.getDibsCount()-1);
+                    storesRepository.save(stores);
                 }
             }
             existingDibs.setStatus(requestDto.getStatus());
