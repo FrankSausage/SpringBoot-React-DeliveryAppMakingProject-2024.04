@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import SearchHeader from "../../../components/SearchHeader";
 import Footer from "../../../components/Footer";
 import PropTypes from 'prop-types';
-import { Tab, Tabs, Box, Typography, Grid, InputBase } from '@mui/material';
+import { Tab, Tabs, Box, Typography, Grid, InputBase, Paper } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import StoreList from '../StoreList';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -50,7 +50,7 @@ export default function Store() {
   };
 
   return (
-    <Box sx={{ bgcolor: '#f8f8f8', minHeight: '100vh', pb: 6,  m: -1}}>
+    <Box sx={{ backgroundColor: '#f8f8f8', m: -1}}>
       <SearchHeader />
         <Box sx={{ borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: 'center', bgcolor: '#fff' }}>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" variant="scrollable" scrollButtons="auto" sx={{ maxWidth: '100vw' }}>
@@ -65,63 +65,54 @@ export default function Store() {
             <Tab label="디저트" {...a11yProps(8)} />
           </Tabs>
         </Box>
-        <div style={{
-        backgroundImage: 'url(/img/sl0.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-        padding: '23px 0',
-        backgroundBlendMode: 'lighten',
-        backgroundColor: 'rgba(255, 255, 255, 0.6)' // This makes the background image appear lighter
-        }}>
-        <Grid container justifyContent="center" alignItems="center" mt={2}>
+      <Paper elevation={3} sx={{height: '100vh', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2, overflowY: 'auto' }}>
+        <Grid container justifyContent="center" alignItems="center" mb={2}>
           <Grid item xs={10} md={6} lg={4}>
-            <Box sx={{ display: 'flex', justifyContent: 'center', border: 1, borderColor: 'divider', borderRadius: 3, p: 1, bgcolor: '#fff', boxShadow: 1 }}>
+            <Paper elevation={1} sx={{ display: 'flex', justifyContent: 'center', borderRadius: 3, p: 1 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: 5 }}>
-              <SearchIcon sx={{ color: 'grey.500' }} />
-              <InputBase
-                placeholder="가게 / 메뉴 이름 입력"
-                inputProps={{ 'aria-label': 'search' }}
-                onClick={() => navigate('/StoreSearch')}
-                fullWidth
-                sx={{ ml: 1 }}
+                <SearchIcon sx={{ color: 'grey.500' }} />
+                <InputBase
+                  placeholder="가게 / 메뉴 이름 입력"
+                  inputProps={{ 'aria-label': 'search' }}
+                  onClick={() => navigate('/StoreSearch')}
+                  fullWidth
+                  sx={{ ml: 1 }}
                 />
               </Box>
-            </Box>
+            </Paper>
           </Grid>
         </Grid>
-                </div>
-        <Box sx={{ mt: 3 }}>
-          <CustomTabPanel value={value} index={0}>
-            <StoreList category={'전체'} />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={1}>
-            <StoreList category={'한식'} />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={2}>
-            <StoreList category={'중식'} />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={3}>
-            <StoreList category={'일식'} />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={4}>
-            <StoreList category={'양식'} />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={5}>
-            <StoreList category={'패스트'} />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={6}>
-            <StoreList category={'치킨'} />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={7}>
-            <StoreList category={'분식'} />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={8}>
-            <StoreList category={'디저트'} />
-          </CustomTabPanel>
-        </Box>
+      <Box sx={{ mt: 3 }}>
+        <CustomTabPanel value={value} index={0}>
+          <StoreList category={'전체'} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <StoreList category={'한식'} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={2}>
+          <StoreList category={'중식'} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={3}>
+          <StoreList category={'일식'} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={4}>
+          <StoreList category={'양식'} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={5}>
+          <StoreList category={'패스트'} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={6}>
+          <StoreList category={'치킨'} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={7}>
+          <StoreList category={'분식'} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={8}>
+          <StoreList category={'디저트'} />
+        </CustomTabPanel>
+      </Box>
       <Footer />
+      </Paper>
     </Box>
   );
 }
