@@ -162,9 +162,11 @@ public class ReviewServiceImpl implements ReviewService{
             Optional<CeoReviews> ceoReviews = ceoReviewsRepository.findByReviewId(reviews.getReviewId());
             String ceoContent = null;
             LocalDateTime ceoCreatedDate = null;
+            Long ceoRiviewId = 0L;
             if(ceoReviews.isPresent()){
                 ceoContent = ceoReviews.get().getContent();
                 ceoCreatedDate = ceoReviews.get().getCreatedDate();
+                ceoRiviewId = ceoReviews.get().getCeoReviewId();
             }
             ReviewListOwnerInnerReviewListResponseDto innerReviewListResponseDto = ReviewListOwnerInnerReviewListResponseDto.builder()
                 .reviewId(reviews.getReviewId())
@@ -177,6 +179,7 @@ public class ReviewServiceImpl implements ReviewService{
                 .reviewPictureName(reviews.getReviewPictureName())
                 .ceoReviewContent(ceoContent)
                 .ceoReviewCreatedDate(ceoCreatedDate)
+                .ceoReviewId(ceoRiviewId)
                 .build();
             innerReviewListResponseDtos.add(innerReviewListResponseDto);
         }
