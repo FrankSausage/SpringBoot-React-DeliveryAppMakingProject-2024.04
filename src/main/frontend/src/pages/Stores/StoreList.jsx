@@ -7,7 +7,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 export default function StoreList({ category, searchText }) {
 	const { getStoreListByCategory: { isLoading, data: storeDatas } } = useStoreSearch(searchText ? searchText : category);
-
+	console.log(storeDatas)
 	return (
 		<Grid container>
 			<Grid item xs />

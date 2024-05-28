@@ -1,16 +1,51 @@
-import { useMutation } from "@tanstack/react-query";
-
 export function useCart () {
 
   const addItemToCart = async (itemData) => {
     try {
-      if(!localStorage.getItem('cartItems')){
+      if(!localStorage.getItem('cartItems')) {
         localStorage.setItem('cartItems', JSON.stringify([{...itemData.menus, ['quantity'] : 1, ['sequence']: 1}]))
       } else {
-        // storeId 다를 시 cartItems 삭제 후 새로 등록 로직 구현 필요
         let item = JSON.parse(localStorage.getItem('cartItems'));
-        item.push({...itemData.menus, ['quantity'] : 1, ['sequence']: (1 + item.length)});
-        return await localStorage.setItem('cartItems', JSON.stringify(item))
+
+        let isInside = false;
+        let index = 0;
+        for(let i = 0; i < item.length; i++) {
+          if(itemData.menus.menuName===item[i].menuName && itemData.menus.menuOptions.length===0 && item[i].menuOptions.length===0) {
+            return await plusItemQuantity(i);
+          }
+
+          if(itemData.menus.menuName===item[i].menuName && itemData.menus.menuOptions.length===item[i].menuOptions.length) {
+            if(itemData.menus.menuOptions[0].options===item[i].menuOptions[0].options) {
+              isInside = true;
+              index = i;
+              break;
+            }
+          }
+        }
+
+        if(isInside===true) {
+          let count = 0;
+          for(let i = 0; i < item[index].menuOptions.length; i++) {
+            for(let x = 0; x < item[index].menuOptions.length; x++) {
+              if (itemData.menus.menuOptions[i].options===item[index].menuOptions[x].options) {
+                count++;
+                break;
+              }
+            }
+          }
+          if(count===item[index].menuOptions.length) {
+            return await plusItemQuantity(index);
+          }
+        }
+
+        if(itemData.menus.storeId===item[0].storeId) {
+          item.push({...itemData.menus, ['quantity'] : 1, ['sequence']: (1 + item.length)});
+          return await localStorage.setItem('cartItems', JSON.stringify(item))
+        } else {
+          if(window.confirm('장바구니에 이미 등록한 가게와 다른 가게입니다, 장바구니를 비우고 새로 주문하시겠습니까?')) {
+            return await localStorage.setItem('cartItems', JSON.stringify([{...itemData.menus, ['quantity'] : 1, ['sequence']: 1}]))
+          }
+        }
       }
     } catch (error) {
       alert('장바구니 담기에 실패했습니다!')

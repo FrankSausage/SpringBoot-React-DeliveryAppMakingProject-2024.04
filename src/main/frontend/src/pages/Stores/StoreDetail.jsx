@@ -54,9 +54,8 @@ export default function StoreDetail() {
   const { postDibStore } = useDibs();
   const [value, setValue] = useState(1);
   const [popularity, setPopularity] = useState('');
-  const [searchOpen, setSearchOpen] = useState(false); // 검색 창의 상태를 추적하는 state
   const navigate = useNavigate();
-  console.log(storeDetail)
+
   const handleChange = (e, newValue) => {
     setValue(newValue);
   };
