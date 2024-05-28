@@ -12,7 +12,7 @@ export default function OrderList() {
   const { getOrderListByEmail: {isLoading, data: orderData}} = useOrder(email);
   const [ openPortal, setOpenPortal ] = useState(false);
   const [ activeIndex, setActiveIndex ] = useState('');
-
+  console.log(orderData)
   const handleClick = index => {
     setOpenPortal(!openPortal);
     setActiveIndex(index);
