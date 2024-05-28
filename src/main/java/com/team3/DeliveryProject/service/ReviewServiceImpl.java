@@ -63,7 +63,13 @@ public class ReviewServiceImpl implements ReviewService{
         Orders orders = ordersRepository.findById(requestDto.getOrderId()).orElseThrow(()->new RuntimeException("Orders not found"));
         Stores stores = storesRepository.findById(orders.getStoreId()).orElseThrow(()->new RuntimeException("Stores not found"));
         stores.setReviewCount(stores.getReviewCount()+1);
+
+        //별점 계산
+        Double totalRate = stores.getRating() * (stores.getReviewCount()-1);
+        Double newRate = (totalRate + reviews.getRating()) / stores.getReviewCount();
+        stores.setRating(newRate);
         storesRepository.save(stores);
+
         return Response.toResponseEntity(REVIEW_ADD_SUCCESS);
     }
 
@@ -83,6 +89,13 @@ public class ReviewServiceImpl implements ReviewService{
             Orders orders = ordersRepository.findById(reviews.getOrderId()).orElseThrow(()->new RuntimeException("Orders not found"));
             Stores stores = storesRepository.findById(orders.getStoreId()).orElseThrow(()->new RuntimeException("Stores not found"));
             stores.setReviewCount(stores.getReviewCount()-1);
+
+            //별점 계산
+            Double totalRate = stores.getRating() * (stores.getReviewCount() +1);
+            Double newRate = (totalRate - reviews.getRating()) / stores.getReviewCount();
+            stores.setRating(newRate);
+            storesRepository.save(stores);
+
             reviewsRepository.deleteById(requestDto.getReviewId());
             return Response.toResponseEntity(REVIEW_DELETE_SUCCESS);
         }
