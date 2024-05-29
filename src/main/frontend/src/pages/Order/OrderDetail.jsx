@@ -22,7 +22,7 @@ export default function OrderDetail({ isPortalOpen, email, orderId }) {
       onSuccess: () => {navigate('/')}
     })
   }
-
+  
   return (
     <Fragment>
       {show ? 
@@ -39,7 +39,9 @@ export default function OrderDetail({ isPortalOpen, email, orderId }) {
               <CardContent>
                 {menuData.menuOptions && menuData.menuOptions.map((optionData, optionIdx) => (
                   <Stack key={optionIdx}>
+                    {optionData.menuOptionPrice!==0 &&
                     <Typography>{optionData.menuOptionName} +{optionData.menuOptionPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
+                    }
                   </Stack>
                 ))}
               </CardContent>

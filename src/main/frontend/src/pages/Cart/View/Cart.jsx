@@ -63,9 +63,9 @@ export default function Cart({ allClose }) {
     <React.Fragment>
       <React.Fragment>
         <Box>
-          <ShoppingCartIcon sx={{cursor:'pointer', px: 2,}} onClick={handleClickOpen} /> 
+          <ShoppingCartIcon onClick={handleClickOpen} /> 
         </Box>
-          <Typography sx={{cursor:'pointer', pl:1}} onClick={handleClickOpen}>장바구니</Typography>
+          {/* <Typography sx={{cursor:'pointer', pl:3}} onClick={handleClickOpen}>장바구니</Typography> */}
       </React.Fragment>
       <Dialog
         open={open}

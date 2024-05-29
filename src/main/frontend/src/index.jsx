@@ -19,12 +19,8 @@ import StoreUpdate from './pages/Stores/StoreUpdate';
 import StoreDetail from './pages/Stores/StoreDetail';
 import StoreSearch from './pages/Stores/StoreSearch';
 // Reviews
-import ReviewRegister from './pages/Review/ReviewRegister';
-import ReviewUpdate from './pages/Review/ReviewUpdate';
-import ReviewList from './pages/Review/ReviewList';
-import ReviewDetail from './pages/Review/ReviewDetail';
-import ReviewReply from './pages/Review/ReviewReply';
-import ReviewRating from './pages/Review/ReviewRating';
+import MyReviews from './pages/Review/View/MyReviews';
+import StoreReviews from './pages/Review/View/StoreReviews';
 // Menus
 import MenuRegister from './pages/Stores/Menus/MenuRegister';
 import MenuUpdate from './pages/Stores/Menus/MenuUpdate';
@@ -32,8 +28,9 @@ import MenuDetail from './pages/Stores/Menus/MenuDetail';
 // Order
 import Order from './pages/Order/View/Order';
 import OrderList from './pages/Order/OrderList';
-// Cart
-
+import OwnerOrderList from './pages/Order/OwnerOrderList';
+// Dibs
+import Dibs from './pages/Dibs/View/Dibs';
 
 const router = createBrowserRouter([
   {
@@ -52,19 +49,17 @@ const router = createBrowserRouter([
       { path: 'StoreUpdate', element: <StoreUpdate />},
       { path: 'StoreUpdate/:storeId', element: <StoreUpdate />},
       { path: 'StoreDetail/:storeId', element: <StoreDetail />},
+      { path: 'MyReviews', element: <MyReviews />},
+      { path: 'StoreReviews', element: <StoreReviews />},
       { path: 'MenuRegister/:storeId', element: <MenuRegister />},
       { path: 'MenuDetail', element: <MenuDetail />},
       { path: 'MenuUpdate', element: <MenuUpdate />},
       { path: 'UserMain', element: <UserMain />,},
       { path: 'OwnerMain', element: <OwnerMain />},
-      { path: 'ReviewRegister', element: <ReviewRegister />},
-      { path: 'ReviewUpdate', element: <ReviewUpdate />},
-      { path: 'ReviewList', element: <ReviewList />},
-      { path: 'ReviewDetail', element: <ReviewDetail />},
-      { path: 'ReviewReply', element: <ReviewReply />},
-      { path: 'ReviewRating', element: <ReviewRating />},
       { path: 'Order', element: <Order />},
       { path: 'OrderList', element: <OrderList />},
+      { path: 'OwnerOrderList', element: <OwnerOrderList />},
+      { path: 'Dibs', element: <Dibs />},
     ]
   }
 ]);

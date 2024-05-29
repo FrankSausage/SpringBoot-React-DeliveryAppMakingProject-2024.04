@@ -35,6 +35,7 @@ export default function StoreUpdate() {
   const [content, setContent] = useState('');
   const [storePictureName, setStorePictureName] = useState('');
   const [storePictureUrl, setStorePictureUrl] = useState('');  // 업로드된 이미지 URL을 저장할 상태 추가
+  const [isFileUploading, setIsFileUploading] = useState(false);
   const [minDeliveryTime, setMinDeliveryTime] = useState('');
   const [maxDeliveryTime, setMaxDeliveryTime] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState([]);
@@ -102,7 +103,7 @@ export default function StoreUpdate() {
     if (store && store.addressCodes && store.closedDays) {
       const { roadAddress, extraAddress, detailAddress } = splitAddressFromCurrentUserAddress(store.address)
       setRoadAddress(roadAddress); setExtraAddress(extraAddress); setExtraAddress(extractExtraAddress(store.address)); setCategory(store.category);
-      setSelectedDays(store.closedDays); setClosedDays(store.closedDays); setContent(store.content); setDeliveryTip(store.deliveryTip); setMaxDeliveryTime(store.maxDeliveryTime);
+      setSelectedDays(store.closedDays ? store.closedDays : []); setClosedDays(store.closedDays ? store.closedDays : []); setContent(store.content); setDeliveryTip(store.deliveryTip); setMaxDeliveryTime(store.maxDeliveryTime);
       setMinDeliveryPrice(store.minDeliveryPrice); setMinDeliveryTime(store.minDeliveryTime); setName(store.name); setOpenHours(store.openHours); setCloseHours(store.closeHours);
       setPhone(store.phone); setStorePictureName(store.storePictureName); setType(store.type);
       setDeliveryAddress(store.addressCodes.map(res => res.deliveryAddress));
@@ -149,10 +150,11 @@ export default function StoreUpdate() {
               resFormData.addressCodes =
                 addressCodePacker(typeof (addressCode) === 'string' ? addressCode.split(',') : addressCode,
                   typeof (deliveryAddress) === 'string' ? deliveryAddress.split(',') : deliveryAddress);
-              console.log(resFormData)
+
               postStoreUpdate.mutate(resFormData, {
                 onSuccess: () => {
                   queryClient.refetchQueries(['storeId']);
+                  // alert('가게 수정이 완료 되었습니다.')
                   navigate('/');
                 },
                 onError: e => console.error('가게 수정 실패: ' + e)
@@ -177,7 +179,8 @@ export default function StoreUpdate() {
       data.append('type', type);
       data.append('operationHours', `${openHours}~${closeHours}`);
       data.append('closedDays', selectedDays.join(','));
-      data.append('storePictureName', storePictureUrl);
+      data.append('storePictureName', storePictureUrl ? storePictureUrl : storePictureName ) 
+      console.log(storePictureUrl)
       return await data;
     }
     catch (error) {
@@ -186,18 +189,22 @@ export default function StoreUpdate() {
     }
   };
 
-  const handleFileUpload = async (e) => {
+
+  const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
       const fileName = file.name;
+      setIsFileUploading(true);
       setStorePictureName(fileName);
-      try {
-        const url = await uploadImageToCloudinary(file); // 클라우드니어리에 이미지 업로드
-        setStorePictureUrl(url); // 업로드된 이미지 URL 저장
-      } catch (error) {
-        console.error('Failed to upload image to Cloudinary:', error);
-        // 업로드 실패 처리
-      }
+      uploadImageToCloudinary(file) // 클라우드니어리에 이미지 업로드
+        .then((url) => {
+          setStorePictureUrl(url); // 업로드된 이미지 URL 저장
+        })
+        .then(() => setIsFileUploading(false)
+        )
+        .catch((error) => {
+          console.error('Failed to upload image to Cloudinary:', error);
+        });
     }
   };
 
@@ -241,7 +248,7 @@ export default function StoreUpdate() {
         });
     }
   };
-
+  console.log(storePictureName)
   return (
     <ThemeProvider theme={defaultTheme}>
       {isLoading && <Typography>...Loading</Typography>}
@@ -249,163 +256,175 @@ export default function StoreUpdate() {
       {store && store.closedDays && store.addressCodes &&
         <>
           <SearchHeader />
-          <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }} >
-              <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                <LockOutlinedIcon />
-              </Avatar>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>
-              </Typography>
-              <Typography component="h1" variant="h5">
-                온라인 입점 신청서
-              </Typography>
-              <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <TextField required fullWidth autoComplete="given-name" name="name" id="name" value={name} label="가게 이름" placeholder='ex) 휴먼 딜리버리' onChange={e => setName(e.target.value)} />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField required fullWidth id="phone" label="전화번호" placeholder='ex) 031-123-4567' name="phone" autoComplete="phone" value={phone} onChange={handlePhoneNumberChange} inputProps={{ maxLength: 12, inputMode: 'numeric' }} />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="h6" gutterBottom>
-                      카테고리
+          <div style={{ backgroundImage: 'url(/img/kitchenO.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
+            <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
+              <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
+                <Container component="main" maxWidth="xs">
+                  <CssBaseline />
+                  <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }} >
+                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                      <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                      <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>
                     </Typography>
-                    <Grid container spacing={3}>
-                      <Grid item xs={12}>
-                        {['한식', '중식', '일식', '양식', '패스트', '치킨', '분식', '디저트'].map((cat) => (
-                          <FormControlLabel key={cat} control={<Checkbox checked={category.includes(cat)}
-                            onChange={handleCategoryChange} value={cat} color="primary" />} label={cat} />))}
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField required fullWidth id="roadAddress" name="roadAddress" label="도로명 주소" value={roadAddress} InputProps={{ readOnly: true }} />
-                  </Grid>
-                  <Button type="button" onClick={handleFindPostcode} fullWidth variant="contained" sx={{ mt: 1, mb: 2, ml: 2 }} >
-                    주소 찾기
-                  </Button>
-                  <Grid item xs={12}>
-                    <TextField required fullWidth id="extraAddress" name="extraAddress" label="참고항목" value={extraAddress} InputProps={{ readOnly: true }} />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField required fullWidth id="detailAddress" label="상세주소" value={detailAddress} name="detailAddress" autoComplete="detailAddress" onChange={e => setDetailAddress(e.target.value)} />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="h6" gutterBottom>배달, 포장</Typography>
-                    <Grid container spacing={3}>
-                      <Grid item xs={12}>
-                        <FormControlLabel
-                          control={<Checkbox checked={type === 0} onChange={() => setType(0)} color="primary" />} label="배달" />
-                        <FormControlLabel
-                          control={<Checkbox checked={type === 1} onChange={() => setType(1)} color="primary" />} label="배달+포장" />
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      autoComplete="given-name" name="minDeliveryPrice" required fullWidth id="minDeliveryPrice" value={minDeliveryPrice} label="최소 주문금액" placeholder='ex) 10000' onChange={e => setMinDeliveryPrice(e.target.value)} />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField autoComplete="given-name" name="deliveryTip" fullWidth id="deliveryTip" value={deliveryTip} label="배달 팁" placeholder='ex) 3000' onChange={e => setDeliveryTip(e.target.value)} />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField autoComplete="given-name" name="minDeliveryTime" required fullWidth id="minDeliveryTime" value={minDeliveryTime} label="최소 배달 예상 시간" placeholder='10' onChange={e => setMinDeliveryTime(e.target.value)} />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField autoComplete="given-name" name="maxDeliveryTime" required fullWidth id="maxDeliveryTime" value={maxDeliveryTime} label="최대 배달 예상 시간" placeholder='50' onChange={e => setMaxDeliveryTime(e.target.value)} />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <FormControl fullWidth required>
-                      <InputLabel id="openHours-label">오픈 시간</InputLabel>
-                      <Select labelId="openHours-label" id="openHours" value={openHours} onChange={e => setOpenHours(e.target.value)} >
-                        {timeOptionsOpen.map(time => (
-                          <MenuItem key={time} value={time}>
-                            {time}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <FormControl fullWidth required>
-                      <InputLabel id="closeHours-label">종료 시간</InputLabel>
-                      <Select labelId="closeHours-label" id="closeHours" value={closeHours} onChange={e => setCloseHours(e.target.value)} >
-                        {timeOptionsClose.map(time => (
-                          <MenuItem key={time} value={time}>
-                            {time}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <InputLabel id="demo-multiple-checkbox-label">휴무일 선택</InputLabel>
-                    <Select labelId="demo-multiple-checkbox-label" id="demo-multiple-checkbox" multiple value={selectedDays} onChange={handleClosedDaysChange} input={<Input />} renderValue={(selected) => selected.join(', ')}>
-                      {weekDays.map((day) => (
-                        <MenuItem key={day} value={day}>
-                          <Checkbox checked={selectedDays.indexOf(day) > -1} />
-                          <ListItemText primary={day} />
-                        </MenuItem>
-                      ))}
-                      {/* {holidays.map((holiday) => (
+                    <Typography component="h1" variant="h5">
+                      온라인 입점 신청서
+                    </Typography>
+                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                      <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                          <TextField required fullWidth autoComplete="given-name" name="name" id="name" value={name} label="가게 이름" placeholder='ex) 휴먼 딜리버리' onChange={e => setName(e.target.value)} />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField required fullWidth id="phone" label="전화번호" placeholder='ex) 031-123-4567' name="phone" autoComplete="phone" value={phone} onChange={handlePhoneNumberChange} inputProps={{ maxLength: 12, inputMode: 'numeric' }} />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Typography variant="h6" gutterBottom>
+                            카테고리
+                          </Typography>
+                          <Grid container spacing={3}>
+                            <Grid item xs={12}>
+                              {['한식', '중식', '일식', '양식', '패스트', '치킨', '분식', '디저트'].map((cat) => (
+                                <FormControlLabel key={cat} control={<Checkbox checked={category.includes(cat)}
+                                  onChange={handleCategoryChange} value={cat} color="primary" />} label={cat} />))}
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField required fullWidth id="roadAddress" name="roadAddress" label="도로명 주소" value={roadAddress} InputProps={{ readOnly: true }} />
+                        </Grid>
+                        <Button type="button" onClick={handleFindPostcode} fullWidth variant="contained" sx={{ mt: 1, mb: 2, ml: 2 }} >
+                          주소 찾기
+                        </Button>
+                        <Grid item xs={12}>
+                          <TextField required fullWidth id="extraAddress" name="extraAddress" label="참고항목" value={extraAddress} InputProps={{ readOnly: true }} />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField required fullWidth id="detailAddress" label="상세주소" value={detailAddress} name="detailAddress" autoComplete="detailAddress" onChange={e => setDetailAddress(e.target.value)} />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Typography variant="h6" gutterBottom>배달, 포장</Typography>
+                          <Grid container spacing={3}>
+                            <Grid item xs={12}>
+                              <FormControlLabel
+                                control={<Checkbox checked={type === 0} onChange={() => setType(0)} color="primary" />} label="배달" />
+                              <FormControlLabel
+                                control={<Checkbox checked={type === 1} onChange={() => setType(1)} color="primary" />} label="배달+포장" />
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField
+                            autoComplete="given-name" name="minDeliveryPrice" required fullWidth id="minDeliveryPrice" value={minDeliveryPrice} label="최소 주문금액" placeholder='ex) 10000' onChange={e => setMinDeliveryPrice(e.target.value)} />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField autoComplete="given-name" name="deliveryTip" fullWidth id="deliveryTip" value={deliveryTip} label="배달 팁" placeholder='ex) 3000' onChange={e => setDeliveryTip(e.target.value)} />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField autoComplete="given-name" name="minDeliveryTime" required fullWidth id="minDeliveryTime" value={minDeliveryTime} label="최소 배달 예상 시간" placeholder='10' onChange={e => setMinDeliveryTime(e.target.value)} />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField autoComplete="given-name" name="maxDeliveryTime" required fullWidth id="maxDeliveryTime" value={maxDeliveryTime} label="최대 배달 예상 시간" placeholder='50' onChange={e => setMaxDeliveryTime(e.target.value)} />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <FormControl fullWidth required>
+                            <InputLabel id="openHours-label">오픈 시간</InputLabel>
+                            <Select labelId="openHours-label" id="openHours" value={openHours} onChange={e => setOpenHours(e.target.value)} >
+                              {timeOptionsOpen.map(time => (
+                                <MenuItem key={time} value={time}>
+                                  {time}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <FormControl fullWidth required>
+                            <InputLabel id="closeHours-label">종료 시간</InputLabel>
+                            <Select labelId="closeHours-label" id="closeHours" value={closeHours} onChange={e => setCloseHours(e.target.value)} >
+                              {timeOptionsClose.map(time => (
+                                <MenuItem key={time} value={time}>
+                                  {time}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <InputLabel id="demo-multiple-checkbox-label">휴무일 선택</InputLabel>
+                          <Select labelId="demo-multiple-checkbox-label" id="demo-multiple-checkbox" multiple value={selectedDays} onChange={handleClosedDaysChange} input={<Input />} renderValue={(selected) => selected.join(', ')}>
+                            {weekDays.map((day) => (
+                              <MenuItem key={day} value={day}>
+                                <Checkbox checked={selectedDays.indexOf(day) > -1} />
+                                <ListItemText primary={day} />
+                              </MenuItem>
+                            ))}
+                            {/* {holidays.map((holiday) => (
                         <MenuItem key={holiday} value={holiday}>
                           <Checkbox checked={selectedDays.indexOf(holiday) > -1} />
                           <ListItemText primary={holiday} />
                         </MenuItem>
                       ))} */}
-                    </Select>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="h6" gutterBottom>배달 가능 지역</Typography>
-                    <Grid container spacing={3}>
-                      <Grid item xs={12}>
-                        <TextField fullWidth id="deliveryAddress" name="deliveryAddress" label="배달 가능 지역" value={deliveryAddress ? deliveryAddress : jibun} />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Grid container spacing={1}>
-                          <FormControlLabel control={<Checkbox checked={!usePreviousData} onChange={handleUsePreviousDataChange} color="primary" />} label="새로운 배달 지역 사용" />
+                          </Select>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Typography variant="h6" gutterBottom>배달 가능 지역</Typography>
+                          <Grid container spacing={3}>
+                            <Grid item xs={12}>
+                              <TextField fullWidth id="deliveryAddress" name="deliveryAddress" label="배달 가능 지역" value={deliveryAddress ? deliveryAddress : jibun} />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <Grid container spacing={1}>
+                                <FormControlLabel control={<Checkbox checked={!usePreviousData} onChange={handleUsePreviousDataChange} color="primary" />} label="새로운 배달 지역 사용" />
+                              </Grid>
+                            </Grid>
+                            <Button type="button" onClick={handleFindDeliverPostCode} fullWidth variant="contained" sx={{ mt: 1, mb: 2, ml: 2 }} disabled={usePreviousData} >
+                              배달 지역 찾기
+                            </Button>
+                            <Grid item xs={12}>
+                              <TextField autoComplete="given-name" name="content" fullWidth id="content" value={content} label="가게 소개" multiline rows={4} placeholder='ex) 휴먼 딜리버리에 오신것을 환영합니다.' onChange={e => setContent(e.target.value)} />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <Typography variant="h6" gutterBottom>
+                                가게 사진 업로드
+                              </Typography>
+                              <input accept=".png, .jpeg, .jpg" id="upload-photo" type="file" style={{ display: 'none' }} onChange={handleFileUpload} multiple />
+                              {/* <TextField autoComplete="given-name" name="storePictureName" value={storePictureName.split(',')[1]} fullWidth id="storePictureName" label="가게 사진" onClick={() => document.getElementById('upload-photo').click()} InputProps={{ readOnly: true }} sx={{ mb: 2 }} /> */}
+                              <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
+                                사진 올리기
+                              </Button>
+                              {storePictureName && (
+                                <Typography variant="body1" gutterBottom>
+                                  {/* 업로드된 파일: {storePictureName.split(',')[0]} */}
+                                </Typography>
+                              )}
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={6}>
+                          {isFileUploading ?
+                            <Button type="submit" fullWidth disabled variant="contained" sx={{ mt: 3, mb: 2 }}>
+                              수정
+                            </Button>
+                            :
+                            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                              수정
+                            </Button>
+                          }
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Button fullWidth variant="contained" color="error" onClick={() => handleStoreDelete(email, storeId)} sx={{ mt: 3, mb: 2 }}>
+                            삭제하기
+                          </Button>
                         </Grid>
                       </Grid>
-                      <Button type="button" onClick={handleFindDeliverPostCode} fullWidth variant="contained" sx={{ mt: 1, mb: 2, ml: 2 }} disabled={usePreviousData} >
-                        배달 지역 찾기
-                      </Button>
-                      <Grid item xs={12}>
-                        <TextField autoComplete="given-name" name="content" fullWidth id="content" value={content} label="가게 소개" multiline rows={4} placeholder='ex) 휴먼 딜리버리에 오신것을 환영합니다.' onChange={e => setContent(e.target.value)} />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography variant="h6" gutterBottom>
-                          가게 사진 업로드
-                        </Typography>
-                        <input accept=".png, .jpeg, .jpg" id="upload-photo" type="file" style={{ display: 'none' }} onChange={handleFileUpload} multiple />
-                        {/* <TextField autoComplete="given-name" name="storePictureName" value={storePictureName} fullWidth id="storePictureName" label="가게 사진" onClick={() => document.getElementById('upload-photo').click()} InputProps={{ readOnly: true }}sx={{ mb: 2 }}/> */}
-                        <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
-                          사진 올리기
-                        </Button>
-                        {storePictureName && (
-                          <Typography variant="body1" gutterBottom>
-                            {/* 업로드된 파일: {storePictureName} */}
-                          </Typography>
-                        )}
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} >
-                      수정
-                    </Button>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Button fullWidth variant="contained" color="error" onClick={() => handleStoreDelete(email, storeId)} sx={{ mt: 3, mb: 2 }}>
-                      삭제하기
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Box>
-          </Container>
+                    </Box>
+                  </Box>
+                </Container>
+              </Container>
+            </div>
+          </div>
           <Footer />
         </>
       }
