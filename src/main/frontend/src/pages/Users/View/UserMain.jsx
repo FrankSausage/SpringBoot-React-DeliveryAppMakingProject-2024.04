@@ -68,12 +68,19 @@ const boxStyle = {
   borderColor: 'transparent',
   m: 1,
   boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-  transition: 'transform 0.3s, box-shadow 0.3s',
+  transition: ' box-shadow 0.3s',
   '&:hover': {
-    transform: 'scale(1.05)',
     boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
   },
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center'
+};
+
+const imgStyle = {
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+  transition: 'transform 0.3s',
+  borderRadius: 'inherit',
 };

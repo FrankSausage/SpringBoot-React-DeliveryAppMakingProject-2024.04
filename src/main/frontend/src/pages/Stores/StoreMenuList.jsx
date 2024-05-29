@@ -82,13 +82,14 @@ export default function StoreMenuList({ storeName }) {
       return (
         <React.Fragment key={res.menuId}>
           {isFirstInCategory && (
-            <Box sx={{ width: '60%', mt: 3, mb: 2, ml: 30 }}>
+            <Grid item xs={12} sx={{ mt: 4, mb: 2 }}>
               <Typography variant="h5" component="div">
                 {currentCategory}
               </Typography>
               <hr style={{ border: 'none', borderTop: '2px solid #000', margin: '8px 0' }} />
-            </Box>
+            </Grid>
           )}
+          <Grid item xs={12} sm={6} md={4} lg={4}>
           <Box sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
             <Grid container>
               <Grid item xs={12} md={3}>
@@ -97,7 +98,7 @@ export default function StoreMenuList({ storeName }) {
                 </Box>
               </Grid>
               <Grid item xs={12} md={7} sx={{ position: 'relative' }}>
-                <Box component={Link} to={role === '회원' ? `/MenuDetail` : `/MenuUpdate`} state={{ menuId: res.menuId, storeId: storeId, storeName: storeName }} sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0, whiteSpace: 'nowrap', maxWidth: '80%', overflow: 'hidden', textOverflow: 'ellipsis', textDecoration: 'none', color: 'black' }}>
+                <Box component={Link} to={role === '회원' ? `/MenuDetail` : `/MenuUpdate`} state={{ menuId: res.menuId, storeId: storeId, storeName: storeName }} sx={{ position: 'absolute', top: '50%', left: '6%', transform: 'translateY(-50%)', padding: 0, margin: 0, textAlign: 'left' ,whiteSpace: 'nowrap', maxWidth: '80%', overflow: 'hidden', textOverflow: 'ellipsis', textDecoration: 'none', color: 'black' }}>
                   <ul style={{ padding: 0, margin: 0 }}>
                     <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.name}</li>
                     <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>구성 : {res.content} </li>
@@ -113,8 +114,7 @@ export default function StoreMenuList({ storeName }) {
                     <Button
                       variant="contained"
                       color={status[idx] ? 'primary' : 'secondary'}
-                      onClick={() => handleCheckboxChange(idx)}
-                    >
+                      onClick={() => handleCheckboxChange(idx)} sx={{width: '100px'}}>
                       {status[idx] ? '상품 판매' : '품절'}
                     </Button>
                     <Button color={'info'}>
@@ -125,6 +125,7 @@ export default function StoreMenuList({ storeName }) {
               </Grid>
             </Grid>
           </Box>
+         </Grid>
         </React.Fragment>
       );
     });
@@ -142,9 +143,9 @@ export default function StoreMenuList({ storeName }) {
       {isLoading && <Typography>Loading...</Typography>}
       {error && <Typography>에러 발생!</Typography>}
       {!isLoading && menuData && (
-        <>
+        <Grid container spacing={2}>
           {renderMenuItems(filterMenusByTab(menuData.categories.flatMap(category => category.menus)))}
-        </>
+        </Grid>
       )}
       {role === '점주' &&
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

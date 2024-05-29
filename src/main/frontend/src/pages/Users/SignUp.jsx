@@ -27,7 +27,7 @@ export default function SignUp() {
 
   const CustomCheckbox = ({ checked, onChange }) => {
     return (
-      <Checkbox checked={checked} onChange={onChange} sx={{ color: '002500', '&.Mui-checked': { color: '#66BB6A' }}}/>
+      <Checkbox checked={checked} onChange={onChange} sx={{ color: '002500', '&.Mui-checked': { color: '#ffbe33' }}}/>
         );
       };
 
@@ -102,7 +102,7 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <div style={{ backgroundImage: 'url(/img/kitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', flexDirection: 'column', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
+      <Box style={{ backgroundImage: 'url(/img/kitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', flexDirection: 'column', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
           <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
             <CssBaseline />
           <Box
@@ -116,10 +116,10 @@ export default function SignUp() {
             }}>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', color: 'black', fontFamily: 'Arial, sans-serif', display: 'flex', justifyContent: 'center' }}>
-              <img src={'/img/001.png'} style={{ width: '50%', height: '50%',position: 'relative', top: 5, marginBottom: '20px'}}/>
+              <img src={'/img/logo01.png'} style={{ width: '50%', height: '50%',position: 'relative', top: 5, marginBottom: '20px'}}/>
             </Link>
           </Typography>
-          <Avatar sx={{ m: 1, bgcolor: '#f09032', marginBottom: '10px' }}>
+          <Avatar sx={{ m: 1, bgcolor: '#ffbe33', marginBottom: '10px' }}>
             <EditNoteIcon />
           </Avatar>
           <Typography component="h1" variant="h5" sx={{ fontFamily: 'Arial, sans-serif', color: 'black', marginBottom: '20px' }}>
@@ -137,8 +137,7 @@ export default function SignUp() {
                   label="이름"
                   placeholder='ex)홍길동'
                   autoFocus
-                  InputProps={{ style: { fontFamily: 'Arial, sans-serif' } }}
-                />
+                  InputProps={{ style: { fontFamily: 'Arial, sans-serif' } }}/>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -204,10 +203,10 @@ export default function SignUp() {
                     type="button"
                     onClick={handleFindPostcode}
                       variant="contained"
-                      sx={{ mt: 3, mb: 2, backgroundColor: '#66BB6A', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#41df78', // 호버 시 버튼 배경색
-                    }}}>
+                      sx={{ mt: 3, mb: 2, ml:2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33', // 호버 시 버튼 배경색
+                       }}}>
                       주소 찾기
-                    </Button>
+                  </Button>
                 <Grid item xs={12}>
                   <TextField
                       fullWidth
@@ -245,7 +244,7 @@ export default function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, backgroundColor: '#66BB6A', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#41df78'},
+              sx={{ mt: 3, mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'},
               fontFamily: 'Arial', 
               fontWeight: 'bold', 
               fontSize: '1.2rem'}}>
@@ -262,7 +261,7 @@ export default function SignUp() {
         </Box>
       </Container>
       <Footer sx={{ mt: 3 }}/>
-    </div>
+    </Box>
   </ThemeProvider>
   );
 }

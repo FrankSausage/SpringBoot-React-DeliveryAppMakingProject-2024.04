@@ -1,86 +1,83 @@
-import React from "react";
+import React, { useState } from "react";
 import { useStoreSearch } from "./Hook/useStoreSearch";
 import { Link } from "react-router-dom";
-import { Box, Grid, Typography, Paper } from "@mui/material";
+import { Box, Grid, Typography, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
-export default function StoreList({ category, searchText }) {
-	const { getStoreListByCategory: { isLoading, data: storeDatas } } = useStoreSearch(searchText ? searchText : category);
-	console.log(storeDatas)
-	return (
-		<Grid container>
-			<Grid item xs />
-			{isLoading && <Typography variant="h4" sx={{ textAlign: 'center' }}>가게 목록 불러오는 중...</Typography>}
-			<Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
-				<Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
-					{!isLoading && storeDatas.data.storeList.length === 0 &&
-						<Typography variant="h4" sx={{ textAlign: 'center' }}>가게가 존재하지 않아요!</Typography>
-					}
-					{!isLoading && storeDatas && (
-						storeDatas.data.storeList.map((data) => (
-							<Paper key={data.storeId} sx={{ ...paperStyle, position: 'relative' }}>
-								<Box component={Link} to={`/StoreDetail/${data.storeId}`} state={{ storeName: data.name, isDibed: data.isDibed }} sx={{ ...boxStyle, textDecoration: 'none', color: 'black' }}>
-									<Grid container spacing={2} alignItems="center">
-										<Grid item xs={3} sx={{ position: 'relative' }}>
-											<img src={data.storePictureName} style={{ width: '100%', height: 'auto' }} alt="Store" />
-											{/* FavoriteIcon 또는 FavoriteBorderIcon을 오른쪽 모서리에 위치 */}
-											<Typography sx={{ position: 'absolute', top: '50%', right: 0, transform: 'translate(50%, -220%)' }}>
-												{data.isDibed === '찜' ? <FavoriteIcon sx={{ color: 'red' }} /> : <FavoriteBorderIcon />}
-											</Typography>
-										</Grid>
-										<Grid item xs={9}>
-											<Typography variant="body1" sx={{ fontWeight: 'bold' }}>가게명: {data.name}</Typography>
-											<Typography variant="body1">별점: {data.rating}</Typography>
-											<Typography variant="body1">리뷰 수: {data.reviewCount}</Typography>
-											<Typography variant="body1">찜 수: {data.dibsCount}</Typography>
-											<Typography variant="body1">{data.isOpened === 0 ? '영업 준비 중' : '영업 중'}</Typography>
-										</Grid>
-									</Grid>
-								</Box>
-							</Paper>
-						))
-					)}
-				</Grid>
-			</Grid>
-			<Grid item xs />
-		</Grid>
-	);
+export default function StoreList({ category, searchText, initialSort }) {
+    const [sort, setSort] = useState(initialSort || 'default'); // 'sort' 상태의 기본 값
+    const { getStoreListByCategory: { isLoading, data: storeDatas } } = useStoreSearch((searchText ? searchText : category), sort);
+
+    // 정렬 함수 정의
+    const sortStoreList = (storeList, sortKey) => {
+        switch (sortKey) {
+            case 'rating':
+                return storeList.sort((a, b) => b.rating - a.rating);
+            case 'dibs':
+                return storeList.sort((a, b) => b.dibsCount - a.dibsCount);
+            case 'reviews':
+                return storeList.sort((a, b) => b.reviewCount - a.reviewCount);
+            default:
+                return storeList;
+        }
+    };
+
+    // 정렬된 리스트
+    const sortedStoreList = !isLoading && storeDatas ? sortStoreList([...storeDatas.data.storeList], sort) : [];
+
+    return (
+        <Grid container>
+            <Grid item xs={12} sx={{ textAlign: 'center', mb: 2 }}>
+                <FormControl variant="outlined" sx={{ minWidth: 200 }}>
+                    <InputLabel>Sort By</InputLabel>
+                    <Select
+                        value={sort}
+                        onChange={(e) => setSort(e.target.value)}
+                        label="Sort By">
+												<MenuItem value="default">기본 정렬</MenuItem>
+                        <MenuItem value="rating">별점</MenuItem>
+                        <MenuItem value="dibs">찜</MenuItem>
+                        <MenuItem value="reviews">리뷰 수</MenuItem>
+                    </Select>
+                </FormControl>
+            </Grid>
+            {isLoading && <Typography variant="h4" sx={{ textAlign: 'center' }}>가게 목록 불러오는 중...</Typography>}
+            <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
+                <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
+                    {!isLoading && sortedStoreList.length === 0 &&
+                        <Typography variant="h4" sx={{ textAlign: 'center' }}>가게가 존재하지 않아요!</Typography>
+                    }
+                    {!isLoading && sortedStoreList && (
+                        sortedStoreList.map((data) => (
+                            <Box key={data.storeId} component={Link} to={`/StoreDetail/${data.storeId}`} state={{ storeName: data.name, isDibed: data.isDibed }} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
+                                <img src={data.storePictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
+                                <ul style={{ position: 'absolute', top: '50%', left: '15%', transform: 'translateY(-50%)', padding: 0, margin: 0 , textAlign: 'left'}}>
+                                    <li style={{ listStyleType: 'none' }}>가게명:{data.name}</li>
+                                    <li style={{ listStyleType: 'none' }}>별점:{data.rating}</li>
+                                    <li style={{ listStyleType: 'none' }}>{data.isDibed==='찜' ? <FavoriteIcon sx={{color:'red', fontSize:'small'}} /> : <FavoriteBorderIcon />}찜 수: {data.dibsCount} </li>
+                                    <li style={{ listStyleType: 'none' }}>리뷰 수:{data.reviewCount}</li>
+                                    <li style={{ listStyleType: 'none' }}>{data.isOpened===0 ? '영업 준비 중' : '영업 중'}</li>
+                                </ul>
+                            </Box>
+                        ))
+                    )}
+                </Grid>
+            </Grid>
+            <Grid item xs />
+        </Grid>
+    );
 }
 
 let boxStyle = {
-	width: '100%',
-	height: '100%',
-	padding: '10px',
-};
-
-let paperStyle = {
-	width: { xs: '90%', sm: '45%' },
-	margin: 'auto',
-	marginBottom: '10px',
-	padding: '10px',
-	fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-	fontWeight: 400,
-	fontSize: '1rem',
-	lineHeight: 1.5,
-	letterSpacing: '0.00938em',
-	backgroundColor: '#fff',
-	color: 'rgba(0, 0, 0, 0.87)',
-	transition: 'box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-	borderRadius: '4px',
-	boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)',
-	border: 'none',
-	paddingBottom: '0px',
-	paddingTop: '0px',
-	marginBottom: '0px',
-	marginTop: '0px',
-	height: '165px',
-	width: '520px',
-	borderRadius: '10px',
-};
-
+    width: 200,
+    height: 200,
+    border: 1,
+    borderColor: 'rgb(217, 217, 217)',
+    m: 2
+}
 let gridStyle = {
-	justifyContent: 'center',
-	alignItems: 'center',
-	p: 1,
-};
+    justifyContent: 'center',
+    alignItems: 'center',
+    p: 2
+}

@@ -51,7 +51,7 @@ export default function StoreUpdate() {
   const weekDays = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
   // const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];
   const navigate = useNavigate();
-
+  console.log(store)
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
       const script = document.createElement('script');

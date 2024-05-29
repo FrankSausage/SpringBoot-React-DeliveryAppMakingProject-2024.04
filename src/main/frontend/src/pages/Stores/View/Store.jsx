@@ -52,6 +52,7 @@ export default function Store() {
   return (
     <Box sx={{ backgroundColor: '#f8f8f8', m: -1}}>
       <SearchHeader />
+      {/* <Box sx={{ height: 'auto', minHeight: '100vh', backgroundImage: 'url(/img/s01.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', }}> */}
         <Box sx={{ borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: 'center', bgcolor: '#fff' }}>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" variant="scrollable" scrollButtons="auto" sx={{ maxWidth: '100vw' }}>
             <Tab label="전체" {...a11yProps(0)} />

@@ -45,7 +45,7 @@ export default function StoreSearch() {
 			</Grid>
 			</div>
 			{searchText &&
-				<StoreList searchText={searchText}/>
+				<StoreList searchText={searchText} />
 			}
 		</Box>
 	);
