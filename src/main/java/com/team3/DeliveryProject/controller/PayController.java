@@ -25,7 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/payment")
 public class PayController {
 
-    @Autowired private OrderService orderService;
+    @Autowired
+    private OrderService orderService;
     @Value("${widget.secretKey}")
     private String widgetSecretKey;
 
