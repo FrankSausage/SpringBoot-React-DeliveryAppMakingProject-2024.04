@@ -2,12 +2,14 @@ package com.team3.DeliveryProject.service;
 
 import static com.team3.DeliveryProject.responseCode.ErrorCode.REVIEW_NOT_EXIST;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.CEO_REVIEW_ADD_SUCCESS;
+import static com.team3.DeliveryProject.responseCode.ResponseCode.CEO_REVIEW_DELETE_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.REVIEW_ADD_SUCCESS;
 import static com.team3.DeliveryProject.responseCode.ResponseCode.REVIEW_DELETE_SUCCESS;
 
 import com.team3.DeliveryProject.dto.common.Response;
 import com.team3.DeliveryProject.dto.request.review.ReviewAddRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewCeoAddRequestDto;
+import com.team3.DeliveryProject.dto.request.review.ReviewCeoDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewListOwnerRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewListUserRequestDto;
@@ -56,6 +58,18 @@ public class ReviewServiceImpl implements ReviewService{
         Reviews reviews = new Reviews(users.getUserId(), requestDto.getOrderId(), requestDto.getRating(),
             requestDto.getContent(), requestDto.getReviewPictureName(), LocalDateTime.now());
         reviewsRepository.save(reviews);
+
+        //리뷰수 증가
+        Orders orders = ordersRepository.findById(requestDto.getOrderId()).orElseThrow(()->new RuntimeException("Orders not found"));
+        Stores stores = storesRepository.findById(orders.getStoreId()).orElseThrow(()->new RuntimeException("Stores not found"));
+        stores.setReviewCount(stores.getReviewCount()+1);
+
+        //별점 계산
+        Double totalRate = stores.getRating() * (stores.getReviewCount()-1);
+        Double newRate = (totalRate + reviews.getRating()) / stores.getReviewCount();
+        stores.setRating(newRate);
+        storesRepository.save(stores);
+
         return Response.toResponseEntity(REVIEW_ADD_SUCCESS);
     }
 
@@ -70,6 +84,18 @@ public class ReviewServiceImpl implements ReviewService{
         if (!reviewsRepository.findById(requestDto.getReviewId()).isPresent()) {
             return Response.toResponseEntity(REVIEW_NOT_EXIST);
         }else{
+            // 리뷰수 감소
+            Reviews reviews = reviewsRepository.findById(requestDto.getReviewId()).orElseThrow(()->new RuntimeException("Reviews not found"));
+            Orders orders = ordersRepository.findById(reviews.getOrderId()).orElseThrow(()->new RuntimeException("Orders not found"));
+            Stores stores = storesRepository.findById(orders.getStoreId()).orElseThrow(()->new RuntimeException("Stores not found"));
+            stores.setReviewCount(stores.getReviewCount()-1);
+
+            //별점 계산
+            Double totalRate = stores.getRating() * (stores.getReviewCount() +1);
+            Double newRate = (totalRate - reviews.getRating()) / stores.getReviewCount();
+            stores.setRating(newRate);
+            storesRepository.save(stores);
+
             reviewsRepository.deleteById(requestDto.getReviewId());
             return Response.toResponseEntity(REVIEW_DELETE_SUCCESS);
         }
@@ -89,26 +115,42 @@ public class ReviewServiceImpl implements ReviewService{
     public ReviewListUserResponseDto listUserReview(ReviewListUserRequestDto requestDto) {
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail()).orElseThrow(()-> new RuntimeException("User not found"));
         List<Reviews> reviewsList = reviewsRepository.findAllByUserId(users.getUserId());
+        reviewsList.sort((r1, r2) -> r2.getCreatedDate().compareTo(r1.getCreatedDate()));
+
         List<ReviewListUserInnerReviewListResponseDto> innerReviewListResponseDtos = new ArrayList<>();
         for(Reviews reviews : reviewsList){
-            CeoReviews ceoReviews = ceoReviewsRepository.findByReviewId(reviews.getReviewId())
-                .orElseThrow(()->new RuntimeException("CeoReviews not found"));
+            Optional<CeoReviews> ceoReviews = ceoReviewsRepository.findByReviewId(reviews.getReviewId());
             Long orderId = reviews.getOrderId();
             Orders orders = ordersRepository.findById(orderId).orElseThrow(()-> new RuntimeException("Orders not found"));
             Stores stores = storesRepository.findById(orders.getStoreId()).orElseThrow(()-> new RuntimeException("Stores not found"));
-            ReviewListUserInnerReviewListResponseDto innerReviewListResponseDto = ReviewListUserInnerReviewListResponseDto.builder()
-                .reviewId(reviews.getReviewId())
-                .storeName(stores.getName())
-                .storeId(stores.getStoreId())
-                .content(reviews.getContent())
-                .rating(reviews.getRating())
-                .storeType(stores.getType())
-                .createdDate(reviews.getCreatedDate())
-                .reviewPictureName(reviews.getReviewPictureName())
-                .ceoReviewContent(ceoReviews.getContent())
-                .ceoReviewCreatedDate(ceoReviews.getCreatedDate())
-                .build();
-            innerReviewListResponseDtos.add(innerReviewListResponseDto);
+
+            if(ceoReviews.isPresent()){
+                ReviewListUserInnerReviewListResponseDto innerReviewListResponseDto = ReviewListUserInnerReviewListResponseDto.builder()
+                    .reviewId(reviews.getReviewId())
+                    .storeName(stores.getName())
+                    .storeId(stores.getStoreId())
+                    .content(reviews.getContent())
+                    .rating(reviews.getRating())
+                    .storeType(stores.getType())
+                    .createdDate(reviews.getCreatedDate())
+                    .reviewPictureName(reviews.getReviewPictureName())
+                    .ceoReviewContent(ceoReviews.get().getContent())
+                    .ceoReviewCreatedDate(ceoReviews.get().getCreatedDate())
+                    .build();
+                innerReviewListResponseDtos.add(innerReviewListResponseDto);
+            }else{
+                ReviewListUserInnerReviewListResponseDto innerReviewListResponseDto = ReviewListUserInnerReviewListResponseDto.builder()
+                    .reviewId(reviews.getReviewId())
+                    .storeName(stores.getName())
+                    .storeId(stores.getStoreId())
+                    .content(reviews.getContent())
+                    .rating(reviews.getRating())
+                    .storeType(stores.getType())
+                    .createdDate(reviews.getCreatedDate())
+                    .reviewPictureName(reviews.getReviewPictureName())
+                    .build();
+                innerReviewListResponseDtos.add(innerReviewListResponseDto);
+            }
         }
         ReviewListUserResponseDto responseDto = ReviewListUserResponseDto.builder()
             .reviewList(innerReviewListResponseDtos)
@@ -135,9 +177,11 @@ public class ReviewServiceImpl implements ReviewService{
             Optional<CeoReviews> ceoReviews = ceoReviewsRepository.findByReviewId(reviews.getReviewId());
             String ceoContent = null;
             LocalDateTime ceoCreatedDate = null;
+            Long ceoRiviewId = 0L;
             if(ceoReviews.isPresent()){
                 ceoContent = ceoReviews.get().getContent();
                 ceoCreatedDate = ceoReviews.get().getCreatedDate();
+                ceoRiviewId = ceoReviews.get().getCeoReviewId();
             }
             ReviewListOwnerInnerReviewListResponseDto innerReviewListResponseDto = ReviewListOwnerInnerReviewListResponseDto.builder()
                 .reviewId(reviews.getReviewId())
@@ -150,6 +194,7 @@ public class ReviewServiceImpl implements ReviewService{
                 .reviewPictureName(reviews.getReviewPictureName())
                 .ceoReviewContent(ceoContent)
                 .ceoReviewCreatedDate(ceoCreatedDate)
+                .ceoReviewId(ceoRiviewId)
                 .build();
             innerReviewListResponseDtos.add(innerReviewListResponseDto);
         }
@@ -158,5 +203,13 @@ public class ReviewServiceImpl implements ReviewService{
             .build();
 
         return responseDto;
+    }
+
+    @Override
+    public ResponseEntity<Response> deleteCeoReview(ReviewCeoDeleteRequestDto requestDto) {
+        CeoReviews ceoReviews = ceoReviewsRepository.findById(requestDto.getCeoReviewId())
+            .orElseThrow(()-> new RuntimeException("CeoReviews not found"));
+        ceoReviewsRepository.delete(ceoReviews);
+        return Response.toResponseEntity(CEO_REVIEW_DELETE_SUCCESS);
     }
 }

@@ -2,6 +2,7 @@ package com.team3.DeliveryProject.controller;
 
 import com.team3.DeliveryProject.dto.request.review.ReviewAddRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewCeoAddRequestDto;
+import com.team3.DeliveryProject.dto.request.review.ReviewCeoDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewDeleteRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewListOwnerRequestDto;
 import com.team3.DeliveryProject.dto.request.review.ReviewListUserRequestDto;
@@ -27,6 +28,10 @@ public class ReviewController {
     @PostMapping("/user/review/delete")
     public ResponseEntity<?> deleteReview(@RequestBody ReviewDeleteRequestDto requestDto){
         return ResponseEntity.ok().body(reviewService.deleteReview(requestDto).getBody());
+    }
+    @PostMapping("/store/review/reply/delete")
+    public ResponseEntity<?> deleteCeoReview(@RequestBody ReviewCeoDeleteRequestDto requestDto){
+        return ResponseEntity.ok().body(reviewService.deleteCeoReview(requestDto).getBody());
     }
     @PostMapping("/store/review/reply")
     public ResponseEntity<?> addCeoReivew(@RequestBody ReviewCeoAddRequestDto requestDto){
