@@ -111,7 +111,7 @@ export default function StoreRegister() {
       data.append('type', type);
       data.append('operationHours', `${openHours}~${closeHours}`);
       data.append('closedDays', selectedDays.join(','));
-      data.append('storePictureName', storePictureUrl ? storePictureUrl : storePictureUrl );
+      data.append('storePictureName', storePictureUrl ? storePictureUrl : storePictureName );
       return await data;
     }
     catch (error) {
