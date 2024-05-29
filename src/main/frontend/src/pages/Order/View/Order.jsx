@@ -22,36 +22,54 @@ export default function Order() {
 
 	const handleSubmit = () => {
 		if (!paymentMethod) {
-			alert('결제 방식을 선택 해 주세요.');
+			alert('결제 방식을 선택 해 주세요.')
 			return;
 		}
 		if (userPoint && point > userPoint) {
 			alert('보유 포인트보다 더 많은 포인트를 사용 할 수 없습니다.');
 			return;
 		}
+		if (paymentMethod==='토스결제') {
+				const tossTemp = JSON.stringify({
+					storeId: cartItems[0].storeId,
+					userEmail: email,
+					deliveryUserEmail: email,
+					paymentMethod: paymentMethod,
+					point: point,
+					totalPrice: (point > 0) ? ((totalPrice - point) <= 0 ? 0 : (totalPrice - point)) : totalPrice,
+					request: request,
+					address: address,
+					menus: cartItems
+				});
 
-		if (paymentMethod === '선결제') {
-			setIsModalOpen(true);
-		} else {
-			postOrderRegist.mutate({
-				storeId: cartItems[0].storeId,
-				userEmail: email,
-				deliveryUserEmail: email,
-				paymentMethod: paymentMethod,
-				point: point,
-				totalPrice: totalPrice,
-				request: request,
-				address: address,
-				menus: cartItems
-			}, {
-				onSuccess: () => {
-					localStorage.removeItem('cartItems');
-					navigate('/');
-				},
-				onError: e => { console.log(e); },
-			});
+				sessionStorage.setItem('tossTemp', tossTemp);
+				return navigate('/CheckOut', {state: {
+					storeId: cartItems[0].storeId,
+					userEmail: email,
+					point: point,
+					totalPrice: (point > 0) ? ((totalPrice - point) <= 0 ? 0 : (totalPrice - point)) : totalPrice,
+					tempData: tossTemp
+				}});
 		}
-	};
+
+		postOrderRegist.mutate({
+			storeId: cartItems[0].storeId,
+			userEmail: email,
+			deliveryUserEmail: email,
+			paymentMethod: paymentMethod,
+			point: point,
+			totalPrice: (point > 0) ? ((totalPrice - point) <= 0 ? 0 : (totalPrice - point)) : totalPrice,
+			request: request,
+			address: address,
+			menus: cartItems
+		}, {
+			onSuccess: () => {
+				localStorage.removeItem('cartItems');
+				navigate('/')
+			},
+			onError: e => {console.log(e)},
+		})
+	}
 
 	const closeModal = () => {
 		setIsModalOpen(false);
@@ -134,7 +152,7 @@ export default function Order() {
 						>
 							<MenuItem value={'현금결제'}>만나서 현금 결제</MenuItem>
 							<MenuItem value={'카드결제'}>만나서 카드 결제</MenuItem>
-							<MenuItem value={'선결제'}>선결제</MenuItem>
+							<MenuItem value={'토스결제'}>Toss 결제</MenuItem>
 						</Select>
 					</FormControl>
 				</Grid>
