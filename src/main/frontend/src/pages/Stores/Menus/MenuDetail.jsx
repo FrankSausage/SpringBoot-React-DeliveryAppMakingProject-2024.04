@@ -15,7 +15,7 @@ export default function MenuDetail() {
   const handleAddItem = data => {
     if (!items.find(e => e === data)) {
       const newItems = [...items, data];
-      setItems(newItems)
+      setItems(newItems.sort((a,b) => {return a.menuOptionId - b.menuOptionId}))
     } else {
       const newItems = items.filter(con => {return con !== data})
       setItems(newItems.sort((a,b) => {return a.menuOptionId - b.menuOptionId}));
@@ -25,7 +25,11 @@ export default function MenuDetail() {
   const handleSubmit = () => {
     addItemToCart({menus: {menuId: menuId, menuName: menuDetailData.menus.name, 
       menuPrice: menuDetailData.menus.price, storeId: storeId, storeName: storeName, menuOptions: items}})
-    .then(() => {
+    .then(res => {
+      if(res===false){
+        navigate(`/StoreDetail/${storeId}`, {state: {storeName: storeName}})
+        return;
+      }
       alert(`장바구니에 ${menuDetailData.menus.name}을(를) 담았습니다. `)
       navigate(`/StoreDetail/${storeId}`, {state: {storeName: storeName}})
     });

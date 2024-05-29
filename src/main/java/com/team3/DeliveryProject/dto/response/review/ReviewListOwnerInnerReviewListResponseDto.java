@@ -25,4 +25,5 @@ public class ReviewListOwnerInnerReviewListResponseDto {
     private String reviewPictureName;
     private String ceoReviewContent;
     private LocalDateTime ceoReviewCreatedDate;
+    private Long ceoReviewId;
 }

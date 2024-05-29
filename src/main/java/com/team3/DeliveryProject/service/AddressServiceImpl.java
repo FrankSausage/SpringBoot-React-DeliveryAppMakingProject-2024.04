@@ -84,7 +84,6 @@ public class AddressServiceImpl implements AddressService {
             .filter(address -> !address.getStatus().equals("삭제"))
             .map(address -> new AddressFindAllResponseDto(address))
             .collect(Collectors.toList());
-        System.out.println(responseDtos);
         return responseDtos;
     }
 

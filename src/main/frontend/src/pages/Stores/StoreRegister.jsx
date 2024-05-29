@@ -39,6 +39,7 @@ export default function StoreRegister() {
   const [content, setContent] = useState('');
   const [storePictureName, setStorePictureName] = useState('');
   const [storePictureUrl, setStorePictureUrl] = useState('');  // 업로드된 이미지 URL을 저장할 상태 추가
+  const [isFileUploading, setIsFileUploading] = useState(false);
   const [minDeliveryTime, setMinDeliveryTime] = useState('');
   const [maxDeliveryTime, setMaxDeliveryTime] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
@@ -101,17 +102,16 @@ export default function StoreRegister() {
     const formattedPhoneNumber = formatStorePhoneNumber(event.target.value);
     setPhoneNumber(formattedPhoneNumber);
   };
-
   const setFormData = async (data) => {
     try {
       data.append('address', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '')
-        + ',' + (detailAddress ? detailAddress : '')));
+      + ',' + (detailAddress ? detailAddress : '')));
       data.append('email', email);
       data.append('category', category);
       data.append('type', type);
       data.append('operationHours', `${openHours}~${closeHours}`);
       data.append('closedDays', selectedDays.join(','));
-      data.append('storePictureName', storePictureUrl + ', ' +  storePictureName);
+      data.append('storePictureName', storePictureUrl ? storePictureUrl : storePictureUrl );
       return await data;
     }
     catch (error) {
@@ -124,6 +124,7 @@ export default function StoreRegister() {
     const file = e.target.files[0];
     if (file) {
       const fileName = file.name;
+      setIsFileUploading(true);
       setStorePictureName(fileName);
       try {
         const url = await uploadImageToCloudinary(file); // 클라우드니어리에 이미지 업로드
@@ -297,9 +298,15 @@ export default function StoreRegister() {
                       <FormControlLabel control={<Checkbox value="allowExtraEmails" color="primary" />} label="개인정보 수집 및 이용에 동의합니다" />
                     </Grid>
                   </Grid>
-                  <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
-                    입점 신청하기
-                  </Button>
+                  {isFileUploading ?
+                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
+                      입점 신청하기
+                    </Button>
+                    :
+                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
+                      입점 신청하기
+                    </Button>
+                  }
                 </Box>
               </Box>
               <Footer sx={{ mt: 5 }} />
