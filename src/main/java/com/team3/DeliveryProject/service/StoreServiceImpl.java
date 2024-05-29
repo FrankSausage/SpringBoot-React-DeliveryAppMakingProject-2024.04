@@ -184,13 +184,12 @@ public class StoreServiceImpl implements StoreService {
             // AddressCode 리스트에서 유저의 addrCode와 일치하는지 확인 ㅇㅇ
             for (AddressCode addressCode : addressCodes) {
                 if (addressCode.getAddressCode().equals(addrCode)) {
-                    Dibs dibs = dibsRepository.findByUserIdAndStoreId(users.getUserId(), storeId)
-                        .orElseThrow(()->new RuntimeException("Dibs not found"));
-                    String isDibs = "";
-                    if (dibs.getStatus().equals("찜")) {
-                        isDibs = "찜";
-                    } else {
-                        isDibs = "일반";
+                    Optional<Dibs> dibs = dibsRepository.findByUserIdAndStoreId(users.getUserId(), storeId);
+                    String isDibs = "일반";
+                    if (dibs.isPresent()){
+                        if(dibs.get().getStatus().equals("찜")){
+                            isDibs = "찜";
+                        }
                     }
                     // 조건에 맞는 Store 정보를 DTO로 변환하고 리스트에 추가
                     filteredStores.add(convertToDto(store, isDibs, isOpened(store)));
