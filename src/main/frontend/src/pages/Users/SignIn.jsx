@@ -119,10 +119,10 @@ export default function SignIn() {
           >
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               <Link to="/" style={{ textDecoration: 'none', color: 'black', fontFamily: 'Arial, sans-serif', display: 'flex', justifyContent: 'center' }}>
-                <img src={'/img/001.png'} style={{ width: '40%', height: '50%',position: 'relative', top: 5, marginBottom: '20px'}}/>
+                <img src={'/img/logo01.png'} style={{ width: '40%', height: '50%',position: 'relative', top: 5, marginBottom: '20px'}}/>
               </Link> 
             </Typography>
-            <Avatar sx={{ m: 1, bgcolor: '#f09032', marginBottom: '10px' }}>
+            <Avatar sx={{ m: 1, bgcolor: '#ffbe33', marginBottom: '10px' }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -135,7 +135,14 @@ export default function SignIn() {
                 control={<CustomCheckbox value="remember" color="primary" />}
                 label="나를 기억하기"
               />
-              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, backgroundColor: '#66BB6A', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#41df78'}, fontFamily: 'Arial',  fontWeight: 'bold', fontSize: '1.2rem'}}>
+              <Button
+                type="submit" 
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'},
+                fontFamily: 'Arial', 
+                fontWeight: 'bold', 
+                fontSize: '1.2rem'}}>
                 로그인
               </Button>
               <IconButton onClick={handleGoogleLogin} fullWidth sx={{ mt: 3, mb: 2, backgroundColor: '#FFFFFF', borderRadius: '20px', border: '1px'}}>

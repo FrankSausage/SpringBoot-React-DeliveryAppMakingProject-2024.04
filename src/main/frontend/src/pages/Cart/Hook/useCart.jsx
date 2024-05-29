@@ -7,49 +7,34 @@ export function useCart () {
       } else {
         let item = JSON.parse(localStorage.getItem('cartItems'));
 
-        let isInside = false;
-        let index = 0;
-        for(let i = 0; i < item.length; i++) {
-          if(itemData.menus.menuName===item[i].menuName && itemData.menus.menuOptions.length===0 && item[i].menuOptions.length===0) {
-            return await plusItemQuantity(i);
-          }
-
-          if(itemData.menus.menuName===item[i].menuName && itemData.menus.menuOptions.length===item[i].menuOptions.length) {
-            if(itemData.menus.menuOptions[0].options===item[i].menuOptions[0].options) {
-              isInside = true;
-              index = i;
-              break;
-            }
-          }
-        }
-
-        if(isInside===true) {
-          let count = 0;
-          for(let i = 0; i < item[index].menuOptions.length; i++) {
-            for(let x = 0; x < item[index].menuOptions.length; x++) {
-              if (itemData.menus.menuOptions[i].options===item[index].menuOptions[x].options) {
-                count++;
-                break;
+        if(itemData.menus.storeId === item[0].storeId) {
+          for(let i = 0; i < item.length; i++) {
+            if(itemData.menus.menuId === item[i].menuId && itemData.menus.menuOptions.length === item[i].menuOptions.length) {
+              let isSame = true;            
+              for(let x = 0; x < itemData.menus.menuOptions.length; x++) {
+                if(!item[i].menuOptions.some(v => v.menuOptionId === itemData.menus.menuOptions[x].menuOptionId)){
+                  isSame = false;
+                  break;
+                }
+              }
+              if (isSame) {
+                return await plusItemQuantity(i);
               }
             }
           }
-          if(count===item[index].menuOptions.length) {
-            return await plusItemQuantity(index);
-          }
-        }
-
-        if(itemData.menus.storeId===item[0].storeId) {
+          
           item.push({...itemData.menus, ['quantity'] : 1, ['sequence']: (1 + item.length)});
           return await localStorage.setItem('cartItems', JSON.stringify(item))
         } else {
-          if(window.confirm('장바구니에 이미 등록한 가게와 다른 가게입니다, 장바구니를 비우고 새로 주문하시겠습니까?')) {
+          if(window.confirm('다른 가게의 주문이 이미 장바구니에 있습니다, 장바구니를 비우고 이 가게에서 새로 주문하시겠습니까?')) {
             return await localStorage.setItem('cartItems', JSON.stringify([{...itemData.menus, ['quantity'] : 1, ['sequence']: 1}]))
           }
         }
       }
     } catch (error) {
-      alert('장바구니 담기에 실패했습니다!')
-      console.log(error)
+      alert('장바구니 담기에 실패했습니다!');
+      console.log(error);
+      return await false;
     }
   }
 

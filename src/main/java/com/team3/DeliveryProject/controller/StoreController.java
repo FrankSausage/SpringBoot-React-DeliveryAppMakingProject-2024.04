@@ -102,10 +102,8 @@ public class StoreController {
     @GetMapping("/detail")
     public ResponseEntity<?> getStoreDetail(@ModelAttribute StoreDetailRequestDto requestDto) {
         if(usersRepository.findUsersByEmail(requestDto.getEmail()).get().getRole().equals("점주")){
-            System.out.println("여기로들어옴 점주로 ㅇㅇ");
             return ResponseEntity.ok().body(storeService.getStoreDetailOwner(requestDto));
         }else {
-            System.out.println("여기로들어옴 유저로 ㅇㅇ");
             return ResponseEntity.ok().body(storeService.getStoreDetailUser(requestDto));
         }
     }
