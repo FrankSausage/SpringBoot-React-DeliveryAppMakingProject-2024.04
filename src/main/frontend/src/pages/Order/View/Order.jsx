@@ -17,13 +17,35 @@ export default function Order() {
 	const cartItems = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [];
 	
 	const handleSubmit = () => {
-		if(!paymentMethod) {
+		if (!paymentMethod) {
 			alert('결제 방식을 선택 해 주세요.')
 			return;
 		} 
 		if (userPoint && point > userPoint) {
 			alert('보유 포인트보다 더 많은 포인트를 사용 할 수 없습니다.')
 			return;
+		}
+		if (paymentMethod==='토스결제') {
+				const tossTemp = JSON.stringify({
+					storeId: cartItems[0].storeId,
+					userEmail: email,
+					deliveryUserEmail: email,
+					paymentMethod: paymentMethod,
+					point: point,
+					totalPrice: (point > 0) ? ((totalPrice - point) <= 0 ? 0 : (totalPrice - point)) : totalPrice,
+					request: request,
+					address: address,
+					menus: cartItems
+				});
+
+				sessionStorage.setItem('tossTemp', tossTemp);
+				return navigate('/CheckOut', {state: {
+					storeId: cartItems[0].storeId,
+					userEmail: email,
+					point: point,
+					totalPrice: (point > 0) ? ((totalPrice - point) <= 0 ? 0 : (totalPrice - point)) : totalPrice,
+					tempData: tossTemp
+				}});
 		}
 
 		postOrderRegist.mutate({
@@ -32,7 +54,7 @@ export default function Order() {
 			deliveryUserEmail: email,
 			paymentMethod: paymentMethod,
 			point: point,
-			totalPrice: totalPrice,
+			totalPrice: (point > 0) ? ((totalPrice - point) <= 0 ? 0 : (totalPrice - point)) : totalPrice,
 			request: request,
 			address: address,
 			menus: cartItems
@@ -99,6 +121,7 @@ export default function Order() {
 						>
 							<MenuItem value={'현금결제'}>만나서 현금 결제</MenuItem>
 							<MenuItem value={'카드결제'}>만나서 카드 결제</MenuItem>
+							<MenuItem value={'토스결제'}>Toss 결제</MenuItem>
 						</Select>
 					</FormControl>
 				</Grid>
