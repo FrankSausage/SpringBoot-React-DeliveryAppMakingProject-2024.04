@@ -25,7 +25,7 @@ export default function StoreList({ category, searchText }) {
 										<Grid item xs={3} sx={{ position: 'relative' }}>
 											<img src={data.storePictureName} style={{ width: '100%', height: 'auto' }} alt="Store" />
 											{/* FavoriteIcon 또는 FavoriteBorderIcon을 오른쪽 모서리에 위치 */}
-											<Typography sx={{ position: 'absolute', top: '50%', right: 0, transform: 'translate(50%, -200%)' }}>
+											<Typography sx={{ position: 'absolute', top: '50%', right: 0, transform: 'translate(50%, -220%)' }}>
 												{data.isDibed === '찜' ? <FavoriteIcon sx={{ color: 'red' }} /> : <FavoriteBorderIcon />}
 											</Typography>
 										</Grid>

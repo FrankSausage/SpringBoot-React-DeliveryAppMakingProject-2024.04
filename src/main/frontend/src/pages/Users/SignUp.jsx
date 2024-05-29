@@ -24,6 +24,7 @@ export default function SignUp() {
   const { setOutletAddress } = useOutletContext();
   const { postUserSignUp } = useUser();
   const navigate = useNavigate();
+
   const CustomCheckbox = ({ checked, onChange }) => {
     return (
       <Checkbox checked={checked} onChange={onChange} sx={{ color: '002500', '&.Mui-checked': { color: '#66BB6A' }}}/>
@@ -101,17 +102,7 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <div style={{
-        backgroundImage: 'url(/img/kitchen.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        padding: '23px 0',
-        backgroundBlendMode: 'lighten',
-        backgroundColor: 'rgba(255, 255, 255, 0.6)' // This makes the background image appear lighter
-        }}>
+      <div style={{ backgroundImage: 'url(/img/kitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', flexDirection: 'column', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
           <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
             <CssBaseline />
           <Box
@@ -207,16 +198,7 @@ export default function SignUp() {
               {role === '회원' &&
                 <Fragment>
                   <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="roadAddress"
-                      label="도로명주소"
-                      value={roadAddress}
-                      InputProps={{
-                        readOnly: true,
-                      }}
-                    />
+                    <TextField required fullWidth id="roadAddress" label="도로명주소" value={roadAddress} InputProps={{ readOnly: true, }} />
                   </Grid>
                   <Button
                     type="button"
@@ -238,15 +220,7 @@ export default function SignUp() {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="detailAddress"
-                      label="상세주소"
-                      name="detailAddress"
-                      autoComplete="detailAddress"
-                      onChange={e => setDetailAddress(e.target.value)}
-                    />
+                    <TextField required fullWidth id="detailAddress" label="상세주소" name="detailAddress" autoComplete="detailAddress" onChange={e => setDetailAddress(e.target.value)} />
                   </Grid>
                 </Fragment>
               }
@@ -275,7 +249,6 @@ export default function SignUp() {
               fontFamily: 'Arial', 
               fontWeight: 'bold', 
               fontSize: '1.2rem'}}>
-                
               회원 가입
             </Button>
             <Grid container justifyContent="flex-end">

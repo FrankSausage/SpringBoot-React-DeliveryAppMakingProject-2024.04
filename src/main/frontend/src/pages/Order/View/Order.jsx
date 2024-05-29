@@ -1,7 +1,10 @@
 import React, { Fragment, useState } from "react";
-import { Link, useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { Button, Card, Divider, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
+import Modal from 'react-modal';
 import { useOrder } from "../Hook/useOrder";
+
+Modal.setAppElement('#root');
 
 export default function Order() {
 	const location = useLocation();
@@ -14,36 +17,68 @@ export default function Order() {
 	const [request, setRequest] = useState('');
 	const [paymentMethod, setPaymentMethod] = useState('');
 	const [point, setPoint] = useState(0);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 	const cartItems = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [];
 
 	const handleSubmit = () => {
 		if (!paymentMethod) {
-			alert('결제 방식을 선택 해 주세요.')
+			alert('결제 방식을 선택 해 주세요.');
 			return;
 		}
 		if (userPoint && point > userPoint) {
-			alert('보유 포인트보다 더 많은 포인트를 사용 할 수 없습니다.')
+			alert('보유 포인트보다 더 많은 포인트를 사용 할 수 없습니다.');
 			return;
 		}
 
+		if (paymentMethod === '선결제') {
+			setIsModalOpen(true);
+		} else {
+			postOrderRegist.mutate({
+				storeId: cartItems[0].storeId,
+				userEmail: email,
+				deliveryUserEmail: email,
+				paymentMethod: paymentMethod,
+				point: point,
+				totalPrice: totalPrice,
+				request: request,
+				address: address,
+				menus: cartItems
+			}, {
+				onSuccess: () => {
+					localStorage.removeItem('cartItems');
+					navigate('/');
+				},
+				onError: e => { console.log(e); },
+			});
+		}
+	};
+
+	const closeModal = () => {
+		setIsModalOpen(false);
+	};
+
+	const handlePrepayment = () => {
+		// 선결제 전에도 주문을 등록한다
 		postOrderRegist.mutate({
-			storeId: cartItems[0].storeId,
-			userEmail: email,
-			deliveryUserEmail: email,
-			paymentMethod: paymentMethod,
-			point: point,
-			totalPrice: totalPrice,
-			request: request,
-			address: address,
-			menus: cartItems
+		  storeId: cartItems[0].storeId,
+		  userEmail: email,
+		  deliveryUserEmail: email,
+		  paymentMethod: '선결제',
+		  point: point,
+		  totalPrice: totalPrice,
+		  request: request,
+		  address: address,
+		  menus: cartItems
 		}, {
-			onSuccess: () => {
-				localStorage.removeItem('cartItems');
-				navigate('/')
-			},
-			onError: e => { console.log(e) },
-		})
-	}
+		  onSuccess: res => { 
+			console.log('성공',res);
+			// 주문이 성공적으로 등록되면 선결제 페이지로 이동한다
+			navigate('/checkout', { state: { orderData: { userEmail: email, point: point, totalPrice: totalPrice, menus: cartItems } } });
+			setIsModalOpen(false);
+		  },
+		  onError: e => { console.log('실패', e); },
+		});
+	  };
 
 	return (
 		<Card sx={{ width: '80%', margin: 'auto', padding: 2, mt: 3, border: 1 }}>
@@ -51,17 +86,17 @@ export default function Order() {
 				onClick={() => navigate(`/StoreDetail/${cartItems[0].storeId}`, { state: { storeName: cartItems[0].storeName } })}>
 				{cartItems[0].storeName}
 			</Typography>
-			<Typography sx={{ textAlign: 'center', mb: 1 }} >- 주문 내역 -</Typography>
+			<Typography sx={{ textAlign: 'center', mb: 1 }}>- 주문 내역 -</Typography>
 			{cartItems &&
 				cartItems.map((menuItems) => (
-					<Fragment>
-						<Grid container key={menuItems.menuId}>
+					<Fragment key={menuItems.menuId}>
+						<Grid container>
 							<Grid item xs={1} />
 							<Grid item xs>
 								<Typography>{menuItems.menuName}: {menuItems.quantity}개 </Typography>
 								{menuItems.menuOptions &&
 									menuItems.menuOptions.map((optionItems) => (
-										<Grid container>
+										<Grid container key={optionItems.optionId}>
 											<Grid item xs={2} />
 											<Grid item xs>
 												<Typography>{optionItems.options}</Typography>
@@ -99,9 +134,7 @@ export default function Order() {
 						>
 							<MenuItem value={'현금결제'}>만나서 현금 결제</MenuItem>
 							<MenuItem value={'카드결제'}>만나서 카드 결제</MenuItem>
-							{/* <Link to="/checkout" state={totalPrice}> */}
-								<MenuItem value={'카드결제'}> 선결제</MenuItem>
-							{/* </Link> */}
+							<MenuItem value={'선결제'}>선결제</MenuItem>
 						</Select>
 					</FormControl>
 				</Grid>
@@ -114,9 +147,31 @@ export default function Order() {
 			</Stack>
 			<Typography variant="h5" sx={{ textAlign: 'center', my: 2 }}>최종 금액: {totalPrice ? totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}원</Typography>
 			<Stack direction={'row'} sx={{ justifyContent: 'space-around' }}>
-				<Button sx={{ border: 1, width: '30%' }} color="error">돌아가기</Button>
+				<Button sx={{ border: 1, width: '30%' }} color="error" onClick={() => navigate(-1)}>돌아가기</Button>
 				<Button sx={{ border: 1, width: '30%' }} onClick={handleSubmit}>주문하기</Button>
 			</Stack>
+
+			{/* Modal for Prepayment */}
+			<Modal
+				isOpen={isModalOpen}
+				onRequestClose={closeModal}
+				contentLabel="Checkout Modal"
+				style={{
+					content: {
+						top: '50%',
+						left: '50%',
+						right: 'auto',
+						bottom: 'auto',
+						marginRight: '-50%',
+						transform: 'translate(-50%, -50%)'
+					}
+				}}
+			>
+				<h2>선결제창 가기</h2>
+				<Button onClick={handlePrepayment}>선결제창</Button>
+				<Button onClick={closeModal}>취소</Button>
+			</Modal>
 		</Card>
 	);
 }
+
