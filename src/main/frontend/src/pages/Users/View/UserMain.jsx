@@ -26,6 +26,11 @@ export default function UserMain() {
       <Grid container spacing={2} justifyContent="center" alignItems="center">
         {categories.map((category, index) => (
           <Grid item key={index} xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center', flexDirection:'column', alignItems:'center' }}>
+            <Link to={category.link} state={category.state} style={{textDecoration:'none', color:'black', width: '100%', textAlign:'center'}}>
+              <Typography variant="h6" sx={{ mt: -1, fontWeight:'bold', color:'#ffffff', textAling:'center', bgcolor:'#222831', p:1, borderRadius:1 }}>
+                {category.label}
+              </Typography>
+            </Link>
             <Box sx={{ ...boxStyle, position: 'relative', overflow: 'hidden', borderRadius: 2 }}>
               <Link to={category.link} state={category.state} style={{ textDecoration: 'none', color: 'black', display: 'block', height: '100%' }}>
                 <Box sx={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden', '$hover img': {transform: 'scale(1.05)'}}}>
@@ -33,11 +38,6 @@ export default function UserMain() {
                 </Box>
               </Link>
             </Box>
-            <Link to={category.link} state={category.state} style={{textDecoration:'none', color:'black', width: '100%', textAlign:'center'}}>
-              <Typography variant="h6" sx={{ mt: -1, fontWeight:'bold', color:'#ffffff', textAling:'center', bgcolor:'#222831', p:1, borderRadius:1 }}>
-                {category.label}
-              </Typography>
-            </Link>
           </Grid>
         ))}
       </Grid>

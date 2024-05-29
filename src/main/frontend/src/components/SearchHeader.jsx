@@ -32,7 +32,8 @@ export default function SearchHeader() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: (role === '회원') ? '#469D6E' : (role === '점주') ? '#00cde1' : '#469D6E'}}>
+      {/* <AppBar position="static" sx={{ backgroundColor: (role === '회원') ? '#E16120' : (role === '점주') ? '#00cde1' : '#E16120'}}> */}
+      <AppBar position="static" sx={{ background: 'linear-gradient(to right, black, rgba(0, 0, 0, 0.5))' }}>
         <Toolbar>
           <Grid container alignItems="center">
             <Grid item xs={3}>
