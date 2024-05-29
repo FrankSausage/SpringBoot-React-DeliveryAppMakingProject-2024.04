@@ -14,7 +14,7 @@ export default function Dibs() {
   };
 
   const handleBack = () => {
-    navigate(-1); // This will navigate to the previous page
+    navigate(-1); 
   };
 
   return (
