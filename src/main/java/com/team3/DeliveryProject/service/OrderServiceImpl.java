@@ -61,6 +61,8 @@ public class OrderServiceImpl implements OrderService {
     private final MenuOptionRepository menuOptionRepository;
     private final OrderMenuRepository orderMenuRepository;
     private final ReviewsRepository reviewsRepository;
+    private final SseService sseService;
+
 
     @Override
     public ResponseEntity<Response> addOrder(OrderAddRequestDto requestDto) {
@@ -141,6 +143,9 @@ public class OrderServiceImpl implements OrderService {
             users.setGrade(currentGrade + 1);
             usersRepository.save(users);
         }
+        // 주문 업데이트 후 SSE 이벤트 전송
+        sseService.sendEvent(orders.getOrderUserId(), orders);
+
 
         return Response.toResponseEntity(ORDER_STATUS_UPDATE_SUCCESS);
     }
