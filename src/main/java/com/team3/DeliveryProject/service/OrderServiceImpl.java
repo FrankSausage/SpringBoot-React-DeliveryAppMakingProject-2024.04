@@ -98,21 +98,23 @@ public class OrderServiceImpl implements OrderService {
         for (OrderAddInnerMenusRequestDto menusRequestDto : menuList) {
             Menu menu = menuRepository.findById(menusRequestDto.getMenuId())
                 .orElseThrow(() -> new RuntimeException("Menu not found"));
-            if(menusRequestDto.getMenuOptions().isEmpty()){
-                OrderMenu orderMenu = new OrderMenu(orderId, menu.getMenuId(), menusRequestDto.getSequence(), menusRequestDto.getQuantity());
+            if (menusRequestDto.getMenuOptions().isEmpty()) {
+                OrderMenu orderMenu = new OrderMenu(orderId, menu.getMenuId(),
+                    menusRequestDto.getSequence(), menusRequestDto.getQuantity());
                 orderMenuRepository.save(orderMenu);
-            }else{
+            } else {
                 for (OrderAddInnerMenuOptionsRequestDto menuOptionsRequestDto : menusRequestDto.getMenuOptions()) {
                     MenuOption menuOption = menuOptionRepository.findById(
                             menuOptionsRequestDto.getMenuOptionId())
                         .orElseThrow(() -> new RuntimeException("MenuOption not found"));
                     OrderMenu orderMenu = new OrderMenu(orderId, menuOption.getMenuOptionId(),
-                        menu.getMenuId(), menusRequestDto.getSequence(), menusRequestDto.getQuantity());
+                        menu.getMenuId(), menusRequestDto.getSequence(),
+                        menusRequestDto.getQuantity());
                     orderMenuRepository.save(orderMenu);
                 }
             }
         }
-        return Response.toResponseEntity(ORDER_ADD_SUCCESS,orderId);
+        return Response.toResponseEntity(ORDER_ADD_SUCCESS, orderId);
     }
 
     @Override
@@ -238,7 +240,7 @@ public class OrderServiceImpl implements OrderService {
             }
             Optional<Reviews> reviews = reviewsRepository.findByOrderId(orders.getOrderId());
             boolean isReviewed = false;
-            if(reviews.isPresent()){
+            if (reviews.isPresent()) {
                 isReviewed = true;
             }
             OrderListInnerOrdersResponseDto innerOrdersResponseDto = OrderListInnerOrdersResponseDto.builder()
