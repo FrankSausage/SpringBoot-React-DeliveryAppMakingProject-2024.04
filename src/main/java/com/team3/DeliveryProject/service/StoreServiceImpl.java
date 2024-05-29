@@ -81,8 +81,6 @@ public class StoreServiceImpl implements StoreService {
             addressCodeRepository.save(addressCode);
         }
 
-        System.out.println("저장된거 제대로 됫는지 출력해보기 (아래)");
-        System.out.println(storesRepository.findById(storeId));
         return Response.toResponseEntity(STORE_ADD_SUCCESS);
     }
 

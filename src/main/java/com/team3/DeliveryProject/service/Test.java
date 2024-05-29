@@ -12,6 +12,5 @@ public class Test {
     private final AddressRepository addressRepository;
 
     public void findTest() {
-        System.out.println(addressRepository.findAddressByUserId(1L));
     }
 }
