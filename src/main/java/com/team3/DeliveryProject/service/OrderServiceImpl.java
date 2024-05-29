@@ -61,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
     private final MenuOptionRepository menuOptionRepository;
     private final OrderMenuRepository orderMenuRepository;
     private final ReviewsRepository reviewsRepository;
-    private final SseService sseService;
+    private final SseEmitterService sseEmitterService;
 
 
     @Override
@@ -143,8 +143,9 @@ public class OrderServiceImpl implements OrderService {
             users.setGrade(currentGrade + 1);
             usersRepository.save(users);
         }
-        // 주문 업데이트 후 SSE 이벤트 전송
-        sseService.sendEvent(orders.getOrderUserId(), orders);
+        // SSE 이벤트 전송
+        String email = users.getEmail(); // 사용자 이메일 가져오기
+        sseEmitterService.sendOrderUpdate(email, "Order status updated");
 
 
         return Response.toResponseEntity(ORDER_STATUS_UPDATE_SUCCESS);

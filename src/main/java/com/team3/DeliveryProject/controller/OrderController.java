@@ -8,9 +8,8 @@ import com.team3.DeliveryProject.dto.request.order.OrderOwnerDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderOwnerListRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderStatusDetailRequestDto;
 import com.team3.DeliveryProject.dto.request.order.OrderUpdateRequestDto;
-import com.team3.DeliveryProject.dto.response.order.OrderDetailOwnerResponseDto;
 import com.team3.DeliveryProject.service.OrderService;
-import com.team3.DeliveryProject.service.SseService;
+import com.team3.DeliveryProject.service.SseEmitterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,7 +28,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
     @Autowired
-    private SseService sseService;
+    private SseEmitterService sseEmitterService;
 
     @PostMapping("/register")
     public ResponseEntity<?> addOrder(@RequestBody OrderAddRequestDto requestDto) {
@@ -41,9 +40,9 @@ public class OrderController {
         return ResponseEntity.ok().body(orderService.updateOrder(requestDto).getBody());
     }
     // SSE 엔드포인트 추가
-    @GetMapping("/stream/{userId}")
-    public SseEmitter streamOrderUpdates(@PathVariable Long userId) {
-        return sseService.createEmitter(userId);
+    @GetMapping("/stream/{email}")
+    public SseEmitter streamOrderUpdates(@PathVariable String email) {
+        return sseEmitterService.createEmitter(email);
     }
     @PostMapping("/delete")
     public ResponseEntity<?> updateOrder(@RequestBody OrderDeleteRequestDto requestDto) {
