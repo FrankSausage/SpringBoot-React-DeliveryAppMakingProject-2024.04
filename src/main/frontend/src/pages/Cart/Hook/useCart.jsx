@@ -6,6 +6,7 @@ export function useCart () {
         localStorage.setItem('cartItems', JSON.stringify([{...itemData.menus, ['quantity'] : 1, ['sequence']: 1}]))
       } else {
         let item = JSON.parse(localStorage.getItem('cartItems'));
+        
         if(itemData.menus.storeId === item[0].storeId) {
           for(let i = 0; i < item.length; i++) {
             if(itemData.menus.menuId === item[i].menuId && itemData.menus.menuOptions.length === item[i].menuOptions.length) {
