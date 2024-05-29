@@ -32,7 +32,7 @@ import OwnerOrderList from './pages/Order/OwnerOrderList';
 // Dibs
 import Dibs from './pages/Dibs/View/Dibs';
 // toss
-import  CheckoutPage from './pages/toss/Checkout';
+// import  CheckoutPage from './pages/toss/Checkout';
  
 const router = createBrowserRouter([
   {
@@ -59,7 +59,7 @@ const router = createBrowserRouter([
       { path: 'UserMain', element: <UserMain />,},
       { path: 'OwnerMain', element: <OwnerMain />},
       { path: 'Order', element: <Order />},
-      { path: 'checkout', element: <CheckoutPage/> },
+      // { path: 'checkout', element: <CheckoutPage/> },
       { path: 'OrderList', element: <OrderList />},
       { path: 'OwnerOrderList', element: <OwnerOrderList />},
       { path: 'Dibs', element: <Dibs />},
