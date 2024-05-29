@@ -15,7 +15,9 @@ import com.team3.DeliveryProject.dto.response.order.OrderListResponseDto;
 import com.team3.DeliveryProject.dto.response.order.OrderOwnerListResponseDto;
 import com.team3.DeliveryProject.dto.response.order.OrderStatusDetailResponseDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface OrderService {
 
     public ResponseEntity<Response> addOrder(OrderAddRequestDto requestDto);

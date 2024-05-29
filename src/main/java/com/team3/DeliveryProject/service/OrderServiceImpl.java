@@ -112,8 +112,7 @@ public class OrderServiceImpl implements OrderService {
                 }
             }
         }
-
-        return Response.toResponseEntity(ORDER_ADD_SUCCESS);
+        return Response.toResponseEntity(ORDER_ADD_SUCCESS,orderId);
     }
 
     @Override
