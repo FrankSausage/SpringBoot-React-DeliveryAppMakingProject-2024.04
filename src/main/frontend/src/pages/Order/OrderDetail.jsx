@@ -22,7 +22,6 @@ export default function OrderDetail({ isPortalOpen, email, orderId }) {
       onSuccess: () => {navigate('/')}
     })
   }
-  
   return (
     <Fragment>
       {show ? 

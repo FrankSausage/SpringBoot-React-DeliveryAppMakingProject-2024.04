@@ -28,6 +28,11 @@ export default function UserMain() {
         <Grid container spacing={2} justifyContent="center" alignItems="center">
           {categories.map((category, index) => (
             <Grid item key={index} xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center' }}>
+              <Link to={category.link} state={category.state} style={{ textDecoration: 'none', color: 'black' }}>
+                <Typography variant="h5" sx={{ mt: 1, fontWeight: 'bold', color: 'black' }}>
+                  {category.label}
+                </Typography>
+              </Link>
               <Box sx={{ ...boxStyle, backgroundColor: 'white', position: 'relative', overflow: 'hidden', borderRadius: 2 }}>
                 <Link to={category.link} state={category.state} style={{ textDecoration: 'none', color: 'black', display: 'block', height: '100%' }}>
                   <Box sx={{ width: '100%', height: '100%', position: 'relative' }}>
@@ -35,11 +40,6 @@ export default function UserMain() {
                   </Box>
                 </Link>
               </Box>
-              <Link to={category.link} state={category.state} style={{ textDecoration: 'none', color: 'black' }}>
-                <Typography variant="h6" sx={{ mt: 1, fontWeight: 'bold', color: 'black' }}>
-                  {category.label}
-                </Typography>
-              </Link>
             </Grid>
           ))}
         </Grid>
@@ -68,12 +68,19 @@ const boxStyle = {
   borderColor: 'transparent',
   m: 1,
   boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-  transition: 'transform 0.3s, box-shadow 0.3s',
+  transition: ' box-shadow 0.3s',
   '&:hover': {
-    transform: 'scale(1.05)',
     boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
   },
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center'
+};
+
+const imgStyle = {
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+  transition: 'transform 0.3s',
+  borderRadius: 'inherit',
 };

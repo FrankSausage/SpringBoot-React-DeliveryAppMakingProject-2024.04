@@ -1,50 +1,63 @@
 import React, { Fragment } from 'react';
-import { Link, useNavigate, useOutletContext } from 'react-router-dom';
+import { Navbar, Nav, Button, Container } from 'react-bootstrap';
+import { FaUser, FaSearch, FaShoppingCart } from 'react-icons/fa';
 import { useAuthContext } from '../context/AuthContext';
-import {
-  AppBar,
-  Box,
-  Toolbar,
-  Typography,
-  InputAdornment,
-  OutlinedInput,
-  Stack,
-  Grid,
-} from '@mui/material';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
+import { Box, Typography, InputAdornment, OutlinedInput, Stack, Grid } from '@mui/material';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import DropUserInfo from './DropUserInfo';
+import Cart from '../pages/Cart/View/Cart';
+import { color } from '@cloudinary/url-gen/qualifiers/background';
 
-export default function SearchHeader() {
+export default function AppNavbar() {
   const { user } = useAuthContext();
   const { outletAddress } = useOutletContext();
   const address = localStorage.getItem('address') ? localStorage.getItem('address') : '';
   const role = localStorage.getItem('role');
+	const [anchorEl, setAnchorEl] = React.useState(null);
+
   const navigate = useNavigate();
 
-  const handleNavigate = () => {
-    if (user) {
-      navigate('/Address');
-    } else {
-      alert('로그인이 필요합니다.');
-      navigate('/SignIn');
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleNavigate = (loc) => {
+    switch (loc) {
+      case 'Cart':
+        navigate('/Cart');
+        break;
+      case 'Address':
+        if (user) {
+          navigate('/Address');
+        } else {
+          alert('로그인이 필요합니다.');
+          navigate('/SignIn');
+        }
+        break;
+      default:
+        break;
     }
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: (role === '회원') ? '#469D6E' : (role === '점주') ? '#00cde1' : '#469D6E'}}>
-        <Toolbar>
+    <header className="header_section" style={{ background: 'linear-gradient(to right, black, rgba(0, 0, 0, 0.5))' }}>
+      <Container>
+        <Navbar expand="lg" className="custom_nav-container">
           <Grid container alignItems="center">
-            <Grid item xs={3}>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
-                  <img src={'/img/000.png'} style={{ width: '20%', height: '20%',position: 'relative', top: 5, left: '-30px'  }}/>
-                </Link>
-              </Typography>
+            <Grid item xs={2} sm={2} md={2}>
+              <Link to="/" style={{ textDecoration: 'none', color: 'Black' }}>
+                <img src={'/img/logo01.png'} style={{ width: '40%', height: '40%', maxWidth: '150px', maxHeight: '150px' }} />
+              </Link>
             </Grid>
             {role === '회원' && (
-              <Grid item xs>
-                <Box sx={{ display: 'flex', flexGrow: 1, justifyContent: 'center' }}>
+              <Grid item xs={8} sm={8} md={8}>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                   <OutlinedInput
                     value={address ? address : outletAddress}
                     startAdornment={
@@ -52,27 +65,23 @@ export default function SearchHeader() {
                         <GpsFixedIcon style={{ color: 'gray' }} />
                       </InputAdornment>
                     }
-                    sx={{
-                      mt: 1, mb: 1,
-                      width: '100%',
-                      maxWidth: 550,
-                      backgroundColor: 'white',
-                      cursor: 'pointer',
-                      borderRadius: '30px',
-                      padding: '1px 15px',
-                      fontSize: '1rem',
-                      textAlign: 'center'
-                    }}
-                    inputProps={{ style: { textAlign: 'center' }}}
-                    onClick={handleNavigate}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <Button variant="outline-success" className="nav_search-btn" type="submit" style={{ color: 'black', borderColor: 'black' }} >
+                          <FaSearch aria-hidden="true" style={{ color: 'black' }} />
+                        </Button>
+                      </InputAdornment>
+                    }
+                    sx={{ mt: 1, mb: 1, width: '100%', maxWidth: 550, backgroundColor: 'white', cursor: 'pointer', borderRadius: '30px', padding: '1px 15px', fontSize: '1rem', textAlign: 'center' }} inputProps={{ style: { textAlign: 'center' } }} onClick={() => handleNavigate('Address')}
                   />
                 </Box>
               </Grid>
             )}
-            <Grid item xs={user && role !== '점주' ? 3 : 9}>
-              <Stack direction="row" spacing={1} justifyContent="right" alignItems="center">
+            <Grid item xs={2} sm={2} md={2}>
+              <Stack direction="row" spacing={1} justifyContent="flex-end" alignItems="center" sx={{ width: '100%' }}>
                 {user ? (
                   <>
+                   <Cart allClose={handleClose} />
                     <DropUserInfo role={role} />
                     <Typography variant="body1" sx={{ color: 'white', fontWeight: 'bold' }}>
                       {user.displayName}
@@ -80,16 +89,10 @@ export default function SearchHeader() {
                   </>
                 ) : (
                   <Fragment>
-                    <Link
-                      to="/SignIn"
-                      style={{ textDecoration: 'none', color: 'white', fontWeight: 'bold' }}
-                    >
+                    <Link to="/SignIn" style={{ textDecoration: 'none', color: 'white', fontWeight: 'bold', marginLeft: 'auto' }}>
                       로그인
                     </Link>
-                    <Link
-                      to="/SignUp"
-                      style={{ textDecoration: 'none', color: 'white', fontWeight: 'bold' }}
-                    >
+                    <Link to="/SignUp" style={{ textDecoration: 'none', color: 'white', fontWeight: 'bold', marginLeft: '1rem' }}>
                       회원가입
                     </Link>
                   </Fragment>
@@ -97,8 +100,8 @@ export default function SearchHeader() {
               </Stack>
             </Grid>
           </Grid>
-        </Toolbar>
-      </AppBar>
-    </Box>
+        </Navbar>
+      </Container>
+    </header>
   );
 }

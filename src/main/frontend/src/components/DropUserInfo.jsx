@@ -8,8 +8,9 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Cart from '../pages/Cart/View/Cart';
+import { FaUser } from 'react-icons/fa';
 
-export default function DropUserInfo({ role }) {
+export default function DropUserInfo({ role}) {
 	const navigate = useNavigate();
   const { setOutletAddress } = useOutletContext();
 	const [anchorEl, setAnchorEl] = React.useState(null);
@@ -56,7 +57,7 @@ export default function DropUserInfo({ role }) {
 
   return (
   <Box>
-    <MenuIcon aria-describedby={id} variant="contained" onClick={handleClick} sx={{mx: 2}}/>
+    <FaUser style={{ color: 'white' }} aria-describedby={id} variant="contained" onClick={handleClick} sx={{mx: 2}}/>
       <Popover
         id={id}
         open={open}

@@ -51,7 +51,7 @@ export default function StoreUpdate() {
   const weekDays = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
   // const holidays = ["공휴일", "공휴일 다음날", "공휴일 전날"];
   const navigate = useNavigate();
-
+  console.log(store)
   useEffect(() => {
     const loadDaumPostcodeScript = () => {
       const script = document.createElement('script');
@@ -100,7 +100,7 @@ export default function StoreUpdate() {
   };
 
   useEffect(() => {
-    if (store && store.addressCodes && store.closedDays) {
+    if (store && store.addressCodes) {
       const { roadAddress, extraAddress, detailAddress } = splitAddressFromCurrentUserAddress(store.address)
       setRoadAddress(roadAddress); setExtraAddress(extraAddress); setExtraAddress(extractExtraAddress(store.address)); setCategory(store.category);
       setSelectedDays(store.closedDays ? store.closedDays : []); setClosedDays(store.closedDays ? store.closedDays : []); setContent(store.content); setDeliveryTip(store.deliveryTip); setMaxDeliveryTime(store.maxDeliveryTime);
@@ -248,12 +248,12 @@ export default function StoreUpdate() {
         });
     }
   };
-  console.log(storePictureName)
+  console.log(store)
   return (
     <ThemeProvider theme={defaultTheme}>
       {isLoading && <Typography>...Loading</Typography>}
       {error && <Typography>에러 발생!</Typography>}
-      {store && store.closedDays && store.addressCodes &&
+      {store && store.addressCodes &&
         <>
           <SearchHeader />
           <div style={{ backgroundImage: 'url(/img/kitchenO.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
@@ -269,7 +269,7 @@ export default function StoreUpdate() {
                       <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>
                     </Typography>
                     <Typography component="h1" variant="h5">
-                      온라인 입점 신청서
+                      가게 정보 수정
                     </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                       <Grid container spacing={2}>

@@ -22,6 +22,9 @@ const theme = createTheme({
     tertiary: {
       main: '#f09032'
     },
+    quaternary: {
+      main: '#ffbe33'
+    },
 
     background: {
       default: '#f5f5f5',
@@ -147,11 +150,19 @@ export default function Update() {
       {user && user.data &&
         <>
       <SearchHeader />
-        <div style={{
-        backgroundImage: backgroundImage,backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
-          <Container component="main" maxWidth="xs">
+      <Box sx={{ height: 'auto', minHeight: '100vh', backgroundImage: 'url(/img/kitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '28px 0',}}>
+          <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
+          {/* <Container component="main" maxWidth="xs"> */}
             <CssBaseline />
             <Box
+            sx={{
+              marginTop: 0, display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              padding: '20px',
+              borderRadius: '10px'
+            }}>
+            {/* <Box
               sx={{
                 marginTop: 8, display: 'flex',
                 flexDirection: 'column',
@@ -160,9 +171,8 @@ export default function Update() {
                 boxShadow: 1,
                 p: 4,
                 borderRadius: 2,
-              }}
-            >
-              <Avatar sx={{ m: 1, bgcolor: (role === '회원') ? 'tertiary.main' : (role === '점주') ? 'primary.main' : 'default' }}>
+              }}> */}
+              <Avatar sx={{ m: 1, bgcolor: (role === '회원') ? 'quaternary.main' : (role === '점주') ? 'primary.main' : 'default' }}>
                 <RestorePageIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
@@ -205,7 +215,7 @@ export default function Update() {
                         onClick={handleFindPostcode}
                         fullWidth
                         variant="contained"
-                        sx={{ mt: 1, mb: 2, ml: 2, backgroundColor: '#66BB6A', color: '#FFFFFF', '&:hover': {backgroundColor: '#41df78'}}}>
+                        sx={{ mt: 1, mb: 2, ml: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'}}}>
                         주소 찾기
                       </Button>
                       <Grid item xs={12}>
@@ -233,7 +243,7 @@ export default function Update() {
                     </Fragment>
                   }
                   <Grid item xs={12}>
-                    <Button type="submit" fullWidth variant="contained" sx={role === '회원' ? { mt: 3, mb: 2, backgroundColor: '#66BB6A', color: '#FFFFFF', '&:hover': { backgroundColor: '#41df78' }} : {mt: 3, mb: 2 }}>
+                    <Button type="submit" fullWidth variant="contained" sx={role === '회원' ? { mt: 3, mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33' }} : {mt: 3, mb: 2 }}>
                       정보 수정
                     </Button>
                     <Button fullWidth variant="contained" color='error' sx={{ mt: 2 }} onClick={handleOpen}>
@@ -245,7 +255,8 @@ export default function Update() {
             </Box>
             <Footer sx={{ mt: 3 }} />
           </Container>
-          </div>
+          </Box>
+          {/* </div> */}
           <Modal
             open={open}
             onClose={handleClose}
