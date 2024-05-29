@@ -14,7 +14,8 @@ export default function UserMain() {
               sx={{
                 width: '100%',
                 height: 130,
-                backgroundImage: `url(https://source.unsplash.com/random?wallpapers)`,
+                // backgroundImage: `url(https://source.unsplash.com/random?wallpapers)`,
+                backgroundImage: 'url(/img/sl0.jpg)',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -26,18 +27,18 @@ export default function UserMain() {
       <Grid container spacing={2} justifyContent="center" alignItems="center">
         {categories.map((category, index) => (
           <Grid item key={index} xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center', flexDirection:'column', alignItems:'center' }}>
-            <Box sx={{ ...boxStyle, position: 'relative', overflow: 'hidden', borderRadius: 2 }}>
+            <Link to={category.link} state={category.state} style={{textDecoration:'none', color:'black', width: '85%', textAlign:'center'}}>
+              <Typography variant="h6" sx={{ mt: -1, fontWeight:'bold', color:'#ffffff', textAling:'center', bgcolor:'#222831', p:1, borderRadius:1 }}>
+                {category.label}
+              </Typography>
+            </Link>
+            <Box sx={{ ...boxStyle, position: 'relative', overflow: 'hidden', borderRadius: 2, marginBottom: 5 }}>
               <Link to={category.link} state={category.state} style={{ textDecoration: 'none', color: 'black', display: 'block', height: '100%' }}>
                 <Box sx={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden', '$hover img': {transform: 'scale(1.05)'}}}>
                   <img src={category.img} style={imgStyle} alt={category.label} />
                 </Box>
               </Link>
             </Box>
-            <Link to={category.link} state={category.state} style={{textDecoration:'none', color:'black', width: '100%', textAlign:'center'}}>
-              <Typography variant="h6" sx={{ mt: -1, fontWeight:'bold', color:'#ffffff', textAling:'center', bgcolor:'#222831', p:1, borderRadius:1 }}>
-                {category.label}
-              </Typography>
-            </Link>
           </Grid>
         ))}
       </Grid>
@@ -58,7 +59,7 @@ const categories = [
 ];
 
 const boxStyle = {
-  width: '100%',
+  width: '85%',
   height: 200,
   border: 1,
   borderColor: 'transparent',
@@ -67,6 +68,7 @@ const boxStyle = {
   transition: ' box-shadow 0.3s',
   '&:hover': {
     boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
+    img: 'scale(0.8)'
   },
   display: 'flex',
   justifyContent: 'center',
