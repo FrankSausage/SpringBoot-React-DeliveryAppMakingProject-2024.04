@@ -9,7 +9,7 @@ export function useOrder (email, orderId) {
     queryFn: () => { return axios.get(`/dp/order/list`, {params: {email: email}}) },
     refetchInterval: 6000,
     refetchIntervalInBackground: true,
-    enabled: !!email && !orderId,
+    enabled: !!email
   })
 
   const getOrderDetailByOrderId = useQuery({
@@ -22,16 +22,8 @@ export function useOrder (email, orderId) {
     mutationFn: orderData => {
       axios.post(`/dp/order/register`, orderData)
     },
-    onSuccess: () => {alert('주문내역이 성공적으로 전송 되었습니다.')},
+    onSuccess: res => {console.log('전송성공', res); alert('주문내역이 성공적으로 전송 되었습니다.');},
     onError: () => {alert('주문내역이 전송에 실패 하였습니다.')}
-  })
-
-  const postOrderToss = useMutation({
-    mutationFn: orderData => {
-      axios.post(`/dp/payment/confirm`, orderData)
-    },
-    onSuccess: () => {alert('결제에 성공하였습니다.')},
-    onError: () => {alert('결제에 실패하였습니다.')}
   })
 
   const deleteOrderByOrderId = useMutation ({
@@ -45,5 +37,18 @@ export function useOrder (email, orderId) {
     onError: () => {alert('주문내역 삭제 요청에 실패 하였습니다.')},
   })
 
-  return { postOrderRegist, getOrderListByEmail, getOrderDetailByOrderId, deleteOrderByOrderId, postOrderToss }
+  return { postOrderRegist, getOrderListByEmail, getOrderDetailByOrderId, deleteOrderByOrderId }
+}
+
+export function useTossOrder () {
+  
+  const postOrderToss = useMutation({
+    mutationFn: orderData => {
+      axios.post(`/dp/payment/confirm`, orderData)
+    },
+    onSuccess: () => {alert('결제에 성공하였습니다.')},
+    onError: () => {alert('결제에 실패하였습니다.')}
+  })
+
+  return { postOrderToss}
 }

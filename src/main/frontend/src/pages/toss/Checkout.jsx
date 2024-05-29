@@ -3,13 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { loadPaymentWidget } from "@tosspayments/payment-widget-sdk";
 import { Button, Card, CardContent, Grid } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
-import { useOrder } from "../../pages/Order/Hook/useOrder"; 
+import { useOrder, useTossOrder } from "../../pages/Order/Hook/useOrder"; 
 import axios from "axios";
 
 const widgetClientKey = process.env.REACT_APP_WIDGET_CLIENT_KEY;
 const customerKey = process.env.REACT_APP_CUSTOMER_KEY;
 
-export default function CheckoutPage(email, orderId) {
+export default function CheckoutPage(orderId) {
+  const email = localStorage.getItem('email')
   const queryClient = useQueryClient();
   const [paymentWidget, setPaymentWidget] = useState(null);
   const paymentMethodsWidgetRef = useRef(null);
@@ -19,8 +20,8 @@ export default function CheckoutPage(email, orderId) {
   const navigate = useNavigate();
 
   // orderData의 구조가 맞는지 확인하여 수정이 필요할 수 있습니다.
-  const { postOrderToss } = useOrder(orderData?.email, orderData?.orderId);
-  const { deleteOrderByOrderId  } = useOrder(email , orderId);
+  const { postOrderToss } = useTossOrder();
+  const { deleteOrderByOrderId  } = useOrder(orderId);
 
   useEffect(() => {
     const fetchPaymentWidget = async () => {
@@ -31,9 +32,10 @@ export default function CheckoutPage(email, orderId) {
         console.error("Error fetching payment widget:", error);
       }
     };
-
+  
     fetchPaymentWidget();
   }, []);
+  
 
   useEffect(() => {
     if (paymentWidget == null || !orderData) {
@@ -66,25 +68,27 @@ export default function CheckoutPage(email, orderId) {
 
     paymentMethodsWidget.updateAmount(price);
   }, [price]);
+  
   console.log(orderData)
+
   const handlePaymentRequest = async () => {
     try {
       await postOrderToss.mutateAsync(orderData);
-
+  
       await paymentWidget?.requestPayment({
         orderId: orderData.orderId,
         orderName: `${orderData.orderItems.length > 1 ? '외 ' + (orderData.orderItems.length - 1) + ', ' : ''}${orderData.orderItems[0].name}`,
         customerName: orderData.name || "", 
-        customerEmail: orderData.email || "", 
+        customerEmail: email || "", 
         customerMobilePhone: orderData.tel ? orderData.tel.replace(/-/g, '') : "", 
         successUrl: `${window.location.origin}/success`,
         failUrl: `${window.location.origin}/fail`,
       });
     } catch (error) {
       console.error("Error requesting payment:", error);
-      // 에러 처리
     }
   };
+
   const handleDelete = () => {
     deleteOrderByOrderId.mutate(orderId, {
       onSuccess: () => {navigate('/')}

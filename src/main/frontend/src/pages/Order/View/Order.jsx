@@ -70,12 +70,13 @@ export default function Order() {
 		  address: address,
 		  menus: cartItems
 		}, {
-		  onSuccess: () => {
+		  onSuccess: res => { 
+			console.log('성공',res);
 			// 주문이 성공적으로 등록되면 선결제 페이지로 이동한다
 			navigate('/checkout', { state: { orderData: { userEmail: email, point: point, totalPrice: totalPrice, menus: cartItems } } });
 			setIsModalOpen(false);
 		  },
-		  onError: e => { console.log(e); },
+		  onError: e => { console.log('실패', e); },
 		});
 	  };
 

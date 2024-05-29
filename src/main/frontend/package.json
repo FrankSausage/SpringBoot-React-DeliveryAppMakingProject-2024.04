@@ -37,6 +37,7 @@
     "react-scripts": "5.0.1",
     "styled-components": "^6.1.8",
     "swipeable": "^1.0.5",
+    "toss-payments-server-api": "^8.0.0",
     "web-vitals": "^2.1.4"
   },
   "proxy": "http://localhost:8090",
