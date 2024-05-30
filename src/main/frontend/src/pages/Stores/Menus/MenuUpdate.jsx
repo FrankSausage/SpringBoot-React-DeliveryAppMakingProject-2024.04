@@ -12,6 +12,7 @@ import SearchHeader from '../../../components/SearchHeader';
 import { uploadImageToCloudinary } from '../../../utils/uploader';
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
 import { useMenu } from '../Hook/useMenu';
+import BackDrop from '../../../components/BackDrop';
 
 const defaultTheme = createTheme();
 
@@ -131,7 +132,7 @@ export default function MenuUpdate() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      {isLoading && <Typography>Loading...</Typography>}
+      {isLoading && <BackDrop isLoading={isLoading} />}
       {error && <Typography>에러 발생!</Typography>}
       {!isLoading && menu.menus &&
         <Box>

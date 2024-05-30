@@ -83,7 +83,8 @@ let paperStyle = {
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
     overflow: 'hidden',
     mt: '15px',
-    pl: '5px'
+    pl: '10px',
+    py: '10px',
 }
 
 let linkStyle = {

@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { getCurrentUser } from '../../utils/firebase';
 import MenuOptionRegister from './Menus/MenuOptionRegister';
 import { useStore } from './Hook/useStore';
+import BackDrop from "../../components/BackDrop";
 
 const defaultTheme = createTheme();
 
@@ -140,7 +141,7 @@ export default function StoreMenuList({ storeName }) {
         <Tab label="세트 메뉴" />
         <Tab label="사이드 메뉴" />
       </Tabs>
-      {isLoading && <Typography>Loading...</Typography>}
+      {isLoading && <BackDrop isLoading={isLoading} />}
       {error && <Typography>에러 발생!</Typography>}
       {!isLoading && menuData && (
         <Grid container spacing={2}>

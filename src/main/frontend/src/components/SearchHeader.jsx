@@ -88,7 +88,6 @@ export default function AppNavbar() {
                     </Typography>
                 </>
               ) : (
-                <Grid item xs={10} sm={10} md={10}>
                 <Fragment>
                     <Link to="/SignIn" style={{ textDecoration: 'none', color: 'white', fontWeight: 'bold', marginLeft: 'auto' }}>
                       로그인
@@ -97,7 +96,6 @@ export default function AppNavbar() {
                       회원가입
                     </Link>
                 </Fragment>
-                  </Grid>
               )}
             </Stack>
               </Grid>
