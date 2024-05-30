@@ -70,6 +70,7 @@ export default function MenuRegister() {
       try {
         const url = await uploadImageToCloudinary(file); // 클라우드니어리에 이미지 업로드
         setMenuPictureUrl(url); // 업로드된 이미지 URL 저장
+        setIsFileUploading(false);
       } catch (error) {
         console.error('Failed to upload image to Cloudinary:', error);
       }
@@ -137,24 +138,31 @@ export default function MenuRegister() {
                       <Typography variant="h6" gutterBottom>
                         메뉴 사진 업로드
                       </Typography>
+                      {menuPictureUrl && <img src={menuPictureUrl} width={100} height={100} style={{margin: 30}}/>}
                       <input accept=".png, .jpeg, .jpg" id="upload-photo" type="file" style={{ display: 'none' }} onChange={handleFileUpload} multiple />
                       <TextField autoComplete="given-name" name="menuPictureName" value={menuPictureName} fullWidth id="menuPictureName" label="메뉴 사진" onClick={() => document.getElementById('upload-photo').click()} InputProps={{ readOnly: true }} sx={{ mb: 2 }} />
-                      <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
-                        사진 올리기
-                      </Button>
+                      {isFileUploading ?
+                        <Button type="button" disabled variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
+                          사진 올리기
+                        </Button>
+                        :
+                        <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
+                          사진 올리기
+                        </Button>
+                      }
                       {menuPictureName && (
                         <Typography variant="body1" gutterBottom>
-                          업로드된 파일: {menuPictureName}
+                          {/* 업로드된 파일: {menuPictureName} */}
                         </Typography>
                       )}
                     </Grid>
                   </Grid>
                   {isFileUploading ?
-                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
+                    <Button type="submit" fullWidth disabled variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
                       음식 등록 하기
                     </Button>
                     :
-                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
+                    <Button type="submit" fullWidth  variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
                       음식 등록 하기
                     </Button>
                   }

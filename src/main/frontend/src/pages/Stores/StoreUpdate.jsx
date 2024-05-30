@@ -180,7 +180,7 @@ export default function StoreUpdate() {
       data.append('type', type);
       data.append('operationHours', `${openHours}~${closeHours}`);
       data.append('closedDays', selectedDays.join(','));
-      data.append('storePictureName', storePictureUrl ? storePictureUrl : storePictureName ) 
+      data.append('storePictureName', storePictureUrl ? storePictureUrl : storePictureName)
       console.log(storePictureUrl)
       return await data;
     }
@@ -390,11 +390,19 @@ export default function StoreUpdate() {
                               <Typography variant="h6" gutterBottom>
                                 가게 사진 업로드
                               </Typography>
+                              {storePictureUrl && <img src={storePictureUrl} width={100} height={100} style={{ margin: 30 }} />}
                               <input accept=".png, .jpeg, .jpg" id="upload-photo" type="file" style={{ display: 'none' }} onChange={handleFileUpload} multiple />
                               {/* <TextField autoComplete="given-name" name="storePictureName" value={storePictureName.split(',')[1]} fullWidth id="storePictureName" label="가게 사진" onClick={() => document.getElementById('upload-photo').click()} InputProps={{ readOnly: true }} sx={{ mb: 2 }} /> */}
-                              <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
-                                사진 올리기
-                              </Button>
+
+                              {isFileUploading ?
+                                <Button type="button" disabled variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
+                                  사진 올리기
+                                </Button>
+                                :
+                                <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
+                                  사진 올리기
+                                </Button>
+                              }
                               {storePictureName && (
                                 <Typography variant="body1" gutterBottom>
                                   {/* 업로드된 파일: {storePictureName.split(',')[0]} */}

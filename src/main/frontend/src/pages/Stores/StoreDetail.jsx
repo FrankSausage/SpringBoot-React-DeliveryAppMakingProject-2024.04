@@ -13,6 +13,7 @@ import { useDibs } from '../Dibs/Hook/useDibs';
 import { useStoreDeatilByEmail } from '../../utils/storeInfo';
 import { useQueryClient } from '@tanstack/react-query';
 import BackDrop from '../../components/BackDrop';
+
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
