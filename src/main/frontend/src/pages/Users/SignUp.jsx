@@ -106,15 +106,7 @@ export default function SignUp() {
       <Box style={{ backgroundImage: 'url(/img/kitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', flexDirection: 'column', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
         <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
           <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 0, display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              // background: 'linear-gradient(to bottom, #ff6b6b, #ffe66d)',
-              padding: '20px',
-              borderRadius: '10px'
-            }}>
+          <Box sx={{ marginTop: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', borderRadius: '10px'  }}>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               <Link to="/" style={{ textDecoration: 'none', color: 'black', fontFamily: 'Arial, sans-serif', display: 'flex', justifyContent: 'center' }}>
                 <img src={'/img/logo01.png'} style={{ width: '50%', height: '50%', position: 'relative', top: 5, marginBottom: '20px' }} />
@@ -129,101 +121,30 @@ export default function SignUp() {
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <TextField
-                    autoComplete="given-name"
-                    name="name"
-                    required
-                    fullWidth
-                    id="name"
-                    label="이름"
-                    placeholder='ex)홍길동'
-                    autoFocus
-                    InputProps={{ style: { fontFamily: 'Arial, sans-serif' } }} />
+                  <TextField autoComplete="given-name" name="name" required fullWidth id="name" label="이름" placeholder='ex)홍길동' autoFocus InputProps={{ style: { fontFamily: 'Arial, sans-serif' } }} />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="email"
-                    label="이메일"
-                    placeholder='ex)human@example.com'
-                    name="email"
-                    autoComplete="email"
-                  />
+                  <TextField required fullWidth id="email" label="이메일" placeholder='ex)human@example.com' name="email" autoComplete="email" />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="password"
-                    label="비밀번호"
-                    type="password"
-                    id="password"
-                    placeholder='6자리 이상 입력하세요.(영문,숫자만 입력 가능합니다)'
-                    onChange={handlePasswordChange}
-                    autoComplete="new-password"
-                    InputProps={{ style: { fontFamily: 'Arial, sans-serif' } }}
-                  />
+                  <TextField required fullWidth name="password" label="비밀번호" type="password" id="password" placeholder='6자리 이상 입력하세요.(영문,숫자만 입력 가능합니다)' onChange={handlePasswordChange} autoComplete="new-password" InputProps={{ style: { fontFamily: 'Arial, sans-serif' } }} />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    label="비밀번호 확인"
-                    name="secondPassword"
-                    id="secondPassword"
-                    type="password"
-                    placeholder='위와 일치하게 작성하세요'
-                    onChange={handlePasswordChange}
-                    error={passwordCheck.password !== passwordCheck.secondPassword}
-                    helperText={passwordCheck.password !== passwordCheck.secondPassword && "비밀번호가 일치하지 않습니다"}
-                    autoComplete="new-password"
-                    InputProps={{ style: { fontFamily: 'Arial, sans-serif' } }}
-                  />
+                  <TextField required fullWidth label="비밀번호 확인" name="secondPassword" id="secondPassword" type="password" placeholder='위와 일치하게 작성하세요' onChange={handlePasswordChange} error={passwordCheck.password !== passwordCheck.secondPassword} helperText={passwordCheck.password !== passwordCheck.secondPassword && "비밀번호가 일치하지 않습니다"} autoComplete="new-password" InputProps={{ style: { fontFamily: 'Arial, sans-serif' } }} />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="phone"
-                    label="휴대전화"
-                    name="phone"
-                    placeholder='ex) 010-1234-5678'
-                    autoComplete="phone"
-                    value={phoneNumber}
-                    onChange={handlePhoneNumberChange}
-                    inputProps={{
-                      maxLength: 13,
-                      inputMode: 'numeric',
-                    }}
-                  />
+                  <TextField required fullWidth id="phone" label="휴대전화" name="phone" placeholder='ex) 010-1234-5678' autoComplete="phone" value={phoneNumber} onChange={handlePhoneNumberChange} inputProps={{ maxLength: 13, inputMode: 'numeric'}} />
                 </Grid>
                 {role === '회원' &&
                   <Fragment>
                     <Grid item xs={12}>
                       <TextField required fullWidth id="roadAddress" label="도로명주소" value={roadAddress} InputProps={{ readOnly: true, }} />
                     </Grid>
-                    <Button
-                      type="button"
-                      onClick={handleFindPostcode}
-                      variant="contained"
-                      sx={{
-                        mt: 3, mb: 2, ml: 2, backgroundColor: '#e69c00', color: '#FFFFFF', '&:hover': {
-                          backgroundColor: '#ffbe33', // 호버 시 버튼 배경색
-                        }
-                      }}>
+                    <Button type="button" onClick={handleFindPostcode} variant="contained" sx={{ mt: 3, mb: 2, ml: 2, backgroundColor: '#e69c00', color: '#FFFFFF', '&:hover': { backgroundColor: '#ffbe33' }}}>
                       주소 찾기
                     </Button>
                     <Grid item xs={12}>
-                      <TextField
-                        fullWidth
-                        id="extraAddress"
-                        label="참고항목"
-                        value={extraAddress}
-                        InputProps={{
-                          readOnly: true,
-                        }}
-                      />
+                      <TextField fullWidth id="extraAddress" label="참고항목" value={extraAddress} InputProps={{ readOnly: true, }} />
                     </Grid>
                     <Grid item xs={12}>
                       <TextField required fullWidth id="detailAddress" label="상세주소" name="detailAddress" autoComplete="detailAddress" onChange={e => setDetailAddress(e.target.value)} />
@@ -246,22 +167,10 @@ export default function SignUp() {
                   </Grid>
                 )}
                 <Grid item xs={12}>
-                  <FormControlLabel
-                    control={<CustomCheckbox value="allowExtraEmails" color="primary" />}
-                    label="이메일을 통해 마케팅 프로모션, 업데이트를 받고 싶습니다.(선택)"
-                  />
+                  <FormControlLabel control={<CustomCheckbox value="allowExtraEmails" color="primary" />} label="이메일을 통해 마케팅 프로모션, 업데이트를 받고 싶습니다.(선택)"/>
                 </Grid>
               </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{
-                  mt: 3, mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF', '&:hover': { backgroundColor: '#ffbe33' },
-                  fontFamily: 'Arial',
-                  fontWeight: 'bold',
-                  fontSize: '1.2rem'
-                }}>
+              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF', '&:hover': { backgroundColor: '#ffbe33' }, fontFamily: 'Arial', fontWeight: 'bold', fontSize: '1.2rem' }}>
                 회원 가입
               </Button>
               <Grid container justifyContent="flex-end">
