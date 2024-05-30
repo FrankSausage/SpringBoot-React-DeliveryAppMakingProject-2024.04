@@ -187,14 +187,19 @@ export default function MenuUpdate() {
                     <Typography variant="h6" gutterBottom>
                       메뉴 사진 업로드
                     </Typography>
+                    {menuPictureUrl && <img src={menuPictureUrl} width={100} height={100} style={{margin: 30}}/>}
                     <input accept=".png, .jpeg, .jpg" id="upload-photo" type="file" style={{ display: 'none' }} onChange={handleFileUpload} multiple />
-                    <TextField autoComplete="given-name" name="menuPictureName" value={menuPictureName} fullWidth id="menuPictureName" label="메뉴 사진" onClick={() => document.getElementById('upload-photo').click()} InputProps={{ readOnly: true }} sx={{ mb: 2 }} />
+                    {isFileUploading ? 
+                    <Button type="button" disabled variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
+                      사진 올리기
+                    </Button>
+                    :
                     <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
                       사진 올리기
                     </Button>
+                    }
                     {initialMenuPictureName && (
                       <Typography variant="body1" gutterBottom sx={{maxWidth:400}}>
-                        {/* 업로드된 파일: {initialMenuPictureName.split(',')[]} */}
                       </Typography>
                     )}
                   </Grid>
