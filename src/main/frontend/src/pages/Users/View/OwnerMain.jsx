@@ -113,6 +113,5 @@ export default function OwnerMain() {
         <Footer sx={{ marginTop: 7}}/>
       </Paper>
     </Box>
-  </Box>
   );
 }
