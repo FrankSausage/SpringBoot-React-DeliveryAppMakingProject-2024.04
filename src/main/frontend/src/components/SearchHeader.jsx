@@ -14,7 +14,7 @@ export default function AppNavbar() {
   const { outletAddress } = useOutletContext();
   const address = localStorage.getItem('address') ? localStorage.getItem('address') : '';
   const role = localStorage.getItem('role');
-	const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const navigate = useNavigate();
 
@@ -65,8 +65,7 @@ export default function AppNavbar() {
                         <Button variant="outline-success" className="nav_search-btn" type="submit" style={{ color: 'black', borderColor: 'black' }} >
                           <FaSearch aria-hidden="true" style={{ color: 'black' }} />
                         </Button>
-                      </InputAdornment>
-                    }
+                      </InputAdornment>}
                     sx={{ mt: 1, mb: 1, width: '100%', maxWidth: 550, backgroundColor: 'white', cursor: 'pointer', borderRadius: '30px', padding: '1px 15px', fontSize: '1rem', textAlign: 'center' }} inputProps={{ style: { textAlign: 'center' } }} onClick={() => handleNavigate('Address')}
                   />
                 </Box>
@@ -81,19 +80,19 @@ export default function AppNavbar() {
                     <Typography variant="body1" sx={{ color: 'white', fontWeight: 'bold' }}>
                       {user.displayName}
                     </Typography>
-                  </>
-                ) : (
-                  <Fragment>
+                </>
+              ) : (
+                <Fragment>
                     <Link to="/SignIn" style={{ textDecoration: 'none', color: 'white', fontWeight: 'bold', marginLeft: 'auto' }}>
                       로그인
                     </Link>
                     <Link to="/SignUp" style={{ textDecoration: 'none', color: 'white', fontWeight: 'bold', marginLeft: '1rem' }}>
                       회원가입
                     </Link>
-                  </Fragment>
-                )}
-              </Stack>
-            </Grid>
+                </Fragment>
+              )}
+            </Stack>
+              </Grid>
           </Grid>
         </Navbar>
       </Container>
