@@ -30,11 +30,11 @@ export default function OrderDetail({ isPortalOpen, email, orderId }) {
         {!isLoading && orderDetailData &&
         <Stack>
           <Typography>주소 : {orderDetailData.data.address}</Typography>
-          <Typography>배달 팁 : {orderDetailData.data.deliveryTip.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
+          <Typography>배달료 : {orderDetailData.data.deliveryTip.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
           <Typography>결제 방식 : {orderDetailData.data.paymentMethod}</Typography>
           {orderDetailData.data.menus && orderDetailData.data.menus.map((menuData, menuIdx) => (
             <Card key={menuIdx} sx={{ border: 1 }}> 
-                <Typography>메뉴: {menuData.menuName} {menuData.menuPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원 {menuData.quantity}개</Typography>
+                <Typography>추가 구성: {menuData.menuName} {menuData.menuPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원 {menuData.quantity}개</Typography>
               <CardContent>
                 {menuData.menuOptions && menuData.menuOptions.map((optionData, optionIdx) => (
                   <Stack key={optionIdx}>

@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardMedia, Grid, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Grid, Paper, Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from 'react-router-dom';
 import { useDibs } from "../Hook/useDibs";
@@ -20,8 +20,9 @@ export default function Dibs() {
   return (
     <Box>
       <SearchHeader />
+      <Paper elevation={3} sx={{height: '100vh', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2, overflowY: 'auto' }}>
       <Typography variant="body1" onClick={handleBack} sx={{ cursor: 'pointer', textAlign: 'left', float: 'left' }}>
-        뒤로가기
+        ◀ 뒤로가기
       </Typography>
       {isLoading && <Typography>로딩 중...</Typography>}
       {!isLoading && !dibsData.data && <Typography variant="h4">아직 찜한 가게가 없어요!</Typography>}
@@ -29,12 +30,12 @@ export default function Dibs() {
         <Grid container direction="column" alignItems="center">
           <Grid item xs={12}>
             <Box sx={{ textAlign: 'center', my: 2 }}>
-              <Typography variant="h4">내가 찜한 가게 목록</Typography>
+              <Typography variant="h4">내가 찜한 가게</Typography>
             </Box>
           </Grid>
           <Grid container item xs={12} spacing={5} justifyContent="center">
             {dibsData.data.dibsList.map((data, idx) => (
-              <Grid item key={idx} xs={12} sm={6} md={4} lg={3} xl={3}>
+              <Grid item key={idx} xs={12} sm={6} md={4} lg={4} xl={4}>
                 <Card onClick={() => handleNav(data.storeId)} sx={{ cursor: 'pointer', p: 2, mb: 2 }}>
                   <Grid container spacing={3}>
                     <Grid item>
@@ -54,6 +55,7 @@ export default function Dibs() {
           </Grid>
         </Grid>
       }
+      </Paper>
     </Box>
   );
 }

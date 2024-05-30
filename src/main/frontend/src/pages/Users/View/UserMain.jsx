@@ -8,10 +8,9 @@ export default function UserMain() {
   return (
     <Box sx={{ bgcolor: '#f8f8f8', minHeight: '100vh', m: -1 }}>
       <SearchHeader />
-      <Paper elevation={3} sx={{ height: 'auto', backgroundImage: 'url(/img/kitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Stack sx={{ maxHeight: 200, borderRadius: 0, overflow: 'hidden', mb: 2 }}>
+            <Stack sx={{ maxHeight: 200, borderRadius: 0, overflow: 'hidden' }}>
               <Box
                 sx={{
                   width: '100%',
@@ -25,6 +24,7 @@ export default function UserMain() {
             </Stack>
           </Grid>
         </Grid>
+      <Paper elevation={3} sx={{ height: 'auto', backgroundImage: 'url(/img/kitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
         <Grid container spacing={2} justifyContent="center" alignItems="center">
           {categories.map((category, index) => (
             <Grid item key={index} xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center' }}>
