@@ -60,13 +60,13 @@ const router = createBrowserRouter([
       { path: 'UserMain', element: <UserMain />,},
       { path: 'OwnerMain', element: <OwnerMain />},
       { path: 'Order', element: <Order />},
-      // { path: 'checkout', element: <CheckoutPage/> },
       { path: 'OrderList', element: <OrderList />},
       { path: 'OwnerOrderList', element: <OwnerOrderList />},
       { path: 'Dibs', element: <Dibs />},
       { path: 'CheckOut', element: <TossChackOut />},
       { path: 'success', element: <Success />},
       { path: 'fail', element: <Fail />},
+
     ]
   }
 ]);

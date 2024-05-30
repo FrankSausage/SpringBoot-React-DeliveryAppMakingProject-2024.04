@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Box, Grid, Typography, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import BackDrop from "../../components/BackDrop";
 
 export default function StoreList({ category, searchText, initialSort }) {
     const [sort, setSort] = useState(initialSort || 'default'); // 'sort' 상태의 기본 값
@@ -35,14 +36,14 @@ export default function StoreList({ category, searchText, initialSort }) {
                         value={sort}
                         onChange={(e) => setSort(e.target.value)}
                         label="Sort By">
-												<MenuItem value="default">기본 정렬</MenuItem>
+                        <MenuItem value="default">기본 정렬</MenuItem>
                         <MenuItem value="rating">별점</MenuItem>
                         <MenuItem value="dibs">찜</MenuItem>
                         <MenuItem value="reviews">리뷰 수</MenuItem>
                     </Select>
                 </FormControl>
             </Grid>
-            {isLoading && <Typography variant="h4" sx={{ textAlign: 'center' }}>가게 목록 불러오는 중...</Typography>}
+            {isLoading && <BackDrop isLoading={isLoading} />}
             <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
                 <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
                     {!isLoading && sortedStoreList.length === 0 &&

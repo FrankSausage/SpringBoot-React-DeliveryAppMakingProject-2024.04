@@ -9,6 +9,7 @@ import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import DropUserInfo from './DropUserInfo';
 import Cart from '../pages/Cart/View/Cart';
 import { color } from '@cloudinary/url-gen/qualifiers/background';
+import BackDrop from './BackDrop';
 
 export default function AppNavbar() {
   const { user } = useAuthContext();
@@ -77,7 +78,7 @@ export default function AppNavbar() {
                 </Box>
               </Grid>
             )}
-            <Grid item xs={2} sm={2} md={2}>
+            <Grid item xs={user && role !== '점주' ? 2 : 9.5} sm={user && role !== '점주' ? 2 : 9.5} md={user && role !== '점주' ? 2 : 9.5}>
               <Stack direction="row" spacing={1} justifyContent="flex-end" alignItems="center" sx={{ width: '100%' }}>
                 {user ? (
                   <>
