@@ -5,6 +5,7 @@ import { useOrder } from "./Hook/useOrder";
 import { useNavigate } from "react-router";
 import OrderDetail from "./OrderDetail";
 import ReviewRegister from "../Review/ReviewRegister";
+import BackDrop from "../../components/BackDrop";
 
 export default function OrderList() {
   const email = localStorage.getItem('email')
@@ -24,7 +25,7 @@ export default function OrderList() {
 
   return (
     <Box>
-      {isLoading && <Typography>로딩 중...</Typography>}
+      {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && !orderData && <Typography>아직 주문한 내역이 없어요!</Typography>}
       {!isLoading && orderData && orderData.data.orders &&
         <Fragment>

@@ -10,6 +10,7 @@ import { extractDataFromFormData, formatPhoneNumber } from '../../utils/commonUi
 import { getCurrentUser, logout, updateUser } from '../../utils/firebase';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from './Hook/useUser';
+import BackDrop from '../../components/BackDrop';
 
 const theme = createTheme({
   palette: {
@@ -145,7 +146,7 @@ export default function Update() {
 
   return (
     <ThemeProvider theme={theme}>
-      {isLoading && <Typography>Loading...</Typography>}
+      {isLoading && <BackDrop isLoading={isLoading} />}
       {error && <Typography>에러 발생!</Typography>}
       {user && user.data &&
         <>

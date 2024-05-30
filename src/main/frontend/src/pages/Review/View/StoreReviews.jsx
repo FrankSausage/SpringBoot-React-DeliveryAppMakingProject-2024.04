@@ -3,6 +3,7 @@ import React, { Fragment, useState } from "react";
 import {  useStoreReviewList } from "../Hook/useReview";
 import { useLocation, useNavigate } from "react-router";
 import OwnerReviewRegister from "../OwnerReviewRegister";
+import BackDrop from "../../../components/BackDrop";
 
 export default function StoreReviews() { 
   const navigate = useNavigate()
@@ -25,7 +26,7 @@ export default function StoreReviews() {
 
   return(
     <Box>
-      {isLoading && <Typography>로딩 중...</Typography>}
+      {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && !storeReviewData && 
       <Fragment>
       <Typography>아직 유저 리뷰가 없어요!</Typography>

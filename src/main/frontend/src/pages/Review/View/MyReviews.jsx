@@ -2,6 +2,7 @@ import { Box, Button, Card, CardContent, Grid, Rating, TextField, Typography } f
 import React, { Fragment } from "react";
 import { useReview } from "../Hook/useReview";
 import { useNavigate } from "react-router";
+import BackDrop from "../../../components/BackDrop";
 
 export default function MyReviews() { 
   const email = localStorage.getItem('email')
@@ -15,7 +16,7 @@ export default function MyReviews() {
   }
   return(
     <Box>
-      {isLoading && <Typography>로딩 중...</Typography>}
+      {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && reviewData && reviewData.data.reviewList.length===0 &&
       <Fragment>
       <Typography>아직 리뷰를 남긴 가게가 없어요!</Typography>

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import { Navbar, Nav, Button, Container } from 'react-bootstrap';
-import { FaUser, FaSearch, FaShoppingCart } from 'react-icons/fa';
+import { Navbar, Button, Container } from 'react-bootstrap';
+import { FaSearch } from 'react-icons/fa';
 import { useAuthContext } from '../context/AuthContext';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { Box, Typography, InputAdornment, OutlinedInput, Stack, Grid } from '@mui/material';
@@ -8,8 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import DropUserInfo from './DropUserInfo';
 import Cart from '../pages/Cart/View/Cart';
-import { color } from '@cloudinary/url-gen/qualifiers/background';
-import BackDrop from './BackDrop';
 
 export default function AppNavbar() {
   const { user } = useAuthContext();
@@ -19,10 +17,6 @@ export default function AppNavbar() {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
   const navigate = useNavigate();
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleClose = () => {
     setAnchorEl(null);
