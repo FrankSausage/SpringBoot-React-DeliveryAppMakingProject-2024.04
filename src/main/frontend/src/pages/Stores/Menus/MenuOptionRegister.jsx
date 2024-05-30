@@ -29,7 +29,7 @@ export default function MenuOptionRegister({ email, menuId }) {
 
   return (
     <div>
-      <Button onClick={handleOpen}>+옵션 추가</Button>
+      <Button onClick={handleOpen} sx={{ width:'100px', height: '35px', backgroundColor: '#00cde1', color: '#FFFFFF'}}>옵션 추가</Button>
       <Modal
         open={open}
         onClose={handleClose}

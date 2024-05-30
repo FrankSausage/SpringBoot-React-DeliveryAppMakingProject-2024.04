@@ -19,21 +19,21 @@ import StoreUpdate from './pages/Stores/StoreUpdate';
 import StoreDetail from './pages/Stores/StoreDetail';
 import StoreSearch from './pages/Stores/StoreSearch';
 // Reviews
-import ReviewRegister from './pages/Review/ReviewRegister';
-import ReviewUpdate from './pages/Review/ReviewUpdate';
-import ReviewList from './pages/Review/ReviewList';
-import ReviewDetail from './pages/Review/ReviewDetail';
-import ReviewReply from './pages/Review/ReviewReply';
-import ReviewRating from './pages/Review/ReviewRating';
+import MyReviews from './pages/Review/View/MyReviews';
+import StoreReviews from './pages/Review/View/StoreReviews';
 // Menus
 import MenuRegister from './pages/Stores/Menus/MenuRegister';
 import MenuUpdate from './pages/Stores/Menus/MenuUpdate';
 import MenuDetail from './pages/Stores/Menus/MenuDetail';
 // Order
 import Order from './pages/Order/View/Order';
-// Cart
-import Cart from './pages/Cart/View/Cart';
-
+import OrderList from './pages/Order/OrderList';
+import OwnerOrderList from './pages/Order/OwnerOrderList';
+// Dibs
+import Dibs from './pages/Dibs/View/Dibs';
+import TossChackOut from './pages/Order/Toss/TossCheckOut';
+import { Success } from './pages/Order/Toss/SuccessPage';
+import { Fail } from './pages/Order/Toss/FailPage';
 
 const router = createBrowserRouter([
   {
@@ -52,19 +52,21 @@ const router = createBrowserRouter([
       { path: 'StoreUpdate', element: <StoreUpdate />},
       { path: 'StoreUpdate/:storeId', element: <StoreUpdate />},
       { path: 'StoreDetail/:storeId', element: <StoreDetail />},
+      { path: 'MyReviews', element: <MyReviews />},
+      { path: 'StoreReviews', element: <StoreReviews />},
       { path: 'MenuRegister/:storeId', element: <MenuRegister />},
       { path: 'MenuDetail', element: <MenuDetail />},
       { path: 'MenuUpdate', element: <MenuUpdate />},
       { path: 'UserMain', element: <UserMain />,},
       { path: 'OwnerMain', element: <OwnerMain />},
-      { path: 'ReviewRegister', element: <ReviewRegister />},
-      { path: 'ReviewUpdate', element: <ReviewUpdate />},
-      { path: 'ReviewList', element: <ReviewList />},
-      { path: 'ReviewDetail', element: <ReviewDetail />},
-      { path: 'ReviewReply', element: <ReviewReply />},
-      { path: 'ReviewRating', element: <ReviewRating />},
-      { path: 'Cart', element: <Cart />},
       { path: 'Order', element: <Order />},
+      { path: 'OrderList', element: <OrderList />},
+      { path: 'OwnerOrderList', element: <OwnerOrderList />},
+      { path: 'Dibs', element: <Dibs />},
+      { path: 'CheckOut', element: <TossChackOut />},
+      { path: 'success', element: <Success />},
+      { path: 'fail', element: <Fail />},
+
     ]
   }
 ]);
@@ -76,7 +78,4 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

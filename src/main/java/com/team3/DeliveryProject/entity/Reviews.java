@@ -29,10 +29,8 @@ public class Reviews {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
-    private Long storeId;
     private Long userId;
-    private Long menuId;
-
+    private Long orderId;
     @Column(nullable = false)
     private int rating;
 
@@ -46,10 +44,13 @@ public class Reviews {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime modifiedDate;
-
-    @Column(nullable = false)
-    private String status;
-
+    public Reviews(Long userId, Long orderId, int rating, String content, String reviewPictureName,
+        LocalDateTime createdDate) {
+        this.userId = userId;
+        this.orderId = orderId;
+        this.rating = rating;
+        this.content = content;
+        this.reviewPictureName = reviewPictureName;
+        this.createdDate = createdDate;
+    }
 }

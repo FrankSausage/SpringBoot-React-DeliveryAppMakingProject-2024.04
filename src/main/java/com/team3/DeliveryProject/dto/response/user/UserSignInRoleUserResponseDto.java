@@ -17,4 +17,5 @@ public class UserSignInRoleUserResponseDto {
 
     private String currentAddress;
     private String role;
+    private int point;
 }

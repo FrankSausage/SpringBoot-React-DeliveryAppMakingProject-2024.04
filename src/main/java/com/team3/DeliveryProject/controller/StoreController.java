@@ -12,7 +12,6 @@ import com.team3.DeliveryProject.dto.response.store.StoreUpdateResponseDto;
 import com.team3.DeliveryProject.entity.AddressCode;
 import com.team3.DeliveryProject.entity.Stores;
 import com.team3.DeliveryProject.repository.AddressCodeRepository;
-import com.team3.DeliveryProject.repository.MenuOptionRepository;
 import com.team3.DeliveryProject.repository.UsersRepository;
 import com.team3.DeliveryProject.service.StoreService;
 import java.util.ArrayList;
@@ -97,13 +96,16 @@ public class StoreController {
 
     @GetMapping("/list/search")
     public ResponseEntity<?> getStoreList(@ModelAttribute StoreListRequestDto requestDto) {
-        System.out.println(requestDto);
         return ResponseEntity.ok().body(storeService.getStoreList(requestDto));
     }
 
     @GetMapping("/detail")
     public ResponseEntity<?> getStoreDetail(@ModelAttribute StoreDetailRequestDto requestDto) {
-        return ResponseEntity.ok().body(storeService.getStoreDetail(requestDto));
+        if(usersRepository.findUsersByEmail(requestDto.getEmail()).get().getRole().equals("점주")){
+            return ResponseEntity.ok().body(storeService.getStoreDetailOwner(requestDto));
+        }else {
+            return ResponseEntity.ok().body(storeService.getStoreDetailUser(requestDto));
+        }
     }
 
     @GetMapping("/list")
@@ -111,20 +113,4 @@ public class StoreController {
         @ModelAttribute StoreOwnerListRequestDto requestDto) {
         return ResponseEntity.ok().body(storeService.getStoreListForOwner(requestDto));
     }
-
-//    @GetMapping("/list/search")
-//    public ResponseEntity<?> getStoreList(@ModelAttribute StoreListRequestDto requestDto) {
-//        return ResponseEntity.ok().body(storeService.getStoreList(requestDto));
-//    }
-//
-//    @GetMapping("/detail")
-//    public ResponseEntity<?> getStoreDetail(@ModelAttribute StoreDetailRequestDto requestDto) {
-//        return ResponseEntity.ok().body(storeService.getStoreDetail(requestDto));
-//    }
-//
-//    @GetMapping("/list")
-//    public ResponseEntity<?> getStoreListForOwner(
-//        @ModelAttribute StoreOwnerListRequestDto requestDto) {
-//        return ResponseEntity.ok().body(storeService.getStoreListForOwner(requestDto));
-//    }
 }

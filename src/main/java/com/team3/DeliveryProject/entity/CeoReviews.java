@@ -27,6 +27,7 @@ public class CeoReviews {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long CeoReviewId;
     private Long reviewId;
 
     @Column(nullable = true)
@@ -35,10 +36,9 @@ public class CeoReviews {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime modifiedDate;
-
-    @Column(nullable = false)
-    private String status;
-
+    public CeoReviews(Long reviewId, String content, LocalDateTime createdDate) {
+        this.reviewId = reviewId;
+        this.content = content;
+        this.createdDate = createdDate;
+    }
 }

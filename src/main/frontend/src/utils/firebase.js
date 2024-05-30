@@ -1,8 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, GithubAuthProvider,
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider,
   signInWithPopup, signOut, updateProfile, signInWithEmailAndPassword,
-  onAuthStateChanged, 
-  updatePassword} from "firebase/auth";
+  onAuthStateChanged, updatePassword, OAuthProvider} from "firebase/auth";
 import { extractDataFromFormData } from '../utils/commonUitil';
 
 const firebaseConfig = {
@@ -47,11 +46,44 @@ export async function login({ email, password }) {
     });
 }
 
-export function loginWithGithub() {
-  const provider = new GithubAuthProvider();
-  signInWithPopup(auth, provider)
-    .catch(console.error);
+export function loginWithGoogle() {
+  const provider = new GoogleAuthProvider();
+  return signInWithPopup(auth, provider)
+  .then((res) => {
+
+      console.log(res.user); // 사용자 정보 찍어보기
+      // insertUserDataWithSocial(res.user.email, res.user.displayName) // 사용자 정보 db에 저장
+      return res.user; // 사용자 정보 반환
+    })
+    
+    .catch(error => {
+      console.error("Google 로그인 오류:", error);
+      throw error; // 오류 재 throw
+    });
 }
+
+// # 카카오 로그인
+export function loginWithKakao(){
+  const provider = new OAuthProvider('oidc.kakao');
+  
+  return signInWithPopup(auth, provider)
+  .then((res) => {  
+
+    // Get the OAuth access token and ID Token
+    const credential = OAuthProvider.credentialFromResult(res);
+    const accessToken = credential.accessToken;
+    const idToken = credential.idToken;
+    
+    console.log(res.user); // 사용자 정보 찍어보기
+    // insertUserDataWithSocial(res.user.email, res.user.displayName) // 사용자 정보 db에 저장
+    return res.user;
+  })
+  .catch((error) => {
+    console.error("kakao 로그인 오류:", error);
+      throw error; // 오류 재 throw
+  });
+}
+
 
 export function getCurrentUser() {
   const userData = {};

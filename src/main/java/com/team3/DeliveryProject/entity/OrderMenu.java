@@ -37,4 +37,11 @@ public class OrderMenu {
         this.sequence = sequence;
         this.quantity = quantity;
     }
+
+    public OrderMenu(Long orderId, Long menuId, int sequence, int quantity) {
+        this.orderId = orderId;
+        this.menuId = menuId;
+        this.sequence = sequence;
+        this.quantity = quantity;
+    }
 }

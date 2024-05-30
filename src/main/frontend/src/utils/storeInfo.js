@@ -26,15 +26,15 @@ export const useStoreListByEmail = email => {
 }
 
 export const useStoreDeatilByEmail = (email ,storeId) => {
-  const { isLoading, error, data: StoreDetailOwner } = useQuery({
-    queryKey: ['storeDetail', email ,'detailStore', storeId ],
+  const { isLoading, error, data: storeDetail } = useQuery({
+    queryKey: ['storeDetail', {email: email, storeId: storeId}],
     queryFn: async () => {
         return axios.get(`/dp/store/detail`, { params: { email: email , storeId : storeId}})
           .then(res => res.data)
           .catch(console.error);
     }
   })
-  return { isLoading, error, StoreDetailOwner };
+  return { isLoading, error, storeDetail };
 }
 
 export const useMenuDetailByMenuId = menuId => {

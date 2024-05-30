@@ -8,11 +8,13 @@ import OwnerMain from "./Users/View/OwnerMain";
 export default function Home() {
     const role = localStorage.getItem('role') ? localStorage.getItem('role') : '회원';
     
+    // const backgroundImage = role === '회원' ? 'url(/img/kitchen.jpg)' : 'url(/img/Okitchen.jpg)';
     return(
-        <Box sx={{ margin: -1 }}>
-            {role==='회원' && <UserMain />}
-            {role==='점주' && <OwnerMain />}
-            <Footer />
-        </Box>       
+        
+        <Box sx={{ width: '100%', marginTop: -1 }}>
+          {role==='회원' && <UserMain />}
+          {role==='점주' && <OwnerMain />}
+         
+        </Box>
   )
 }

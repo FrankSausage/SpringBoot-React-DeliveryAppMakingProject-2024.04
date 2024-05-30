@@ -7,7 +7,6 @@ export async function extractDataFromFormData(formData) {
 }
 
 export function addressCodePacker(addressCode, deliveryAddress) {
-  // 매개변수는 split(',') 해서 넘길 것
   const data = [];   
     for(let i = 0; i < addressCode.length; i++) {
       data[i] = {'addressCode': addressCode[i], 'deliveryAddress' : deliveryAddress[i]}
@@ -39,3 +38,18 @@ export function splitAddressFromCurrentUserAddress(currentAddress) {
 
   return { roadAddress: roadAddress, extraAddress: extraAddress, detailAddress: detailAddress };
 }
+
+export const generateTimeOptions = (startHour, endHour) => {
+  const options = [];
+  for (let hour = startHour; hour <= endHour; hour++) {
+    for (let minute = 0; minute < 60; minute += 30) {
+      if (hour < endHour || (hour === endHour && minute < 30)) { // 24:00과 24:30 제외
+        const formattedHour = (hour === 24 ? '23' : hour).toString().padStart(2, '0');
+        const formattedMinute = (hour === endHour && minute === 0) ? '59' : minute.toString().padStart(2, '0'); // 24:00 대신 23:59 추가
+        options.push(`${formattedHour}:${formattedMinute}`);
+      }
+    }
+  }
+  return options;
+};
+
