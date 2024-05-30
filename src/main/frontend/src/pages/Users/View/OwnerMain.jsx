@@ -7,6 +7,7 @@ import { getCurrentUser } from '../../../utils/firebase';
 import { useOwnerStoreListByEmail } from '../../../utils/userInfo';
 import { useStore } from '../../Stores/Hook/useStore';
 import Footer from '../../../components/Footer';
+import BackDrop from '../../../components/BackDrop';
 
 export default function OwnerMain() {
   const email = localStorage.getItem('email');
@@ -54,7 +55,7 @@ export default function OwnerMain() {
         </Grid>
       </Grid> */}
       <Paper elevation={3} sx={{ height: 'auto', backgroundImage: 'url(/img/Okitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
-        {isLoading && <Typography>로딩 중...</Typography>}
+        {isLoading && <BackDrop isLoading={isLoading} />}
         {error && <Typography>에러 발생!</Typography>}
         {!isLoading && storeData?.storeList?.length === 0 && (
           <Typography variant='h4' sx={{ textAlign: 'center', p: 5 }}>가게가 아직 없어요!</Typography>
@@ -85,17 +86,17 @@ export default function OwnerMain() {
                         >
                         {isOpened[idx] ? '가게 오픈' : '가게 휴업'}
                       </Button> */}
-                      <Link to={`/StoreUpdate/${data.storeId}`} style={{ textDecoration: 'none' }}>
-                        <Button variant="outlined">가게 수정하기</Button>
-                      </Link>
-                      <Link to={`/OwnerOrderList`} state={{storeId: data.storeId, storeName: data.name}} style={{ textDecoration: 'none' }}>
-                        <Button variant="outlined">가게 주문확인</Button>
-                      </Link>
-                      <Link to={`/StoreReviews`} state={{storeId: data.storeId}} style={{ textDecoration: 'none' }}>
-                        <Button variant="outlined">가게 리뷰</Button>
-                      </Link>
-                    </Stack>
-                  }
+                        <Link to={`/StoreUpdate/${data.storeId}`} style={{ textDecoration: 'none' }}>
+                          <Button variant="outlined">가게 수정하기</Button>
+                        </Link>
+                        <Link to={`/OwnerOrderList`} state={{ storeId: data.storeId, storeName: data.name }} style={{ textDecoration: 'none' }}>
+                          <Button variant="outlined">가게 주문확인</Button>
+                        </Link>
+                        <Link to={`/StoreReviews`} state={{ storeId: data.storeId }} style={{ textDecoration: 'none' }}>
+                          <Button variant="outlined">가게 리뷰</Button>
+                        </Link>
+                      </Stack>
+                    }
                   </Box>
                 </Box>
               </Grid>
@@ -110,7 +111,7 @@ export default function OwnerMain() {
             <Link to='/StoreRegister' style={{ textDecoration: 'none', color: 'inherit' }}>가게 추가하기</Link>
           </Button>
         </Box>
-        <Footer sx={{ marginTop: 7}}/>
+        <Footer sx={{ marginTop: 7 }} />
       </Paper>
     </Box>
   );

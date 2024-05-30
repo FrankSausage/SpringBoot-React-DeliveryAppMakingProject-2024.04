@@ -3,6 +3,7 @@ import React from "react";
 import { useNavigate } from 'react-router-dom';
 import { useDibs } from "../Hook/useDibs";
 import SearchHeader from "../../../components/SearchHeader";
+import BackDrop from "../../../components/BackDrop";
 
 export default function Dibs() {
   const navigate = useNavigate();
@@ -22,9 +23,9 @@ export default function Dibs() {
       <SearchHeader />
       <Paper elevation={3} sx={{height: '100vh', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2, overflowY: 'auto' }}>
       <Typography variant="body1" onClick={handleBack} sx={{ cursor: 'pointer', textAlign: 'left', float: 'left' }}>
-        뒤로가기
+        ◀ 뒤로가기
       </Typography>
-      {isLoading && <Typography>로딩 중...</Typography>}
+      {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && !dibsData.data && <Typography variant="h4">아직 찜한 가게가 없어요!</Typography>}
       {!isLoading && dibsData.data &&
         <Grid container direction="column" alignItems="center">
