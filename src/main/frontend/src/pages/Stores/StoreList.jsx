@@ -30,10 +30,7 @@ export default function StoreList({ category, searchText, initialSort }) {
             <Grid item xs={12} sx={{ textAlign: 'center', mb: 2 }}>
                 <FormControl variant="outlined" sx={{ minWidth: 200 }}>
                     <InputLabel>Sort By</InputLabel>
-                    <Select
-                        value={sort}
-                        onChange={(e) => setSort(e.target.value)}
-                        label="Sort By">
+                    <Select value={sort} onChange={(e) => setSort(e.target.value)} label="Sort By" sx={{bgcolor: '#fff', textAlign:'center'}}>
                         <MenuItem value="default">기본 정렬</MenuItem>
                         <MenuItem value="rating">별점</MenuItem>
                         <MenuItem value="dibs">찜</MenuItem>
@@ -45,8 +42,7 @@ export default function StoreList({ category, searchText, initialSort }) {
             <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
                 <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
                     {!isLoading && sortedStoreList.length === 0 &&
-                        <Typography variant="h4" sx={{ textAlign: 'center' }}>가게가 존재하지 않아요!</Typography>
-                    }
+                        <Typography variant="h4" sx={{ textAlign: 'center' }}>가게가 존재하지 않아요!</Typography>}
                     {!isLoading && sortedStoreList && (
                         sortedStoreList.map((data) => (
                             <Box key={data.storeId} component={Link} to={`/StoreDetail/${data.storeId}`} state={{ storeName: data.name, isDibed: data.isDibed }} sx={{ ...linkStyle, width: { xs: '90%', sm: '47%' }, marginX: 'auto' }}>
