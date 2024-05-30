@@ -31,6 +31,9 @@ import OrderList from './pages/Order/OrderList';
 import OwnerOrderList from './pages/Order/OwnerOrderList';
 // Dibs
 import Dibs from './pages/Dibs/View/Dibs';
+import TossChackOut from './pages/Order/Toss/TossCheckOut';
+import { Success } from './pages/Order/Toss/SuccessPage';
+import { Fail } from './pages/Order/Toss/FailPage';
 
 const router = createBrowserRouter([
   {
@@ -60,6 +63,9 @@ const router = createBrowserRouter([
       { path: 'OrderList', element: <OrderList />},
       { path: 'OwnerOrderList', element: <OwnerOrderList />},
       { path: 'Dibs', element: <Dibs />},
+      { path: 'CheckOut', element: <TossChackOut />},
+      { path: 'success', element: <Success />},
+      { path: 'fail', element: <Fail />},
     ]
   }
 ]);

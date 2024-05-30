@@ -32,13 +32,14 @@ export default function SearchHeader() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: (role === '회원') ? '#469D6E' : (role === '점주') ? '#00cde1' : '#469D6E'}}>
+      {/* <AppBar position="static" sx={{ backgroundColor: (role === '회원') ? '#E16120' : (role === '점주') ? '#00cde1' : '#E16120'}}> */}
+      <AppBar position="static" sx={{ background: 'linear-gradient(to right, black, rgba(0, 0, 0, 0.5))' }}>
         <Toolbar>
           <Grid container alignItems="center">
             <Grid item xs={3}>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
-                  <img src={'/img/logo.png'} style={{ width: '30%', height: '30%',position: 'relative', top: 5, left: '-30px'  }}/>
+                  <img src={'/img/logo01.png'} style={{ width: '30%', height: '30%',position: 'relative', top: 5, left: '-30px'  }}/>
                 </Link>
               </Typography>
             </Grid>

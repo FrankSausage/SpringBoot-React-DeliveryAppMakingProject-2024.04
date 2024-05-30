@@ -54,16 +54,10 @@ export default function StoreDetail() {
   const { postDibStore } = useDibs();
   const [value, setValue] = useState(1);
   const [popularity, setPopularity] = useState('');
-  const [searchOpen, setSearchOpen] = useState(false); // 검색 창의 상태를 추적하는 state
   const navigate = useNavigate();
-  console.log(storeDetail)
+
   const handleChange = (e, newValue) => {
     setValue(newValue);
-    setSearchOpen(false); // 다른 탭을 클릭할 때 검색 창 닫기
-  };
-  
-  const handleSearchTabClick = () => {
-    setSearchOpen(!searchOpen); // 메뉴 검색 탭을 클릭할 때마다 검색 창 열기/닫기
   };
 
   const handleDib = (isDibed) => {
@@ -90,60 +84,36 @@ export default function StoreDetail() {
 
   return (
     <Box sx={{ margin: -1 }}>
+    <Box sx={{ height: 'auto'/*, backgroundImage: 'url(/img/sl0.jpg)'*/, backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column' }}>
       <SearchHeader />
       {isLoading && <Typography>로딩 중...</Typography>}
       {!isLoading && storeDetail && 
       <Fragment>
-        <Grid container>
-          <Grid item xs={4}/>
-          <Grid item xs={2.5}>
-            <Typography variant='h4' sx={{textAlign:'end'}}>{storeDetail.name}</Typography>
-          </Grid>
-          <Grid item sx={{ml:2}} xs> 
-            {role!=='점주' && storeDetail.isDibed==='일반' || storeDetail.isDibed===null ? 
-              <FavoriteBorderIcon sx={{cursor:'pointer', fontSize:30,}} onClick={() => handleDib(storeDetail.isDibed)} />
-              :
-              <FavoriteIcon sx={{cursor:'pointer', fontSize:30, color:'red'}} onClick={() => handleDib(storeDetail.isDibed)} />
-            } 
-          </Grid>
-        </Grid>
       <Box sx={{ borderBottom: 1, borderColor: 'black', display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', mt: 0 }}>
-            <Tab label="메뉴 검색" onClick={handleSearchTabClick} autoFocus sx={{
-              borderBottom: searchOpen ? '1px solid black' : 'none',
-              marginRight: 2,
-            }} />
-            <Grid item xs={searchOpen ? 6 : 0} md={4}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  border: searchOpen ? '1px solid black' : 'none',
-                  borderRadius: 1,
-                  transition: 'width 0.3s ease-in-out', // 애니메이션 효과 추가
-                  width: searchOpen ? 'auto' : 0, // 검색창이 열릴 때만 너비 적용
-                  overflow: 'hidden', // 컨텐츠가 넘치면 숨김
-                }}
-              >
-                <SearchIcon sx={{ m: 1 }} />
-                <InputBase
-                  placeholder="검색"
-                  inputProps={{ 'aria-label': 'search' }}
-                  fullWidth
-                  autoFocus={searchOpen} // 검색창이 열릴 때 자동 포커스
-                />
-              </Box>
-            </Grid>
-          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', mt: 0 }}></Box>
           <Tab label="메뉴" {...a11yProps(1)} sx={{ marginLeft: 2, marginRight: 2 }} />
           <Tab label="가게·원산지 정보" {...a11yProps(2)} autoFocus sx={{ marginLeft: 2, marginRight: 2 }} />
+          <Tab label="리뷰" {...a11yProps(3)} autoFocus sx={{ marginLeft: 2, marginRight: 2 }} />
         </Tabs>
       </Box>
+        <Grid container>
+          <Grid item xs={4}/>
+          <Grid item xs={2.5}>
+            <Typography variant='h4' sx={{textAlign:'end', mt: 3}}>{storeDetail.name}</Typography>
+          </Grid>
+          <Grid item sx={{ml:2}} xs> 
+            {role!=='점주' && storeDetail.isDibed==='일반' || storeDetail.isDibed===null ? 
+              <FavoriteBorderIcon sx={{cursor:'pointer', fontSize:30, mt: 3}} onClick={() => handleDib(storeDetail.isDibed)} />
+              :
+              <FavoriteIcon sx={{cursor:'pointer', fontSize:30, color:'red', mt: 3}} onClick={() => handleDib(storeDetail.isDibed)} />
+            } 
+          </Grid>
+        </Grid>
       
       <CustomTabPanel value={value} index={1}>
         <StoreMenuList storeName={storeDetail.name} />
@@ -154,6 +124,7 @@ export default function StoreDetail() {
       <Footer />
       </Fragment>
       }
+    </Box>
     </Box>
   );
 }

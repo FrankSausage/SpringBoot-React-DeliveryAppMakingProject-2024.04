@@ -31,20 +31,21 @@ import com.team3.DeliveryProject.entity.Menu;
 import com.team3.DeliveryProject.entity.MenuOption;
 import com.team3.DeliveryProject.entity.OrderMenu;
 import com.team3.DeliveryProject.entity.Orders;
+import com.team3.DeliveryProject.entity.Reviews;
 import com.team3.DeliveryProject.entity.Stores;
 import com.team3.DeliveryProject.entity.Users;
 import com.team3.DeliveryProject.repository.MenuOptionRepository;
 import com.team3.DeliveryProject.repository.MenuRepository;
 import com.team3.DeliveryProject.repository.OrderMenuRepository;
 import com.team3.DeliveryProject.repository.OrdersRepository;
+import com.team3.DeliveryProject.repository.ReviewsRepository;
 import com.team3.DeliveryProject.repository.StoresRepository;
 import com.team3.DeliveryProject.repository.UsersRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -59,6 +60,9 @@ public class OrderServiceImpl implements OrderService {
     private final MenuRepository menuRepository;
     private final MenuOptionRepository menuOptionRepository;
     private final OrderMenuRepository orderMenuRepository;
+    private final ReviewsRepository reviewsRepository;
+    private final SseEmitterService sseEmitterService;
+
 
     @Override
     public ResponseEntity<Response> addOrder(OrderAddRequestDto requestDto) {
@@ -86,7 +90,7 @@ public class OrderServiceImpl implements OrderService {
         Orders orders = new Orders(stores.getStoreId(), users.getUserId(),
             deliveryUsers.getUserId(), requestDto.getPaymentMethod(), requestDto.getPoint(),
             requestDto.getTotalPrice(),
-            requestDto.getRequests(), LocalDateTime.now(), LocalDateTime.now(), "접수대기",
+            requestDto.getRequests(), LocalDateTime.now(), LocalDateTime.now(), "결제완료",
             requestDto.getAddress());
 
         Long orderId = ordersRepository.save(orders).getOrderId();
@@ -96,22 +100,23 @@ public class OrderServiceImpl implements OrderService {
         for (OrderAddInnerMenusRequestDto menusRequestDto : menuList) {
             Menu menu = menuRepository.findById(menusRequestDto.getMenuId())
                 .orElseThrow(() -> new RuntimeException("Menu not found"));
-            if(menusRequestDto.getMenuOptions().isEmpty()){
-                OrderMenu orderMenu = new OrderMenu(orderId, menu.getMenuId(), menusRequestDto.getSequence(), menusRequestDto.getQuantity());
+            if (menusRequestDto.getMenuOptions().isEmpty()) {
+                OrderMenu orderMenu = new OrderMenu(orderId, menu.getMenuId(),
+                    menusRequestDto.getSequence(), menusRequestDto.getQuantity());
                 orderMenuRepository.save(orderMenu);
-            }else{
+            } else {
                 for (OrderAddInnerMenuOptionsRequestDto menuOptionsRequestDto : menusRequestDto.getMenuOptions()) {
                     MenuOption menuOption = menuOptionRepository.findById(
                             menuOptionsRequestDto.getMenuOptionId())
                         .orElseThrow(() -> new RuntimeException("MenuOption not found"));
                     OrderMenu orderMenu = new OrderMenu(orderId, menuOption.getMenuOptionId(),
-                        menu.getMenuId(), menusRequestDto.getSequence(), menusRequestDto.getQuantity());
+                        menu.getMenuId(), menusRequestDto.getSequence(),
+                        menusRequestDto.getQuantity());
                     orderMenuRepository.save(orderMenu);
                 }
             }
         }
-
-        return Response.toResponseEntity(ORDER_ADD_SUCCESS);
+        return Response.toResponseEntity(ORDER_ADD_SUCCESS, orderId);
     }
 
     @Override
@@ -138,6 +143,10 @@ public class OrderServiceImpl implements OrderService {
             users.setGrade(currentGrade + 1);
             usersRepository.save(users);
         }
+        // SSE 이벤트 전송
+        String email = users.getEmail(); // 사용자 이메일 가져오기
+        sseEmitterService.sendOrderUpdate(email, "Order status updated");
+
 
         return Response.toResponseEntity(ORDER_STATUS_UPDATE_SUCCESS);
     }
@@ -235,7 +244,11 @@ public class OrderServiceImpl implements OrderService {
                     .orElseThrow(() -> new RuntimeException("Menu not found"));
                 menuName = menu.getName();
             }
-
+            Optional<Reviews> reviews = reviewsRepository.findByOrderId(orders.getOrderId());
+            boolean isReviewed = false;
+            if (reviews.isPresent()) {
+                isReviewed = true;
+            }
             OrderListInnerOrdersResponseDto innerOrdersResponseDto = OrderListInnerOrdersResponseDto.builder()
                 .orderId(orders.getOrderId())
                 .storeId(orders.getStoreId())
@@ -245,6 +258,7 @@ public class OrderServiceImpl implements OrderService {
                 .totalPrice(orders.getTotalPrice())
                 .orderDate(orders.getCreatedDate())
                 .status(orders.getStatus())
+                .reviewed(isReviewed)
                 .build();
             innerOrdersResponseDtoList.add(innerOrdersResponseDto);
         }
@@ -269,7 +283,7 @@ public class OrderServiceImpl implements OrderService {
             Menu menu = menuRepository.findById(orderMenu.getMenuId())
                 .orElseThrow(() -> new RuntimeException("Menu not found"));
 
-            if(orderMenu.getMenuOptionId() != null){
+            if (orderMenu.getMenuOptionId() != null) {
                 MenuOption menuOption = menuOptionRepository.findById(orderMenu.getMenuOptionId())
                     .orElseThrow(() -> new RuntimeException("MenuOption not found"));
 
@@ -289,7 +303,7 @@ public class OrderServiceImpl implements OrderService {
                     .menuOptions(innerMenuOptionsResponseDtos)
                     .build();
                 innerMenusResponseDtos.add(innerMenusResponseDto);
-            }else{
+            } else {
                 List<OrderDetailOwnerInnerMenuOptionsResponseDto> innerMenuOptionsResponseDtos = new ArrayList<>();
                 OrderDetailOwnerInnerMenuOptionsResponseDto menuOptionsResponseDto = OrderDetailOwnerInnerMenuOptionsResponseDto.builder()
                     .build();
