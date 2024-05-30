@@ -22,7 +22,7 @@ export default function SignIn() {
   
   const CustomCheckbox = ({ checked, onChange}) => {
     return (
-      <Checkbox checked={checked} onChange={onChange} sx={{color: '002500', '&.Mui-checked': {color: '#66BB6A'}}}/>
+      <Checkbox checked={checked} onChange={onChange} sx={{color: '002500', '&.Mui-checked': {color: '#ffbe33'}}}/>
         );
       };
 

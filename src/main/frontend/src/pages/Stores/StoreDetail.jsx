@@ -84,7 +84,7 @@ export default function StoreDetail() {
 
   return (
     <Box sx={{ margin: -1 }}>
-    <Box sx={{ height: 'auto', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ height: 'auto'/*, backgroundImage: 'url(/img/sl0.jpg)'*/, backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column' }}>
       <SearchHeader />
       {isLoading && <Typography>로딩 중...</Typography>}
       {!isLoading && storeDetail && 

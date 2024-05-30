@@ -90,42 +90,36 @@ export default function StoreMenuList({ storeName }) {
             </Grid>
           )}
           <Grid item xs={12} sm={6} md={4} lg={4}>
-          <Box sx={{ ...boxStyle, position: 'relative', width: '100%', height: '200px', marginX: 'auto' }}>
-            <Grid container>
-              <Grid item xs={12} md={3}>
-                <Box component={Link} to={role === '회원' ? `/MenuDetail` : `/MenuUpdate`} state={{ menuId: res.menuId, storeId: storeId, storeName: storeName }} sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
-                  <img src={res.menuPictureName} style={{ width: '130px', height: '95px', objectFit: 'cover' }} />
+            <Box sx={{ ...boxStyle, position: 'relative', width: '100%', height: 'auto', marginX: 'auto', display: 'flex', alignItems: 'center' }}>
+              <Box component={Link} to={role === '회원' ? `/MenuDetail` : `/MenuUpdate`} state={{ menuId: res.menuId, storeId: storeId, storeName: storeName }} sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
+                <img src={res.menuPictureName} style={{ width: '150px', height: '120px', objectFit: 'cover', marginRight: '16px' }} />
+              </Box>
+              <Box sx={{ flexGrow: 1}}>
+                <Box component={Link} to={role === '회원' ? `/MenuDetail` : `/MenuUpdate`} state={{ menuId: res.menuId, storeId: storeId, storeName: storeName }}
+                  sx={{ textDecoration: 'none', color: 'black' }}>
+                    <ul style={{ padding: 0, textAlign:'center' }}>
+                      <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.name}</li>
+                      <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.price}원</li>
+                      {status[idx] && (
+                        <li style={{ listStyleType: 'none' }}>{res.status}</li>
+                      )}
+                    </ul>
                 </Box>
-              </Grid>
-              <Grid item xs={12} md={7} sx={{ position: 'relative' }}>
-                <Box component={Link} to={role === '회원' ? `/MenuDetail` : `/MenuUpdate`} state={{ menuId: res.menuId, storeId: storeId, storeName: storeName }} sx={{ position: 'absolute', top: '50%', left: '6%', transform: 'translateY(-50%)', padding: 0, margin: 0, textAlign: 'left' ,whiteSpace: 'nowrap', maxWidth: '80%', overflow: 'hidden', textOverflow: 'ellipsis', textDecoration: 'none', color: 'black' }}>
-                  <ul style={{ padding: 0, marginLeft: 100 }}>
-                    <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.name}</li>
-                    <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>구성 : {res.content} </li>
-                    {status[idx] && (
-                      <li style={{ listStyleType: 'none' }}>{res.status}</li>
-                    )}
-                  </ul>
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={2}>
                 {role === '점주' &&
-                  <Stack sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                  <Stack direction="row" spacing={1}>
                     <Button
                       variant="contained"
                       color={status[idx] ? 'primary' : 'secondary'}
-                      onClick={() => handleCheckboxChange(idx)} sx={{width: '100px'}}>
+                      onClick={() => handleCheckboxChange(idx)} sx={{width: '100px', height:'35px'}}>
                       {status[idx] ? '상품 판매' : '품절'}
                     </Button>
-                    <Button color={'info'}>
+                    <Button color={'info'} sx={{width: '100px', height: '35px'}}>
                       <MenuOptionRegister email={email} menuId={res.menuId} />
                     </Button>
-                  </Stack>
-                }
-              </Grid>
-            </Grid>
-          </Box>
-         </Grid>
+                  </Stack>}
+              </Box>
+            </Box>
+          </Grid>
         </React.Fragment>
       );
     });
@@ -163,8 +157,8 @@ export default function StoreMenuList({ storeName }) {
 }
 
 let boxStyle = {
-  width: 300,
-  height: 200,
+  width: '100%',
+  height: 'auto',
   border: '1px solid rgba(0, 0, 0, 0.1)',
   borderRadius: '10px',
   boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
@@ -173,6 +167,8 @@ let boxStyle = {
   backgroundColor: '#ffffff',
   position: 'relative',
   transition: 'box-shadow 0.3s ease',
+  display: 'flex',
+  alignItems: 'center',
   '&:hover': {
     boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.2)',
   }
