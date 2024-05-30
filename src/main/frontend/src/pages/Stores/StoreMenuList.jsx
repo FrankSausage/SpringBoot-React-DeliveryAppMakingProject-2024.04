@@ -96,7 +96,7 @@ export default function StoreMenuList({ storeName }) {
               </Box>
               <Box sx={{ flexGrow: 1}}>
                 <Box component={Link} to={role === '회원' ? `/MenuDetail` : `/MenuUpdate`} state={{ menuId: res.menuId, storeId: storeId, storeName: storeName }}
-                  sx={{ textDecoration: 'none', color: 'black' }}>
+                  sx={{ textDecoration: 'none', color: 'black', textOverflow: 'ellipsis' }}>
                     <ul style={{ padding: 0, textAlign:'center' }}>
                       <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.name}</li>
                       <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.price}원</li>
