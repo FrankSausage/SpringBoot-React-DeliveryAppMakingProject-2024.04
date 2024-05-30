@@ -97,7 +97,7 @@ export default function StoreMenuList({ storeName }) {
               </Box>
               <Box sx={{ flexGrow: 1}}>
                 <Box component={Link} to={role === '회원' ? `/MenuDetail` : `/MenuUpdate`} state={{ menuId: res.menuId, storeId: storeId, storeName: storeName }}
-                  sx={{ textDecoration: 'none', color: 'black' }}>
+                  sx={{ textDecoration: 'none', color: 'black', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', }}>
                     <ul style={{ padding: 0, textAlign:'center' }}>
                       <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.name}</li>
                       <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.price}원</li>
@@ -107,7 +107,7 @@ export default function StoreMenuList({ storeName }) {
                     </ul>
                 </Box>
                 {role === '점주' &&
-                  <Stack direction="row" spacing={1}>
+                  <Stack direction="row" spacing={1} sx={{justifyContent:'center'}}>
                     <Button
                       variant="contained"
                       color={status[idx] ? 'primary' : 'secondary'}
@@ -119,6 +119,7 @@ export default function StoreMenuList({ storeName }) {
                     </Button>
                   </Stack>}
               </Box>
+              <Grid item></Grid>
             </Box>
           </Grid>
         </React.Fragment>
@@ -169,6 +170,7 @@ let boxStyle = {
   position: 'relative',
   transition: 'box-shadow 0.3s ease',
   display: 'flex',
+  flexDirection: 'column',
   alignItems: 'center',
   '&:hover': {
     boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.2)',
