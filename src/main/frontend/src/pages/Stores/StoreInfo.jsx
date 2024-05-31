@@ -20,7 +20,7 @@ export default function StoreInfo({storeDetail}) {
                     ...boxStyle,
                     position: 'relative',
                     width: { xs: '100%', sm: '70%' },
-                    height: '350px',
+                    height: '380px',
                     marginX: 'auto',
                     marginBottom: '10px',
                     overflow: 'hidden',
@@ -31,7 +31,7 @@ export default function StoreInfo({storeDetail}) {
                   }}
                 >
                   {/* <div style={{ position: 'absolute', top: '52%', left: '25%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0, fontSize: '16px'}}> */}
-                  <div style={{ padding: 0, marginTop: -10, fontSize: '16px'}}>
+                  <div style={{ padding: 0, fontSize: '16px'}}>
                     <h2 style={{ marginBottom: '15px', color: '#333', fontSize: '22px' }}>가게 정보</h2>
                     <ul style={{ padding: '0', margin: '0', textAlign: 'left' }}>
                       <li style={{ listStyleType: 'none', marginBottom: '10px' }}>가게 이름: {storeDetail.name}</li>
@@ -63,7 +63,7 @@ export default function StoreInfo({storeDetail}) {
                   }}
                 >
                   {/* <div style={{ position: 'absolute', top: '30%', left: '34%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0, fontSize: '16px' }}> */}
-                  <div style={{ padding: 0, marginTop: -10, fontSize: '16px'}}>
+                  <div style={{ padding: 0,  fontSize: '16px'}}>
                     <h2 style={{ marginBottom: '15px', color: '#333', fontSize: '22px' }}>가게 소개</h2>
                     <ul style={{ padding: '0', margin: '0', textAlign: 'left' }}>
                       <li style={{ listStyleType: 'none', marginBottom: '10px' }}>{storeDetail.content}</li>
