@@ -64,6 +64,7 @@ export default function Order() {
 		}, {
 			onSuccess: () => {
 				localStorage.removeItem('cartItems');
+				localStorage.removeItem('cartCount');
 				navigate('/')
 			},
 			onError: e => {console.log(e)},

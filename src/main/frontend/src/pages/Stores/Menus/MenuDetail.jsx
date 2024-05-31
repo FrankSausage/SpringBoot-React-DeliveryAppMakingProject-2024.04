@@ -64,28 +64,30 @@ export default function MenuDetail() {
                     </Stack>
                   </CardContent>
                 </Card>
-                <Card sx={{mb:1}}>
-                  <CardContent sx={{m:1}}>
-                    <Typography variant="h6">옵션</Typography>
-                      {menuDetailData.menus.options && menuDetailData.menus.options.map((data, idx) => (
-                        <Stack direction={'row'} key={idx}>
-                          <Grid container sx={{justifyContent:'start'}}>
-                            <Grid item xs={5}>
-                              <FormControlLabel 
-                              control={<Checkbox onClick={() => handleAddItem(data)}/>}
-                              label={data.options}
-                              labelPlacement="end"
-                              />
+                {menuDetailData.menus.options && menuDetailData.menus.options.length!==0 && 
+                  <Card sx={{mb:1}}>
+                    <CardContent sx={{m:1}}>
+                      <Typography variant="h6">옵션</Typography>
+                        {menuDetailData.menus.options && menuDetailData.menus.options.map((data, idx) => (
+                          <Stack direction={'row'} key={idx}>
+                            <Grid container sx={{justifyContent:'start'}}>
+                              <Grid item xs={5}>
+                                <FormControlLabel 
+                                control={<Checkbox onClick={() => handleAddItem(data)}/>}
+                                label={data.options}
+                                labelPlacement="end"
+                                />
+                              </Grid>
+                              <Grid item xs={4}/>
+                              <Grid item xs={3} sx={{alignContent:'center', textAlign:'end'}}>
+                                <Typography>+{data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
+                              </Grid>
                             </Grid>
-                            <Grid item xs={4}/>
-                            <Grid item xs={3} sx={{alignContent:'center', textAlign:'end'}}>
-                              <Typography>+{data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
-                            </Grid>
-                          </Grid>
-                        </Stack>
-                      ))}
-                  </CardContent>
-                </Card>
+                          </Stack>
+                        ))}
+                    </CardContent>
+                  </Card>
+                }
               </Grid>
               <Grid item xs={1}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
@@ -94,11 +96,6 @@ export default function MenuDetail() {
                   {/* <Button onClick={handleSubmit}>장바구니 담기</Button> */}
                 </Box>
               </Grid>
-              {items && items.map((data, idx) => (
-                  <Stack key={idx}>
-                    <Typography>{data.menuOptionId}</Typography>
-                  </Stack>
-              ))}
               <Grid item xs/>
             </Grid>
         }

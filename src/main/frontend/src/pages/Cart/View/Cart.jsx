@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Box, Card, CardContent, Divider, Grid, Stack, Typography } from '@mui/material';
+import { Badge,  Card, CardContent, Divider, Grid, Stack, Typography, styled } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -62,9 +62,19 @@ export default function Cart({ allClose }) {
   return (
     <React.Fragment>
       <React.Fragment>
-        <Box>
+        {localStorage.getItem('cartCount')>0 ?
+        <StyledBadge
+          overlap="circular"
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+          badgeContent={localStorage.getItem('cartCount') && localStorage.getItem('cartCount')}
+          max={9}
+          color='secondary'
+        >
           <ShoppingCartIcon sx={{color:'white'}} onClick={handleClickOpen} /> 
-        </Box>
+        </StyledBadge>
+        :
+          <ShoppingCartIcon sx={{color:'white'}} onClick={handleClickOpen} /> 
+        }
       </React.Fragment>
       <Dialog
         open={open}
@@ -127,4 +137,23 @@ export default function Cart({ allClose }) {
     </React.Fragment>
   );
 }
+// const StyledBadge = styled(Badge)(({ theme }) => ({
+//   '& .MuiBadge-badge': {
+//     right: -3,
+//     top: 13,
+//     border: `2px solid ${theme.palette.background.paper}`,
+//     padding: '0 4px',
+//   },
+// }));
 
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    backgroundColor: '#44b700',
+    color: 'white',
+    width: 11,
+    height: 18,
+    textAlign:'center',
+    border: `2px solid ${theme.palette.background.paper}`,
+    borderRadius: '30%',
+  },
+}));
