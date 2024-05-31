@@ -30,18 +30,18 @@ export default function StoreInfo({storeDetail}) {
                     padding: '20px',
                   }}
                 >
-                  <div style={{ position: 'absolute', top: '50%', left: '25%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
                     <h2 style={{ marginBottom: '15px', color: '#333' }}>가게 정보</h2>
+                  <div style={{ position: 'absolute', top: '50%', left: '25%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
                     <ul style={{ padding: '0', margin: '0', textAlign: 'left' }}>
-                      <li style={{ listStyleType: 'none', marginBottom: '10px' }}>가게 이름: {storeDetail.name}</li>
-                      <li style={{ listStyleType: 'none', marginBottom: '10px' }}>주소: {storeDetail.address}</li>
-                      <li style={{ listStyleType: 'none', marginBottom: '10px' }}>전화번호: {storeDetail.phone}</li>
-                      <li style={{ listStyleType: 'none', marginBottom: '10px' }}>카테고리: {storeDetail.category}</li>
+                      <li style={{ listStyleType: 'none', marginBottom: '10px' }}>{storeDetail.name}</li>
+                      <li style={{ listStyleType: 'none', marginBottom: '10px' }}>{storeDetail.address}</li>
+                      <li style={{ listStyleType: 'none', marginBottom: '10px' }}>{storeDetail.phone}</li>
                       <li style={{ listStyleType: 'none', marginBottom: '10px' }}>최소 주문 금액: {storeDetail.minDeliveryPrice}원</li>
-                      <li style={{ listStyleType: 'none', marginBottom: '10px' }}>배달팁: {storeDetail.deliveryTip}원</li>
+                      <li style={{ listStyleType: 'none', marginBottom: '10px' }}>배달료: {storeDetail.deliveryTip}원</li>
                       <li style={{ listStyleType: 'none', marginBottom: '10px' }}>배달 예상 시간: {storeDetail.minDeliveryTime}분 ~ {storeDetail.maxDeliveryTime}분</li>
                       <li style={{ listStyleType: 'none', marginBottom: '10px' }}>운영 시간: {storeDetail.operationHours}</li>
                       <li style={{ listStyleType: 'none', marginBottom: '10px' }}>휴무일: {storeDetail.closedDays}</li>
+                      <li style={{ listStyleType: 'none', marginBottom: '10px' }}>{storeDetail.category}</li>
                     </ul>
                   </div>
                 </Box>
