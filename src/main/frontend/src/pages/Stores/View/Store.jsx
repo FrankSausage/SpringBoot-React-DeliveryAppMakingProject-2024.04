@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import SearchHeader from "../../../components/SearchHeader";
 import Footer from "../../../components/Footer";
 import PropTypes from 'prop-types';
-import { Tab, Tabs, Box, Typography, Grid, InputBase } from '@mui/material';
+import { Tab, Tabs, Box, Typography, Grid, InputBase, Paper } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import StoreList from '../StoreList';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -50,7 +50,7 @@ export default function Store() {
   };
 
   return (
-    <Box sx={{ margin: -1 }}>
+    <Box sx={{ backgroundColor: '#f8f8f8', m: -1}}>
       <SearchHeader />
       {/* <Box sx={{ height: 'auto', minHeight: '100vh', backgroundImage: 'url(/img/s01.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', }}> */}
         <Box sx={{ borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: 'center', bgcolor: '#fff' }}>
@@ -66,22 +66,24 @@ export default function Store() {
             <Tab label="디저트" {...a11yProps(8)} />
           </Tabs>
         </Box>
-          <Grid container justifyContent="center" alignItems="center" mt={2}>
-            <Grid item xs={10} md={6} lg={4}>
-              <Box sx={{ display: 'flex', justifyContent: 'center', border: 1, borderColor: 'divider', borderRadius: 3, p: 1, bgcolor: '#fff', boxShadow: 1 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: 5 }}>
+      <Paper elevation={3} sx={{height: '100vh', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2, overflowY: 'auto' }}>
+        <Grid container justifyContent="center" alignItems="center" mb={2}>
+          <Grid item xs={10} md={6} lg={4}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', border: 1, borderColor: 'divider', borderRadius: 3, p: 1, bgcolor: '#fff', boxShadow: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: 5 }}>
                 <SearchIcon sx={{ color: 'grey.500' }} />
                 <InputBase
                   placeholder="가게 / 메뉴 이름 입력"
                   inputProps={{ 'aria-label': 'search' }}
                   onClick={() => navigate('/StoreSearch')}
                   fullWidth
-                  sx={{ ml: 1 }}/>
-                </Box>
+                  sx={{ ml: 1 }}
+                />
               </Box>
-            </Grid>
+            </Box>
           </Grid>
-        <Box sx={{ mt: 3, flex: 1 }}>
+        </Grid>
+        <Box sx={{ mt: 3 }}>
           <CustomTabPanel value={value} index={0}>
             <StoreList category={'전체'} />
           </CustomTabPanel>
@@ -110,8 +112,8 @@ export default function Store() {
             <StoreList category={'디저트'} />
           </CustomTabPanel>
         </Box>
-      <Footer />
-     </Box>
-    // </Box>
+        <Footer />
+      </Paper>
+    </Box>
   );
 }

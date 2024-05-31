@@ -62,7 +62,6 @@ public class MenuServiceImpl implements MenuService {
     public ResponseEntity<Response> addMenuOption(MenuOptionAddRequestDto requestDto) {
         MenuOption menuOption = new MenuOption(requestDto.getMenuId(), requestDto.getOptions(),
             requestDto.getPrice(), LocalDateTime.now(), LocalDateTime.now(), "일반");
-        System.out.println(menuOption);
         menuOptionRepository.save(menuOption);
         return Response.toResponseEntity(MENUOPTION_ADD_SUCCESS);
     }

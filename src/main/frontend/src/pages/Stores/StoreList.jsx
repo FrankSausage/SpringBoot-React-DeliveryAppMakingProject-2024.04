@@ -31,11 +31,8 @@ export default function StoreList({ category, searchText, initialSort }) {
             <Grid item xs={12} sx={{ textAlign: 'center', mb: 2 }}>
                 <FormControl variant="outlined" sx={{ minWidth: 200 }}>
                     <InputLabel>Sort By</InputLabel>
-                    <Select
-                        value={sort}
-                        onChange={(e) => setSort(e.target.value)}
-                        label="Sort By">
-												<MenuItem value="default">기본 정렬</MenuItem>
+                    <Select value={sort} onChange={(e) => setSort(e.target.value)} label="Sort By" sx={{bgcolor: '#fff', textAlign:'center'}}>
+                        <MenuItem value="default">기본 정렬</MenuItem>
                         <MenuItem value="rating">별점</MenuItem>
                         <MenuItem value="dibs">찜</MenuItem>
                         <MenuItem value="reviews">리뷰 수</MenuItem>
@@ -46,14 +43,13 @@ export default function StoreList({ category, searchText, initialSort }) {
             <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center' }}>
                 <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
                     {!isLoading && sortedStoreList.length === 0 &&
-                        <Typography variant="h4" sx={{ textAlign: 'center' }}>가게가 존재하지 않아요!</Typography>
-                    }
+                        <Typography variant="h4" sx={{ textAlign: 'center' }}>가게가 존재하지 않아요!</Typography>}
                     {!isLoading && sortedStoreList && (
                         sortedStoreList.map((data) => (
-                            <Box key={data.storeId} component={Link} to={`/StoreDetail/${data.storeId}`} state={{ storeName: data.name, isDibed: data.isDibed }} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto' }}>
+                            <Box key={data.storeId} component={Link} to={`/StoreDetail/${data.storeId}`} state={{ storeName: data.name, isDibed: data.isDibed }} sx={{ ...boxStyle, position: 'relative', width: { xs: '90%', sm: '47%' }, height: '120px', marginX: 'auto', bgcolor: '#fff' }}>
                                 <img src={data.storePictureName} style={{ width: '20%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
-                                <ul style={{ position: 'absolute', top: '50%', left: '15%', transform: 'translateY(-50%)', padding: 0, margin: 0 , textAlign: 'left'}}>
-                                    <li style={{ listStyleType: 'none' }}>가게명:{data.name}</li>
+                                <ul style={{ position: 'absolute', top: '50%', left: '25%', transform: 'translateY(-50%)', padding: 0, margin: 0 , textAlign: 'left'}}>
+                                    <li style={{ listStyleType: 'none' }}>{data.name}</li>
                                     <li style={{ listStyleType: 'none' }}>별점:{data.rating}</li>
                                     <li style={{ listStyleType: 'none' }}>{data.isDibed==='찜' ? <FavoriteIcon sx={{color:'red', fontSize:'small'}} /> : <FavoriteBorderIcon />}찜 수: {data.dibsCount} </li>
                                     <li style={{ listStyleType: 'none' }}>리뷰 수:{data.reviewCount}</li>
