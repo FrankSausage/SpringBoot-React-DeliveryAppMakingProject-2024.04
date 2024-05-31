@@ -8,7 +8,7 @@ export default function MyReviews() {
   const email = localStorage.getItem('email')
   const navigate = useNavigate()
   const { getMyReviewList: {isLoading, data: reviewData }, deleteMyReview } = useReview(email);
-  console.log(reviewData)
+
   const handleDelete = reviewId => {
     deleteMyReview.mutate(reviewId, {
       onSuccess: () => {alert('리뷰 삭제에 성공했습니다.')},
