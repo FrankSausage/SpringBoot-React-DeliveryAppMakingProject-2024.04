@@ -3,6 +3,7 @@ import { Box, Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useOrderDetail } from "./Hook/useOrderOwner";
+import BackDrop from "../../components/BackDrop";
 
 export default function OwnerOrderDetail({ isPortalOpen, email, orderId }) {
   const queryClient = useQueryClient();
@@ -21,7 +22,7 @@ export default function OwnerOrderDetail({ isPortalOpen, email, orderId }) {
     <Fragment>
       {show ? 
         <Box>
-          {isLoading && <Typography>로딩 중...</Typography>}
+          {isLoading && <BackDrop isLoading={isLoading} />}
           {!isLoading && orderDetail && 
             <Stack>
               <Typography>주문 지역: {orderDetail.data.address.replace(',', ' ')}</Typography>

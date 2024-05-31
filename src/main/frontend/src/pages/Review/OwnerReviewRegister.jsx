@@ -1,12 +1,8 @@
-import { Box, Button, Card, CardContent, Portal, Stack, TextField, Typography } from "@mui/material";
-import React, { Fragment, useEffect, useRef, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
+import { Box, Button, Stack, TextField, } from "@mui/material";
+import React, { Fragment, useEffect, useState } from "react";
 import { useStoreReviewList } from "./Hook/useReview";
 
 export default function OwnerReviewRegister({ isPortalOpen, reviewId }) {
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [ownerReviewText, setOwnerReviewText] = useState('');
   const { postOwnerReview } = useStoreReviewList();

@@ -12,6 +12,7 @@ import SearchHeader from '../../components/SearchHeader';
 import { useDibs } from '../Dibs/Hook/useDibs';
 import { useStoreDeatilByEmail } from '../../utils/storeInfo';
 import { useQueryClient } from '@tanstack/react-query';
+import BackDrop from '../../components/BackDrop';
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -86,7 +87,7 @@ export default function StoreDetail() {
     <Box sx={{ margin: -1 }}>
     <Box sx={{ height: 'auto', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column' }}>
       <SearchHeader />
-      {isLoading && <Typography>로딩 중...</Typography>}
+      {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && storeDetail && 
       <Fragment>
       <Box sx={{ borderBottom: 1, borderColor: 'black', display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
@@ -104,13 +105,13 @@ export default function StoreDetail() {
         <Grid container>
           <Grid item xs={4}/>
           <Grid item xs={2.5}>
-            <Typography variant='h4' sx={{textAlign:'end'}}>{storeDetail.name}</Typography>
+            <Typography variant='h4' sx={{textAlign:'end', mt: 3}}>{storeDetail.name}</Typography>
           </Grid>
           <Grid item sx={{ml:2}} xs> 
             {role!=='점주' && storeDetail.isDibed==='일반' || storeDetail.isDibed===null ? 
-              <FavoriteBorderIcon sx={{cursor:'pointer', fontSize:30,}} onClick={() => handleDib(storeDetail.isDibed)} />
+              <FavoriteBorderIcon sx={{cursor:'pointer', fontSize:30, mt: 3}} onClick={() => handleDib(storeDetail.isDibed)} />
               :
-              <FavoriteIcon sx={{cursor:'pointer', fontSize:30, color:'red'}} onClick={() => handleDib(storeDetail.isDibed)} />
+              <FavoriteIcon sx={{cursor:'pointer', fontSize:30, color:'red', mt: 3}} onClick={() => handleDib(storeDetail.isDibed)} />
             } 
           </Grid>
         </Grid>

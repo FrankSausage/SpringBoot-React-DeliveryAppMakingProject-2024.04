@@ -10,6 +10,7 @@ import { extractDataFromFormData, formatPhoneNumber } from '../../utils/commonUi
 import { getCurrentUser, logout, updateUser } from '../../utils/firebase';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from './Hook/useUser';
+import BackDrop from '../../components/BackDrop';
 
 const theme = createTheme({
   palette: {
@@ -145,7 +146,7 @@ export default function Update() {
 
   return (
     <ThemeProvider theme={theme}>
-      {isLoading && <Typography>Loading...</Typography>}
+      {isLoading && <BackDrop isLoading={isLoading} />}
       {error && <Typography>에러 발생!</Typography>}
       {user && user.data &&
         <>
@@ -199,46 +200,16 @@ export default function Update() {
                   {role === '회원' &&
                     <Fragment>
                       <Grid item xs={12}>
-                        <TextField
-                          required
-                          fullWidth
-                          id="roadAddress"
-                          label="도로명주소"
-                          value={updateRoadAddress}
-                          InputProps={{
-                            readOnly: true,
-                          }}
-                        />
+                        <TextField required fullWidth id="roadAddress" label="도로명주소" value={updateRoadAddress} InputProps={{ readOnly: true}} />
                       </Grid>
-                      <Button
-                        type="button"
-                        onClick={handleFindPostcode}
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 1, mb: 2, ml: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'}}}>
+                      <Button type="button" onClick={handleFindPostcode} fullWidth variant="contained"  sx={{ mt: 1, mb: 2, ml: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'}}}>
                         주소 찾기
                       </Button>
                       <Grid item xs={12}>
-                        <TextField
-                          required
-                          fullWidth
-                          id="extraAddress"
-                          label="참고항목"
-                          value={updateExtraAddress}
-                          InputProps={{
-                            readOnly: true,
-                          }}
-                        />
+                        <TextField required fullWidth id="extraAddress" label="참고항목" value={updateExtraAddress} InputProps={{ readOnly: true }} />
                       </Grid>
                       <Grid item xs={12}>
-                        <TextField
-                          required
-                          fullWidth
-                          id="detailAddress"
-                          label="상세주소"
-                          value={updateDetailAddress}
-                          onChange={e => setUpdateDetailAddress(e.target.value)}
-                        />
+                        <TextField required fullWidth id="detailAddress" label="상세주소" value={updateDetailAddress} onChange={e => setUpdateDetailAddress(e.target.value)}  />
                       </Grid>
                     </Fragment>
                   }
@@ -257,12 +228,7 @@ export default function Update() {
           </Container>
           </Box>
           {/* </div> */}
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
+          <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description" >
             <Box sx={modalStyle}>
               <Typography id="modal-modal-title" variant="h5" component="h2" sx={{ textAlign: 'center' }}>
                 계정 삭제
@@ -286,14 +252,4 @@ export default function Update() {
   );
 }
 
-const modalStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  borderRadius: 2,
-  boxShadow: 24,
-  p: 4,
-};
+const modalStyle = { position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 24, p: 4 };
