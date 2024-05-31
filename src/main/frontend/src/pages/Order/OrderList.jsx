@@ -9,7 +9,6 @@ import BackDrop from "../../components/BackDrop";
 
 export default function OrderList() {
   const email = localStorage.getItem('email');
-  const navigate = useNavigate();
   const { getOrderListByEmail: {isLoading, data: orderData}} = useOrder(email);
   const [ openPortal, setOpenPortal ] = useState(false);
   const [ activeIndex, setActiveIndex ] = useState('');
@@ -17,10 +16,6 @@ export default function OrderList() {
   const handleClick = index => {
     setOpenPortal(!openPortal);
     setActiveIndex(index);
-  }
-
-  const handleNav = storeId => {
-    navigate(`/StoreDetail/${storeId}`);
   }
 
   return (
