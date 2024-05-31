@@ -90,7 +90,7 @@ public class OrderServiceImpl implements OrderService {
         Orders orders = new Orders(stores.getStoreId(), users.getUserId(),
             deliveryUsers.getUserId(), requestDto.getPaymentMethod(), requestDto.getPoint(),
             requestDto.getTotalPrice(),
-            requestDto.getRequests(), LocalDateTime.now(), LocalDateTime.now(), "결제완료",
+            requestDto.getRequests(), LocalDateTime.now(), LocalDateTime.now(), "접수대기",
             requestDto.getAddress());
 
         Long orderId = ordersRepository.save(orders).getOrderId();
