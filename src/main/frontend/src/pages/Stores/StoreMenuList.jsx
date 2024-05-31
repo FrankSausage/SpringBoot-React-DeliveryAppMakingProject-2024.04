@@ -100,7 +100,7 @@ export default function StoreMenuList({ storeName }) {
                   sx={{ textDecoration: 'none', color: 'black', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', }}>
                     <ul style={{ padding: 0, textAlign:'center' }}>
                       <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.name}</li>
-                      <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.price}원</li>
+                      <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</li>
                       {status[idx] && (
                         <li style={{ listStyleType: 'none' }}>{res.status}</li>
                       )}
