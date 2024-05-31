@@ -30,9 +30,9 @@ export default function StoreList({ category, searchText, initialSort }) {
         <Grid container>
             <Grid item xs={12} sx={{ textAlign: 'center', mb: 2 }}>
                 <FormControl variant="outlined" sx={{ minWidth: 200 }}>
-                    <InputLabel>Sort By</InputLabel>
+                    <InputLabel>정렬</InputLabel>
                     <Select value={sort} onChange={(e) => setSort(e.target.value)} label="Sort By" sx={{bgcolor: '#fff', textAlign:'center'}}>
-                        <MenuItem value="default">기본 정렬</MenuItem>
+                        <MenuItem value="default">기본</MenuItem>
                         <MenuItem value="rating">별점</MenuItem>
                         <MenuItem value="dibs">찜</MenuItem>
                         <MenuItem value="reviews">리뷰 수</MenuItem>
