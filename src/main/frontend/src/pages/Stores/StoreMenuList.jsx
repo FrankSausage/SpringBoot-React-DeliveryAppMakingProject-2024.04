@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Grid, Typography, Button, Stack, CssBaseline, Tabs, Tab } from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useMenuListByStoreId } from '../../utils/storeInfo';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { getCurrentUser } from '../../utils/firebase';
@@ -12,6 +12,7 @@ import MenuDetail from './Menus/MenuDetail';
 const defaultTheme = createTheme();
 
 export default function StoreMenuList({ storeName }) {
+  const navigate = useNavigate();
   const email = localStorage.getItem('email');
   const role = localStorage.getItem('role');
   const { storeId } = useParams();
@@ -60,9 +61,13 @@ export default function StoreMenuList({ storeName }) {
     }, 500);
   };
 
-  const handleOpen = (e, idx) => {
-    setActiveIndex(idx);
-    setOpen(prev => !prev && true);
+  const handleOpen = (e, idx, menuId) => {
+    if (role==='회원') {
+      setActiveIndex(idx);
+      setOpen(prev => !prev && true);
+    } else if(role==='점주') {
+      navigate('/MenuUpdate', {state: { menuId: menuId, storeId: storeId, storeName: storeName }})
+    }
   }
   const handleClose = () => {
     setOpen(false);
@@ -102,7 +107,7 @@ export default function StoreMenuList({ storeName }) {
             </Grid>
           )}
           <Grid item xs={12} sm={6} md={4} lg={4}>
-            <Box onClick={e => handleOpen(e, idx)} sx={{ ...boxStyle, position: 'relative', width: '100%', height: 'auto', marginX: 'auto', display: 'flex', alignItems: 'center' }}>
+            <Box onClick={e => handleOpen(e, idx, res.menuId)} sx={{ ...boxStyle, position: 'relative', width: '100%', height: 'auto', marginX: 'auto', display: 'flex', alignItems: 'center' }}>
               <Box sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
                 <img src={res.menuPictureName} style={{ width: '150px', height: '120px', objectFit: 'cover', marginRight: '16px' }} />
               </Box>
