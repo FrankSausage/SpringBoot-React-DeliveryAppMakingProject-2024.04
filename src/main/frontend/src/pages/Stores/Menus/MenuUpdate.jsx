@@ -30,8 +30,6 @@ export default function MenuUpdate() {
   const [initialMenuPictureName, setInitialMenuPictureName] = useState('');
   const [menuPictureUrl, setMenuPictureUrl] = useState('');  // 업로드된 이미지 URL을 저장할 상태 추가
   const [isFileUploading, setIsFileUploading] = useState(false);
-  console.log(isFileUploading)
-  console.log(menuPictureUrl)
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [type , setType ] = useState('');

@@ -249,7 +249,7 @@ export default function StoreUpdate() {
         });
     }
   };
-  console.log(store)
+
   return (
     <ThemeProvider theme={defaultTheme}>
       {isLoading && <BackDrop isLoading={isLoading} />}

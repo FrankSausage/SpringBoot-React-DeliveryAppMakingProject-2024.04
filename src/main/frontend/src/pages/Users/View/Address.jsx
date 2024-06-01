@@ -13,6 +13,7 @@ import axios from "axios";
 import AddressUpdate from "../AddressUpdate";
 import AddressDelete from "../AddressDelete";
 import SearchHeader from "../../../components/SearchHeader";
+import BackDrop from "../../../components/BackDrop";
 
 
 export default function Address() {
@@ -122,7 +123,7 @@ export default function Address() {
             <MailSharpIcon />
           </Avatar>
           <Stack sx={{ maxWidth:'500px', width:'100%', textAlign: 'center', marginLeft: '85px' }}>
-            {isLoading && <Typography>로딩 중..</Typography>}
+            {isLoading && <BackDrop isLoading={isLoading} />}
             {error && <Typography>에러 발생!</Typography>}
             {address && 
             <Box>

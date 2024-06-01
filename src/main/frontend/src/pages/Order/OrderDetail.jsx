@@ -1,5 +1,5 @@
-import { Box, Button, Card, CardContent, Portal, Stack, Typography } from "@mui/material";
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import { Box, Button, Card, CardContent, Stack, Typography } from "@mui/material";
+import React, { Fragment, useEffect, useState } from "react";
 import { useOrder } from "./Hook/useOrder";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
@@ -9,7 +9,7 @@ export default function OrderDetail({ isPortalOpen, email, orderId }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const { deleteOrderByOrderId , getOrderDetailByOrderId: {isLoading, error, data: orderDetailData} } = useOrder(email , orderId);
+  const { deleteOrderByOrderId , getOrderDetailByOrderId: {isLoading, data: orderDetailData} } = useOrder(email , orderId);
 
   useEffect(() =>{
     setShow(isPortalOpen.openPortal)

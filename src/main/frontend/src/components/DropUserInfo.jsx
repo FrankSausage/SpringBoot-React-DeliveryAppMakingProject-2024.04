@@ -3,11 +3,10 @@ import { useNavigate, useOutletContext } from 'react-router-dom';
 import { logout } from '../utils/firebase';
 import {Popover,  Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Typography,} from '@mui/material';
 import ListAltIcon from '@mui/icons-material/ListAlt';
-import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import Cart from '../pages/Cart/View/Cart';
+import RateReviewIcon from '@mui/icons-material/RateReview';
 import { FaUser } from 'react-icons/fa';
 
 export default function DropUserInfo({ role}) {
@@ -84,14 +83,6 @@ export default function DropUserInfo({ role}) {
           {role!=='점주' &&
           <Fragment>
           <ListItem>
-            <ListItemButton>
-              <ListItemIcon sx={{color:'black'}}>
-                <Cart allClose={handleClose} />
-              </ListItemIcon>
-              <ListItemText primary="장바구니"/>
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
             <ListItemButton onClick={() => handleNavigate('Dibs')}>
               <ListItemIcon sx={{color:'black'}}>
   						  <FavoriteIcon />
@@ -110,20 +101,20 @@ export default function DropUserInfo({ role}) {
           <ListItem>
             <ListItemButton onClick={() => handleNavigate('MyReviews')}>
               <ListItemIcon sx={{color:'black'}}>
-                <ListAltIcon/>
+                <RateReviewIcon/>
               </ListItemIcon>
               <ListItemText primary="리뷰 관리"/>
             </ListItemButton>
           </ListItem>
           </Fragment>
           }
-          <Divider />
+          <Divider sx={{borderColor:'black', borderWidth:1}}/>
           <ListItem>
             <ListItemButton onClick={() => handleLogout()}>
               <ListItemIcon sx={{color:'black'}}>
                 <LogoutIcon />
               </ListItemIcon>
-              <ListItemText sx={{cursor:'pointer'}} primary="로그아웃" />
+              <ListItemText sx={{cursor:'pointer', }} primary="로그아웃" />
             </ListItemButton>
           </ListItem>
         </List>

@@ -23,6 +23,7 @@ export function Success() {
       }, {
         onSuccess: () => {
           localStorage.removeItem('cartItems');
+          localStorage.removeItem('cartCount');
           sessionStorage.removeItem('tossTemp');
           alert('결제가 성공적으로 진행 되었습니다.');
           navigate('/');

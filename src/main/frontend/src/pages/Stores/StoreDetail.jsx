@@ -13,7 +13,7 @@ import { useDibs } from '../Dibs/Hook/useDibs';
 import { useStoreDeatilByEmail } from '../../utils/storeInfo';
 import { useQueryClient } from '@tanstack/react-query';
 import BackDrop from '../../components/BackDrop';
-
+import StoreReviews from '../Review/View/StoreReviews';
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -56,7 +56,6 @@ export default function StoreDetail() {
   const { postDibStore } = useDibs();
   const [value, setValue] = useState(1);
   const [popularity, setPopularity] = useState('');
-  const navigate = useNavigate();
 
   const handleChange = (e, newValue) => {
     setValue(newValue);
@@ -122,6 +121,9 @@ export default function StoreDetail() {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <StoreInfo storeDetail={storeDetail} />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={3}>
+        <StoreReviews storeId={storeDetail.storeId} />
       </CustomTabPanel>
       <Footer />
       </Fragment>

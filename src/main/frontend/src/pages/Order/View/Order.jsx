@@ -17,7 +17,6 @@ export default function Order() {
 	const [request, setRequest] = useState('');
 	const [paymentMethod, setPaymentMethod] = useState('');
 	const [point, setPoint] = useState(0);
-	const [isModalOpen, setIsModalOpen] = useState(false);
 	const cartItems = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [];
 
 	const handleSubmit = () => {
@@ -65,38 +64,12 @@ export default function Order() {
 		}, {
 			onSuccess: () => {
 				localStorage.removeItem('cartItems');
+				localStorage.removeItem('cartCount');
 				navigate('/')
 			},
 			onError: e => {console.log(e)},
 		})
 	}
-
-	const closeModal = () => {
-		setIsModalOpen(false);
-	};
-
-	const handlePrepayment = () => {
-		// 선결제 전에도 주문을 등록한다
-		postOrderRegist.mutate({
-		  storeId: cartItems[0].storeId,
-		  userEmail: email,
-		  deliveryUserEmail: email,
-		  paymentMethod: '선결제',
-		  point: point,
-		  totalPrice: totalPrice,
-		  request: request,
-		  address: address,
-		  menus: cartItems
-		}, {
-		  onSuccess: res => { 
-			console.log('성공',res);
-			// 주문이 성공적으로 등록되면 선결제 페이지로 이동한다
-			navigate('/checkout', { state: { orderData: { userEmail: email, point: point, totalPrice: totalPrice, menus: cartItems } } });
-			setIsModalOpen(false);
-		  },
-		  onError: e => { console.log('실패', e); },
-		});
-	  };
 
 	return (
 		<Card sx={{ width: '80%', margin: 'auto', padding: 2, mt: 3, border: 1 }}>
@@ -168,27 +141,6 @@ export default function Order() {
 				<Button sx={{ border: 1, width: '30%' }} color="error" onClick={() => navigate(-1)}>돌아가기</Button>
 				<Button sx={{ border: 1, width: '30%' }} onClick={handleSubmit}>주문하기</Button>
 			</Stack>
-
-			{/* Modal for Prepayment */}
-			<Modal
-				isOpen={isModalOpen}
-				onRequestClose={closeModal}
-				contentLabel="Checkout Modal"
-				style={{
-					content: {
-						top: '50%',
-						left: '50%',
-						right: 'auto',
-						bottom: 'auto',
-						marginRight: '-50%',
-						transform: 'translate(-50%, -50%)'
-					}
-				}}
-			>
-				<h2>선결제창 가기</h2>
-				<Button onClick={handlePrepayment}>선결제창</Button>
-				<Button onClick={closeModal}>취소</Button>
-			</Modal>
 		</Card>
 	);
 }

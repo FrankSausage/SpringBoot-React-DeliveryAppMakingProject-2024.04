@@ -3,12 +3,13 @@ import React, { Fragment } from "react";
 import { useReview } from "../Hook/useReview";
 import { useNavigate } from "react-router";
 import BackDrop from "../../../components/BackDrop";
+import { Stack } from "react-bootstrap";
 
 export default function MyReviews() { 
   const email = localStorage.getItem('email')
   const navigate = useNavigate()
   const { getMyReviewList: {isLoading, data: reviewData }, deleteMyReview } = useReview(email);
-  console.log(reviewData)
+
   const handleDelete = reviewId => {
     deleteMyReview.mutate(reviewId, {
       onSuccess: () => {alert('리뷰 삭제에 성공했습니다.')},
@@ -18,10 +19,14 @@ export default function MyReviews() {
     <Box>
       {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && reviewData && reviewData.data.reviewList.length===0 &&
-      <Fragment>
-      <Typography>아직 리뷰를 남긴 가게가 없어요!</Typography>
-      <Button variant="contained" onClick={() => navigate('/OrderList')}>리뷰 쓰러 가기</Button>
-      </Fragment>
+        <Card sx={{m: 'auto',border:1, width: '50%', height: 400, alignContent:'center'}}>
+          <CardContent sx={{textAlign:'center'}}>
+            <Typography >아직 리뷰를 남긴 가게가 없어요!</Typography>
+          </CardContent>
+          <Stack>
+            <Button sx={{mx:'auto', width:'50%'}} variant="contained" onClick={() => navigate('/OrderList')}>리뷰 쓰러 가기</Button>
+          </Stack>
+        </Card>
       }
       {!isLoading && reviewData &&
         <Fragment>
