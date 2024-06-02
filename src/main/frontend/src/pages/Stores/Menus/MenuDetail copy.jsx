@@ -49,31 +49,6 @@ export default function MenuDetail(props) {
           <Typography variant="h5" sx={{textAlign:'center', mt: 3, mb:-5}}> {menuDetailData.menus.name} </Typography>
             <Grid container sx={{backgroundColor: 'rgba(255, 255, 255, 0.6)', mt:10, width: 500 }}>
                 <Stack>
-                
-                <Card sx={{mb:1}}>
-                    <CardContent sx={{m:1}}>
-                      <img src={menuDetailData.menus.menuPictureName} style={{ width: '80%', height: 'auto', display: 'block', margin: '0 auto', borderRadius: '8px'}} />
-                      <Divider />
-                        {menuDetailData.menus.options && menuDetailData.menus.options.map((data, idx) => (
-                          <Stack direction={'row'} key={idx}>
-                            <Grid container sx={{justifyContent:'start'}}>
-                              <Grid item xs={5}>
-                                <FormControlLabel 
-                                control={<Checkbox onClick={() => handleAddItem(data)}/>}
-                                label={data.options}
-                                labelPlacement="end"
-                                />
-                              </Grid>
-                              <Grid item xs={4}/>
-                              <Grid item xs={3} sx={{alignContent:'center', textAlign:'end'}}>
-                                <Typography>+{data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Typography>
-                              </Grid>
-                            </Grid>
-                          </Stack>
-                        ))}
-                    </CardContent>
-                  </Card>
-
                 <Card sx={{my:4, width: 500}}>
                   <CardContent sx={{m:1}}>
                     <Typography sx={{textAlign:'center'}} variant="h6">가격</Typography>
