@@ -1,17 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import SearchHeader from "../../../components/SearchHeader";
 import Footer from "../../../components/Footer";
 
+
+const images = [ "img/m01.jpg", "img/s0.jpg", "img/s01.jpg", "img/sl0.jpg" ];
+
 export default function UserMain() {
+
+  const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prevImage) => (prevImage + 1) % images.length);
+    }, 3000); // 3초마다 이미지 변경
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Box sx={{ bgcolor: '#f8f8f8', minHeight: '100vh', m: -1 }}>
       <SearchHeader />
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Stack sx={{ maxHeight: 200, borderRadius: 0, overflow: 'hidden' }}>
-              <Box
+              {/* <Box
                 sx={{
                   width: '100%',
                   height: 130,
@@ -20,7 +33,18 @@ export default function UserMain() {
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                 }}
-              />
+              /> */}
+              <Box
+              sx={{
+                width: '100%',
+                height: 130,
+                backgroundImage: `url(${images[currentImage]})`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                transition: 'background-image 1s ease-in-out',
+              }}
+            />
             </Stack>
           </Grid>
         </Grid>
