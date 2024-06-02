@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, InputBase, Button, Typography, Stack, Container, Paper } from '@mui/material/';
+import { Box, Grid, InputBase, Button, Typography, Stack, Container, Paper, Rating } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link, useParams } from 'react-router-dom';
 import SearchHeader from '../../../components/SearchHeader';
@@ -39,7 +39,7 @@ export default function OwnerMain() {
   };
 
   return (
-    <Box sx={{ margin: -1, paddingBottom: '100px' }}>
+    <Box sx={{ margin: -1 }}>
       <SearchHeader />
       {/* <Grid container justifyContent="center" alignItems="center" mt={2}>
         <Grid item xs={10} md={6}>
@@ -54,7 +54,7 @@ export default function OwnerMain() {
           </Box>
         </Grid>
       </Grid> */}
-      <Paper elevation={3} sx={{ height: 'auto', backgroundImage: 'url(/img/Okitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
+      <Paper elevation={3} sx={{ height: '100vh', backgroundImage: 'url(/img/Okitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
         {isLoading && <BackDrop isLoading={isLoading} />}
         {error && <Typography>에러 발생!</Typography>}
         {!isLoading && storeData?.storeList?.length === 0 && (
@@ -71,7 +71,7 @@ export default function OwnerMain() {
                         <img src={data.storePictureName.split(',')[0]} style={{ width: '100px', height: '100px', borderRadius: '8px', objectFit: 'cover' }} alt="가게 이미지" />
                         <Box sx={{ ml: 2 }}>
                           <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{data.name}</Typography>
-                          <Typography variant="body2" color="textSecondary">별점: {data.rating}</Typography>
+                          <Typography variant="body2" color="textSecondary">< Rating name="read-only" value={data.rating} readOnly /></Typography>
                           <Typography variant="body2" color="textSecondary">리뷰: {data.reviewCount}</Typography>
                           <Typography variant="body2" color="textSecondary">조회수: {data.dibsCount}</Typography>
                         </Box>
