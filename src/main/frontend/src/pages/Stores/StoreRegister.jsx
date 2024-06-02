@@ -111,7 +111,7 @@ export default function StoreRegister() {
       data.append('type', type);
       data.append('operationHours', `${openHours}~${closeHours}`);
       data.append('closedDays', selectedDays.join(','));
-      data.append('storePictureName', storePictureUrl ? storePictureUrl : storePictureUrl );
+      data.append('storePictureName', storePictureUrl ? storePictureUrl : storePictureName );
       return await data;
     }
     catch (error) {
@@ -299,7 +299,7 @@ export default function StoreRegister() {
                     </Grid>
                   </Grid>
                   {isFileUploading ?
-                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
+                    <Button type="submit" fullWidth disabled variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
                       입점 신청하기
                     </Button>
                     :

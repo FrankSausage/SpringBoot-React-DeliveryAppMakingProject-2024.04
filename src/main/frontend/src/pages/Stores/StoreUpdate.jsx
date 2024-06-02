@@ -12,6 +12,7 @@ import SearchHeader from '../../components/SearchHeader';
 import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
 import { uploadImageToCloudinary } from '../../utils/uploader';
+import BackDrop from '../../components/BackDrop';
 
 const defaultTheme = createTheme();
 
@@ -248,9 +249,10 @@ export default function StoreUpdate() {
         });
     }
   };
+
   return (
     <ThemeProvider theme={defaultTheme}>
-      {isLoading && <Typography>...Loading</Typography>}
+      {isLoading && <BackDrop isLoading={isLoading} />}
       {error && <Typography>에러 발생!</Typography>}
       {store && store.addressCodes &&
         <>
@@ -268,7 +270,7 @@ export default function StoreUpdate() {
                       <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>
                     </Typography>
                     <Typography component="h1" variant="h5">
-                      온라인 입점 신청서
+                      가게 정보 수정
                     </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                       <Grid container spacing={2}>

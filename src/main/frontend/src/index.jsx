@@ -24,7 +24,6 @@ import StoreReviews from './pages/Review/View/StoreReviews';
 // Menus
 import MenuRegister from './pages/Stores/Menus/MenuRegister';
 import MenuUpdate from './pages/Stores/Menus/MenuUpdate';
-import MenuDetail from './pages/Stores/Menus/MenuDetail';
 // Order
 import Order from './pages/Order/View/Order';
 import OrderList from './pages/Order/OrderList';
@@ -55,7 +54,6 @@ const router = createBrowserRouter([
       { path: 'MyReviews', element: <MyReviews />},
       { path: 'StoreReviews', element: <StoreReviews />},
       { path: 'MenuRegister/:storeId', element: <MenuRegister />},
-      { path: 'MenuDetail', element: <MenuDetail />},
       { path: 'MenuUpdate', element: <MenuUpdate />},
       { path: 'UserMain', element: <UserMain />,},
       { path: 'OwnerMain', element: <OwnerMain />},
@@ -66,6 +64,7 @@ const router = createBrowserRouter([
       { path: 'CheckOut', element: <TossChackOut />},
       { path: 'success', element: <Success />},
       { path: 'fail', element: <Fail />},
+
     ]
   }
 ]);
@@ -77,7 +76,4 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

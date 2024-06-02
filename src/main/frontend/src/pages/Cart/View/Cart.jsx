@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Box, Card, CardContent, Divider, Grid, Stack, Typography } from '@mui/material';
+import { Badge,  Card, CardContent, Divider, Grid, Stack, Typography, styled } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -62,10 +62,19 @@ export default function Cart({ allClose }) {
   return (
     <React.Fragment>
       <React.Fragment>
-        <Box>
-          <ShoppingCartIcon onClick={handleClickOpen} /> 
-        </Box>
-          {/* <Typography sx={{cursor:'pointer', pl:3}} onClick={handleClickOpen}>장바구니</Typography> */}
+        {localStorage.getItem('cartCount')>0 ?
+        <StyledBadge
+          overlap="circular"
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+          badgeContent={localStorage.getItem('cartCount') && localStorage.getItem('cartCount')}
+          max={9}
+          color='secondary'
+        >
+          <ShoppingCartIcon sx={{color:'white'}} onClick={handleClickOpen} /> 
+        </StyledBadge>
+        :
+          <ShoppingCartIcon sx={{color:'white'}} onClick={handleClickOpen} /> 
+        }
       </React.Fragment>
       <Dialog
         open={open}
@@ -76,7 +85,7 @@ export default function Cart({ allClose }) {
       >
         <DialogTitle variant='h4' sx={{textAlign:'center', width:500, backgroundColor: '#ffbe33', color: '#222831'}}>{"장바구니"}</DialogTitle>
           <Typography sx={{textAlign:'center', mb:0, backgroundColor: '#ffbe33', color: '#222831', fontSize: '1rem'}}>최종 가격: {totalPrice ? totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}원</Typography>
-        <DialogContent sx={{borderTop:1, backgroundColor:'#222831'}}>
+        <DialogContent sx={{borderTop:1}}>
           <DialogContentText id="주문 목록">
             {!localStorage.getItem('cartItems') && <Typography sx={{textAlign:'center', fontSize: 30}}>아직 주문 내역이 없어요!</Typography>}
             {cartItems &&
@@ -128,4 +137,23 @@ export default function Cart({ allClose }) {
     </React.Fragment>
   );
 }
+// const StyledBadge = styled(Badge)(({ theme }) => ({
+//   '& .MuiBadge-badge': {
+//     right: -3,
+//     top: 13,
+//     border: `2px solid ${theme.palette.background.paper}`,
+//     padding: '0 4px',
+//   },
+// }));
 
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    backgroundColor: '#44b700',
+    color: 'white',
+    width: 11,
+    height: 18,
+    textAlign:'center',
+    border: `2px solid ${theme.palette.background.paper}`,
+    borderRadius: '30%',
+  },
+}));

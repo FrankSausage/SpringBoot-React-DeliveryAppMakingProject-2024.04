@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Grid, Typography, Button, Stack, CssBaseline, Tabs, Tab } from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useMenuListByStoreId } from '../../utils/storeInfo';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { getCurrentUser } from '../../utils/firebase';
 import MenuOptionRegister from './Menus/MenuOptionRegister';
 import { useStore } from './Hook/useStore';
+import BackDrop from "../../components/BackDrop";
+import MenuDetail from './Menus/MenuDetail';
 
 const defaultTheme = createTheme();
 
 export default function StoreMenuList({ storeName }) {
+  const navigate = useNavigate();
   const email = localStorage.getItem('email');
   const role = localStorage.getItem('role');
   const { storeId } = useParams();
   const [status, setStatus] = useState([]);
   const [tabIndex, setTabIndex] = useState(0);
+  const [ open, setOpen ] = useState(false);
+  const [ activeIndex, setActiveIndex ] = useState(false);
   const { isLoading, error, menuData } = useMenuListByStoreId(storeId);
   const { postChangeMenuStatus } = useStore();
 
@@ -56,6 +61,18 @@ export default function StoreMenuList({ storeName }) {
     }, 500);
   };
 
+  const handleOpen = (e, idx, menuId) => {
+    if (role==='회원') {
+      setActiveIndex(idx);
+      setOpen(prev => !prev && true);
+    } else if(role==='점주') {
+      navigate('/MenuUpdate', {state: { menuId: menuId, storeId: storeId, storeName: storeName }})
+    }
+  }
+  const handleClose = () => {
+    setOpen(false);
+  }
+
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
   };
@@ -90,23 +107,25 @@ export default function StoreMenuList({ storeName }) {
             </Grid>
           )}
           <Grid item xs={12} sm={6} md={4} lg={4}>
-            <Box sx={{ ...boxStyle, position: 'relative', width: '100%', height: 'auto', marginX: 'auto', display: 'flex', alignItems: 'center' }}>
-              <Box component={Link} to={role === '회원' ? `/MenuDetail` : `/MenuUpdate`} state={{ menuId: res.menuId, storeId: storeId, storeName: storeName }} sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
+            <Box onClick={e => handleOpen(e, idx, res.menuId)} sx={{ ...boxStyle, position: 'relative', width: '100%', height: 'auto', marginX: 'auto', display: 'flex', alignItems: 'center' }}>
+              <Box sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
                 <img src={res.menuPictureName} style={{ width: '150px', height: '120px', objectFit: 'cover', marginRight: '16px' }} />
               </Box>
               <Box sx={{ flexGrow: 1}}>
-                <Box component={Link} to={role === '회원' ? `/MenuDetail` : `/MenuUpdate`} state={{ menuId: res.menuId, storeId: storeId, storeName: storeName }}
-                  sx={{ textDecoration: 'none', color: 'black', textOverflow: 'ellipsis' }}>
+                {/* <Box component={Link} to={role === '회원' ? `/MenuDetail` : `/MenuUpdate`} state={{ menuId: res.menuId, storeId: storeId, storeName: storeName }}
+                  sx={{ textDecoration: 'none', color: 'black', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', }}> */}
+                <Box sx={{ textDecoration: 'none', color: 'black', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', }}>
                     <ul style={{ padding: 0, textAlign:'center' }}>
                       <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.name}</li>
-                      <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.price}원</li>
+                      <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</li>
                       {status[idx] && (
                         <li style={{ listStyleType: 'none' }}>{res.status}</li>
                       )}
                     </ul>
+                    {open && role==='회원' && activeIndex === idx && <MenuDetail storeId={storeId} menuId={res.menuId} storeName={storeName} handleOpen={open} menuClose={handleClose}/> }
                 </Box>
                 {role === '점주' &&
-                  <Stack direction="row" spacing={1}>
+                  <Stack direction="row" spacing={1} sx={{justifyContent:'center'}}>
                     <Button
                       variant="contained"
                       color={status[idx] ? 'primary' : 'secondary'}
@@ -118,6 +137,7 @@ export default function StoreMenuList({ storeName }) {
                     </Button>
                   </Stack>}
               </Box>
+              <Grid item></Grid>
             </Box>
           </Grid>
         </React.Fragment>
@@ -134,7 +154,7 @@ export default function StoreMenuList({ storeName }) {
         <Tab label="세트 메뉴" />
         <Tab label="사이드 메뉴" />
       </Tabs>
-      {isLoading && <Typography>Loading...</Typography>}
+      {isLoading && <BackDrop isLoading={isLoading} />}
       {error && <Typography>에러 발생!</Typography>}
       {!isLoading && menuData && (
         <Grid container spacing={2}>
@@ -168,6 +188,7 @@ let boxStyle = {
   position: 'relative',
   transition: 'box-shadow 0.3s ease',
   display: 'flex',
+  flexDirection: 'column',
   alignItems: 'center',
   '&:hover': {
     boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.2)',
