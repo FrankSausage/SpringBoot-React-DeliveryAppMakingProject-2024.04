@@ -1,14 +1,12 @@
-import { Button, Box, Card, CardContent, Checkbox, FormControlLabel, Grid, Radio, Stack, Typography } from "@mui/material";
 import React, { Fragment, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useMenuDetailByMenuId } from "../../../utils/storeInfo";
-import { useCart } from "../../Cart/Hook/useCart";
+import { Button, Box, Card, CardContent, Checkbox, FormControlLabel, Grid, Radio, Stack, Typography, Dialog, Slide, Divider } from "@mui/material";
+import { useCart } from '../../Cart/Hook/useCart';
+import { useMenuDetailByMenuId } from '../../../utils/storeInfo';
+import CloseIcon from '@mui/icons-material/Close';
 import BackDrop from "../../../components/BackDrop";
 
-export default function MenuDetail() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { storeId, menuId, storeName } = location.state;
+export default function MenuDetail(props) {
+  const { handleOpen, menuClose, storeId, storeName, menuId } = props
   const { isLoading, error, menuDetailData } = useMenuDetailByMenuId(menuId)
   const { addItemToCart } = useCart();
   const [ items, setItems ] = useState([]);
@@ -28,25 +26,31 @@ export default function MenuDetail() {
       menuPrice: menuDetailData.menus.price, storeId: storeId, storeName: storeName, menuOptions: items}})
     .then(res => {
       if(res===false){
-        navigate(`/StoreDetail/${storeId}`, {state: {storeName: storeName}})
         return;
       }
       alert(`장바구니에 ${menuDetailData.menus.name}을(를) 담았습니다. `)
-      navigate(`/StoreDetail/${storeId}`, {state: {storeName: storeName}})
+      menuClose();
     });
   }
+
   return(
-    <Box sx={{ height: 'auto', minHeight: '100vh', backgroundImage: 'url(/img/m01.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '28px 0',}}>
+    <Dialog 
+    open={handleOpen}
+    keepMounted
+    >
+      {isLoading && <BackDrop isLoading={isLoading} />}      
+      <Box sx={BoxStyle}>
       <Fragment>
-        {isLoading && <BackDrop isLoading={isLoading} />}      
         {error && <Typography>정보를 받아오지 못했습니다!</Typography>}
         {!isLoading && menuDetailData && 
-            <Grid container sx={{backgroundColor: 'rgba(255, 255, 255, 0.6)', mt:10 }}>
-              <Grid item xs/>
-              <Grid item xs={4} sx={{ml: '70px', mr: 2}}>
-                <Card sx={{my:1}}>
+        <Fragment>
+          <Typography variant="h5" sx={{textAlign:'center', mt: 3, mb:-5}}> {menuDetailData.menus.name} </Typography>
+            <Grid container sx={{backgroundColor: 'rgba(255, 255, 255, 0.6)', mt:10, width: 500 }}>
+                <Stack>
+                <Card sx={{my:4, width: 500}}>
                   <CardContent sx={{m:1}}>
-                    <Typography variant="h6">가격</Typography>
+                    <Typography sx={{textAlign:'center'}} variant="h6">가격</Typography>
+                    <Divider sx={{borderWidth:2}}/>
                     <Stack direction={'row'}>
                       <Grid container sx={{justifyContent:'start'}}>
                         <Grid item xs={5}>
@@ -67,7 +71,8 @@ export default function MenuDetail() {
                 {menuDetailData.menus.options && menuDetailData.menus.options.length!==0 && 
                   <Card sx={{mb:1}}>
                     <CardContent sx={{m:1}}>
-                      <Typography variant="h6">옵션</Typography>
+                      <Typography sx={{textAlign:'center'}} variant="h6">옵션</Typography>
+                      <Divider />
                         {menuDetailData.menus.options && menuDetailData.menus.options.map((data, idx) => (
                           <Stack direction={'row'} key={idx}>
                             <Grid container sx={{justifyContent:'start'}}>
@@ -88,18 +93,28 @@ export default function MenuDetail() {
                     </CardContent>
                   </Card>
                 }
-              </Grid>
-              <Grid item xs={1}>
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                  <Button onClick={handleSubmit} variant="contained" 
-                    sx={{ mt: 3, mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'}, fontSize: '1rem'}}>장바구니 담기</Button>
-                  {/* <Button onClick={handleSubmit}>장바구니 담기</Button> */}
-                </Box>
-              </Grid>
-              <Grid item xs/>
+                </Stack>
             </Grid>
+            <Button onClick={handleSubmit} variant="contained" 
+              sx={{ mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'}, fontSize: '1rem'}}>장바구니 담기</Button>
+        </Fragment>
         }
       </Fragment>
     </Box>
+    </Dialog>
   );
+}
+
+let BoxStyle = {
+  height: 'auto', 
+  minHeight: '90vh', 
+  border:2,
+  backgroundImage: 'url(/img/m01.jpg)', 
+  backgroundSize: 'cover', 
+  backgroundPosition: 'center', 
+  backgroundBlendMode: 'lighten', 
+  backgroundColor: 'rgba(255, 255, 255, 0.6)', 
+  display: 'flex', 
+  flexDirection: 'column', 
+  p:3,
 }
