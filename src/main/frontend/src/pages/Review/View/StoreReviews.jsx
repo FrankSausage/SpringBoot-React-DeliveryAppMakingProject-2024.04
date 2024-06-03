@@ -1,18 +1,18 @@
 import { Box, Button, Card, CardContent, Grid, Rating, TextField, Typography } from "@mui/material";
 import React, { Fragment, useState } from "react";
 import {  useStoreReviewList } from "../Hook/useReview";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import OwnerReviewRegister from "../OwnerReviewRegister";
 import BackDrop from "../../../components/BackDrop";
 
-export default function StoreReviews(props) { 
-  const navigate = useNavigate()
-  const location = useLocation()
-  const { storeId } =  useState();
+export default function StoreReviews() { 
+  const location = useLocation();
+  const { storeId } =  useParams();
+  const { storeId: ownerStoreId} = location.state;
   const [ openPortal, setOpenPortal ] = useState(false);
   const [ activeIndex, setActiveIndex ] = useState(0); 
-  const { getStoreReviewList: {isLoading, data: storeReviewData }, deleteOwnerReview } = useStoreReviewList(storeId);
-  console.log(props);
+  const { getStoreReviewList: {isLoading, data: storeReviewData }, deleteOwnerReview } = useStoreReviewList(ownerStoreId ? ownerStoreId : storeId);
+  console.log(storeReviewData);
   
   const handleClick = (idx) => {
     setOpenPortal(!openPortal);
@@ -28,7 +28,7 @@ export default function StoreReviews(props) {
   return(
     <Box>
       {isLoading && <BackDrop isLoading={isLoading} />}
-      {!isLoading && !storeReviewData && 
+      {!isLoading && storeReviewData && storeReviewData.data.reviewList.length===0 &&
       <Box sx={{height:500}}>
         <Typography variant="h2" sx={{textAlign:'center'}}>아직 리뷰가 없어요!</Typography>
       </Box>

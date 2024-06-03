@@ -1,19 +1,18 @@
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import React, { Fragment, useState } from "react";
 import ListAltIcon from '@mui/icons-material/ListAlt';
-import { useOrder } from "./Hook/useOrder";
-import { useNavigate } from "react-router";
+import { useOrderList } from "./Hook/useOrder";
 import OrderDetail from "./OrderDetail";
 import ReviewRegister from "../Review/ReviewRegister";
 import BackDrop from "../../components/BackDrop";
 
 export default function OrderList() {
   const email = localStorage.getItem('email');
-  const { getOrderListByEmail: { isLoading, data: orderData } } = useOrder(email);
-  const [openPortal, setOpenPortal] = useState(false);
-  const [activeIndex, setActiveIndex] = useState('');
-
-  const handleClick = (index) => {
+  const [ openPortal, setOpenPortal ] = useState(false);
+  const [ activeIndex, setActiveIndex ] = useState('');
+  const { getOrderListByEmail: {isLoading, data: orderData}} = useOrderList(email, openPortal);
+  
+  const handleClick = index => {
     setOpenPortal(!openPortal);
     setActiveIndex(index);
   }
