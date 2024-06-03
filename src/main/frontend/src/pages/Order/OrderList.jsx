@@ -1,29 +1,36 @@
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import { Box, Card, CardContent, Dialog, Typography } from "@mui/material";
 import React, { Fragment, useState } from "react";
 import ListAltIcon from '@mui/icons-material/ListAlt';
+import CloseIcon from '@mui/icons-material/Close';
 import { useOrderList } from "./Hook/useOrder";
 import OrderDetail from "./OrderDetail";
 import ReviewRegister from "../Review/ReviewRegister";
 import BackDrop from "../../components/BackDrop";
 
-export default function OrderList() {
+export default function OrderList(props) {
   const email = localStorage.getItem('email');
+  const { handleOpen, orderClose } = props;
   const [ openPortal, setOpenPortal ] = useState(false);
   const [ activeIndex, setActiveIndex ] = useState('');
-  const { getOrderListByEmail: {isLoading, data: orderData}} = useOrderList(email, openPortal);
-  
+  const { getOrderListByEmail: {isLoading, data: orderData}} = useOrderList(email, handleOpen);
+
   const handleClick = index => {
     setOpenPortal(!openPortal);
     setActiveIndex(index);
   }
-
+  
   return (
+    <Dialog
+      open={handleOpen}
+      keepMounted
+    >
     <Box sx={{ padding: 2 }}>
       {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && !orderData && <Typography variant="h5">아직 주문한 내역이 없어요!</Typography>}
       {!isLoading && orderData && orderData.data.orders &&
         <Fragment>
           <Typography variant="h5" sx={{ mb: 2, textAlign:'center' }}>주문 내역</Typography>
+          <CloseIcon sx={CloseBoxStyle} onClick={() => orderClose()} />
           {orderData.data.orders.map((data, idx) => (
             <Fragment key={idx}>
               <Card sx={{ mb: 2, border: 1, boxShadow: 3, cursor: 'pointer', transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.02)' } }}>
@@ -49,5 +56,21 @@ export default function OrderList() {
         </Fragment>
       }
     </Box>
+    </Dialog>
   );
+}
+
+let CloseBoxStyle = {
+  color:"black",
+  border:1,
+  cursor:'pointer',
+  position:"absolute",
+  borderWidth:2,
+  borderRadius:"20%",
+  top: 0,
+  right: 0,
+  m:1,
+  "&:hover": {
+    color: 'crimson',
+  }
 }
