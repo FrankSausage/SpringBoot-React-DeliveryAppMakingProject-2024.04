@@ -29,7 +29,7 @@ export default function UserMain() {
                 component="img"
                 sx={{
                   width: '100%',
-                  height: 250,
+                  height: 200,
                   objectFit: 'cover',
                   borderRadius: 'inherit',
                 }}
@@ -40,7 +40,7 @@ export default function UserMain() {
                 component="img"
                 sx={{
                   width: '100%',
-                  height: 250,
+                  height: 200,
                   objectFit: 'cover',
                   borderRadius: 'inherit',
                 }}
@@ -51,7 +51,7 @@ export default function UserMain() {
                 component="img"
                 sx={{
                   width: '100%',
-                  height: 250,
+                  height: 200,
                   objectFit: 'cover',
                   borderRadius: 'inherit',
                 }}
@@ -62,7 +62,7 @@ export default function UserMain() {
                 component="img"
                 sx={{
                   width: '100%',
-                  height: 250,
+                  height: 200,
                   objectFit: 'cover',
                   borderRadius: 'inherit',
                 }}
@@ -73,7 +73,7 @@ export default function UserMain() {
                 component="img"
                 sx={{
                   width: '100%',
-                  height: 250,
+                  height: 200,
                   objectFit: 'cover',
                   borderRadius: 'inherit',
                 }}
