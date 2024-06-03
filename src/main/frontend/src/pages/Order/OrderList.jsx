@@ -6,9 +6,11 @@ import { useOrderList } from "./Hook/useOrder";
 import OrderDetail from "./OrderDetail";
 import ReviewRegister from "../Review/ReviewRegister";
 import BackDrop from "../../components/BackDrop";
+import { useNavigate } from "react-router";
 
 export default function OrderList(props) {
   const email = localStorage.getItem('email');
+  const navigate = useNavigate();
   const { handleOpen, orderClose } = props;
   const [openPortal, setOpenPortal] = useState(false);
   const [activeIndex, setActiveIndex] = useState('');
@@ -17,6 +19,10 @@ export default function OrderList(props) {
   const handleClick = index => {
     setOpenPortal(!openPortal);
     setActiveIndex(index);
+  }
+
+  const handleNav = storeId => {
+    navigate(`/StoreDetail/${storeId}`);
   }
 
   return (
@@ -45,7 +51,7 @@ export default function OrderList(props) {
               <Fragment key={idx}>
                 <Card sx={CardStyle}>
                   <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                    <Typography variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                    <Typography onClick={() => handleNav(data.storeId)} variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center', mb: 1, "&:hover":{color:'coral'} }}>
                       <ListAltIcon sx={{ mr: 1, color: '#1976d2' }} /> {data.storeName}
                     </Typography>
                     <Typography variant="body1">주문일자: {data.orderDate.replace('T', ' ')}</Typography>
