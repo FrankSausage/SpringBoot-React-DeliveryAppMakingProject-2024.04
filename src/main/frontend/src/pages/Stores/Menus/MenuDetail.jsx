@@ -46,13 +46,31 @@ export default function MenuDetail(props) {
         {error && <Typography>정보를 받아오지 못했습니다!</Typography>}
         {!isLoading && menuDetailData && 
         <Fragment>
-          <Typography variant="h5" sx={{textAlign:'center', mt: 2, mb:-5}}> {menuDetailData.menus.name} </Typography>
-            <Grid container sx={{ mt:9, width: 500 }}>
+          <Typography variant="h5" sx={{textAlign:'center', mt: 3, mb:-5}}> {menuDetailData.menus.name} </Typography>
+          <CloseIcon sx={CloseBoxStyle} onClick={() => menuClose()} />
+            <Grid container sx={{backgroundColor: 'rgba(255, 255, 255, 0.6)', mt:10, width: 500 }}>
                 <Stack>
                   <Card sx={{mb:1}}>
                     <CardContent sx={{m:1}}>
-                      <img src={menuDetailData.menus.menuPictureName} style={{ width: '50%', height: 'auto', display: 'block', margin: '0 auto', borderRadius: '8px'}} />
-                      <Typography sx={{textAlign:'center', mt: 3}} variant="h6">{menuDetailData.menus.content}</Typography>
+                      <Typography sx={{textAlign:'center'}} variant="h6">옵션</Typography>
+                      <Divider />
+                        {menuDetailData.menus.options && menuDetailData.menus.options.map((data, idx) => (
+                          <Stack direction={'row'} key={idx}>
+                            <Grid container sx={{justifyContent:'start'}}>
+                              <Grid item xs={5}>
+                                <FormControlLabel 
+                                control={<Checkbox onClick={() => handleAddItem(data)}/>}
+                                label={data.options}
+                                labelPlacement="end"
+                                />
+                              </Grid>
+                              <Grid item xs={4}/>
+                              <Grid item xs={3} sx={{ alignContent:'center', textAlign:'end'}}>
+                                <Typography>+{data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
+                              </Grid>
+                            </Grid>
+                          </Stack>
+                        ))}
                     </CardContent>
                   </Card>
                   <Card sx={{my:4, width: 500}}>
@@ -105,7 +123,7 @@ export default function MenuDetail(props) {
             </Grid>
             <Box sx={{ mt: 5 }} />
             <Button onClick={handleSubmit} variant="contained" 
-              sx={{ mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'}, fontSize: '1.2rem'}}>장바구니 담기</Button>
+              sx={{mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'}, fontSize: '1rem'}}>장바구니 담기</Button>
         </Fragment>
         }
       </Fragment>
@@ -126,4 +144,19 @@ let BoxStyle = {
   display: 'flex', 
   flexDirection: 'column', 
   p:3,
+}
+
+let CloseBoxStyle = {
+  color:"black",
+  border:1,
+  cursor:'pointer',
+  position:"absolute",
+  borderWidth:2,
+  borderRadius:"20%",
+  top: 0,
+  right: 0,
+  m:1,
+  "&:hover": {
+    color: 'crimson',
+  }
 }

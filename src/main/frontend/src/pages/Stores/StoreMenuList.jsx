@@ -22,7 +22,6 @@ export default function StoreMenuList({ storeName }) {
   const [ activeIndex, setActiveIndex ] = useState(false);
   const { isLoading, error, menuData } = useMenuListByStoreId(storeId);
   const { postChangeMenuStatus } = useStore();
-
   useEffect(() => {
     const storedStatus = localStorage.getItem(`status_${storeId}`);
     if (storedStatus) {
@@ -62,16 +61,14 @@ export default function StoreMenuList({ storeName }) {
   };
 
   const handleOpen = (e, idx, menuId) => {
-    if (role==='회원') {
+    if (role==='회원' && !open) {
       setActiveIndex(idx);
-      setOpen(prev => !prev && true);
+      setOpen(true);
     } else if(role==='점주') {
       navigate('/MenuUpdate', {state: { menuId: menuId, storeId: storeId, storeName: storeName }})
     }
   }
-  const handleClose = () => {
-    setOpen(false);
-  }
+  const handleClose = () => setOpen(false);
 
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
