@@ -46,31 +46,14 @@ export default function MenuDetail(props) {
         {error && <Typography>정보를 받아오지 못했습니다!</Typography>}
         {!isLoading && menuDetailData && 
         <Fragment>
-          <Typography variant="h5" sx={{textAlign:'center', mt: 3, mb:-5}}> {menuDetailData.menus.name} </Typography>
+          <Typography variant="h5" sx={{textAlign:'center', mt: 2, mb:-5}}> {menuDetailData.menus.name} </Typography>
           <CloseIcon sx={CloseBoxStyle} onClick={() => menuClose()} />
-            <Grid container sx={{backgroundColor: 'rgba(255, 255, 255, 0.6)', mt:10, width: 500 }}>
+            <Grid container sx={{mt:9, width: 500 }}>
                 <Stack>
                   <Card sx={{mb:1}}>
                     <CardContent sx={{m:1}}>
-                      <Typography sx={{textAlign:'center'}} variant="h6">옵션</Typography>
-                      <Divider />
-                        {menuDetailData.menus.options && menuDetailData.menus.options.map((data, idx) => (
-                          <Stack direction={'row'} key={idx}>
-                            <Grid container sx={{justifyContent:'start'}}>
-                              <Grid item xs={5}>
-                                <FormControlLabel 
-                                control={<Checkbox onClick={() => handleAddItem(data)}/>}
-                                label={data.options}
-                                labelPlacement="end"
-                                />
-                              </Grid>
-                              <Grid item xs={4}/>
-                              <Grid item xs={3} sx={{ alignContent:'center', textAlign:'end'}}>
-                                <Typography>+{data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
-                              </Grid>
-                            </Grid>
-                          </Stack>
-                        ))}
+                      <img src={menuDetailData.menus.menuPictureName} style={{width:'50%', height: 'auto', display: 'block', margin: '0 auto', borderRadius: '8px'}} />
+                      <Typography sx={{textAlign: 'center', mt:3 }} variant="h6">{menuDetailData.menus.content}</Typography>
                     </CardContent>
                   </Card>
                   <Card sx={{my:4, width: 500}}>
