@@ -56,7 +56,6 @@ export default function StoreDetail() {
   const { postDibStore } = useDibs();
   const [value, setValue] = useState(1);
   const [popularity, setPopularity] = useState('');
-  const navigate = useNavigate();
 
   const handleChange = (e, newValue) => {
     setValue(newValue);

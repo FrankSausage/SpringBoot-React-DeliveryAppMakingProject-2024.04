@@ -24,7 +24,7 @@ export default function OrderList() {
       {!isLoading && !orderData && <Typography>아직 주문한 내역이 없어요!</Typography>}
       {!isLoading && orderData && orderData.data.orders &&
         <Fragment>
-          <Typography variant="h5">주문 내역</Typography>
+          <Typography variant="h5" sx={{ textAlign: 'center', mb:3 }}>주문 내역</Typography>
           {orderData.data.orders.map((data, idx) => (
             <Fragment key={idx}>
               <Card sx={{mb: 2, border: 1, boxShadow: 3, cursor: 'pointer'}}>
