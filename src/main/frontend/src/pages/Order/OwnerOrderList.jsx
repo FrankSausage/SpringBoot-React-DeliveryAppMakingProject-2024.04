@@ -3,6 +3,7 @@ import React, { Fragment, useState } from "react";
 import { useLocation } from "react-router";
 import { useOrderOwner } from "./Hook/useOrderOwner";
 import OwnerOrderDetail from "./OwnerOrderDetail";
+import BackDrop from "../../components/BackDrop";
 
 export default function OwnerOrderList() {
   const location = useLocation();
@@ -41,7 +42,7 @@ export default function OwnerOrderList() {
 
   return(
     <Box>
-        {isLoading && <Typography>로딩 중...</Typography>}
+        {isLoading && <BackDrop isLoading={isLoading} />}
         {!isLoading && orderData && 
           <Grid container>
             <Grid item xs={2}/>

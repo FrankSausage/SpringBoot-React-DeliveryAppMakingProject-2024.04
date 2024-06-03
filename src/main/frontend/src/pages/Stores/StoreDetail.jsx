@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import Footer from "../../components/Footer";
-import { Box, Grid, InputBase, Stack, Tab, Tabs, Typography, } from '@mui/material/';
+import { Box, Grid, InputBase, Paper, Stack, Tab, Tabs, Typography, } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -12,6 +12,8 @@ import SearchHeader from '../../components/SearchHeader';
 import { useDibs } from '../Dibs/Hook/useDibs';
 import { useStoreDeatilByEmail } from '../../utils/storeInfo';
 import { useQueryClient } from '@tanstack/react-query';
+import BackDrop from '../../components/BackDrop';
+import StoreReviews from '../Review/View/StoreReviews';
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -84,9 +86,10 @@ export default function StoreDetail() {
 
   return (
     <Box sx={{ margin: -1 }}>
-    <Box sx={{ height: 'auto'/*, backgroundImage: 'url(/img/sl0.jpg)'*/, backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column' }}>
+    {/* <Box sx={{ height: 'auto', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column' }}> */}
+    <Paper elevation={3} sx={{height: '100vh', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2, overflowY: 'auto' }}>
       <SearchHeader />
-      {isLoading && <Typography>로딩 중...</Typography>}
+      {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && storeDetail && 
       <Fragment>
       <Box sx={{ borderBottom: 1, borderColor: 'black', display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
@@ -121,10 +124,14 @@ export default function StoreDetail() {
       <CustomTabPanel value={value} index={2}>
         <StoreInfo storeDetail={storeDetail} />
       </CustomTabPanel>
+      <CustomTabPanel value={value} index={3}>
+        <StoreReviews storeId={storeDetail.storeId} />
+      </CustomTabPanel>
       <Footer />
       </Fragment>
       }
-    </Box>
+    {/* </Box> */}
+    </Paper>
     </Box>
   );
 }

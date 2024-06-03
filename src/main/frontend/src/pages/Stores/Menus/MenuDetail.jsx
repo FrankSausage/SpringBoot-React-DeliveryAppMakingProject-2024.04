@@ -3,6 +3,7 @@ import React, { Fragment, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMenuDetailByMenuId } from "../../../utils/storeInfo";
 import { useCart } from "../../Cart/Hook/useCart";
+import BackDrop from "../../../components/BackDrop";
 
 export default function MenuDetail() {
   const location = useLocation();
@@ -37,7 +38,7 @@ export default function MenuDetail() {
   return(
     <Box sx={{ height: 'auto', minHeight: '100vh', backgroundImage: 'url(/img/m01.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '28px 0',}}>
       <Fragment>
-        {isLoading && <Typography> 로딩 중...</Typography>}      
+        {isLoading && <BackDrop isLoading={isLoading} />}      
         {error && <Typography>정보를 받아오지 못했습니다!</Typography>}
         {!isLoading && menuDetailData && 
             <Grid container sx={{backgroundColor: 'rgba(255, 255, 255, 0.6)', mt:10 }}>
@@ -63,28 +64,30 @@ export default function MenuDetail() {
                     </Stack>
                   </CardContent>
                 </Card>
-                <Card sx={{mb:1}}>
-                  <CardContent sx={{m:1}}>
-                    <Typography variant="h6">옵션</Typography>
-                      {menuDetailData.menus.options && menuDetailData.menus.options.map((data, idx) => (
-                        <Stack direction={'row'} key={idx}>
-                          <Grid container sx={{justifyContent:'start'}}>
-                            <Grid item xs={5}>
-                              <FormControlLabel 
-                              control={<Checkbox onClick={() => handleAddItem(data)}/>}
-                              label={data.options}
-                              labelPlacement="end"
-                              />
+                {menuDetailData.menus.options && menuDetailData.menus.options.length!==0 && 
+                  <Card sx={{mb:1}}>
+                    <CardContent sx={{m:1}}>
+                      <Typography variant="h6">옵션</Typography>
+                        {menuDetailData.menus.options && menuDetailData.menus.options.map((data, idx) => (
+                          <Stack direction={'row'} key={idx}>
+                            <Grid container sx={{justifyContent:'start'}}>
+                              <Grid item xs={5}>
+                                <FormControlLabel 
+                                control={<Checkbox onClick={() => handleAddItem(data)}/>}
+                                label={data.options}
+                                labelPlacement="end"
+                                />
+                              </Grid>
+                              <Grid item xs={4}/>
+                              <Grid item xs={3} sx={{alignContent:'center', textAlign:'end'}}>
+                                <Typography>+{data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
+                              </Grid>
                             </Grid>
-                            <Grid item xs={4}/>
-                            <Grid item xs={3} sx={{alignContent:'center', textAlign:'end'}}>
-                              <Typography>+{data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
-                            </Grid>
-                          </Grid>
-                        </Stack>
-                      ))}
-                  </CardContent>
-                </Card>
+                          </Stack>
+                        ))}
+                    </CardContent>
+                  </Card>
+                }
               </Grid>
               <Grid item xs={1}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
@@ -93,11 +96,6 @@ export default function MenuDetail() {
                   {/* <Button onClick={handleSubmit}>장바구니 담기</Button> */}
                 </Box>
               </Grid>
-              {items && items.map((data, idx) => (
-                  <Stack key={idx}>
-                    <Typography>{data.menuOptionId}</Typography>
-                  </Stack>
-              ))}
               <Grid item xs/>
             </Grid>
         }

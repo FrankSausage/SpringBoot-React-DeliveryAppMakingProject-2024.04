@@ -66,7 +66,7 @@ export default function Store() {
             <Tab label="디저트" {...a11yProps(8)} />
           </Tabs>
         </Box>
-      <Paper elevation={3} sx={{height: '100vh',  backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2, overflowY: 'auto' }}>
+      <Paper elevation={3} sx={{height: '100vh', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2, overflowY: 'auto' }}>
         <Grid container justifyContent="center" alignItems="center" mb={2}>
           <Grid item xs={10} md={6} lg={4}>
           <Box sx={{ display: 'flex', justifyContent: 'center', border: 1, borderColor: 'divider', borderRadius: 3, p: 1, bgcolor: '#fff', boxShadow: 1 }}>
@@ -83,36 +83,36 @@ export default function Store() {
             </Box>
           </Grid>
         </Grid>
-        <Box sx={{ mt: 3 }}>
-          <CustomTabPanel value={value} index={0}>
-            <StoreList category={'전체'} />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={1}>
-            <StoreList category={'한식'} />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={2}>
-            <StoreList category={'중식'} />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={3}>
-            <StoreList category={'일식'} />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={4}>
-            <StoreList category={'양식'} />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={5}>
-            <StoreList category={'패스트'} />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={6}>
-            <StoreList category={'치킨'} />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={7}>
-            <StoreList category={'분식'} />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={8}>
-            <StoreList category={'디저트'} />
-          </CustomTabPanel>
-        </Box>
-        <Footer />
+      <Box sx={{ mt: 3 }}>
+        <CustomTabPanel value={value} index={0}>
+          <StoreList category={'전체'} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <StoreList category={'한식'} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={2}>
+          <StoreList category={'중식'} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={3}>
+          <StoreList category={'일식'} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={4}>
+          <StoreList category={'양식'} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={5}>
+          <StoreList category={'패스트'} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={6}>
+          <StoreList category={'치킨'} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={7}>
+          <StoreList category={'분식'} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={8}>
+          <StoreList category={'디저트'} />
+        </CustomTabPanel>
+      </Box>
+      <Footer />
       </Paper>
     </Box>
   );

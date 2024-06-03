@@ -3,15 +3,17 @@ import React, { Fragment, useState } from "react";
 import {  useStoreReviewList } from "../Hook/useReview";
 import { useLocation, useNavigate } from "react-router";
 import OwnerReviewRegister from "../OwnerReviewRegister";
+import BackDrop from "../../../components/BackDrop";
 
-export default function StoreReviews() { 
+export default function StoreReviews(props) { 
   const navigate = useNavigate()
   const location = useLocation()
-  const { storeId } = location.state
+  const { storeId } =  location.state;
   const [ openPortal, setOpenPortal ] = useState(false);
   const [ activeIndex, setActiveIndex ] = useState(0); 
   const { getStoreReviewList: {isLoading, data: storeReviewData }, deleteOwnerReview } = useStoreReviewList(storeId);
-
+  console.log(storeReviewData);
+  
   const handleClick = (idx) => {
     setOpenPortal(!openPortal);
     setActiveIndex(idx);
@@ -25,11 +27,11 @@ export default function StoreReviews() {
 
   return(
     <Box>
-      {isLoading && <Typography>로딩 중...</Typography>}
+      {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && !storeReviewData && 
-      <Fragment>
-      <Typography>아직 유저 리뷰가 없어요!</Typography>
-      </Fragment>
+      <Box sx={{height:500}}>
+        <Typography variant="h2" sx={{textAlign:'center'}}>아직 유저 리뷰가 없어요!</Typography>
+      </Box>
       }
       {!isLoading && storeReviewData &&
         <Fragment>

@@ -20,7 +20,7 @@ export default function StoreInfo({storeDetail}) {
                     ...boxStyle,
                     position: 'relative',
                     width: { xs: '100%', sm: '70%' },
-                    height: '350px',
+                    height: '380px',
                     marginX: 'auto',
                     marginBottom: '10px',
                     overflow: 'hidden',
@@ -30,8 +30,9 @@ export default function StoreInfo({storeDetail}) {
                     padding: '20px',
                   }}
                 >
-                  <div style={{ position: 'absolute', top: '50%', left: '25%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
-                    <h2 style={{ marginBottom: '15px', color: '#333' }}>가게 정보</h2>
+                  {/* <div style={{ position: 'absolute', top: '52%', left: '25%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0, fontSize: '16px'}}> */}
+                  <div style={{ padding: 0, fontSize: '16px'}}>
+                    <h2 style={{ marginBottom: '15px', color: '#333', fontSize: '22px' }}>가게 정보</h2>
                     <ul style={{ padding: '0', margin: '0', textAlign: 'left' }}>
                       <li style={{ listStyleType: 'none', marginBottom: '10px' }}>가게 이름: {storeDetail.name}</li>
                       <li style={{ listStyleType: 'none', marginBottom: '10px' }}>주소: {storeDetail.address}</li>
@@ -54,14 +55,16 @@ export default function StoreInfo({storeDetail}) {
                     height: '300px',
                     marginX: 'auto',
                     marginBottom: '10px',
+                    overflow: 'hidden',
                     borderRadius: '10px',
                     boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
                     backgroundColor: '#f9f9f9',
                     padding: '20px',
                   }}
                 >
-                  <h2 style={{ marginBottom: '15px', color: '#333' }}>가게 소개</h2>
-                  <div style={{ position: 'absolute', top: '50%', left: '15%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0 }}>
+                  {/* <div style={{ position: 'absolute', top: '30%', left: '34%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0, fontSize: '16px' }}> */}
+                  <div style={{ padding: 0,  fontSize: '16px'}}>
+                    <h2 style={{ marginBottom: '15px', color: '#333', fontSize: '22px' }}>가게 소개</h2>
                     <ul style={{ padding: '0', margin: '0', textAlign: 'left' }}>
                       <li style={{ listStyleType: 'none', marginBottom: '10px' }}>{storeDetail.content}</li>
                     </ul>
