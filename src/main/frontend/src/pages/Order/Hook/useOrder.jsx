@@ -33,13 +33,14 @@ export function useOrder (email, orderId) {
 }
 
 export function useOrderList(email, isOpen) {
-  
+
   const getOrderListByEmail = useQuery({
     queryKey: ['orderList'],
     queryFn: () => { return axios.get(`/dp/order/list`, {params: {email: email}}) },
     refetchInterval: 6000,
     refetchIntervalInBackground: true,
-    enabled: !!email && !!isOpen
+    staleTime: 1000 * 60 * 5,
+    enabled: !!email && isOpen,
   })
 
   return { getOrderListByEmail }

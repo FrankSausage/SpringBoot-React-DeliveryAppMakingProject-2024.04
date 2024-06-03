@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { logout } from '../utils/firebase';
 import {Popover,  Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Typography,} from '@mui/material';
@@ -8,19 +8,30 @@ import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import { FaUser } from 'react-icons/fa';
+import OrderList from '../pages/Order/OrderList';
 
-export default function DropUserInfo({ role}) {
+export default function DropUserInfo({ role }) {
 	const navigate = useNavigate();
+  const [ orderOpen, setOrderOpen ] = useState(false);
   const { setOutletAddress } = useOutletContext();
 	const [anchorEl, setAnchorEl] = React.useState(null);
-
+  console.log(orderOpen)
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
+    if (orderOpen) {
+      setOrderOpen(false);
+    }
     setAnchorEl(null);
   };
+
+  const handleOpen = () => {
+    if (!orderOpen) {
+      setOrderOpen(true);
+    }
+  }
 	
   const handleLogout = () => {
     logout();
@@ -35,9 +46,6 @@ export default function DropUserInfo({ role}) {
 			  break;
 			case 'Cart' :
 				navigate('/Cart')
-			  break;
-			case 'OrderList' :
-				navigate('/OrderList')
 			  break;
       case 'Dibs' :
         navigate('/Dibs')
@@ -91,10 +99,11 @@ export default function DropUserInfo({ role}) {
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton onClick={() => handleNavigate('OrderList')}>
+            <ListItemButton onClick={() => handleOpen()}>
               <ListItemIcon sx={{color:'black'}}>
                 <ListAltIcon/>
               </ListItemIcon>
+              <OrderList handleOpen={orderOpen} orderClose={handleClose}/>
               <ListItemText primary="주문내역"/>
             </ListItemButton>
           </ListItem>
