@@ -83,14 +83,14 @@ export default function Cart({ allClose }) {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle variant='h4' sx={{textAlign:'center', width:500, backgroundColor: '#ffbe33', color: '#222831'}}>{"장바구니"}</DialogTitle>
-          <Typography sx={{textAlign:'center', mb:0, backgroundColor: '#ffbe33', color: '#222831', fontSize: '1rem'}}>최종 가격: {totalPrice ? totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}원</Typography>
-        <DialogContent sx={{borderTop:1}}>
+        <DialogTitle variant='h4' sx={{textAlign:'center', width:500,  color: '#222831'}}>{"장바구니"}</DialogTitle>
+          {/* <Typography sx={{textAlign:'center', mb:0,  color: '#222831', fontSize: '1rem'}}>최종 가격: {totalPrice ? totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}원</Typography> */}
+        <DialogContent sx={{borderTop:1, backgroundColor: '#ffbe33',}}>
           <DialogContentText id="주문 목록">
             {!localStorage.getItem('cartItems') && <Typography sx={{textAlign:'center', fontSize: 30}}>아직 주문 내역이 없어요!</Typography>}
             {cartItems &&
               cartItems.map((menuItems, idx) => (
-                <Card key={idx} sx={{mb:1}}>
+                <Card key={idx} sx={{mt: 7, mb:1}}>
                   <CardContent sx={{mb:1, borderWidth:10, borderRadius:'1%'}}>
                     <Typography variant='h5' sx={{mb:1, textAlign:'center'}}>{menuItems.menuName}</Typography>
                     <Divider sx={{mb:2}}/>
@@ -126,6 +126,7 @@ export default function Cart({ allClose }) {
               ))
             }
           </DialogContentText>
+          <Typography sx={{textAlign:'center', mt:3,  color: '#222831', fontSize: '1rem'}}>최종 가격: {totalPrice ? totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}원</Typography>
         </DialogContent>
         <DialogActions sx={{justifyContent:'space-around', mb:1, borderTop: 1}}>
           <Fragment>
