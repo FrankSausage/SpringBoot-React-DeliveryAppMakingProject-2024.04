@@ -8,13 +8,10 @@ import BackDrop from "../../../components/BackDrop";
 export default function StoreReviews() { 
   const location = useLocation();
   const { storeId } =  useParams();
-  const { storeId: ownerStoreId} = location.state;
+  const { storeId: ownerStoreId} = location.state ? location.state : '';
   const [ openPortal, setOpenPortal ] = useState(false);
   const [ activeIndex, setActiveIndex ] = useState(0); 
   const { getStoreReviewList: {isLoading, data: storeReviewData }, deleteOwnerReview } = useStoreReviewList(ownerStoreId ? ownerStoreId : storeId);
-  console.log(storeReviewData);
-  console.log(storeId);
-  console.log(ownerStoreId);
   
   const handleClick = (idx) => {
     setOpenPortal(!openPortal);

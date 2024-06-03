@@ -1,14 +1,16 @@
-import { Box, Button, Card, CardContent, Grid, Rating, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Dialog, Grid, Rating, TextField, Typography } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 import React, { Fragment } from "react";
 import { useReview } from "../Hook/useReview";
 import { useNavigate } from "react-router";
 import BackDrop from "../../../components/BackDrop";
 import { Stack } from "react-bootstrap";
 
-export default function MyReviews() { 
+export default function MyReviews(props) { 
   const email = localStorage.getItem('email')
   const navigate = useNavigate()
-  const { getMyReviewList: {isLoading, data: reviewData }, deleteMyReview } = useReview(email);
+  const {handleOpen, reviewClose} = props;
+  const { getMyReviewList: {isLoading, data: reviewData }, deleteMyReview } = useReview(email, handleOpen);
 
   const handleDelete = reviewId => {
     deleteMyReview.mutate(reviewId, {
@@ -16,10 +18,15 @@ export default function MyReviews() {
     })
   }
   return(
+    <Dialog
+    open={handleOpen}
+    keepMounted
+    >
     <Box>
       {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && reviewData && reviewData.data.reviewList.length===0 &&
         <Card sx={{m: 'auto',border:1, width: '50%', height: 400, alignContent:'center'}}>
+          <CloseIcon sx={CloseBoxStyle} onClick={() => reviewClose()} />
           <CardContent sx={{textAlign:'center'}}>
             <Typography >아직 리뷰를 남긴 가게가 없어요!</Typography>
           </CardContent>
@@ -59,5 +66,21 @@ export default function MyReviews() {
         </Fragment>
       }
     </Box>
+    </Dialog>
   )
+}
+
+let CloseBoxStyle = {
+  color:"black",
+  border:1,
+  cursor:'pointer',
+  position:"absolute",
+  borderWidth:2,
+  borderRadius:"20%",
+  top: 0,
+  right: 0,
+  m:1,
+  "&:hover": {
+    color: 'crimson',
+  }
 }
