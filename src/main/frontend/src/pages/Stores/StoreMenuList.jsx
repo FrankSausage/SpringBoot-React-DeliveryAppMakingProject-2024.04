@@ -109,8 +109,6 @@ export default function StoreMenuList({ storeName }) {
                 <img src={res.menuPictureName} style={{ width: '150px', height: '120px', objectFit: 'cover', marginRight: '16px' }} />
               </Box>
               <Box sx={{ flexGrow: 1}}>
-                {/* <Box component={Link} to={role === '회원' ? `/MenuDetail` : `/MenuUpdate`} state={{ menuId: res.menuId, storeId: storeId, storeName: storeName }}
-                  sx={{ textDecoration: 'none', color: 'black', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', }}> */}
                 <Box onClick={e => handleOpen(e, idx, res.menuId)} sx={{ textDecoration: 'none', color: 'black', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', }}>
                     <ul style={{ padding: 0, textAlign:'center' }}>
                       <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.name}</li>
