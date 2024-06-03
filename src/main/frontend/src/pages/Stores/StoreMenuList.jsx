@@ -107,14 +107,14 @@ export default function StoreMenuList({ storeName }) {
             </Grid>
           )}
           <Grid item xs={12} sm={6} md={4} lg={4}>
-            <Box onClick={e => handleOpen(e, idx, res.menuId)} sx={{ ...boxStyle, position: 'relative', width: '100%', height: 'auto', marginX: 'auto', display: 'flex', alignItems: 'center' }}>
-              <Box sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
+            <Box sx={{ ...boxStyle, position: 'relative', width: '100%', height: 'auto', marginX: 'auto', display: 'flex', alignItems: 'center' }}>
+              <Box onClick={e => handleOpen(e, idx, res.menuId)} sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
                 <img src={res.menuPictureName} style={{ width: '150px', height: '120px', objectFit: 'cover', marginRight: '16px' }} />
               </Box>
               <Box sx={{ flexGrow: 1}}>
                 {/* <Box component={Link} to={role === '회원' ? `/MenuDetail` : `/MenuUpdate`} state={{ menuId: res.menuId, storeId: storeId, storeName: storeName }}
                   sx={{ textDecoration: 'none', color: 'black', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', }}> */}
-                <Box sx={{ textDecoration: 'none', color: 'black', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', }}>
+                <Box onClick={e => handleOpen(e, idx, res.menuId)} sx={{ textDecoration: 'none', color: 'black', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', }}>
                     <ul style={{ padding: 0, textAlign:'center' }}>
                       <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.name}</li>
                       <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</li>

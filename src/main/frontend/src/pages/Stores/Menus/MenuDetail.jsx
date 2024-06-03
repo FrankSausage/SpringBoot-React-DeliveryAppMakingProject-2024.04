@@ -116,7 +116,7 @@ export default function MenuDetail(props) {
 
 let BoxStyle = {
   height: 'auto', 
-  minHeight: '90vh', 
+  minHeight: '105vh', 
   border:2,
   backgroundImage: 'url(/img/m01.jpg)', 
   backgroundSize: 'cover', 

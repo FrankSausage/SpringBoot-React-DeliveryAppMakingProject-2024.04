@@ -77,7 +77,7 @@ export default function AppNavbar() {
                   <>
                    <Cart allClose={handleClose} />
                     <DropUserInfo role={role} />
-                    <Typography variant="body1" sx={{ color: '#1e7843', fontWeight: 'bold' }}>
+                    <Typography variant="body1" sx={{ color: 'white', fontWeight: 'bold' }}>
                       {user.displayName}
                     </Typography>
                 </>
