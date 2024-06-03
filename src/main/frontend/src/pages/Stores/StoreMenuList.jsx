@@ -87,7 +87,7 @@ export default function StoreMenuList({ storeName }) {
                 <img src={res.menuPictureName} style={{ width: '150px', height: '120px', objectFit: 'cover', marginRight: '16px' }} />
               </Box>
               <Box sx={{ flexGrow: 1}}>
-                {res.status==='품절' && <ThumbUpIcon sx={{position:'absolute', top:0, left:0, m:1, color:'crimson', borderRadius:'20%' }} /> }
+                {role === '회원' && res.status==='품절' && <ThumbUpIcon sx={{position:'absolute', top:0, left:0, m:1, color:'crimson', borderRadius:'20%' }} /> }
                 {res.popularity===1 && <ThumbUpIcon sx={{position:'absolute', top:0, right:0, m:1, color:'crimson', borderRadius:'20%' }} /> }
                 <Box onClick={e => handleOpen(e, idx, res.menuId)} sx={{ textDecoration: 'none', color: 'black', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', }}>
                     <ul style={{ padding: 0, textAlign:'center' }}>
