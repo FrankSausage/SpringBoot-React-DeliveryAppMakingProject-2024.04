@@ -4,14 +4,6 @@ import axios from "axios";
 export function useOrder (email, orderId) {
   const queryClinet = useQueryClient();
 
-  const getOrderListByEmail = useQuery({
-    queryKey: ['orderList'],
-    queryFn: () => { return axios.get(`/dp/order/list`, {params: {email: email}}) },
-    refetchInterval: 6000,
-    refetchIntervalInBackground: true,
-    enabled: !!email
-  })
-
   const getOrderDetailByOrderId = useQuery({
     queryKey: ['userOrderDetail', orderId],
     queryFn: () => { return axios.get(`/dp/order/detail`, {params: {email: email, orderId: orderId}})},
@@ -37,7 +29,20 @@ export function useOrder (email, orderId) {
     onError: () => {alert('주문내역 삭제 요청에 실패 하였습니다.')},
   })
 
-  return { postOrderRegist, getOrderListByEmail, getOrderDetailByOrderId, deleteOrderByOrderId }
+  return { postOrderRegist, getOrderDetailByOrderId, deleteOrderByOrderId }
+}
+
+export function useOrderList(email, isOpen) {
+  
+  const getOrderListByEmail = useQuery({
+    queryKey: ['orderList'],
+    queryFn: () => { return axios.get(`/dp/order/list`, {params: {email: email}}) },
+    refetchInterval: 6000,
+    refetchIntervalInBackground: true,
+    enabled: !!email && !!isOpen
+  })
+
+  return { getOrderListByEmail }
 }
 
 export function useTossOrder () {

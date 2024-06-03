@@ -123,7 +123,7 @@ export default function StoreDetail() {
         <StoreInfo storeDetail={storeDetail} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
-        <StoreReviews storeId={storeDetail.storeId} />
+        <StoreReviews storeId={storeId} />
       </CustomTabPanel>
       <Footer />
       </Fragment>
