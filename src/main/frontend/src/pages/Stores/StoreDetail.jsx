@@ -83,9 +83,8 @@ export default function StoreDetail() {
   }
 
   return (
-    <Box sx={{ margin: -1 }}>
-    {/* <Box sx={{ height: 'auto', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column' }}> */}
-    <Paper elevation={3} sx={{height: '100vh', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2, overflowY: 'auto' }}>
+    <Box sx={{ margin: -2 }}>
+    <Paper elevation={3} sx={{height: 'auto', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2, overflowY: 'auto' }}>
       <SearchHeader />
       {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && storeDetail && 
