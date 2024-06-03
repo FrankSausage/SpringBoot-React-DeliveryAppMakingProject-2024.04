@@ -4,7 +4,6 @@ import React, { Fragment } from "react";
 import { useReview } from "../Hook/useReview";
 import { useNavigate } from "react-router";
 import BackDrop from "../../../components/BackDrop";
-import { Stack } from "react-bootstrap";
 
 export default function MyReviews(props) { 
   const email = localStorage.getItem('email')
@@ -30,9 +29,6 @@ export default function MyReviews(props) {
           <CardContent sx={{textAlign:'center'}}>
             <Typography >아직 리뷰를 남긴 가게가 없어요!</Typography>
           </CardContent>
-          <Stack>
-            <Button sx={{mx:'auto', width:'50%'}} variant="contained" onClick={() => navigate('/OrderList')}>리뷰 쓰러 가기</Button>
-          </Stack>
         </Card>
       }
       {!isLoading && reviewData &&
