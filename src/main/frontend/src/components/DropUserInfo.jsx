@@ -10,11 +10,13 @@ import RateReviewIcon from '@mui/icons-material/RateReview';
 import { FaUser } from 'react-icons/fa';
 import OrderList from '../pages/Order/OrderList';
 import MyReviews from '../pages/Review/View/MyReviews';
+import Dibs from '../pages/Dibs/View/Dibs';
 
 export default function DropUserInfo({ role }) {
 	const navigate = useNavigate();
   const [ orderOpen, setOrderOpen ] = useState(false);
   const [ reviewOpen, setReviewOpen ] = useState(false);
+  const [ dibsOpen, setDibsOpen ] = useState(false);
   const { setOutletAddress } = useOutletContext();
 	const [anchorEl, setAnchorEl] = React.useState(null);
   
@@ -24,13 +26,18 @@ export default function DropUserInfo({ role }) {
 
   const handleClose = query => {
     switch(query){
+      case 'Dibs':
+        if (dibsOpen) {
+          setDibsOpen(false);
+        }
+      break;
       case 'Order':
         if (orderOpen) {
           setOrderOpen(false);
         }
         break;
       case 'Review':
-        if(reviewOpen) {
+        if (reviewOpen) {
           setReviewOpen(false);
         }
         break;
@@ -40,13 +47,18 @@ export default function DropUserInfo({ role }) {
 
   const handleOpen = query => {
     switch(query){
+    case 'Dibs':
+      if (!dibsOpen) {
+        setDibsOpen(true);
+      }
+      break;
     case 'Order':
       if (!orderOpen) {
         setOrderOpen(true);
       }
       break;
     case 'Review':
-      if(!reviewOpen) {
+      if (!reviewOpen) {
         setReviewOpen(true);
       }
       break;
@@ -111,10 +123,11 @@ export default function DropUserInfo({ role }) {
           {role!=='점주' &&
           <Fragment>
           <ListItem>
-            <ListItemButton onClick={() => handleNavigate('Dibs')}>
+            <ListItemButton onClick={() => handleOpen('Dibs')}>
               <ListItemIcon sx={{color:'black'}}>
   						  <FavoriteIcon />
               </ListItemIcon>
+                <Dibs handleOpen={dibsOpen} dibsClose={() => handleClose('Dibs')}/>
                 <ListItemText primary="찜 목록" />
             </ListItemButton>
           </ListItem>
@@ -123,7 +136,7 @@ export default function DropUserInfo({ role }) {
               <ListItemIcon sx={{color:'black'}}>
                 <ListAltIcon/>
               </ListItemIcon>
-              <OrderList handleOpen={orderOpen} orderClose={() => handleClose('Order')}/>
+                <OrderList handleOpen={orderOpen} orderClose={() => handleClose('Order')}/>
               <ListItemText primary="주문내역"/>
             </ListItemButton>
           </ListItem>
@@ -132,7 +145,7 @@ export default function DropUserInfo({ role }) {
               <ListItemIcon sx={{color:'black'}}>
                 <RateReviewIcon/>
               </ListItemIcon>
-              <MyReviews handleOpen={reviewOpen} reviewClose={() => handleClose('Review')}/>
+                <MyReviews handleOpen={reviewOpen} reviewClose={() => handleClose('Review')}/>
               <ListItemText primary="리뷰 관리"/>
             </ListItemButton>
           </ListItem>
