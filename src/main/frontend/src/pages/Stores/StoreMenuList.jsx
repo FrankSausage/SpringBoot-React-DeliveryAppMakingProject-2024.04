@@ -38,7 +38,11 @@ export default function StoreMenuList({ storeName }) {
     }, 500);
   };
 
-  const handleOpen = (e, idx, menuId) => {
+  const handleOpen = (e, idx, menuId, status) => {
+    if(role==='회원' && status==='품절') {
+      return;
+    }
+
     if (role==='회원' && !open) {
       setActiveIndex(idx);
       setOpen(true);
@@ -83,13 +87,13 @@ export default function StoreMenuList({ storeName }) {
           )}
           <Grid item xs={12} sm={6} md={4} lg={4}>
             <Box sx={{ ...boxStyle, position: 'relative', width: '100%', height: 'auto', marginX: 'auto', display: 'flex', alignItems: 'center', }}>
-              <Box onClick={e => handleOpen(e, idx, res.menuId)} sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
+              <Box onClick={e => handleOpen(e, idx, res.menuId, res.status)} sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
                 <img src={res.menuPictureName} style={{ width: '150px', height: '120px', objectFit: 'cover', borderRadius: '10px', display: 'block', margin: '0 auto' }} />
               </Box>
               <Box sx={{ flexGrow: 1}}>
-                {role === '회원' && res.status==='품절' && <ThumbUpIcon sx={{position:'absolute', top:0, left:0, m:1, color:'crimson', borderRadius:'20%' }} /> }
+                {role === '회원' && res.status==='품절' && <img src='/img/soltout.jpg' style={{ position:'absolute', top:1, left:1, width: '80px', height: '80px', objectFit: 'cover', borderRadius: '50%' }} /> }
                 {res.popularity===1 && <ThumbUpIcon sx={{position:'absolute', top:0, right:0, m:1, color:'crimson', borderRadius:'20%' }} /> }
-                <Box onClick={e => handleOpen(e, idx, res.menuId)} sx={{ textDecoration: 'none', color: 'black', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', }}>
+                <Box onClick={e => handleOpen(e, idx, res.menuId, res.status)} sx={{ textDecoration: 'none', color: 'black', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', }}>
                     <ul style={{ padding: 0, textAlign:'center' }}>
                       <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.name}</li>
                       <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</li>
