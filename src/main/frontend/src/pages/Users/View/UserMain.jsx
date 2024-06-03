@@ -89,7 +89,7 @@ export default function UserMain() {
           {categories.map((category, index) => (
             <Grid item key={index} xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center' }}>
               <Link to={category.link} state={category.state} style={{ textDecoration: 'none', color: 'black' }}>
-                <Typography variant="h5" sx={{ mt: 1, fontWeight: 'bold', color: 'black',  }}>
+                <Typography variant="h5" sx={{ mt: 1  ,fontWeight: 'bold', color: 'black' }}>
                   {category.label}
                 </Typography>
               </Link>

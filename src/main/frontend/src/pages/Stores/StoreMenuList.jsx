@@ -108,9 +108,9 @@ export default function StoreMenuList({ storeName }) {
               <Box onClick={e => handleOpen(e, idx, res.menuId)} sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
                 <img src={res.menuPictureName} style={{ width: '150px', height: '120px', objectFit: 'cover', borderRadius: '10px', display: 'block', margin: '0 auto' }} />
               </Box>
-              <Box sx={{ flexGrow: 1}}>
-                <Box onClick={e => handleOpen(e, idx, res.menuId)} sx={{ textDecoration: 'none', color: 'black', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', }}>
-                    <ul style={{ padding: 0, textAlign:'center' }}>
+              <Box sx={{ flexGrow: 1, textAlign: 'center'}}>
+                <Box onClick={e => handleOpen(e, idx, res.menuId)} sx={{ textDecoration: 'none', color: 'black', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginTop: 2 }}>
+                    <ul style={{ padding: 0 }}>
                       <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.name}</li>
                       <li style={{ listStyleType: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{res.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</li>
                       {status[idx] && (
