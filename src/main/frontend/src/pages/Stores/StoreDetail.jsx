@@ -105,11 +105,15 @@ export default function StoreDetail() {
           <Grid item xs={2} />
           <Grid item xs>
             <Typography variant='h4' sx={{textAlign:'center', mt: 3}}>{storeDetail.name} 
-              {role!=='점주' && storeDetail.isDibed==='일반' || storeDetail.isDibed===null ? 
-                <FavoriteIcon sx={{cursor:'pointer', fontSize:30, mb:1, ":hover":{color:'red'}}} onClick={() => handleDib(storeDetail.isDibed)} />
-                :
-                <FavoriteIcon sx={{cursor:'pointer', fontSize:30, color:'red', mb:1}} onClick={() => handleDib(storeDetail.isDibed)} />
-              } 
+              {role!=='점주' &&
+                <Fragment>
+                  {storeDetail.isDibed==='일반' || storeDetail.isDibed===null ? 
+                    <FavoriteIcon sx={{cursor:'pointer', fontSize:30, mb:1, ":hover":{color:'red'}}} onClick={() => handleDib(storeDetail.isDibed)} />
+                    :
+                    <FavoriteIcon sx={{cursor:'pointer', fontSize:30, color:'red', mb:1}} onClick={() => handleDib(storeDetail.isDibed)} />
+                  } 
+                </Fragment>
+              }
             </Typography>
           </Grid>
           <Grid item xs={2} /> 
