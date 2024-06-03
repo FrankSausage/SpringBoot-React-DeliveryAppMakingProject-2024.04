@@ -96,7 +96,7 @@ const CardStyle = {
     boxShadow: 5,
   },
   backgroundColor: '#fff',
-  borderRadius: 10,
+  borderRadius: 5,
   padding: '16px',
 }
 
