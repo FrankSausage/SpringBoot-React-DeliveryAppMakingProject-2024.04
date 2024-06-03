@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Dialog, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Dialog, Typography } from "@mui/material";
 import React, { Fragment, useState } from "react";
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import CloseIcon from '@mui/icons-material/Close';
@@ -10,15 +10,15 @@ import BackDrop from "../../components/BackDrop";
 export default function OrderList(props) {
   const email = localStorage.getItem('email');
   const { handleOpen, orderClose } = props;
-  const [ openPortal, setOpenPortal ] = useState(false);
-  const [ activeIndex, setActiveIndex ] = useState('');
-  const { getOrderListByEmail: {isLoading, data: orderData}} = useOrderList(email, handleOpen);
+  const [openPortal, setOpenPortal] = useState(false);
+  const [activeIndex, setActiveIndex] = useState('');
+  const { getOrderListByEmail: { isLoading, data: orderData } } = useOrderList(email, handleOpen);
 
   const handleClick = index => {
     setOpenPortal(!openPortal);
     setActiveIndex(index);
   }
-  
+
   return (
     <Dialog
       open={handleOpen}
@@ -43,7 +43,7 @@ export default function OrderList(props) {
             <CloseIcon sx={CloseBoxStyle} onClick={() => orderClose()} />
             {orderData.data.orders.map((data, idx) => (
               <Fragment key={idx}>
-                <Card sx={CardStyle} onClick={() => handleClick(idx)}>
+                <Card sx={CardStyle}>
                   <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                     <Typography variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                       <ListAltIcon sx={{ mr: 1, color: '#1976d2' }} /> {data.storeName}
@@ -59,6 +59,9 @@ export default function OrderList(props) {
                     :
                     null
                   }
+                  <Button variant="outlined" sx={{ mb: 3 }} onClick={() => handleClick(idx)}>
+                    상세 주문 내역 보기
+                  </Button>
                   {openPortal && activeIndex === idx && <OrderDetail isPortalOpen={{ openPortal }} email={email} orderId={data.orderId} />}
                 </Card>
               </Fragment>
@@ -99,4 +102,3 @@ const CardStyle = {
   borderRadius: 5,
   padding: '16px',
 }
-
