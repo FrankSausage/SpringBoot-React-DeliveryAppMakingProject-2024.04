@@ -36,6 +36,7 @@ export default function MyReviews(props) {
           <Grid container>
             <Grid item xs />
             <Grid item xs={8}>
+            <CloseIcon sx={CloseBoxStyle} onClick={() => reviewClose()} />
               {reviewData.data.reviewList.map((data, idx) => (
                 <Card key={idx} sx={{mb:2, p:1, border:1}}>
                   <Typography>가게 명: {data.storeName}</Typography>
