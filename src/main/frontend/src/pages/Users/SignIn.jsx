@@ -149,7 +149,7 @@ export default function SignIn() {
                 <img src={'/img/google.png'} alt="Google 로고" style={{ width: '35px', height: '35px' }} />
               </IconButton>
               <IconButton onClick={handleKakaoLogin} fullWidth sx={{ mt: 3, mb: 2, backgroundColor: '#FFFFFF', borderRadius: '20px', border: '1px'}}>
-                <img src={'/img/google.png'} alt="Google 로고" style={{ width: '35px', height: '35px' }} />
+                <img src={'/img/kakaologo.png'} alt="Google 로고" style={{ width: '35px', height: '35px' }} />
               </IconButton>
               <Grid container>
                 <Grid item xs>
