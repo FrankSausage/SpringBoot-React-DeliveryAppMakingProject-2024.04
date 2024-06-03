@@ -38,6 +38,7 @@ export default function MenuUpdate() {
   const [menuPictureName, setMenuPictureName] = useState('');
 
   useEffect(() => {
+    queryClient.refetchQueries(['menuList', {menuId: menuId}]);
     if (!isLoading && menu) {
       // 초기 값을 설정합니다.
       setInitialName(menu.menus[0].name);
@@ -45,7 +46,7 @@ export default function MenuUpdate() {
       setInitialContent(menu.menus[0].content);
       setInitialCategory(menu.menus[0].category);
       setInitialMenuPictureName(menu.menus[0].menuPictureName);
-
+      
       // 사용자 입력 상태 변수를 초기 값으로 설정합니다.
       setName(menu.menus[0].name);
       setPrice(menu.menus[0].price);
@@ -135,7 +136,7 @@ export default function MenuUpdate() {
       {!isLoading && menu.menus &&
         <Box>
           <SearchHeader />
-          <div style={{ backgroundImage: 'url(/img/kitchenO.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)'}}>
+          <div style={{ backgroundImage: 'url(/img/Okitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)'}}>
           <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
           <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
           <Container component="main" maxWidth="xs">
@@ -185,14 +186,19 @@ export default function MenuUpdate() {
                     <Typography variant="h6" gutterBottom>
                       메뉴 사진 업로드
                     </Typography>
+                    {menuPictureUrl && <img src={menuPictureUrl} width={100} height={100} style={{margin: 30}}/>}
                     <input accept=".png, .jpeg, .jpg" id="upload-photo" type="file" style={{ display: 'none' }} onChange={handleFileUpload} multiple />
-                    <TextField autoComplete="given-name" name="menuPictureName" value={menuPictureName} fullWidth id="menuPictureName" label="메뉴 사진" onClick={() => document.getElementById('upload-photo').click()} InputProps={{ readOnly: true }} sx={{ mb: 2 }} />
+                    {isFileUploading ? 
+                    <Button type="button" disabled variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
+                      사진 올리기
+                    </Button>
+                    :
                     <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
                       사진 올리기
                     </Button>
+                    }
                     {initialMenuPictureName && (
                       <Typography variant="body1" gutterBottom sx={{maxWidth:400}}>
-                        {/* 업로드된 파일: {initialMenuPictureName.split(',')[]} */}
                       </Typography>
                     )}
                   </Grid>

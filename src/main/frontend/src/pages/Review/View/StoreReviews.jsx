@@ -12,7 +12,6 @@ export default function StoreReviews() {
   const [ openPortal, setOpenPortal ] = useState(false);
   const [ activeIndex, setActiveIndex ] = useState(0); 
   const { getStoreReviewList: {isLoading, data: storeReviewData }, deleteOwnerReview } = useStoreReviewList(ownerStoreId ? ownerStoreId : storeId);
-  console.log(storeReviewData);
   
   const handleClick = (idx) => {
     setOpenPortal(!openPortal);
@@ -30,7 +29,7 @@ export default function StoreReviews() {
       {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && storeReviewData && storeReviewData.data.reviewList.length===0 &&
       <Box sx={{height:500}}>
-        <Typography variant="h2" sx={{textAlign:'center'}}>아직 유저 리뷰가 없어요!</Typography>
+        <Typography variant="h2" sx={{textAlign:'center'}}>아직 리뷰가 없어요!</Typography>
       </Box>
       }
       {!isLoading && storeReviewData &&
@@ -44,7 +43,7 @@ export default function StoreReviews() {
                   <Typography>레벨: {data.userGrade}</Typography>
                   <Typography>작성 일: {data.createdDate.replace('T',' ')}</Typography>
                   <CardContent>
-                    <Typography>별점 : <Rating value={data.rating} readOnly /></Typography>
+                    <Typography><Rating value={data.rating} readOnly /></Typography>
                     {data.reviewPictureName && <img src={data.reviewPictureName} width={100} height={100} style={{margin: 30}}/>}
                     <TextField value={data.content} sx={{width:500}} maxRows={4} minRows={4} 
                           multiline InputProps={{ readOnly:true,}}/>

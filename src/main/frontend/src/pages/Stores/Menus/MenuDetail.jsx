@@ -43,6 +43,7 @@ export default function MenuDetail(props) {
       {isLoading && <BackDrop isLoading={isLoading} />}      
       <Box sx={BoxStyle}>
       <Fragment>
+      {isLoading && <BackDrop isLoading={isLoading} />}     
         {error && <Typography>정보를 받아오지 못했습니다!</Typography>}
         {!isLoading && menuDetailData && 
         <Fragment>
