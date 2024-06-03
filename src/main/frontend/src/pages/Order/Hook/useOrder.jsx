@@ -14,7 +14,7 @@ export function useOrder (email, orderId) {
     mutationFn: orderData => {
       axios.post(`/dp/order/register`, orderData)
     },
-    onSuccess: res => {console.log('전송성공', res); alert('주문내역이 성공적으로 전송 되었습니다.');},
+    onSuccess: res => {console.log('전송성공', res)},
     onError: () => {alert('주문내역이 전송에 실패 하였습니다.')}
   })
 
@@ -52,7 +52,7 @@ export function useTossOrder () {
     mutationFn: orderData => {
       axios.post(`/dp/payment/confirm`, orderData)
     },
-    onSuccess: () => {alert('결제에 성공하였습니다.')},
+    onSuccess: () => {console.log('결제에 성공하였습니다.')},
     onError: () => {alert('결제에 실패하였습니다.')}
   })
 
