@@ -45,6 +45,7 @@ export default function MenuDetail(props) {
         {!isLoading && menuDetailData && 
         <Fragment>
           <Typography variant="h5" sx={{textAlign:'center', mt: 3, mb:-5}}> {menuDetailData.menus.name} </Typography>
+          <CloseIcon sx={CloseBoxStyle} onClick={() => menuClose()} />
             <Grid container sx={{backgroundColor: 'rgba(255, 255, 255, 0.6)', mt:10, width: 500 }}>
                 <Stack>
                 <Card sx={{my:4, width: 500}}>
@@ -84,7 +85,7 @@ export default function MenuDetail(props) {
                                 />
                               </Grid>
                               <Grid item xs={4}/>
-                              <Grid item xs={3} sx={{alignContent:'center', textAlign:'end'}}>
+                              <Grid item xs={3} sx={{ alignContent:'center', textAlign:'end'}}>
                                 <Typography>+{data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
                               </Grid>
                             </Grid>
@@ -96,7 +97,7 @@ export default function MenuDetail(props) {
                 </Stack>
             </Grid>
             <Button onClick={handleSubmit} variant="contained" 
-              sx={{ mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'}, fontSize: '1rem'}}>장바구니 담기</Button>
+              sx={{mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'}, fontSize: '1rem'}}>장바구니 담기</Button>
         </Fragment>
         }
       </Fragment>
@@ -117,4 +118,19 @@ let BoxStyle = {
   display: 'flex', 
   flexDirection: 'column', 
   p:3,
+}
+
+let CloseBoxStyle = {
+  color:"black",
+  border:1,
+  cursor:'pointer',
+  position:"absolute",
+  borderWidth:2,
+  borderRadius:"20%",
+  top: 0,
+  right: 0,
+  m:1,
+  "&:hover": {
+    color: 'crimson',
+  }
 }
