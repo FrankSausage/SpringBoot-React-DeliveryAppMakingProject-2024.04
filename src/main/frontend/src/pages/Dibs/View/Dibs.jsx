@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardMedia, Dialog, Grid, Paper, Typography, IconButton } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Dialog, Grid, Paper, Typography, IconButton, Rating } from "@mui/material";
 import React from "react";
 import { useNavigate } from 'react-router-dom';
 import { useDibs } from "../Hook/useDibs";
@@ -41,14 +41,18 @@ export default function Dibs(props) {
                 {dibsData.data.dibsList.map((data, idx) => (
                   <Grid item key={idx} xs={12} sm={6} md={4} lg={4} xl={4}>
                     <Card onClick={() => handleNav(data.storeId)} sx={cardStyle}>
-                      <Grid container spacing={2}>
+                      <Grid container spacing={2} alignItems="center">
                         <Grid item>
                           <CardMedia component='img' image={data.storePictureName} sx={mediaStyle} />
                         </Grid>
                         <Grid item xs>
-                          <CardContent>
-                            <Typography variant="h6" sx={storeNameStyle}>{data.storeName.length > 10 ? `${data.storeName.slice(0, 10)}...` : data.storeName}</Typography>
-                            <Typography>별 점: {data.rating}</Typography>
+                          <CardContent sx={contentStyle}>
+                            <Typography variant="h6" sx={storeNameStyle}>
+                              {data.storeName.length > 7 ? `${data.storeName.slice(0, 7)}..` : data.storeName}
+                            </Typography>
+                            <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                              <Rating name="read-only" value={data.rating} readOnly />
+                            </Typography>
                             <Typography>리뷰 수: {data.reviewCount}</Typography>
                           </CardContent>
                         </Grid>
@@ -106,4 +110,10 @@ const mediaStyle = {
 const storeNameStyle = {
   fontWeight: 'bold',
   mb: 1
+};
+
+const contentStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center'
 };

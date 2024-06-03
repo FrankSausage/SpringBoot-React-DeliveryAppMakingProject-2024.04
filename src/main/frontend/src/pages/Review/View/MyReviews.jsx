@@ -23,7 +23,7 @@ export default function MyReviews(props) {
       onClose={reviewClose}
       maxWidth="md"
       fullWidth
-      sx={{ '& .MuiDialog-paper': { borderRadius: 2 } }}
+      sx={{ '& .MuiDialog-paper': { borderRadius: 2, ...paperStyle } }}
     >
       <Box sx={{ p: 3 }}>
         {isLoading && <BackDrop isLoading={isLoading} />}
@@ -41,7 +41,7 @@ export default function MyReviews(props) {
               <Grid item xs={12} sm={10} md={8}>
                 <CloseIcon sx={CloseBoxStyle} onClick={reviewClose} />
                 {reviewData.data.reviewList.map((data, idx) => (
-                  <Card key={idx} sx={{ mb: 2, p: 2, border: 1, position: 'relative' }}>
+                  <Card key={idx} sx={{ mb: 2, p: 2, border: 1, position: 'relative', textAlign: 'center' }}>
                     <Typography variant="h6" gutterBottom>가게 명: {data.storeName}</Typography>
                     <Typography variant="body2" color="textSecondary">작성 일: {data.createdDate.replace('T',' ')}</Typography>
                     <CardContent>
@@ -79,3 +79,15 @@ let CloseBoxStyle = {
     color: 'crimson',
   }
 }
+
+const paperStyle = {
+  height: '90vh',
+  backgroundImage: 'url(/img/s01.jpg)',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundBlendMode: 'lighten',
+  backgroundColor: 'rgba(255, 255, 255, 0.3)',
+  p: 3,
+  overflowY: 'auto'
+};
+
