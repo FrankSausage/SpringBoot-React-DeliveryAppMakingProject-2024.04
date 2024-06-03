@@ -38,6 +38,7 @@ export default function MenuUpdate() {
   const [menuPictureName, setMenuPictureName] = useState('');
 
   useEffect(() => {
+    queryClient.refetchQueries(['menuList', {menuId: menuId}]);
     if (!isLoading && menu) {
       // 초기 값을 설정합니다.
       setInitialName(menu.menus[0].name);
@@ -45,7 +46,7 @@ export default function MenuUpdate() {
       setInitialContent(menu.menus[0].content);
       setInitialCategory(menu.menus[0].category);
       setInitialMenuPictureName(menu.menus[0].menuPictureName);
-
+      
       // 사용자 입력 상태 변수를 초기 값으로 설정합니다.
       setName(menu.menus[0].name);
       setPrice(menu.menus[0].price);
