@@ -7,6 +7,7 @@ import BackDrop from "../../../components/BackDrop";
 
 export default function StoreReviews() { 
   const location = useLocation();
+  const role = localStorage.getItem('role');
   const { storeId } =  useParams();
   const { storeId: ownerStoreId} = location.state ? location.state : '';
   const [ openPortal, setOpenPortal ] = useState(false);
@@ -55,6 +56,8 @@ export default function StoreReviews() {
                           multiline InputProps={{ readOnly:true,}}/>
                       </Box>
                     }
+                  {role==='점주' &&
+                  <Fragment>
                     { openPortal ?
                       (!data.ceoReviewContent && <Button onClick={() => handleClick(idx)} variant="contained">접기</Button>)
                       :
@@ -65,6 +68,8 @@ export default function StoreReviews() {
                       )
                     }
                   {!data.ceoReviewContent && openPortal && activeIndex === idx && <OwnerReviewRegister isPortalOpen={{openPortal}} reviewId={data.reviewId}/>}
+                  </Fragment>
+                  }
                 </Card>
               ))}
             </Grid>

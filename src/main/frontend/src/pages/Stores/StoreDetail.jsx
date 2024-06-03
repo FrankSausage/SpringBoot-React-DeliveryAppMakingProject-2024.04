@@ -1,10 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import Footer from "../../components/Footer";
-import { Box, Grid, InputBase, Paper, Stack, Tab, Tabs, Typography, } from '@mui/material/';
-import SearchIcon from '@mui/icons-material/Search';
+import { Box, Grid, Tab, Tabs, Typography, } from '@mui/material/';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import StoreInfo from './StoreInfo';
 import StoreMenuList from './StoreMenuList';
@@ -14,6 +12,7 @@ import { useStoreDeatilByEmail } from '../../utils/storeInfo';
 import { useQueryClient } from '@tanstack/react-query';
 import BackDrop from '../../components/BackDrop';
 import StoreReviews from '../Review/View/StoreReviews';
+
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -104,19 +103,18 @@ export default function StoreDetail() {
         </Tabs>
       </Box>
         <Grid container>
-          <Grid item xs={4}/>
-          <Grid item xs={2.5}>
-            <Typography variant='h4' sx={{textAlign:'end', mt: 3}}>{storeDetail.name}</Typography>
+          <Grid item xs={2} />
+          <Grid item xs>
+            <Typography variant='h4' sx={{textAlign:'center', mt: 3}}>{storeDetail.name} 
+              {role!=='점주' && storeDetail.isDibed==='일반' || storeDetail.isDibed===null ? 
+                <FavoriteIcon sx={{cursor:'pointer', fontSize:30, mb:1, ":hover":{color:'red'}}} onClick={() => handleDib(storeDetail.isDibed)} />
+                :
+                <FavoriteIcon sx={{cursor:'pointer', fontSize:30, color:'red', mb:1}} onClick={() => handleDib(storeDetail.isDibed)} />
+              } 
+            </Typography>
           </Grid>
-          <Grid item sx={{ml:2}} xs> 
-            {role!=='점주' && storeDetail.isDibed==='일반' || storeDetail.isDibed===null ? 
-              <FavoriteBorderIcon sx={{cursor:'pointer', fontSize:30, mt: 3}} onClick={() => handleDib(storeDetail.isDibed)} />
-              :
-              <FavoriteIcon sx={{cursor:'pointer', fontSize:30, color:'red', mt: 3}} onClick={() => handleDib(storeDetail.isDibed)} />
-            } 
-          </Grid>
+          <Grid item xs={2} /> 
         </Grid>
-      
       <CustomTabPanel value={value} index={1}>
         <StoreMenuList storeName={storeDetail.name} />
       </CustomTabPanel>
