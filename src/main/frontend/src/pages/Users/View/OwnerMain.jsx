@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, InputBase, Button, Typography, Stack, Container, Paper } from '@mui/material/';
+import { Box, Grid, InputBase, Button, Typography, Stack, Container, Paper, Rating } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link, useParams } from 'react-router-dom';
 import SearchHeader from '../../../components/SearchHeader';
@@ -71,7 +71,7 @@ export default function OwnerMain() {
                         <img src={data.storePictureName.split(',')[0]} style={{ width: '100px', height: '100px', borderRadius: '8px', objectFit: 'cover' }} alt="가게 이미지" />
                         <Box sx={{ ml: 2 }}>
                           <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{data.name}</Typography>
-                          <Typography variant="body2" color="textSecondary">별점: {data.rating}</Typography>
+                          <Typography variant="body2" sx={{ fontWeight: 'bold' }}><Rating name="read-only" value={data.rating} readOnly /></Typography>
                           <Typography variant="body2" color="textSecondary">리뷰: {data.reviewCount}</Typography>
                           <Typography variant="body2" color="textSecondary">조회수: {data.dibsCount}</Typography>
                         </Box>
@@ -92,7 +92,7 @@ export default function OwnerMain() {
                         <Link to={`/OwnerOrderList`} state={{ storeId: data.storeId, storeName: data.name }} style={{ textDecoration: 'none' }}>
                           <Button variant="outlined">가게 주문확인</Button>
                         </Link>
-                        <Link to={`/StoreReviews`} state={{ storeId: data.storeId }} style={{ textDecoration: 'none' }}>
+                        <Link to={`/StoreReviews/${data.storeId}`} state={{ storeId: data.storeId }} style={{ textDecoration: 'none' }}>
                           <Button variant="outlined">가게 리뷰</Button>
                         </Link>
                       </Stack>
