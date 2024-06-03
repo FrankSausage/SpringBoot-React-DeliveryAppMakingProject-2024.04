@@ -34,6 +34,7 @@ export default function MenuUpdate() {
   const [price, setPrice] = useState('');
   const [type , setType ] = useState('');
   const [category, setCategory] = useState('');
+  const [ popularity, setPopularity ] = useState(0);
   const [content, setContent] = useState('');
   const [menuPictureName, setMenuPictureName] = useState('');
 
@@ -53,6 +54,7 @@ export default function MenuUpdate() {
       setContent(menu.menus[0].content);
       setCategory(menu.menus[0].category);
       setMenuPictureName(menu.menus[0].menuPictureName);
+      setPopularity(menu.menus[0].popularity);
     }
   }, [isLoading]);
 
@@ -76,6 +78,14 @@ export default function MenuUpdate() {
         }
       }))
   };
+
+  const handlePopularity = () => {
+    if (popularity===1) {
+      setPopularity(0);
+    } else {
+      setPopularity(1);
+    }
+  }
 
   const handleMenuDelete = () => {
     const confirmDelete = window.confirm('정말로 이 메뉴를 삭제하시겠습니까?');
@@ -101,9 +111,9 @@ export default function MenuUpdate() {
       data.append('content', content);
       data.append('name', name);
       data.append('price', price);
-      // data.append('menuPictureName', menuPictureName);
       data.append('menuOptions', null);
       data.append('menuPictureName', menuPictureUrl ? menuPictureUrl : menuPictureName);
+      data.append('popularity', popularity);
       return data;
     } catch (error) {
       console.error('setFormData Error!: ', error);
@@ -181,6 +191,10 @@ export default function MenuUpdate() {
                   </Grid>
                   <Grid item xs={12}>
                     <TextField autoComplete="given-name" name="content" fullWidth id="content" label="음식 소개글" value={content} placeholder={initialContent.toString()} multiline rows={4} variant='outlined' onChange={e => setContent(e.target.value)} />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="h6" gutterBottom>인기메뉴 등록</Typography>
+                    <FormControlLabel control={<Checkbox checked={popularity === 1} onChange={() => handlePopularity()} color="primary" />} label="인기메뉴" />
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="h6" gutterBottom>

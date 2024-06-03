@@ -22,6 +22,7 @@ export default function OrderList(props) {
   }
 
   const handleNav = storeId => {
+    orderClose();
     navigate(`/StoreDetail/${storeId}`);
   }
 
