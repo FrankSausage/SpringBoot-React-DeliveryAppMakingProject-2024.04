@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import Footer from "../../components/Footer";
-import { Box, Grid, Tab, Tabs, Typography, } from '@mui/material/';
+import { Box, Grid, Paper, Tab, Tabs, Typography, } from '@mui/material/';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
