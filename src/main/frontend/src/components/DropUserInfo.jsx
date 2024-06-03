@@ -9,27 +9,47 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import { FaUser } from 'react-icons/fa';
 import OrderList from '../pages/Order/OrderList';
+import MyReviews from '../pages/Review/View/MyReviews';
 
 export default function DropUserInfo({ role }) {
 	const navigate = useNavigate();
   const [ orderOpen, setOrderOpen ] = useState(false);
+  const [ reviewOpen, setReviewOpen ] = useState(false);
   const { setOutletAddress } = useOutletContext();
 	const [anchorEl, setAnchorEl] = React.useState(null);
-  console.log(orderOpen)
+  
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
-    if (orderOpen) {
-      setOrderOpen(false);
+  const handleClose = query => {
+    switch(query){
+      case 'Order':
+        if (orderOpen) {
+          setOrderOpen(false);
+        }
+        break;
+      case 'Review':
+        if(reviewOpen) {
+          setReviewOpen(false);
+        }
+        break;
     }
     setAnchorEl(null);
   };
 
-  const handleOpen = () => {
-    if (!orderOpen) {
-      setOrderOpen(true);
+  const handleOpen = query => {
+    switch(query){
+    case 'Order':
+      if (!orderOpen) {
+        setOrderOpen(true);
+      }
+      break;
+    case 'Review':
+      if(!reviewOpen) {
+        setReviewOpen(true);
+      }
+      break;
     }
   }
 	
@@ -99,19 +119,20 @@ export default function DropUserInfo({ role }) {
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton onClick={() => handleOpen()}>
+            <ListItemButton onClick={() => handleOpen('Order')}>
               <ListItemIcon sx={{color:'black'}}>
                 <ListAltIcon/>
               </ListItemIcon>
-              <OrderList handleOpen={orderOpen} orderClose={handleClose}/>
+              <OrderList handleOpen={orderOpen} orderClose={() => handleClose('Order')}/>
               <ListItemText primary="주문내역"/>
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton onClick={() => handleNavigate('MyReviews')}>
+            <ListItemButton onClick={() => handleOpen('Review')}>
               <ListItemIcon sx={{color:'black'}}>
                 <RateReviewIcon/>
               </ListItemIcon>
+              <MyReviews handleOpen={reviewOpen} reviewClose={() => handleClose('Review')}/>
               <ListItemText primary="리뷰 관리"/>
             </ListItemButton>
           </ListItem>

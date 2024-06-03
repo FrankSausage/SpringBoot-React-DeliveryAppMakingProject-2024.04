@@ -1,13 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-export function useReview(email) {
+export function useReview(email, isOpen) {
   const queryClient = useQueryClient();
 
   const getMyReviewList = useQuery({
     queryKey: ['reviewList', {email: email}],
     queryFn: () => {return axios.get(`/dp/user/review/list`, {params: {email: email}})},
-    enabled: !!email
+    staleTime: 1000 * 60 * 10,
+    enabled: !!email && isOpen
   })
 
   
