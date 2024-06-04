@@ -135,7 +135,7 @@ export default function StoreMenuList({ storeName }) {
                 </Grid>
               )}
               <Grid item xs={12} sm={6} md={4} lg={4}>
-                <Box sx={{ ...boxStyle, position: 'relative', width: '100%', height: 'auto', marginX: 'auto', display: 'flex', alignItems: 'center', }}>
+                <Box sx={{ ...boxStyle, position: 'relative', width: '100%', height: 'auto', marginX: 'auto', display: 'flex', alignItems: 'center', boxShadow: 3, transition: 'transform 0.3s, box-shadow 0.3s', '&:hover': { transform: 'scale(1.05)', boxShadow: 6 }}}>
                   <Box onClick={e => handleOpen(e, idx, res.menuId, res.status)} sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
                     <img src={res.menuPictureName} style={{ width: '150px', height: '120px', objectFit: 'cover', borderRadius: '10px', display: 'block', margin: '0 auto' }} />
                   </Box>

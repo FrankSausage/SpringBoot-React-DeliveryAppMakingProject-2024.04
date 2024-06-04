@@ -16,13 +16,7 @@ export default function Dibs(props) {
   };
 
   return (
-    <Dialog
-      open={handleOpen}
-      keepMounted
-      PaperProps={{
-        style: { borderRadius: 20, overflow: 'hidden' }
-      }}
-    >
+    <Dialog open={handleOpen} keepMounted PaperProps={{ style: { borderRadius: 20, overflow: 'hidden' } }}>
       <Box>
         <Paper elevation={5} sx={paperStyle}>
           <IconButton sx={CloseBoxStyle} onClick={() => dibsClose()}>
@@ -40,7 +34,7 @@ export default function Dibs(props) {
               <Grid container item xs={12} spacing={3} justifyContent="center">
                 {dibsData.data.dibsList.map((data, idx) => (
                   <Grid item key={idx} xs={12} sm={6} md={4} lg={4} xl={4}>
-                    <Card onClick={() => handleNav(data.storeId)} sx={cardStyle}>
+                    <Card onClick={() => handleNav(data.storeId)} sx={{ ...cardStyle,  boxShadow: 3, transition: 'transform 0.3s, box-shadow 0.3s', '&:hover': { transform: 'scale(1.05)', boxShadow: 6 }} }>
                       <Grid container spacing={2} alignItems="center">
                         <Grid item>
                           <CardMedia component='img' image={data.storePictureName} sx={mediaStyle} />
@@ -48,7 +42,7 @@ export default function Dibs(props) {
                         <Grid item xs>
                           <CardContent sx={contentStyle}>
                             <Typography variant="h6" sx={storeNameStyle}>
-                              {data.storeName.length > 7 ? `${data.storeName.slice(0, 7)}..` : data.storeName}
+                              {data.storeName.length > 6 ? `${data.storeName.slice(0, 6)}..` : data.storeName}
                             </Typography>
                             <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                               <Rating name="read-only" value={data.rating} readOnly />

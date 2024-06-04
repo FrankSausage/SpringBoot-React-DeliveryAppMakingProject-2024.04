@@ -28,7 +28,7 @@ export default function MyReviews(props) {
       <Box sx={{ p: 3 }}>
         {isLoading && <BackDrop isLoading={isLoading} />}
         {!isLoading && reviewData && reviewData.data.reviewList.length === 0 &&
-          <Card sx={{ m: 'auto', border: 1, width: '50%', height: 400, textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+          <Card sx={{ m: 'auto', border: 1, width: '50%', height: 400, textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', boxShadow: 3, transition: 'transform 0.3s, box-shadow 0.3s', '&:hover': { transform: 'scale(1.05)', boxShadow: 6 } }}>
             <CloseIcon sx={CloseBoxStyle} onClick={reviewClose} />
             <CardContent>
               <Typography>아직 리뷰를 남긴 가게가 없어요!</Typography>
@@ -41,7 +41,7 @@ export default function MyReviews(props) {
               <Grid item xs={12} sm={10} md={8}>
                 <CloseIcon sx={CloseBoxStyle} onClick={reviewClose} />
                 {reviewData.data.reviewList.map((data, idx) => (
-                  <Card key={idx} sx={{ mb: 2, p: 2, border: 1, position: 'relative', textAlign: 'center' }}>
+                  <Card key={idx} sx={{...CardStyle, mb: 2, p: 2, border: 1, position: 'relative', textAlign: 'center', boxShadow: 3, transition: 'transform 0.3s, box-shadow 0.3s', '&:hover': { transform: 'scale(1.05)', boxShadow: 6 } }}>
                     <Typography variant="h6" gutterBottom>가게 명: {data.storeName}</Typography>
                     <Typography variant="body2" color="textSecondary">작성 일: {data.createdDate.replace('T',' ')}</Typography>
                     <CardContent>
@@ -89,5 +89,12 @@ const paperStyle = {
   backgroundColor: 'rgba(255, 255, 255, 0.3)',
   p: 3,
   overflowY: 'auto'
+};
+
+
+const CardStyle = {
+  backgroundImage: 'url(/img/ba.jpg)',
+  backgroundSize: 'cover',
+  backgroundColor: 'rgba(255, 255, 255, 1)',
 };
 

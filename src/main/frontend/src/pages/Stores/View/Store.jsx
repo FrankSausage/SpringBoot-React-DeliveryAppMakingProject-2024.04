@@ -66,7 +66,7 @@ export default function Store() {
             <Tab label="디저트" {...a11yProps(8)} />
           </Tabs>
         </Box>
-      <Paper elevation={3} sx={{height: '100vh', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2, overflowY: 'auto' }}>
+      <Paper elevation={3} sx={{minHeight: '100vh', maxHeight: 'auto', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2, overflowY: 'auto' }}>
         <Grid container justifyContent="center" alignItems="center" mb={2}>
           <Grid item xs={10} md={6} lg={4}>
           <Box sx={{ display: 'flex', justifyContent: 'center', border: 1, borderColor: 'divider', borderRadius: 3, p: 1, bgcolor: '#fff', boxShadow: 1 }}>

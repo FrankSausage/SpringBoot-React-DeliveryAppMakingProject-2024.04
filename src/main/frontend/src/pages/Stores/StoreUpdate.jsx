@@ -418,9 +418,7 @@ export default function StoreUpdate() {
                             </Button>
                             :
                             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                              수정
-                            </Button>
-                          }
+                              수정 </Button> }
                         </Grid>
                         <Grid item xs={6}>
                           <Button fullWidth variant="contained" color="error" onClick={() => handleStoreDelete(email, storeId)} sx={{ mt: 3, mb: 2 }}>

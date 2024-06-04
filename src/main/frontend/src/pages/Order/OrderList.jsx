@@ -52,7 +52,7 @@ export default function OrderList(props) {
             {orderData.data.orders.map((data, idx) => (
               <Fragment key={idx}>
                 <Card sx={CardStyle}>
-                  <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                  <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
                     <Typography onClick={() => handleNav(data.storeId)} variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center', mb: 1, "&:hover": { color: 'coral' } }}>
                       <ListAltIcon sx={{ mr: 1, color: '#1976d2' }} /> {data.storeName}
                     </Typography>
@@ -86,6 +86,8 @@ export default function OrderList(props) {
 const CloseBoxStyle = {
   color: "black",
   border: 1,
+  backgroundImage: 'url(/img/1234.jpg)',
+  backgroundSize: 'cover',
   cursor: 'pointer',
   position: "absolute",
   borderWidth: 2,
@@ -111,10 +113,13 @@ const CardStyle = {
   backgroundColor: '#fff',
   borderRadius: 5,
   padding: '16px',
+  backgroundImage: 'url(/img/ba.jpg)',
+  backgroundColor: 'rgba(255, 255, 255, 1)',
+  backgroundSize: 'cover',
 }
 
 const paperStyle = {
-  height: '90vh',
+  minHeight: '100vh',maxHeight: 'auto',
   backgroundImage: 'url(/img/sl0.jpg)',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
@@ -123,3 +128,4 @@ const paperStyle = {
   p: 3,
   overflowY: 'auto'
 };
+

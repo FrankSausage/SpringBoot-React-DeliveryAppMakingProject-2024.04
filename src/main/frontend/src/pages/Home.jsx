@@ -14,7 +14,6 @@ export default function Home() {
         <Box sx={{ width: '100%', marginTop: -1 }}>
           {role==='회원' && <UserMain />}
           {role==='점주' && <OwnerMain />}
-         
         </Box>
   )
 }

@@ -54,7 +54,7 @@ export default function MenuDetail(props) {
                   <Card sx={{mb:1}}>
                     <CardContent sx={{m:1}}>
                       <img src={menuDetailData.menus.menuPictureName} style={{width:'50%', height: 'auto', display: 'block', margin: '0 auto', borderRadius: '8px'}} />
-                      <Typography sx={{textAlign: 'center', mt:3 }} variant="h6">{menuDetailData.menus.content}</Typography>
+                      <Typography sx={{textAlign: 'center', mt:3}} variant="h6">{menuDetailData.menus.content.length > 15 ? `${menuDetailData.menus.content.slice(0, 15)}..` : menuDetailData.menus.content}</Typography>
                     </CardContent>
                   </Card>
                   <Card sx={{my:4, width: 500}}>
