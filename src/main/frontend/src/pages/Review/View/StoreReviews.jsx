@@ -38,7 +38,7 @@ export default function StoreReviews() {
             <Typography variant="h2" sx={{ textAlign: 'center' }}>아직 리뷰가 없어요!</Typography>
           </Box>
         }
-        {!isLoading && storeReviewData && queryClient &&
+        {!isLoading && storeReviewData &&
           <Fragment>
             <Grid container >
               <Grid item xs />

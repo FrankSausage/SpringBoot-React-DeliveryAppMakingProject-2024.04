@@ -85,7 +85,7 @@ export default function StoreMenuList({ storeName }) {
             </Grid>
             {popularMenus.map((res, idx) => (
               <Grid item xs={12} sm={6} md={4} lg={4} key={res.menuId}>
-                <Box sx={{ ...boxStyle, position: 'relative', width: '100%', height: 'auto', marginX: 'auto', display: 'flex', alignItems: 'center', }}>
+                <Box sx={boxStyle}>
                   <Box onClick={e => handleOpen(e, idx, res.menuId, res.status)} sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
                     <img src={res.menuPictureName} style={{ width: '150px', height: '120px', objectFit: 'cover', borderRadius: '10px', display: 'block', margin: '0 auto' }} />
                   </Box>
@@ -135,7 +135,7 @@ export default function StoreMenuList({ storeName }) {
                 </Grid>
               )}
               <Grid item xs={12} sm={6} md={4} lg={4}>
-                <Box sx={{ ...boxStyle, position: 'relative', width: '100%', height: 'auto', marginX: 'auto', display: 'flex', alignItems: 'center', boxShadow: 3, transition: 'transform 0.3s, box-shadow 0.3s', '&:hover': { transform: 'scale(1.05)', boxShadow: 6 }}}>
+                <Box sx={boxStyle}>
                   <Box onClick={e => handleOpen(e, idx, res.menuId, res.status)} sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
                     <img src={res.menuPictureName} style={{ width: '150px', height: '120px', objectFit: 'cover', borderRadius: '10px', display: 'block', margin: '0 auto' }} />
                   </Box>
@@ -212,13 +212,20 @@ let boxStyle = {
   boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
   padding: '16px',
   margin: '16px',
+  marginX: 'auto', 
   backgroundColor: '#ffffff',
   position: 'relative',
   transition: 'box-shadow 0.3s ease',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  boxShadow: 3, 
   '&:hover': {
     boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.2)',
-  }
+  },
+  transition: 'transform 0.3s, box-shadow 0.3s', 
+    '&:hover': { 
+      transform: 'scale(1.05)', 
+      boxShadow: 6 
+  },
 };
