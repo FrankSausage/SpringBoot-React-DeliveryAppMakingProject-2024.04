@@ -27,7 +27,7 @@ export default function OrderDetail({ isPortalOpen, email, orderId }) {
   return (
     <Fragment>
       {show ? 
-        <Box sx={{ border: 1, borderRadius: 2, padding: 3, maxWidth: 600, margin: 'auto', backgroundColor: '#f9f9f9', boxShadow: 3 }}>
+        <Box sx={{ border: 1, borderRadius: 2, padding: 3, maxWidth: 600, margin: 'auto', backgroundColor: '#f9f9f9', borderStyle: 'dashed' , boxShadow: 3 }}>
           {isLoading && <BackDrop isLoading={isLoading} />}
           {!isLoading && orderDetailData &&
           <Stack spacing={2}>
@@ -36,7 +36,7 @@ export default function OrderDetail({ isPortalOpen, email, orderId }) {
             <Typography>배달료: {orderDetailData.data.deliveryTip.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
             <Typography>결제 방식: {orderDetailData.data.paymentMethod}</Typography>
             {orderDetailData.data.menus && orderDetailData.data.menus.map((menuData, menuIdx) => (
-              <Card key={menuIdx} sx={{ border: 1, borderRadius: 2, marginBottom: 2, borderStyle: 'dashed', }}>
+              <Card key={menuIdx} sx={{ border: 1, borderRadius: 2, marginBottom: 2, /*borderStyle: 'dashed',*/ }}>
                 <CardContent>
                   <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>{menuData.menuName}</Typography>
                   <Typography>가격: {menuData.menuPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
