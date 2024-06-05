@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Rating, Slide, TextField } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Rating, Slide, TextField } from "@mui/material";
 import React, { Fragment, useState } from "react";
 import { useReview } from "./Hook/useReview";
 import { uploadImageToCloudinary } from "../../utils/uploader";
@@ -88,7 +88,7 @@ export default function ReviewRegister({ orderId, status, email }) {
       >
         <DialogTitle>리뷰 작성</DialogTitle>
         <DialogContent>
-          <DialogContentText sx={{mb:2}}>별점: <Rating value={rating} onChange={(e, newValue) => setRating(newValue)} required/> </DialogContentText>
+          <DialogContentText sx={{mb:2}}><Rating value={rating} onChange={(e, newValue) => setRating(newValue)} required/> </DialogContentText>
           <TextField type="text" sx={{width:400, }} minRows={4} maxRows={4} multiline onChange={e=> handleChange(e)}
             value={reviewText} placeholder="ex) 친절하고 맛있어요. (100자 제한)" required />
         </DialogContent>

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import { Navbar, Nav, Button, Container } from 'react-bootstrap';
-import { FaUser, FaSearch, FaShoppingCart } from 'react-icons/fa';
+import { Navbar, Button, Container } from 'react-bootstrap';
+import { FaSearch } from 'react-icons/fa';
 import { useAuthContext } from '../context/AuthContext';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { Box, Typography, InputAdornment, OutlinedInput, Stack, Grid } from '@mui/material';
@@ -8,20 +8,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import DropUserInfo from './DropUserInfo';
 import Cart from '../pages/Cart/View/Cart';
-import { color } from '@cloudinary/url-gen/qualifiers/background';
 
 export default function AppNavbar() {
   const { user } = useAuthContext();
   const { outletAddress } = useOutletContext();
   const address = localStorage.getItem('address') ? localStorage.getItem('address') : '';
   const role = localStorage.getItem('role');
-	const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const navigate = useNavigate();
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -52,7 +47,7 @@ export default function AppNavbar() {
           <Grid container alignItems="center">
             <Grid item xs={2} sm={2} md={2}>
               <Link to="/" style={{ textDecoration: 'none', color: 'Black' }}>
-                <img src={'/img/logo01.png'} style={{ width: '40%', height: '40%', maxWidth: '150px', maxHeight: '150px' }} />
+                <img src={'/img/logo01.png'} style={{ width: '60%', height: '40%', maxWidth: '150px', maxHeight: '150px' }} />
               </Link>
             </Grid>
             {role === '회원' && (
@@ -70,14 +65,13 @@ export default function AppNavbar() {
                         <Button variant="outline-success" className="nav_search-btn" type="submit" style={{ color: 'black', borderColor: 'black' }} >
                           <FaSearch aria-hidden="true" style={{ color: 'black' }} />
                         </Button>
-                      </InputAdornment>
-                    }
+                      </InputAdornment>}
                     sx={{ mt: 1, mb: 1, width: '100%', maxWidth: 550, backgroundColor: 'white', cursor: 'pointer', borderRadius: '30px', padding: '1px 15px', fontSize: '1rem', textAlign: 'center' }} inputProps={{ style: { textAlign: 'center' } }} onClick={() => handleNavigate('Address')}
                   />
                 </Box>
               </Grid>
             )}
-            <Grid item xs={2} sm={2} md={2}>
+            <Grid item xs={user && role !== '점주' ? 2 : 9.5} sm={user && role !== '점주' ? 2 : 9.5} md={user && role !== '점주' ? 2 : 9.5}>
               <Stack direction="row" spacing={1} justifyContent="flex-end" alignItems="center" sx={{ width: '100%' }}>
                 {user ? (
                   <>
@@ -86,19 +80,19 @@ export default function AppNavbar() {
                     <Typography variant="body1" sx={{ color: 'white', fontWeight: 'bold' }}>
                       {user.displayName}
                     </Typography>
-                  </>
-                ) : (
-                  <Fragment>
+                </>
+              ) : (
+                <Fragment>
                     <Link to="/SignIn" style={{ textDecoration: 'none', color: 'white', fontWeight: 'bold', marginLeft: 'auto' }}>
                       로그인
                     </Link>
                     <Link to="/SignUp" style={{ textDecoration: 'none', color: 'white', fontWeight: 'bold', marginLeft: '1rem' }}>
                       회원가입
                     </Link>
-                  </Fragment>
-                )}
-              </Stack>
-            </Grid>
+                </Fragment>
+              )}
+            </Stack>
+              </Grid>
           </Grid>
         </Navbar>
       </Container>

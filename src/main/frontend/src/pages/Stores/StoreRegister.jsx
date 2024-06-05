@@ -129,6 +129,7 @@ export default function StoreRegister() {
       try {
         const url = await uploadImageToCloudinary(file); // 클라우드니어리에 이미지 업로드
         setStorePictureUrl(url); // 업로드된 이미지 URL 저장
+        setIsFileUploading(false);
       } catch (error) {
         console.error('Failed to upload image to Cloudinary:', error);
       }
@@ -153,7 +154,7 @@ export default function StoreRegister() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <SearchHeader />
-      <div style={{ backgroundImage: 'url(/img/kitchenO.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
+      <div style={{ backgroundImage: 'url(/img/Okitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
         <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
           <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
             <Container component="main" maxWidth="xs">
@@ -283,14 +284,21 @@ export default function StoreRegister() {
                       <Typography variant="h6" gutterBottom>
                         가게 사진 업로드
                       </Typography>
+                      {storePictureUrl && <img src={storePictureUrl} width={100} height={100} style={{margin: 30}}/>}
                       <input accept=".png, .jpeg, .jpg" id="upload-photo" type="file" style={{ display: 'none' }} onChange={handleFileUpload} multiple />
                       <TextField autoComplete="given-name" name="storePictureName" value={storePictureName} fullWidth id="storePictureName" label="가게 사진" onClick={() => document.getElementById('upload-photo').click()} InputProps={{ readOnly: true }} sx={{ mb: 2 }} />
+                      {isFileUploading ?
+                      <Button type="button" disabled variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
+                        사진 올리기
+                      </Button>
+                      :
                       <Button type="button" variant="contained" onClick={() => document.getElementById('upload-photo').click()} fullWidth>
                         사진 올리기
                       </Button>
+                      }   
                       {storePictureName && (
                         <Typography variant="body1" gutterBottom>
-                          업로드된 파일: {storePictureName}
+                          {/* 업로드된 파일: {storePictureName} */}
                         </Typography>
                       )}
                     </Grid>
@@ -299,7 +307,7 @@ export default function StoreRegister() {
                     </Grid>
                   </Grid>
                   {isFileUploading ?
-                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
+                    <Button type="submit" fullWidth disabled variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
                       입점 신청하기
                     </Button>
                     :

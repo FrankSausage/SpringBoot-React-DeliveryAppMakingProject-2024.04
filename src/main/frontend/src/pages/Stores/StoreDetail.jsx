@@ -1,10 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import Footer from "../../components/Footer";
-import { Box, Grid, InputBase, Stack, Tab, Tabs, Typography, } from '@mui/material/';
-import SearchIcon from '@mui/icons-material/Search';
+import { Box, Grid, Paper, Tab, Tabs, Typography, } from '@mui/material/';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import StoreInfo from './StoreInfo';
 import StoreMenuList from './StoreMenuList';
@@ -12,6 +10,9 @@ import SearchHeader from '../../components/SearchHeader';
 import { useDibs } from '../Dibs/Hook/useDibs';
 import { useStoreDeatilByEmail } from '../../utils/storeInfo';
 import { useQueryClient } from '@tanstack/react-query';
+import BackDrop from '../../components/BackDrop';
+import StoreReviews from '../Review/View/StoreReviews';
+
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -54,7 +55,6 @@ export default function StoreDetail() {
   const { postDibStore } = useDibs();
   const [value, setValue] = useState(1);
   const [popularity, setPopularity] = useState('');
-  const navigate = useNavigate();
 
   const handleChange = (e, newValue) => {
     setValue(newValue);
@@ -83,10 +83,10 @@ export default function StoreDetail() {
   }
 
   return (
-    <Box sx={{ margin: -1 }}>
-    <Box sx={{ height: 'auto', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ margin: -2 }}>
+    <Paper elevation={3} sx={{minHeight: '100vh',maxHeight: 'auto', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2, overflowY: 'auto' }}>
       <SearchHeader />
-      {isLoading && <Typography>로딩 중...</Typography>}
+      {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && storeDetail && 
       <Fragment>
       <Box sx={{ borderBottom: 1, borderColor: 'black', display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
@@ -102,29 +102,36 @@ export default function StoreDetail() {
         </Tabs>
       </Box>
         <Grid container>
-          <Grid item xs={4}/>
-          <Grid item xs={2.5}>
-            <Typography variant='h4' sx={{textAlign:'end'}}>{storeDetail.name}</Typography>
+          <Grid item xs={2} />
+          <Grid item xs>
+            <Typography variant='h4' sx={{textAlign:'center', mt: 3}}>{storeDetail.name} 
+              {role!=='점주' &&
+                <Fragment>
+                  {storeDetail.isDibed==='일반' || storeDetail.isDibed===null ? 
+                    <FavoriteIcon sx={{cursor:'pointer', fontSize:30, mb:1, ":hover":{color:'red'}}} onClick={() => handleDib(storeDetail.isDibed)} />
+                    :
+                    <FavoriteIcon sx={{cursor:'pointer', fontSize:30, color:'red', mb:1}} onClick={() => handleDib(storeDetail.isDibed)} />
+                  } 
+                </Fragment>
+              }
+            </Typography>
           </Grid>
-          <Grid item sx={{ml:2}} xs> 
-            {role!=='점주' && storeDetail.isDibed==='일반' || storeDetail.isDibed===null ? 
-              <FavoriteBorderIcon sx={{cursor:'pointer', fontSize:30,}} onClick={() => handleDib(storeDetail.isDibed)} />
-              :
-              <FavoriteIcon sx={{cursor:'pointer', fontSize:30, color:'red'}} onClick={() => handleDib(storeDetail.isDibed)} />
-            } 
-          </Grid>
+          <Grid item xs={2} /> 
         </Grid>
-      
       <CustomTabPanel value={value} index={1}>
         <StoreMenuList storeName={storeDetail.name} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <StoreInfo storeDetail={storeDetail} />
       </CustomTabPanel>
+      <CustomTabPanel value={value} index={3}>
+        <StoreReviews storeId={storeId} />
+      </CustomTabPanel>
       <Footer />
       </Fragment>
       }
-    </Box>
+    {/* </Box> */}
+    </Paper>
     </Box>
   );
 }

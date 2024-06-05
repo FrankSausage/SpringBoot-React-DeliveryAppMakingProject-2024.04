@@ -64,7 +64,7 @@ export function loginWithGoogle() {
 
 // # 카카오 로그인
 export function loginWithKakao(){
-  const provider = new OAuthProvider('oidc.kakao');
+  const provider = new OAuthProvider('oidc.로그인');
   
   return signInWithPopup(auth, provider)
   .then((res) => {  

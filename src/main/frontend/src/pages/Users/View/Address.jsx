@@ -13,6 +13,7 @@ import axios from "axios";
 import AddressUpdate from "../AddressUpdate";
 import AddressDelete from "../AddressDelete";
 import SearchHeader from "../../../components/SearchHeader";
+import BackDrop from "../../../components/BackDrop";
 
 
 export default function Address() {
@@ -101,10 +102,16 @@ export default function Address() {
       }
     }
 
+    const handleBack = () => {
+      navigate(-1); 
+    };
+
     return(
-      
       <Box sx={{ height: 'auto', minHeight: '100vh', backgroundImage: 'url(/img/a0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '28px 0',}}>
         <Container component="main" maxWidth="sm" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px', }}>
+        <Typography variant="body1" onClick={handleBack} sx={{ cursor: 'pointer', textAlign: 'left', float: 'left' }}>
+        ◀ 뒤로가기
+      </Typography>
           <CssBaseline />
         <Box sx={{  marginTop: 8, display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', textAlign: 'center', width: '100%' }}>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -116,7 +123,7 @@ export default function Address() {
             <MailSharpIcon />
           </Avatar>
           <Stack sx={{ maxWidth:'500px', width:'100%', textAlign: 'center', marginLeft: '85px' }}>
-            {isLoading && <Typography>로딩 중..</Typography>}
+            {isLoading && <BackDrop isLoading={isLoading} />}
             {error && <Typography>에러 발생!</Typography>}
             {address && 
             <Box>
