@@ -4,14 +4,6 @@ import axios from "axios";
 export function useOrder (email, orderId) {
   const queryClinet = useQueryClient();
 
-  const getOrderListByEmail = useQuery({
-    queryKey: ['orderList'],
-    queryFn: () => { return axios.get(`/dp/order/list`, {params: {email: email}}) },
-    refetchInterval: 6000,
-    refetchIntervalInBackground: true,
-    enabled: !!email
-  })
-
   const getOrderDetailByOrderId = useQuery({
     queryKey: ['userOrderDetail', orderId],
     queryFn: () => { return axios.get(`/dp/order/detail`, {params: {email: email, orderId: orderId}})},
@@ -22,7 +14,7 @@ export function useOrder (email, orderId) {
     mutationFn: orderData => {
       axios.post(`/dp/order/register`, orderData)
     },
-    onSuccess: res => {console.log('전송성공', res); alert('주문내역이 성공적으로 전송 되었습니다.');},
+    onSuccess: res => {console.log('전송성공', res)},
     onError: () => {alert('주문내역이 전송에 실패 하였습니다.')}
   })
 
@@ -37,7 +29,21 @@ export function useOrder (email, orderId) {
     onError: () => {alert('주문내역 삭제 요청에 실패 하였습니다.')},
   })
 
-  return { postOrderRegist, getOrderListByEmail, getOrderDetailByOrderId, deleteOrderByOrderId }
+  return { postOrderRegist, getOrderDetailByOrderId, deleteOrderByOrderId }
+}
+
+export function useOrderList(email, isOpen) {
+
+  const getOrderListByEmail = useQuery({
+    queryKey: ['orderList'],
+    queryFn: () => { return axios.get(`/dp/order/list`, {params: {email: email}}) },
+    refetchInterval: 6000,
+    refetchIntervalInBackground: true,
+    staleTime: 1000 * 60 * 5,
+    enabled: !!email && isOpen,
+  })
+
+  return { getOrderListByEmail }
 }
 
 export function useTossOrder () {
@@ -46,7 +52,7 @@ export function useTossOrder () {
     mutationFn: orderData => {
       axios.post(`/dp/payment/confirm`, orderData)
     },
-    onSuccess: () => {alert('결제에 성공하였습니다.')},
+    onSuccess: () => {console.log('결제에 성공하였습니다.')},
     onError: () => {alert('결제에 실패하였습니다.')}
   })
 

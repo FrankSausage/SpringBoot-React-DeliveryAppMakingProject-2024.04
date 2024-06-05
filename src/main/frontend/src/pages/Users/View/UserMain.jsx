@@ -25,61 +25,15 @@ export default function UserMain() {
         <Grid item xs={12}>
           <Stack sx={{ maxHeight: 300, borderRadius: 0, overflow: 'hidden' }}>
             <Slider {...settings}>
-              <Box
-                component="img"
-                sx={{
-                  width: '100%',
-                  height: 250,
-                  objectFit: 'cover',
-                  borderRadius: 'inherit',
-                }}
-                src="img/c/01.jpg"
-                alt="01"
-              />
-              <Box
-                component="img"
-                sx={{
-                  width: '100%',
-                  height: 250,
-                  objectFit: 'cover',
-                  borderRadius: 'inherit',
-                }}
-                src="img/c/02.jpg"
-                alt="02"
-              />
-              <Box
-                component="img"
-                sx={{
-                  width: '100%',
-                  height: 250,
-                  objectFit: 'cover',
-                  borderRadius: 'inherit',
-                }}
-                src="img/c/03.jpg"
-                alt="03"
-              />
-              <Box
-                component="img"
-                sx={{
-                  width: '100%',
-                  height: 250,
-                  objectFit: 'cover',
-                  borderRadius: 'inherit',
-                }}
-                src="img/c/04.jpg"
-                alt="04"
-              />
-              <Box
-                component="img"
-                sx={{
-                  width: '100%',
-                  height: 250,
-                  objectFit: 'cover',
-                  borderRadius: 'inherit',
-                }}
-                src="img/c/05.jpg"
-                alt="05"
-              />
+              <Box component="img" sx={{ width: '100%', height: 220, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/01.jpg" alt="01" />
+              <Box component="img" sx={{ width: '100%', height: 220, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/02.jpg" alt="02" />
+              <Box component="img" sx={{ width: '100%', height: 220, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/03.jpg" alt="03" />
+              <Box component="img" sx={{ width: '100%', height: 220, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/04.jpg" alt="04" />
+              <Box component="img" sx={{ width: '100%', height: 220, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/05.jpg" alt="05" />
+              <Box component="img" sx={{ width: '100%', height: 220, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/06.jpg" alt="06" />
+              <Box component="img" sx={{ width: '100%', height: 220, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/07.jpg" alt="07" />
+              <Box component="img" sx={{ width: '100%', height: 220, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/08.jpg" alt="08" />
+              <Box component="img" sx={{ width: '100%', height: 220, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/09.jpg" alt="09" />
             </Slider>
           </Stack>
         </Grid>
@@ -89,7 +43,7 @@ export default function UserMain() {
           {categories.map((category, index) => (
             <Grid item key={index} xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center' }}>
               <Link to={category.link} state={category.state} style={{ textDecoration: 'none', color: 'black' }}>
-                <Typography variant="h5" sx={{ mt: 1, fontWeight: 'bold', color: 'black', fontFamily: 'Ubuntu, sans-serif' }}>
+                <Typography variant="h5" sx={{ mt: 1  ,fontWeight: 'bold', color: 'black' }}>
                   {category.label}
                 </Typography>
               </Link>

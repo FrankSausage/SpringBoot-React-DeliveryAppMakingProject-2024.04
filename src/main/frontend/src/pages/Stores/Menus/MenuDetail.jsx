@@ -43,16 +43,18 @@ export default function MenuDetail(props) {
       {isLoading && <BackDrop isLoading={isLoading} />}      
       <Box sx={BoxStyle}>
       <Fragment>
+      {isLoading && <BackDrop isLoading={isLoading} />}     
         {error && <Typography>정보를 받아오지 못했습니다!</Typography>}
         {!isLoading && menuDetailData && 
         <Fragment>
           <Typography variant="h5" sx={{textAlign:'center', mt: 2, mb:-5}}> {menuDetailData.menus.name} </Typography>
-            <Grid container sx={{ mt:9, width: 500 }}>
+          <CloseIcon sx={CloseBoxStyle} onClick={() => menuClose()} />
+            <Grid container sx={{mt:9, width: 500 }}>
                 <Stack>
                   <Card sx={{mb:1}}>
                     <CardContent sx={{m:1}}>
-                      <img src={menuDetailData.menus.menuPictureName} style={{ width: '50%', height: 'auto', display: 'block', margin: '0 auto', borderRadius: '8px'}} />
-                      <Typography sx={{textAlign:'center', mt: 3}} variant="h6">{menuDetailData.menus.content}</Typography>
+                      <img src={menuDetailData.menus.menuPictureName} style={{width:'50%', height: 'auto', display: 'block', margin: '0 auto', borderRadius: '8px'}} />
+                      <Typography sx={{textAlign: 'center', mt:3 }} variant="h6">{menuDetailData.menus.content}</Typography>
                     </CardContent>
                   </Card>
                   <Card sx={{my:4, width: 500}}>
@@ -105,7 +107,7 @@ export default function MenuDetail(props) {
             </Grid>
             <Box sx={{ mt: 5 }} />
             <Button onClick={handleSubmit} variant="contained" 
-              sx={{ mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'}, fontSize: '1.2rem'}}>장바구니 담기</Button>
+              sx={{mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'}, fontSize: '1rem'}}>장바구니 담기</Button>
         </Fragment>
         }
       </Fragment>
@@ -126,4 +128,19 @@ let BoxStyle = {
   display: 'flex', 
   flexDirection: 'column', 
   p:3,
+}
+
+let CloseBoxStyle = {
+  color:"black",
+  border:1,
+  cursor:'pointer',
+  position:"absolute",
+  borderWidth:2,
+  borderRadius:"20%",
+  top: 0,
+  right: 0,
+  m:1,
+  "&:hover": {
+    color: 'crimson',
+  }
 }
