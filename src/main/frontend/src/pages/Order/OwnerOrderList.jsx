@@ -40,27 +40,49 @@ export default function OwnerOrderList() {
   }
 
   return (
-    <Box sx={{ padding: 3, backgroundColor: '#f4f6f8' }}>
+    <Box sx={{ padding: 3, backgroundColor: '#f0f2f5' }}>
       {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && orderData &&
         <Grid container justifyContent="center">
           <Grid item xs={12} md={8}>
-            <Typography variant="h4" sx={{ textAlign: 'center', my: 3, fontWeight: 'bold' }}>주문 내역</Typography>
+            <Typography variant="h4" sx={{ textAlign: 'center', my: 3, fontWeight: 'bold', color: '#3f51b5' }}>주문 내역</Typography>
             <Divider sx={{ marginBottom: 3 }} />
             <Typography variant="h5" sx={{ textAlign: 'center', my: 2, color: '#3f51b5' }}>{storeName}</Typography>
             {orderData.data.orders.map((menu, idx) => (
-              <Card key={idx} sx={{ my: 2, p: 2, boxShadow: 3 }} variant="outlined">
-                <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>주문 번호: {menu.orderId}</Typography>
+              <Card key={idx} sx={{
+                my: 2,
+                p: 2,
+                borderRadius: 2,
+                backgroundColor: '#ffffff',
+                boxShadow: '0 4px 8px rgba(0,0,0,0.1), 0 6px 20px rgba(0,0,0,0.1)',
+                transition: 'transform 0.3s',
+                '&:hover': {
+                  transform: 'translateY(-5px)',
+                  boxShadow: '0 8px 16px rgba(0,0,0,0.2), 0 12px 40px rgba(0,0,0,0.2)',
+                }
+              }} variant="outlined">
+                <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: '#333333' }}>주문 번호: {menu.orderId}</Typography>
                 <CardContent onClick={() => handleClick(menu.orderId)} sx={{ cursor: 'pointer' }}>
-                  <Typography variant="body1">메뉴 명: {menu.menuName} {(menu.count !== 0) ? '외 ' + menu.count + '개' : ''}</Typography>
-                  <Typography variant="body1">최종 금액: {menu.totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
+                  <Typography variant="body1" sx={{ color: '#555555' }}>메뉴 명: {menu.menuName} {(menu.count !== 0) ? '외 ' + menu.count + '개' : ''}</Typography>
+                  <Typography variant="body1" sx={{ color: '#555555' }}>최종 금액: {menu.totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
                   <Typography variant="body1" sx={{ color: (menu.status === '완료' ? 'green' : 'blue') }}>주문 상태: {menu.status}</Typography>
                 </CardContent>
                 <CardActions>
                   {menu.status === '접수대기' ?
-                    <Button variant="contained" color="primary" onClick={() => handleUpdateStatus(menu.orderId)}>주문 접수하기</Button>
+                    <Button variant="contained" sx={{
+                      backgroundColor: '#ff9800',
+                      color: '#ffffff',
+                      boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+                      '&:hover': {
+                        backgroundColor: '#ff5722',
+                      }
+                    }} onClick={() => handleUpdateStatus(menu.orderId)}>주문 접수하기</Button>
                     :
-                    <Button variant="contained" disabled>주문 접수하기</Button>
+                    <Button variant="contained" disabled sx={{
+                      backgroundColor: '#cccccc',
+                      color: '#ffffff',
+                      boxShadow: '0 3px 5px 2px rgba(204, 204, 204, .3)',
+                    }}>주문 접수하기</Button>
                   }
                 </CardActions>
                 {openPortal && activeIndex === menu.orderId && <OwnerOrderDetail isPortalOpen={{ openPortal }} email={email} orderId={menu.orderId} />}

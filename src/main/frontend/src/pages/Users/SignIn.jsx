@@ -116,12 +116,12 @@ export default function SignIn() {
                 label="나를 기억하기"
               />
               <Button type="submit"  fullWidth variant="contained" sx={{ mt: 3, mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'}, fontFamily: 'Arial',  fontWeight: 'bold',  fontSize: '1.2rem'}}>로그인</Button>
-              <IconButton onClick={handleGoogleLogin} fullWidth sx={{ mt: 3, mb: 2, backgroundColor: '#FFFFFF', borderRadius: '20px', border: '1px'}}>
+              {/* <IconButton onClick={handleGoogleLogin} fullWidth sx={{ mt: 3, mb: 2, backgroundColor: '#FFFFFF', borderRadius: '20px', border: '1px'}}>
                 <img src={'/img/google.png'} alt="Google 로고" style={{ width: '35px', height: '35px' }} />
               </IconButton>
               <IconButton onClick={handleKakaoLogin} fullWidth sx={{ mt: 3, mb: 2, backgroundColor: '#FFFFFF', borderRadius: '20px', border: '1px'}}>
-                <img src={'/img/kakaologo.png'} alt="Google 로고" style={{ width: '35px', height: '35px' }} />
-              </IconButton>
+                <img src={'/img/kakaologo.png'} alt="Kakao 로고" style={{ width: '35px', height: '35px' }} />
+              </IconButton> */}
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2" style={{ textDecoration: 'none', color: 'black'  }}>
