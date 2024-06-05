@@ -26,6 +26,8 @@ export default function Cart({ allClose }) {
   useEffect(() =>{
     if(cartItems.length!==0) {
       getPrice().then(res=> setTotalPrice(res))
+    } else if (cartItems.length===0) {
+      setTotalPrice(0);
     }
   }, [open])
 
@@ -62,7 +64,7 @@ export default function Cart({ allClose }) {
   return (
     <React.Fragment>
       <React.Fragment>
-        {localStorage.getItem('cartCount')>0 ?
+        {localStorage.getItem('cartCount') > 0 ?
         <StyledBadge
           overlap="circular"
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
@@ -138,14 +140,6 @@ export default function Cart({ allClose }) {
     </React.Fragment>
   );
 }
-// const StyledBadge = styled(Badge)(({ theme }) => ({
-//   '& .MuiBadge-badge': {
-//     right: -3,
-//     top: 13,
-//     border: `2px solid ${theme.palette.background.paper}`,
-//     padding: '0 4px',
-//   },
-// }));
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {

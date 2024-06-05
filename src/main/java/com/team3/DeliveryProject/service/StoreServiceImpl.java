@@ -208,20 +208,22 @@ public class StoreServiceImpl implements StoreService {
             // AddressCode 리스트에서 유저의 addrCode와 일치하는지 확인 ㅇㅇ
             for (AddressCode addressCode : addressCodes) {
                 if (addressCode.getAddressCode().equals(addrCode)) {
-                    Dibs dibs = dibsRepository.findByUserIdAndStoreId(users.getUserId(), storeId)
-                        .orElseThrow(()->new RuntimeException("Dibs not found"));
+                    Optional<Dibs> dibs = dibsRepository.findByUserIdAndStoreId(users.getUserId(), storeId);
                     String isDibs = "";
-                    if (dibs.getStatus().equals("찜")) {
-                        isDibs = "찜";
-                    } else {
-                        isDibs = "일반";
-                    }
+                    if(dibs.isPresent()) {
+                        if (dibs.get().getStatus().equals("찜")) {
+                            isDibs = "찜";
+                        } else {
+                            isDibs = "일반";
+                        }
 
-                    // 조건에 맞는 Store 정보를 DTO로 변환하고 리스트에 추가
-                    if (!filteredStores.contains(convertToDto(store, isDibs, isOpened(store)))) {
-                        filteredStores.add(convertToDto(store, isDibs, isOpened(store)));
+                        // 조건에 맞는 Store 정보를 DTO로 변환하고 리스트에 추가
+                        if (!filteredStores.contains(
+                            convertToDto(store, isDibs, isOpened(store)))) {
+                            filteredStores.add(convertToDto(store, isDibs, isOpened(store)));
+                        }
+                        break;  // 일치하는 주소 코드를 찾으면 더 이상 반복하지 않음
                     }
-                    break;  // 일치하는 주소 코드를 찾으면 더 이상 반복하지 않음
                 }
             }
         }
@@ -236,20 +238,21 @@ public class StoreServiceImpl implements StoreService {
             // AddressCode 리스트에서 유저의 addrCode와 일치하는지 확인 ㅇㅇ
             for (AddressCode addressCode : addressCodes) {
                 if (addressCode.getAddressCode().equals(addrCode)) {
-                    Dibs dibs = dibsRepository.findByUserIdAndStoreId(users.getUserId(), storeId)
-                        .orElseThrow(()->new RuntimeException("Dibs not found"));
+                    Optional<Dibs> dibs = dibsRepository.findByUserIdAndStoreId(users.getUserId(), storeId);
                     String isDibs = "";
-                    if (dibs.getStatus().equals("찜")) {
-                        isDibs = "찜";
-                    } else {
-                        isDibs = "일반";
-                    }
+                    if(dibs.isPresent()){
+                        if (dibs.get().getStatus().equals("찜")) {
+                            isDibs = "찜";
+                        } else {
+                            isDibs = "일반";
+                        }
 
-                    // 조건에 맞는 Store 정보를 DTO로 변환하고 리스트에 추가
-                    if (!filteredStores.contains(convertToDto(store, isDibs, isOpened(store)))) {
-                        filteredStores.add(convertToDto(store, isDibs, isOpened(store)));
+                        // 조건에 맞는 Store 정보를 DTO로 변환하고 리스트에 추가
+                        if (!filteredStores.contains(convertToDto(store, isDibs, isOpened(store)))) {
+                            filteredStores.add(convertToDto(store, isDibs, isOpened(store)));
+                        }
+                        break;  // 일치하는 주소 코드를 찾으면 더 이상 반복하지 않음
                     }
-                    break;  // 일치하는 주소 코드를 찾으면 더 이상 반복하지 않음
                 }
             }
         }

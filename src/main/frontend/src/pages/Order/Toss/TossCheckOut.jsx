@@ -34,7 +34,7 @@ export default function TossCheckOut(props) {
   }
 
   return (
-    <Dialog 
+    <Dialog
       open={handleOpen} 
       keepMounted
       sx={{ '& .MuiDialog-paper': { borderRadius: 2, padding: 1, maxWidth: 600, width: '100%' } }}
