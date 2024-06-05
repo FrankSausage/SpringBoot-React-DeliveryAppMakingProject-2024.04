@@ -40,10 +40,10 @@ export default function TossChackOut(props) {
     sx={{ '& .MuiDialog-paper': { borderRadius: 2,} }}
     >
       <Box>
-        <Typography variant="h2" sx={{textAlign:'center', mb: 5}}>주문서</Typography>
+        <Typography variant="h5" sx={{textAlign:'center', fontWeight: 'bold', mt: 4, mb: 5}}>결제</Typography>
         <CloseIcon sx={CloseBoxStyle} onClick={tossClose} />
         <Box id='payment-widget' sx={{border:1, width:500, height:500}} />
-        <Button variant="contained" onClick={() => handleClick()}>{totalPrice}원 결제하기</Button>
+        <Button variant="contained" sx={{ marginTop: 3 }} onClick={() => handleClick()}>결제하기</Button>
       </Box>
     </Dialog>
   );
