@@ -26,6 +26,8 @@ export default function Cart({ allClose }) {
   useEffect(() =>{
     if(cartItems.length!==0) {
       getPrice().then(res=> setTotalPrice(res))
+    } else if (cartItems.length===0) {
+      setTotalPrice(0);
     }
   }, [open])
 
@@ -62,7 +64,7 @@ export default function Cart({ allClose }) {
   return (
     <React.Fragment>
       <React.Fragment>
-        {localStorage.getItem('cartCount')>0 ?
+        {localStorage.getItem('cartCount') > 0 ?
         <StyledBadge
           overlap="circular"
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
