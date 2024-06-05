@@ -3,8 +3,8 @@ import React, { useEffect, useRef } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import { loadPaymentWidget } from "@tosspayments/payment-widget-sdk";
 
-export default function TossChackOut(props) {
-  const { handleOpen, tossClose, storeId, userEmail, point, totalPrice} = props;
+export default function TossCheckOut(props) {
+  const { handleOpen, tossClose, storeId, userEmail, point, totalPrice } = props;
   const paymentWidgetRef = useRef(null);
 
   useEffect(() => {
@@ -14,10 +14,10 @@ export default function TossChackOut(props) {
       paymentWidget.renderPaymentMethods('#payment-widget', totalPrice);
       console.log('TossPayment Loaded.')
     })()
-  }, [])
+  }, [totalPrice])
 
   const handleClick = async () => {
-    const paymentWidget = paymentWidgetRef.current
+    const paymentWidget = paymentWidgetRef.current;
     
     try {
       await paymentWidget.requestPayment({
@@ -33,17 +33,25 @@ export default function TossChackOut(props) {
     }
   }
 
-  return(
+  return (
     <Dialog 
-    open={handleOpen} 
-    keepMounted
-    sx={{ '& .MuiDialog-paper': { borderRadius: 2,} }}
+      open={handleOpen} 
+      keepMounted
+      sx={{ '& .MuiDialog-paper': { borderRadius: 2, padding: 1, maxWidth: 600, width: '100%' } }}
     >
-      <Box>
-        <Typography variant="h5" sx={{textAlign:'center', fontWeight: 'bold', mt: 4, mb: 5}}>결제</Typography>
+      <Box sx={{ position: 'relative', padding: 2 }}>
+        <Typography variant="h4" sx={{ textAlign: 'center', mb:2, fontWeight: 'bold' }}>결제 방식 선택</Typography>
         <CloseIcon sx={CloseBoxStyle} onClick={tossClose} />
-        <Box id='payment-widget' sx={{border:1, width:500, height:500}} />
-        <Button variant="contained" sx={{ marginTop: 3 }} onClick={() => handleClick()}>결제하기</Button>
+        <Box id='payment-widget' sx={PaymentWidgetStyle}>
+        </Box>
+        {/* <Typography variant="h6" sx={{ textAlign: 'center', mb: 2 }}>{totalPrice}원</Typography>s */}
+        <Button 
+          variant="contained" 
+          onClick={() => handleClick()} 
+          sx={ButtonStyle}
+        >
+          결제하기
+        </Button>
       </Box>
     </Dialog>
   );
@@ -57,5 +65,32 @@ let CloseBoxStyle = {
   right: 16,
   "&:hover": {
     color: 'crimson',
+  }
+}
+
+let PaymentWidgetStyle = {
+  border: '1px solid #e0e0e0',
+  borderRadius: 8,
+  width: '100%',
+  height: 500,
+  padding: 2,
+  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center'
+}
+
+let ButtonStyle = {
+  marginTop: 3,
+  backgroundColor: '#1976d2',
+  fontSize: 18,
+  fontWeight: 'bold',
+  padding: '10px 20px',
+  display: 'block',
+  marginLeft: 'auto',
+  marginRight: 'auto',
+  '&:hover': {
+    backgroundColor: '#1565c0',
   }
 }

@@ -8,15 +8,7 @@ import SearchHeader from "../../../components/SearchHeader";
 import Footer from "../../../components/Footer";
 
 export default function UserMain() {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-  };
+  const settings = { dots: true, infinite: true, speed: 500, slidesToShow: 1, slidesToScroll: 1, autoplay: true, autoplaySpeed: 3000, };
 
   return (
     <Box sx={{ bgcolor: '#f8f8f8', minHeight: '100vh', m: -1 }}>
@@ -41,13 +33,13 @@ export default function UserMain() {
       <Paper elevation={3} sx={{ height: 'auto', backgroundImage: 'url(/img/kitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
         <Grid container spacing={2} justifyContent="center" alignItems="center">
           {categories.map((category, index) => (
-            <Grid item key={index} xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center' }}>
+            <Grid item key={index} xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', }}>
               <Link to={category.link} state={category.state} style={{ textDecoration: 'none', color: 'black' }}>
                 <Typography variant="h5" sx={{ mt: 1  ,fontWeight: 'bold', color: 'black' }}>
                   {category.label}
                 </Typography>
               </Link>
-              <Box sx={{ ...boxStyle, backgroundColor: 'white', position: 'relative', overflow: 'hidden', borderRadius: 2 }}>
+              <Box sx={{ ...boxStyle, backgroundColor: 'white', position: 'relative', overflow: 'hidden', borderRadius: 2,boxShadow: 3, transition: 'transform 0.3s, box-shadow 0.3s', '&:hover': { transform: 'scale(1.05)', boxShadow: 6 }}}>
                 <Link to={category.link} state={category.state} style={{ textDecoration: 'none', color: 'black', display: 'block', height: '100%' }}>
                   <Box sx={{ width: '100%', height: '100%', position: 'relative' }}>
                     <img src={category.img} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s', borderRadius: 'inherit' }} alt={category.label} />
