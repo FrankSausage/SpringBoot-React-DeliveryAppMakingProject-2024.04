@@ -8,7 +8,6 @@ import BackDrop from "../../components/BackDrop";
 export default function OwnerOrderList() {
   const location = useLocation();
   const email = localStorage.getItem('email');
-  const eventSource = new EventSource(`/dp/orders/stream/${email}`);
   const { storeId, storeName } = location.state;
   const { getOwnerOrderListByEmail: { isLoading, data: orderData }, updateOrderStatus } = useOrderOwner(email, storeId);
   const [openPortal, setOpenPortal] = useState(false);
@@ -22,22 +21,13 @@ export default function OwnerOrderList() {
   const handleUpdateStatus = orderId => {
     if (window.confirm('주문을 접수 받으시겠습니까?')) {
       updateOrderStatus.mutate({ orderId: orderId, status: '조리중' }, {
-        onSuccess: () => {
-          eventSource.onmessage = function (event) {
-            const orderData = JSON.parse(event.data);
-            console.log("Order updated:", orderData);
-          };
-        },
-        onError: () => {
-          eventSource.onerror = function (event) {
-            console.error("EventSource failed:", event);
-          };
-        }
-      })
+        onSuccess: () => {console.log("Order updated: ", orderData)},
+        onError: e => {console.error("mutation error: ", e)}, })
     } else {
       return;
     }
   }
+
 
   return (
     <Box sx={{ padding: 3, backgroundColor: '#f0f2f5' }}>
