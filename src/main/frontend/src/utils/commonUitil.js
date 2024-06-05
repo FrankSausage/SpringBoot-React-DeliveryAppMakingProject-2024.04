@@ -53,6 +53,15 @@ export const generateTimeOptions = (startHour, endHour) => {
   return options;
 };
 
+export const slideSettings = { 
+  dots: true, 
+  infinite: true, 
+  speed: 1000, 
+  slidesToShow: 1, 
+  slidesToScroll: 1, 
+  autoplay: true, 
+  autoplaySpeed: 6500, 
+};
 export const checkTextError = (type, text) => {
   let checkText = '';
 
