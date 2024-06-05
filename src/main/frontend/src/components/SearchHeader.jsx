@@ -1,143 +1,101 @@
-// SearchHeader.jsx
-
-import React, { useEffect, useState } from 'react';
-import { AppBar, Box, Toolbar, Typography, SwipeableDrawer, IconButton, List, ListItem, 
-  ListItemButton, ListItemIcon, ListItemText, InputAdornment, OutlinedInput, Divider, Stack, Grid} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import ReceiptIcon from '@mui/icons-material/Receipt'; 
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; 
-import FavoriteIcon from '@mui/icons-material/Favorite'; 
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import GpsFixedIcon from '@mui/icons-material/GpsFixed';
+import React, { Fragment } from 'react';
+import { Navbar, Button, Container } from 'react-bootstrap';
+import { FaSearch } from 'react-icons/fa';
 import { useAuthContext } from '../context/AuthContext';
-import { getCurrentUser } from '../utils/firebase';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
+import { Box, Typography, InputAdornment, OutlinedInput, Stack, Grid } from '@mui/material';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import GpsFixedIcon from '@mui/icons-material/GpsFixed';
+import DropUserInfo from './DropUserInfo';
+import Cart from '../pages/Cart/View/Cart';
 
-export default function SearchHeader() {
-  const [text, setText] = useState('');
-  const { keyword } = useParams();
-  const [state, setState] = React.useState({
-    left: false,
-  });
-  const { email } = getCurrentUser();
+export default function AppNavbar() {
+  const { user } = useAuthContext();
+  const { outletAddress } = useOutletContext();
+  const address = localStorage.getItem('address') ? localStorage.getItem('address') : '';
+  const role = localStorage.getItem('role');
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const { user, setUser, logout } = useAuthContext();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleNavigate = (loc) => {
+    switch (loc) {
+      case 'Cart':
+        navigate('/Cart');
+        break;
+      case 'Address':
+        if (user) {
+          navigate('/Address');
+        } else {
+          alert('로그인이 필요합니다.');
+          navigate('/SignIn');
+        }
+        break;
+      default:
+        break;
     }
-  }, [setUser]);
-
-  useEffect(() => {
-    setText(keyword || '');
-  }, [keyword]);
-
-  const toggleDrawer = (open) => (event) => {
-    if (
-      event &&
-      event.type === 'keydown' &&
-      (event.key === 'Tab' || event.key === 'Shift')
-    ) {
-      return;
-    }
-
-    setState({ left: open });
   };
-
-  const handleLogout = () => {
-    logout();
-    navigate('/SignIn');
-  };
-
-  const handleLogin = () => {
-    navigate('/SignIn');
-  };
-
-  const list = (
-    <Box
-      sx={{ width: 'auto' }}
-      role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-    >
-      <List>
-        {['결제내역', '장바구니', '찜'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index === 0 ? <ReceiptIcon /> : index === 1 ? <ShoppingCartIcon /> : <FavoriteIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-    </Box>
-  );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            onClick={toggleDrawer(!state.left)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>휴먼 딜리버리</Link>    
-          </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
-            <GpsFixedIcon style={{ color: 'white' }} />&nbsp;
-            <OutlinedInput
-              placeholder="주소를 입력 하세요"
-              startAdornment={
-                <InputAdornment position="start">
-                </InputAdornment>
-              }
-              sx={{ width: '100%', maxWidth: 400, mr: 1, backgroundColor: 'white' }} 
-            />
-          </Box> 
-          <Grid item xs={3}>
-          <Stack direction='row' spacing={1} justifyContent='right' alignItems='center'>
-            {user ? (
-              <>
-                <Typography variant="body1" sx={{ color: 'white', mr: 1 }}>
-                  <Link to="/Update" state={{ email }} style={{ textDecoration: 'none', color: 'white' }}>
-                    {user.displayName}
-                  </Link>
-                </Typography>
-                <button onClick={handleLogout} style={{ color: 'white', textDecoration: 'none', background: 'none', border: 'none' }}>로그아웃</button>
-              </>
-            ) : (
-              <>
-                <Link to='/SignIn' style={{ textDecoration: 'none', color: 'white' }}>로그인</Link>
-                <Link to='/SignUp' style={{ textDecoration: 'none', color: 'white' }}>회원가입</Link>
-              </>
+    <header className="header_section" style={{ background: 'linear-gradient(to right, black, rgba(0, 0, 0, 0.5))' }}>
+      <Container>
+        <Navbar expand="lg" className="custom_nav-container">
+          <Grid container alignItems="center">
+            <Grid item xs={2} sm={2} md={2}>
+              <Link to="/" style={{ textDecoration: 'none', color: 'Black' }}>
+                <img src={'/img/logo01.png'} style={{ width: '60%', height: '40%', maxWidth: '150px', maxHeight: '150px' }} />
+              </Link>
+            </Grid>
+            {role === '회원' && (
+              <Grid item xs={8} sm={8} md={8}>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <OutlinedInput
+                    value={address ? address : outletAddress}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <GpsFixedIcon style={{ color: 'gray' }} />
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <Button variant="outline-success" className="nav_search-btn" type="submit" style={{ color: 'black', borderColor: 'black' }} >
+                          <FaSearch aria-hidden="true" style={{ color: 'black' }} />
+                        </Button>
+                      </InputAdornment>}
+                    sx={{ mt: 1, mb: 1, width: '100%', maxWidth: 550, backgroundColor: 'white', cursor: 'pointer', borderRadius: '30px', padding: '1px 15px', fontSize: '1rem', textAlign: 'center' }} inputProps={{ style: { textAlign: 'center' } }} onClick={() => handleNavigate('Address')}
+                  />
+                </Box>
+              </Grid>
             )}
-          </Stack>
+            <Grid item xs={user && role !== '점주' ? 2 : 9.5} sm={user && role !== '점주' ? 2 : 9.5} md={user && role !== '점주' ? 2 : 9.5}>
+              <Stack direction="row" spacing={1} justifyContent="flex-end" alignItems="center" sx={{ width: '100%' }}>
+                {user ? (
+                  <>
+                   <Cart allClose={handleClose} />
+                    <DropUserInfo role={role} />
+                    <Typography variant="body1" sx={{ color: 'white', fontWeight: 'bold' }}>
+                      {user.displayName}
+                    </Typography>
+                </>
+              ) : (
+                <Fragment>
+                    <Link to="/SignIn" style={{ textDecoration: 'none', color: 'white', fontWeight: 'bold', marginLeft: 'auto' }}>
+                      로그인
+                    </Link>
+                    <Link to="/SignUp" style={{ textDecoration: 'none', color: 'white', fontWeight: 'bold', marginLeft: '1rem' }}>
+                      회원가입
+                    </Link>
+                </Fragment>
+              )}
+            </Stack>
+              </Grid>
           </Grid>
-        </Toolbar>
-      </AppBar>
-      
-      <div>
-        <SwipeableDrawer
-          anchor={'left'}
-          open={state.left}
-          onClose={toggleDrawer(false)}
-          onOpen={toggleDrawer(true)}
-        >
-          {list}
-        </SwipeableDrawer>
-      </div>
-    </Box>
+        </Navbar>
+      </Container>
+    </header>
   );
 }
