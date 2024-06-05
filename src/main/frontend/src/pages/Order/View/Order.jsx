@@ -80,41 +80,46 @@ export default function Order() {
 	}
 
 	return (
-		<Card sx={{ width: '80%', margin: 'auto', padding: 2, mt: 3, border: 1 }}>
-			<Typography variant="h4" sx={{ textAlign: 'center', borderBottom: 1, my: 2, pb: 3, cursor: 'pointer' }}
+		<Card sx={{ width: '60%', margin: 'auto', padding: 2, mt: 3, border: 1 }}>
+			<Typography variant="h4" sx={{ textAlign: 'center', my: 2, pb: 3, cursor: 'pointer' }}
 				onClick={() => navigate(`/StoreDetail/${cartItems[0].storeId}`, { state: { storeName: cartItems[0].storeName } })}>
 				{cartItems[0].storeName}
 			</Typography>
-			<Typography sx={{ textAlign: 'center', mb: 1 }}>- 주문 내역 -</Typography>
+			<Divider sx={{ borderColor: 'black', borderStyle: 'dashed', my: 3 }} />
+			<Typography variant="h5" sx={{ textAlign: 'center', mb: 2  }}>- 주문 접수 -</Typography>
 			{cartItems &&
 				cartItems.map((menuItems) => (
 					<Fragment key={menuItems.menuId}>
-						<Grid container>
+						<Grid container sx={{ marginLeft: 2.5 }}>
 							<Grid item xs={1} />
-							<Grid item xs>
-								<Typography>{menuItems.menuName}: {menuItems.quantity}개 </Typography>
+							<Grid item xs container direction="column" style={{ marginLeft: '20px' }}>
+								<Grid container justifyContent="space-between" alignItems="center">
+									<Grid item>
+										<Typography>{menuItems.menuName}: {menuItems.quantity}개 </Typography>
+									</Grid>
+									<Grid item>
+										<Typography>{menuItems.menuPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
+									</Grid>
+								</Grid>
 								{menuItems.menuOptions &&
 									menuItems.menuOptions.map((optionItems) => (
-										<Grid container key={optionItems.optionId}>
-											<Grid item xs={2} />
-											<Grid item xs>
+										<Grid container key={optionItems.optionId} justifyContent="space-between" alignItems="center">
+											<Grid item style={{ paddingLeft: '25px' }}>
 												<Typography>{optionItems.options}</Typography>
 											</Grid>
-											<Grid item xs={2}>
+											<Grid item>
 												<Typography>+ {optionItems.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원 </Typography>
 											</Grid>
 										</Grid>
 									))
 								}
 							</Grid>
-							<Grid item xs={2}>
-								<Typography>{menuItems.menuPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
-							</Grid>
+							<Grid item xs={2} />
 						</Grid>
 					</Fragment>
 				))
 			}
-			<Divider sx={{ borderColor: 'black', my: 2 }} />
+			<Divider sx={{ borderColor: 'black', borderStyle: 'dashed', my: 3 }} />
 			<Stack direction={'row'} sx={{ alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
 				<Typography>요청 사항: </Typography>
 				<TextField id='request' name='request' sx={{ ml: 1, width: '50%' }} maxRows={1} placeholder="ex) 국/반찬은 빼주세요." onChange={e => { setRequest(e.target.value) }} value={request} autoComplete="request-text" />
@@ -140,12 +145,13 @@ export default function Order() {
 				<Grid item xs />
 			</Grid>
 			<Stack direction={'row'} sx={{ alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
-				<Typography>포인트 사용: </Typography>
+				<Typography>포인트 사용 :  </Typography>
 				<TextField type='number' id='point' name='point' sx={{ ml: 1, width: '10%' }} maxRows={1}
-					placeholder='0' onChange={e => { setPoint(e.target.value) }} value={(point >= userPoint) ? userPoint : point} autoComplete="point-text" />/ {userPoint ? userPoint : 0}
+					placeholder='0' onChange={e => { setPoint(e.target.value) }} value={(point >= userPoint) ? userPoint : point} autoComplete="point-text" InputProps={{ inputProps: {style: { textAlign: 'center' }}}}/>
+					<Typography sx={{ ml: 1}}>/ {userPoint ? userPoint : 0}</Typography>
 			</Stack>
-			<Typography variant="h5" sx={{ textAlign: 'center', my: 2 }}>최종 금액: {totalPrice ? totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}원</Typography>
-			<Stack direction={'row'} sx={{ justifyContent: 'space-around' }}>
+			<Typography variant="h5" sx={{ textAlign: 'center', my: 2, fontWeight: 'bold' }}>최종 금액: {totalPrice ? totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}원</Typography>
+			<Stack direction={'row'} sx={{ justifyContent: 'space-around', mt: 5, mb: 4 }}>
 				<Button sx={{ border: 1, width: '30%' }} color="error" onClick={() => navigate(-1)}>돌아가기</Button>
 				<Button sx={{ border: 1, width: '30%' }} onClick={handleSubmit}>주문하기</Button>
 			</Stack>
