@@ -39,7 +39,7 @@ export default function OwnerMain() {
   };
 
   return (
-    <Box sx={{ margin: -1, paddingBottom: '100px' }}>
+    <Box sx={{ margin: -1 }}>
       <SearchHeader />
       {/* <Grid container justifyContent="center" alignItems="center" mt={2}>
         <Grid item xs={10} md={6}>
@@ -54,7 +54,7 @@ export default function OwnerMain() {
           </Box>
         </Grid>
       </Grid> */}
-      <Paper elevation={3} sx={{ height: 'auto', backgroundImage: 'url(/img/Okitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
+      <Paper elevation={3} sx={{ minHeight: '100vh',maxHeight: 'auto', backgroundImage: 'url(/img/Okitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
         {isLoading && <BackDrop isLoading={isLoading} />}
         {error && <Typography>에러 발생!</Typography>}
         {!isLoading && storeData?.storeList?.length === 0 && (

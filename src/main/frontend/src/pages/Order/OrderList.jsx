@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, Dialog, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Dialog, Paper, Typography } from "@mui/material";
 import React, { Fragment, useState } from "react";
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import CloseIcon from '@mui/icons-material/Close';
@@ -37,7 +37,8 @@ export default function OrderList(props) {
           backgroundColor: '#f7f7f7',
           padding: '20px',
           maxWidth: '600px',
-          width: '100%'
+          width: '100%',
+          ...paperStyle
         }
       }}
     >
@@ -51,8 +52,8 @@ export default function OrderList(props) {
             {orderData.data.orders.map((data, idx) => (
               <Fragment key={idx}>
                 <Card sx={CardStyle}>
-                  <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                    <Typography onClick={() => handleNav(data.storeId)} variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center', mb: 1, "&:hover":{color:'coral'} }}>
+                  <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+                    <Typography onClick={() => handleNav(data.storeId)} variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center', mb: 1, "&:hover": { color: 'coral' } }}>
                       <ListAltIcon sx={{ mr: 1, color: '#1976d2' }} /> {data.storeName}
                     </Typography>
                     <Typography variant="body1">주문일자: {data.orderDate.replace('T', ' ')}</Typography>
@@ -62,13 +63,15 @@ export default function OrderList(props) {
                     <Typography variant="body1" sx={{ color: data.status === '완료' ? 'green' : 'blue' }}>상태: {data.status}</Typography>
                   </CardContent>
                   {!data.reviewed ?
-                    <ReviewRegister orderId={data.orderId} status={data.status} email={email} />
+                    <ReviewRegister sx={{ mb: 3 }} orderId={data.orderId} status={data.status} email={email} />
                     :
                     null
                   }
-                  <Button variant="outlined" sx={{ mb: 3 }} onClick={() => handleClick(idx)}>
-                    상세 주문 내역 보기
-                  </Button>
+                  <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2, mb: 3 }}>
+                    <Button variant="outlined" onClick={() => handleClick(idx)}>
+                      {openPortal && activeIndex === idx ? '상세 주문 내역 닫기' : '상세 주문 내역 보기'}
+                    </Button>
+                  </Box>
                   {openPortal && activeIndex === idx && <OrderDetail isPortalOpen={{ openPortal }} email={email} orderId={data.orderId} />}
                 </Card>
               </Fragment>
@@ -83,6 +86,8 @@ export default function OrderList(props) {
 const CloseBoxStyle = {
   color: "black",
   border: 1,
+  backgroundImage: 'url(/img/1234.jpg)',
+  backgroundSize: 'cover',
   cursor: 'pointer',
   position: "absolute",
   borderWidth: 2,
@@ -108,4 +113,19 @@ const CardStyle = {
   backgroundColor: '#fff',
   borderRadius: 5,
   padding: '16px',
+  backgroundImage: 'url(/img/ba.jpg)',
+  backgroundColor: 'rgba(255, 255, 255, 1)',
+  backgroundSize: 'cover',
 }
+
+const paperStyle = {
+  minHeight: '100vh',maxHeight: 'auto',
+  backgroundImage: 'url(/img/sl0.jpg)',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundBlendMode: 'lighten',
+  backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  p: 3,
+  overflowY: 'auto'
+};
+

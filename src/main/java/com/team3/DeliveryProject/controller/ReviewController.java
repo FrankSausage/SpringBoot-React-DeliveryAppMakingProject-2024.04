@@ -43,7 +43,6 @@ public class ReviewController {
     }
     @GetMapping("/store/review/list")
     public ResponseEntity<?> listOwnerReview(@ModelAttribute ReviewListOwnerRequestDto requestDto){
-        System.out.println("들어오나");
         return ResponseEntity.ok().body(reviewService.listOwnerReview(requestDto));
     }
 }

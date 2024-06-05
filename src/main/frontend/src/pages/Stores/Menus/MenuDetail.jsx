@@ -11,6 +11,8 @@ export default function MenuDetail(props) {
   const { addItemToCart } = useCart();
   const [ items, setItems ] = useState([]);
 
+  
+
   const handleAddItem = data => {
     if (!items.find(e => e === data)) {
       const newItems = [...items, data];
@@ -22,7 +24,7 @@ export default function MenuDetail(props) {
   }
 
   const handleSubmit = () => {
-    addItemToCart({menus: {menuId: menuId, menuName: menuDetailData.menus.name, 
+    addItemToCart({menus: {menuId: menuId, menuName: menuDetailData.menus.name, menuPictureName: menuDetailData.menus.menuPictureName, menuContent: menuDetailData.menus.content,
       menuPrice: menuDetailData.menus.price, storeId: storeId, storeName: storeName, menuOptions: items}})
     .then(res => {
       if(res===false){
@@ -45,58 +47,65 @@ export default function MenuDetail(props) {
         {error && <Typography>정보를 받아오지 못했습니다!</Typography>}
         {!isLoading && menuDetailData && 
         <Fragment>
-          <Typography variant="h5" sx={{textAlign:'center', mt: 3, mb:-5}}> {menuDetailData.menus.name} </Typography>
+          <Typography variant="h5" sx={{textAlign:'center', mt: 2, mb:-5}}> {menuDetailData.menus.name} </Typography>
           <CloseIcon sx={CloseBoxStyle} onClick={() => menuClose()} />
-            <Grid container sx={{backgroundColor: 'rgba(255, 255, 255, 0.6)', mt:10, width: 500 }}>
+            <Grid container sx={{mt:9, width: 500 }}>
                 <Stack>
-                <Card sx={{my:4, width: 500}}>
-                  <CardContent sx={{m:1}}>
-                    <Typography sx={{textAlign:'center'}} variant="h6">가격</Typography>
-                    <Divider sx={{borderWidth:2}}/>
-                    <Stack direction={'row'}>
-                      <Grid container sx={{justifyContent:'start'}}>
-                        <Grid item xs={5}>
-                          <FormControlLabel 
-                          control={<Radio defaultChecked/>}
-                          label={menuDetailData.menus.name}
-                          labelPlacement="end"
-                          />
-                        </Grid>
-                        <Grid item xs={4}/>
-                        <Grid item xs={3}sx={{alignContent:'center', textAlign:'end'}}>
-                          <Typography>{menuDetailData.menus.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
-                        </Grid>
-                      </Grid>
-                    </Stack>
-                  </CardContent>
-                </Card>
-                {menuDetailData.menus.options && menuDetailData.menus.options.length!==0 && 
                   <Card sx={{mb:1}}>
                     <CardContent sx={{m:1}}>
-                      <Typography sx={{textAlign:'center'}} variant="h6">옵션</Typography>
-                      <Divider />
-                        {menuDetailData.menus.options && menuDetailData.menus.options.map((data, idx) => (
-                          <Stack direction={'row'} key={idx}>
-                            <Grid container sx={{justifyContent:'start'}}>
-                              <Grid item xs={5}>
-                                <FormControlLabel 
-                                control={<Checkbox onClick={() => handleAddItem(data)}/>}
-                                label={data.options}
-                                labelPlacement="end"
-                                />
-                              </Grid>
-                              <Grid item xs={4}/>
-                              <Grid item xs={3} sx={{ alignContent:'center', textAlign:'end'}}>
-                                <Typography>+{data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
-                              </Grid>
-                            </Grid>
-                          </Stack>
-                        ))}
+                      <img src={menuDetailData.menus.menuPictureName} style={{width:'50%', height: 'auto', display: 'block', margin: '0 auto', borderRadius: '8px'}} />
+                      <Typography sx={{textAlign: 'center', mt:3}} variant="h6">{menuDetailData.menus.content.length > 15 ? `${menuDetailData.menus.content.slice(0, 15)}..` : menuDetailData.menus.content}</Typography>
                     </CardContent>
                   </Card>
-                }
+                  <Card sx={{my:4, width: 500}}>
+                    <CardContent sx={{m:1}}>
+                      <Typography sx={{textAlign:'center'}} variant="h6">가격</Typography>
+                      <Divider sx={{borderWidth:2}}/>
+                      <Stack direction={'row'}>
+                        <Grid container sx={{justifyContent:'start'}}>
+                          <Grid item xs={5}>
+                            <FormControlLabel 
+                            control={<Radio defaultChecked/>}
+                            label={menuDetailData.menus.name}
+                            labelPlacement="end"
+                            />
+                          </Grid>
+                          <Grid item xs={4}/>
+                          <Grid item xs={3}sx={{alignContent:'center', textAlign:'end'}}>
+                            <Typography>{menuDetailData.menus.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
+                          </Grid>
+                        </Grid>
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                  {menuDetailData.menus.options && menuDetailData.menus.options.length!==0 && 
+                    <Card sx={{mb:1}}>
+                      <CardContent sx={{m:1}}>
+                        <Typography sx={{textAlign:'center'}} variant="h6">옵션</Typography>
+                        <Divider />
+                          {menuDetailData.menus.options && menuDetailData.menus.options.map((data, idx) => (
+                            <Stack direction={'row'} key={idx}>
+                              <Grid container sx={{justifyContent:'start'}}>
+                                <Grid item xs={5}>
+                                  <FormControlLabel 
+                                  control={<Checkbox onClick={() => handleAddItem(data)}/>}
+                                  label={data.options}
+                                  labelPlacement="end"
+                                  />
+                                </Grid>
+                                <Grid item xs={4}/>
+                                <Grid item xs={3} sx={{alignContent:'center', textAlign:'end'}}>
+                                  <Typography>+{data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography>
+                                </Grid>
+                              </Grid>
+                            </Stack>
+                          ))}
+                      </CardContent>
+                    </Card>
+                  }
                 </Stack>
             </Grid>
+            <Box sx={{ mt: 5 }} />
             <Button onClick={handleSubmit} variant="contained" 
               sx={{mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'}, fontSize: '1rem'}}>장바구니 담기</Button>
         </Fragment>
@@ -109,7 +118,7 @@ export default function MenuDetail(props) {
 
 let BoxStyle = {
   height: 'auto', 
-  minHeight: '90vh', 
+  minHeight: '105vh', 
   border:2,
   backgroundImage: 'url(/img/m01.jpg)', 
   backgroundSize: 'cover', 
