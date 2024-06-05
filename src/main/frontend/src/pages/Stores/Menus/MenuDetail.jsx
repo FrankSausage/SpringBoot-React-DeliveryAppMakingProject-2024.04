@@ -118,13 +118,13 @@ export default function MenuDetail(props) {
 
 let BoxStyle = {
   height: 'auto', 
-  minHeight: '105vh', 
+  minHeight: '100vh', 
   border:2,
-  backgroundImage: 'url(/img/m01.jpg)', 
+  backgroundImage: 'url(/img/000.jpg)', 
   backgroundSize: 'cover', 
   backgroundPosition: 'center', 
   backgroundBlendMode: 'lighten', 
-  backgroundColor: 'rgba(255, 255, 255, 0.6)', 
+  backgroundColor: 'rgba(255, 255, 255, 0.6)',
   display: 'flex', 
   flexDirection: 'column', 
   p:3,

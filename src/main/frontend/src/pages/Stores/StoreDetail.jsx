@@ -84,7 +84,7 @@ export default function StoreDetail() {
 
   return (
     <Box sx={{ margin: -2 }}>
-    <Paper elevation={3} sx={{minHeight: '100vh',maxHeight: 'auto', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2, overflowY: 'auto' }}>
+    <Paper elevation={3} sx={{minHeight: '100vh',maxHeight: 'auto', backgroundImage: 'url(/img/003.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2, overflowY: 'auto' }}>
       <SearchHeader />
       {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && storeDetail && 

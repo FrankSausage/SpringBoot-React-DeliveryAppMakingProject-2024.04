@@ -54,7 +54,7 @@ export default function OwnerMain() {
           </Box>
         </Grid>
       </Grid> */}
-      <Paper elevation={3} sx={{ minHeight: '100vh',maxHeight: 'auto', backgroundImage: 'url(/img/Okitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
+      <Paper elevation={3} sx={{ minHeight: 'auto',maxHeight: 'auto', backgroundImage: 'url(/img/011.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
         {isLoading && <BackDrop isLoading={isLoading} />}
         {error && <Typography>에러 발생!</Typography>}
         {!isLoading && storeData?.storeList?.length === 0 && (

@@ -146,7 +146,7 @@ export default function MenuUpdate() {
       {!isLoading && menu.menus &&
         <Box>
           <SearchHeader />
-          <div style={{ backgroundImage: 'url(/img/Okitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)'}}>
+          <div style={{ backgroundImage: 'url(/img/111.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.35)'}}>
           <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
           <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
           <Container component="main" maxWidth="xs">
