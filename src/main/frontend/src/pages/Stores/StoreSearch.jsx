@@ -8,6 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import Slider from "react-slick";
 import { Stack } from "react-bootstrap";
 import Footer from "../../components/Footer";
+import { slideSettings } from "../../utils/commonUitil";
 
 export default function StoreSearch() {
 	const queryClient = useQueryClient();
@@ -26,7 +27,7 @@ export default function StoreSearch() {
 			<Grid container spacing={2}>
 				<Grid item xs={12}>
 					<Stack sx={{ maxHeight: 300, borderRadius: 0, overflow: 'hidden' }}>
-						<Slider {...settings}>
+						<Slider {...slideSettings}>
 							<Box component="img" sx={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/01.jpg" alt="01" />
 							<Box component="img" sx={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/02.jpg" alt="02" />
 							<Box component="img" sx={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/03.jpg" alt="03" />
@@ -62,12 +63,3 @@ export default function StoreSearch() {
 		</Box >
 	);
 }
-const settings = {
-	dots: true,
-	infinite: true,
-	speed: 500,
-	slidesToShow: 1,
-	slidesToScroll: 1,
-	autoplay: true,
-	autoplaySpeed: 3000,
-};
