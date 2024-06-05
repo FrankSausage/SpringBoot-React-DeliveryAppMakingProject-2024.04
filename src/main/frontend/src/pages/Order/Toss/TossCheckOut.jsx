@@ -1,11 +1,10 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Dialog, Typography } from "@mui/material";
 import React, { useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import CloseIcon from '@mui/icons-material/Close';
 import { loadPaymentWidget } from "@tosspayments/payment-widget-sdk";
 
-export default function TossChackOut() {
-  const location = useLocation();
-  const { storeId, userEmail, point, totalPrice, } = location.state;
+export default function TossChackOut(props) {
+  const { handleOpen, tossClose, storeId, userEmail, point, totalPrice} = props;
   const paymentWidgetRef = useRef(null);
 
   useEffect(() => {
@@ -35,10 +34,28 @@ export default function TossChackOut() {
   }
 
   return(
-    <Box>
-      <Typography variant="h2" sx={{textAlign:'center', mb: 5}}>주문서</Typography>
-      <Box id='payment-widget' sx={{border:1}} />
-      <Button variant="contained" onClick={() => handleClick()}>{totalPrice}원 결제하기</Button>
-    </Box>
+    <Dialog 
+    open={handleOpen} 
+    keepMounted
+    sx={{ '& .MuiDialog-paper': { borderRadius: 2,} }}
+    >
+      <Box>
+        <Typography variant="h2" sx={{textAlign:'center', mb: 5}}>주문서</Typography>
+        <CloseIcon sx={CloseBoxStyle} onClick={tossClose} />
+        <Box id='payment-widget' sx={{border:1, width:500, height:500}} />
+        <Button variant="contained" onClick={() => handleClick()}>{totalPrice}원 결제하기</Button>
+      </Box>
+    </Dialog>
   );
+}
+
+let CloseBoxStyle = {
+  color: "black",
+  cursor: 'pointer',
+  position: "absolute",
+  top: 16,
+  right: 16,
+  "&:hover": {
+    color: 'crimson',
+  }
 }
