@@ -54,8 +54,7 @@ export default function StoreDetail() {
   const { isLoading, storeDetail } = useStoreDeatilByEmail(email, storeId);
   const { postDibStore } = useDibs();
   const [value, setValue] = useState(1);
-  const [popularity, setPopularity] = useState('');
-
+  
   const handleChange = (e, newValue) => {
     setValue(newValue);
   };
@@ -119,7 +118,7 @@ export default function StoreDetail() {
           <Grid item xs={2} /> 
         </Grid>
       <CustomTabPanel value={value} index={1}>
-        <StoreMenuList storeName={storeDetail.name} />
+        <StoreMenuList storeName={storeDetail.name} deliveryTip={storeDetail.deliveryTip} minDeliveryPrice={storeDetail.minDeliveryPrice}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <StoreInfo storeDetail={storeDetail} />

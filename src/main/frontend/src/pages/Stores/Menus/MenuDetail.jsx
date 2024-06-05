@@ -6,12 +6,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import BackDrop from "../../../components/BackDrop";
 
 export default function MenuDetail(props) {
-  const { handleOpen, menuClose, storeId, storeName, menuId } = props
+  const { handleOpen, menuClose, storeId, storeName, menuId, deliveryTip, minDeliveryPrice } = props
   const { isLoading, error, menuDetailData } = useMenuDetailByMenuId(menuId)
   const { addItemToCart } = useCart();
   const [ items, setItems ] = useState([]);
-
-  
 
   const handleAddItem = data => {
     if (!items.find(e => e === data)) {
@@ -25,7 +23,7 @@ export default function MenuDetail(props) {
 
   const handleSubmit = () => {
     addItemToCart({menus: {menuId: menuId, menuName: menuDetailData.menus.name, menuPictureName: menuDetailData.menus.menuPictureName, menuContent: menuDetailData.menus.content,
-      menuPrice: menuDetailData.menus.price, storeId: storeId, storeName: storeName, menuOptions: items}})
+      menuPrice: menuDetailData.menus.price, storeId: storeId, storeName: storeName, menuOptions: items}}, deliveryTip, minDeliveryPrice)
     .then(res => {
       if(res===false){
         return;
