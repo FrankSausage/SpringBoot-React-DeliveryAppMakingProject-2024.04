@@ -30,12 +30,12 @@ export default function UserMain() {
           </Stack>
         </Grid>
       </Grid>
-      <Paper elevation={3} sx={{ height: 'auto', backgroundImage: 'url(/img/kitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
+      <Paper elevation={3} sx={{ height: 'auto', backgroundImage: 'url(/img/space.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.25)', p: 2 }}>
         <Grid container spacing={2} justifyContent="center" alignItems="center">
           {categories.map((category, index) => (
             <Grid item key={index} xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', }}>
               <Link to={category.link} state={category.state} style={{ textDecoration: 'none', color: 'black' }}>
-                <Typography variant="h5" sx={{ mt: 1  ,fontWeight: 'bold', color: 'black' }}>
+                <Typography variant="h5" sx={{ mt: 1  ,fontWeight: 'bold', color: 'white' }}>
                   {category.label}
                 </Typography>
               </Link>
