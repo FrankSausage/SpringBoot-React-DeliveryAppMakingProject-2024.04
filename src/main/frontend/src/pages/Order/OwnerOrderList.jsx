@@ -1,14 +1,14 @@
-import { Box, Button, Card, CardActions, CardContent, Divider, Grid, Typography } from "@mui/material";
+import { Box, Button, Card, CardActions, CardContent, Divider, Grid, Paper, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useOrderOwner } from "./Hook/useOrderOwner";
 import OwnerOrderDetail from "./OwnerOrderDetail";
 import BackDrop from "../../components/BackDrop";
 
 export default function OwnerOrderList() {
   const location = useLocation();
+  const navigate = useNavigate(); // useNavigate 훅 사용
   const email = localStorage.getItem('email');
-  const eventSource = new EventSource(`/dp/orders/stream/${email}`);
   const { storeId, storeName } = location.state;
   const { getOwnerOrderListByEmail: { isLoading, data: orderData }, updateOrderStatus } = useOrderOwner(email, storeId);
   const [openPortal, setOpenPortal] = useState(false);
@@ -22,17 +22,8 @@ export default function OwnerOrderList() {
   const handleUpdateStatus = orderId => {
     if (window.confirm('주문을 접수 받으시겠습니까?')) {
       updateOrderStatus.mutate({ orderId: orderId, status: '조리중' }, {
-        onSuccess: () => {
-          eventSource.onmessage = function (event) {
-            const orderData = JSON.parse(event.data);
-            console.log("Order updated:", orderData);
-          };
-        },
-        onError: () => {
-          eventSource.onerror = function (event) {
-            console.error("EventSource failed:", event);
-          };
-        }
+        onSuccess: () => { console.log("Order updated: ", orderData) },
+        onError: e => { console.error("mutation error: ", e) }, 
       })
     } else {
       return;
@@ -40,11 +31,14 @@ export default function OwnerOrderList() {
   }
 
   return (
-    <Box sx={{ padding: 3, backgroundColor: '#f0f2f5' }}>
+    <Paper elevation={3} sx={{ minHeight: '100vh', maxHeight: 'auto', backgroundImage: 'url(/img/order.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
       {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && orderData &&
         <Grid container justifyContent="center">
           <Grid item xs={12} md={8}>
+            <Button variant="contained" onClick={() => navigate(-1)} sx={{ mb: 2, backgroundColor: '#3f51b5', color: '#ffffff' }}>
+              ◀ 뒤로가기
+            </Button>
             <Typography variant="h4" sx={{ textAlign: 'center', my: 3, fontWeight: 'bold', color: '#3f51b5' }}>주문 내역</Typography>
             <Divider sx={{ marginBottom: 3 }} />
             <Typography variant="h5" sx={{ textAlign: 'center', my: 2, color: '#3f51b5' }}>{storeName}</Typography>
@@ -91,6 +85,6 @@ export default function OwnerOrderList() {
           </Grid>
         </Grid>
       }
-    </Box>
+    </Paper>
   );
 }

@@ -1,13 +1,13 @@
 export function useCart () {
 
-  const addItemToCart = async (itemData) => {
+  const addItemToCart = async (itemData, deliveryTip, minDeliveryPrice) => {
     try {
       if(!localStorage.getItem('cartCount')) {
         localStorage.setItem('cartCount', 1);
       } 
 
       if(!localStorage.getItem('cartItems')) {
-        localStorage.setItem('cartItems', JSON.stringify([{...itemData.menus, ['quantity'] : 1, ['sequence']: 1}]))
+        localStorage.setItem('cartItems', JSON.stringify([{...itemData.menus, ['quantity'] : 1, ['sequence']: 1, ['deliveryTip']: deliveryTip, ['minDeliveryPrice']: minDeliveryPrice}]))
       } else {
         let item = JSON.parse(localStorage.getItem('cartItems'));
         
@@ -32,7 +32,7 @@ export function useCart () {
           return await localStorage.setItem('cartItems', JSON.stringify(item))
         } else {
           if(window.confirm('다른 가게의 주문이 이미 장바구니에 있습니다, 장바구니를 비우고 이 가게에서 새로 주문하시겠습니까?')) {
-            return await localStorage.setItem('cartItems', JSON.stringify([{...itemData.menus, ['quantity'] : 1, ['sequence']: 1}]))
+            return await localStorage.setItem('cartItems', JSON.stringify([{...itemData.menus, ['quantity'] : 1, ['sequence']: 1, ['deliveryTip']: deliveryTip, ['minDeliveryPrice']: minDeliveryPrice}]))
           }
         }
       }
@@ -121,7 +121,7 @@ export function useCart () {
           totalPrice += (optionItems.price * menuItems.quantity);
         })
       })
-      return await totalPrice;
+      return await (totalPrice + items[0].deliveryTip);
 
     } catch (error) {
       console.log(error)
