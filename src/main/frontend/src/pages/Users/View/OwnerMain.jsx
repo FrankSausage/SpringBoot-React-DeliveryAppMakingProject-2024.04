@@ -39,7 +39,7 @@ export default function OwnerMain() {
   };
 
   return (
-    <Box sx={{ margin: -1, paddingBottom: '100px' }}>
+    <Box sx={{ margin: -1 }}>
       <SearchHeader />
       {/* <Grid container justifyContent="center" alignItems="center" mt={2}>
         <Grid item xs={10} md={6}>
@@ -54,7 +54,7 @@ export default function OwnerMain() {
           </Box>
         </Grid>
       </Grid> */}
-      <Paper elevation={3} sx={{ height: 'auto', backgroundImage: 'url(/img/Okitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
+      <Paper elevation={3} sx={{ minHeight: '100vh',maxHeight: 'auto', backgroundImage: 'url(/img/Okitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
         {isLoading && <BackDrop isLoading={isLoading} />}
         {error && <Typography>에러 발생!</Typography>}
         {!isLoading && storeData?.storeList?.length === 0 && (
@@ -71,7 +71,7 @@ export default function OwnerMain() {
                         <img src={data.storePictureName.split(',')[0]} style={{ width: '100px', height: '100px', borderRadius: '8px', objectFit: 'cover' }} alt="가게 이미지" />
                         <Box sx={{ ml: 2 }}>
                           <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{data.name}</Typography>
-                          <li style={{ listStyleType: 'none' }}><Rating name="read-only" value={data.rating} readOnly /></li>
+                          <Typography variant="body2" sx={{ fontWeight: 'bold' }}><Rating name="read-only" value={data.rating} readOnly /></Typography>
                           <Typography variant="body2" color="textSecondary">리뷰: {data.reviewCount}</Typography>
                           <Typography variant="body2" color="textSecondary">조회수: {data.dibsCount}</Typography>
                         </Box>
@@ -86,17 +86,17 @@ export default function OwnerMain() {
                         >
                         {isOpened[idx] ? '가게 오픈' : '가게 휴업'}
                       </Button> */}
-                      <Link to={`/StoreUpdate/${data.storeId}`} style={{ textDecoration: 'none' }}>
-                        <Button variant="outlined">가게 수정하기</Button>
-                      </Link>
-                      <Link to={`/OwnerOrderList`} state={{storeId: data.storeId, storeName: data.name}} style={{ textDecoration: 'none' }}>
-                        <Button variant="outlined">가게 주문확인</Button>
-                      </Link>
-                      <Link to={`/StoreReviews`} state={{storeId: data.storeId}} style={{ textDecoration: 'none' }}>
-                        <Button variant="outlined">가게 리뷰</Button>
-                      </Link>
-                    </Stack>
-                  }
+                        <Link to={`/StoreUpdate/${data.storeId}`} style={{ textDecoration: 'none' }}>
+                          <Button variant="outlined">가게 수정하기</Button>
+                        </Link>
+                        <Link to={`/OwnerOrderList`} state={{ storeId: data.storeId, storeName: data.name }} style={{ textDecoration: 'none' }}>
+                          <Button variant="outlined">가게 주문확인</Button>
+                        </Link>
+                        <Link to={`/StoreReviews`} state={{ storeId: data.storeId }} style={{ textDecoration: 'none' }}>
+                          <Button variant="outlined">가게 리뷰</Button>
+                        </Link>
+                      </Stack>
+                    }
                   </Box>
                 </Box>
               </Grid>
@@ -111,7 +111,7 @@ export default function OwnerMain() {
             <Link to='/StoreRegister' style={{ textDecoration: 'none', color: 'inherit' }}>가게 추가하기</Link>
           </Button>
         </Box>
-        <Footer sx={{ marginTop: 7}}/>
+        <Footer sx={{ marginTop: 7 }} />
       </Paper>
     </Box>
   );
