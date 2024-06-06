@@ -55,9 +55,7 @@ export default function StoreDetail() {
   const { isLoading, storeDetail } = useStoreDeatilByEmail(email, storeId);
   const { postDibStore } = useDibs();
   const [value, setValue] = useState(1);
-  const [popularity, setPopularity] = useState('');
-  const navigate = useNavigate();
-
+  
   const handleChange = (e, newValue) => {
     setValue(newValue);
   };
@@ -88,62 +86,48 @@ export default function StoreDetail() {
     <Box sx={{ margin: 0 }}>
       <SearchHeader />
       {isLoading && <BackDrop isLoading={isLoading} />}
-      {!isLoading && storeDetail &&
-        <Fragment>
-          <Box sx={{ borderBottom: 1, borderColor: 'black', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
-            <Grid container alignItems="center">
-              <Grid item xs={3}>
-                <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-                  <Button variant="contained" onClick={() => navigate(-1)} sx={{ mb: 2, backgroundColor: '#3f51b5', color: '#ffffff' }}>
-                    ◀ 뒤로가기
-                  </Button>
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <Tabs
-                  value={value}
-                  onChange={handleChange}
-                  aria-label="basic tabs example"
-                  centered
-                >
-                  <Tab label="메뉴" {...a11yProps(1)} sx={{ marginLeft: 2, marginRight: 2 }} />
-                  <Tab label="가게·원산지 정보" {...a11yProps(2)} autoFocus sx={{ marginLeft: 2, marginRight: 2 }} />
-                  <Tab label="리뷰" {...a11yProps(3)} autoFocus sx={{ marginLeft: 2, marginRight: 2 }} />
-                </Tabs>
-              </Grid>
-              <Grid item xs={3} />
-            </Grid>
-          </Box>
-          <Paper elevation={3} sx={{ minHeight: '100vh', maxHeight: 'auto', backgroundImage: 'url(/img/cooking.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.2)', p: 2, overflowY: 'auto' }}>
-            <Grid container>
-              <Grid item xs={2} />
-              <Grid item xs>
-                <Typography variant='h4' sx={{ textAlign: 'center', mt: 3 }}>{storeDetail.name}
-                  {role !== '점주' &&
-                    <Fragment>
-                      {storeDetail.isDibed === '일반' || storeDetail.isDibed === null ?
-                        <FavoriteIcon sx={{ cursor: 'pointer', fontSize: 30, mb: 1, ":hover": { color: 'red' } }} onClick={() => handleDib(storeDetail.isDibed)} />
-                        :
-                        <FavoriteIcon sx={{ cursor: 'pointer', fontSize: 30, color: 'red', mb: 1 }} onClick={() => handleDib(storeDetail.isDibed)} />
-                      }
-                    </Fragment>
-                  }
-                </Typography>
-              </Grid>
-              <Grid item xs={2} />
-            </Grid>
-            <CustomTabPanel value={value} index={0}> 
-              <StoreMenuList storeName={storeDetail.name} />
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={1}>
-              <StoreInfo storeDetail={storeDetail} />
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={2}> 
-              <StoreReviews storeId={storeId} />
-            </CustomTabPanel>
-            <Footer />
-          </Paper>
-        </Fragment>
+      {!isLoading && storeDetail && 
+      <Fragment>
+      <Box sx={{ borderBottom: 1, borderColor: 'black', display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', mt: 0 }}></Box>
+          <Tab label="메뉴" {...a11yProps(1)} sx={{ marginLeft: 2, marginRight: 2 }} />
+          <Tab label="가게·원산지 정보" {...a11yProps(2)} autoFocus sx={{ marginLeft: 2, marginRight: 2 }} />
+          <Tab label="리뷰" {...a11yProps(3)} autoFocus sx={{ marginLeft: 2, marginRight: 2 }} />
+        </Tabs>
+      </Box>
+        <Grid container>
+          <Grid item xs={2} />
+          <Grid item xs>
+            <Typography variant='h4' sx={{textAlign:'center', mt: 3}}>{storeDetail.name} 
+              {role!=='점주' &&
+                <Fragment>
+                  {storeDetail.isDibed==='일반' || storeDetail.isDibed===null ? 
+                    <FavoriteIcon sx={{cursor:'pointer', fontSize:30, mb:1, ":hover":{color:'red'}}} onClick={() => handleDib(storeDetail.isDibed)} />
+                    :
+                    <FavoriteIcon sx={{cursor:'pointer', fontSize:30, color:'red', mb:1}} onClick={() => handleDib(storeDetail.isDibed)} />
+                  } 
+                </Fragment>
+              }
+            </Typography>
+          </Grid>
+          <Grid item xs={2} /> 
+        </Grid>
+      <CustomTabPanel value={value} index={1}>
+        <StoreMenuList storeName={storeDetail.name} deliveryTip={storeDetail.deliveryTip} minDeliveryPrice={storeDetail.minDeliveryPrice}/>
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+        <StoreInfo storeDetail={storeDetail} />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={3}>
+        <StoreReviews storeId={storeId} />
+      </CustomTabPanel>
+      <Footer />
+      </Fragment>
       }
     </Box>
   );
