@@ -6,7 +6,7 @@ import Footer from '../../components/Footer';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { findPostcode } from '../../utils/AddressUtil';
 import { register } from '../../utils/firebase';
-import { extractDataFromFormData, formatPhoneNumber } from '../../utils/commonUitil';
+import { checkTextError, extractDataFromFormData, formatPhoneNumber } from '../../utils/commonUitil';
 import axios from 'axios';
 import { useUser } from './Hook/useUser';
 
@@ -19,6 +19,7 @@ export default function SignUp() {
   const [addressCode, setAddressCode] = useState('');
   const [role, setRole] = useState('');
   const [passwordCheck, setPasswordCheck] = useState({ password: '', secondPassword: '' });
+  const [nameCheck, setNameCheck] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [roleError, setRoleError] = useState(false); // State variable for role error
   const { setOutletAddress } = useOutletContext();
@@ -64,6 +65,9 @@ export default function SignUp() {
     setRoleError(false);
 
     const data = new FormData(event.currentTarget);
+    if(checkTextError('password',passwordCheck.password) || checkTextError('name', nameCheck) || passwordCheck.password.length < 6) {
+      return;
+    } 
 
     if (passwordCheck.password === passwordCheck.secondPassword) {
       setFormData(data)
@@ -103,7 +107,7 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Box style={{ backgroundImage: 'url(/img/kitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', flexDirection: 'column', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
+      <Box style={mainBoxStyle}>
         <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
           <CssBaseline />
           <Box sx={{ marginTop: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', borderRadius: '10px'  }}>
@@ -121,16 +125,36 @@ export default function SignUp() {
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <TextField autoComplete="given-name" name="name" required fullWidth id="name" label="이름" placeholder='ex)홍길동' autoFocus InputProps={{ style: { fontFamily: 'Arial, sans-serif' } }} />
+                  <TextField autoComplete="given-name" name="name" required fullWidth id="name" label="이름" placeholder='ex)홍길동' 
+                    onChange={e => setNameCheck(e.target.value)} error={checkTextError('name', nameCheck)} 
+                    helperText={checkTextError('name', nameCheck) && '이름은 한글, 영문자 외에는 입력하실 수 없습니다.'} 
+                    autoFocus InputProps={{ style: { fontFamily: 'Arial, sans-serif' } }} 
+                  />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField required fullWidth id="email" label="이메일" placeholder='ex)human@example.com' name="email" autoComplete="email" />
+                  <TextField required fullWidth id="email" type='email' label="이메일" placeholder='ex)human@example.com' name="email" autoComplete="email" />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField required fullWidth name="password" label="비밀번호" type="password" id="password" placeholder='6자리 이상 입력하세요.(영문,숫자만 입력 가능합니다)' onChange={handlePasswordChange} autoComplete="new-password" InputProps={{ style: { fontFamily: 'Arial, sans-serif' } }} />
+                  <TextField required fullWidth name="password" 
+                    label="비밀번호" type="password" id="password" 
+                    placeholder='6자리 이상 입력하세요.(영문,숫자만 입력 가능합니다)' 
+                    onChange={handlePasswordChange} error={checkTextError('password',passwordCheck.password)} 
+                    helperText={checkTextError('password',passwordCheck.password) && 
+                                  '비밀번호는 6자리 이상의 영문 또는 숫자만 입력해야 합니다.'} 
+                    autoComplete="new-password" 
+                    InputProps={{ style: { fontFamily: 'Arial, sans-serif' } }} 
+                  />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField required fullWidth label="비밀번호 확인" name="secondPassword" id="secondPassword" type="password" placeholder='위와 일치하게 작성하세요' onChange={handlePasswordChange} error={passwordCheck.password !== passwordCheck.secondPassword} helperText={passwordCheck.password !== passwordCheck.secondPassword && "비밀번호가 일치하지 않습니다"} autoComplete="new-password" InputProps={{ style: { fontFamily: 'Arial, sans-serif' } }} />
+                  <TextField required fullWidth label="비밀번호 확인" name="secondPassword" id="secondPassword" type="password"
+                    placeholder='비밀번호를 다시 한 번 입력하세요.' onChange={handlePasswordChange} 
+                    error={passwordCheck.password && passwordCheck.secondPassword &&
+                            passwordCheck.password!==passwordCheck.secondPassword} 
+                    helperText={passwordCheck.secondPassword && passwordCheck.password && 
+                            passwordCheck.secondPassword!==passwordCheck.password && '비밀번호가 일치하지 않습니다.'} 
+                    autoComplete="new-password" 
+                    InputProps={{ style: { fontFamily: 'Arial, sans-serif' } }} 
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField required fullWidth id="phone" label="휴대전화" name="phone" placeholder='ex) 010-1234-5678' autoComplete="phone" value={phoneNumber} onChange={handlePhoneNumberChange} inputProps={{ maxLength: 13, inputMode: 'numeric'}} />
@@ -187,4 +211,16 @@ export default function SignUp() {
       </Box>
     </ThemeProvider>
   );
+}
+
+const mainBoxStyle = { 
+backgroundImage: 'url(/img/kitchen.jpg)', 
+backgroundSize: 'cover', 
+backgroundPosition: 'center', 
+display: 'flex', 
+justifyContent: 'center', 
+flexDirection: 'column', 
+padding: '23px 0', 
+backgroundBlendMode: 'lighten', 
+backgroundColor: 'rgba(255, 255, 255, 0.6)' 
 }

@@ -1,10 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import Footer from "../../components/Footer";
-import { Box, Grid, InputBase, Stack, Tab, Tabs, Typography, } from '@mui/material/';
-import SearchIcon from '@mui/icons-material/Search';
+import { Box, Grid, Paper, Tab, Tabs, Typography } from '@mui/material/';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import StoreInfo from './StoreInfo';
 import StoreMenuList from './StoreMenuList';
@@ -13,6 +11,8 @@ import { useDibs } from '../Dibs/Hook/useDibs';
 import { useStoreDeatilByEmail } from '../../utils/storeInfo';
 import { useQueryClient } from '@tanstack/react-query';
 import BackDrop from '../../components/BackDrop';
+import StoreReviews from '../Review/View/StoreReviews';
+import { Button } from 'react-bootstrap';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -49,44 +49,41 @@ function a11yProps(index) {
 
 export default function StoreDetail() {
   const queryClient = useQueryClient();
-  const email = localStorage.getItem('email')
-  const role = localStorage.getItem('role')
-  const { storeId } = useParams()
+  const email = localStorage.getItem('email');
+  const role = localStorage.getItem('role');
+  const { storeId } = useParams();
   const { isLoading, storeDetail } = useStoreDeatilByEmail(email, storeId);
   const { postDibStore } = useDibs();
   const [value, setValue] = useState(1);
-  const [popularity, setPopularity] = useState('');
-  const navigate = useNavigate();
-
+  
   const handleChange = (e, newValue) => {
     setValue(newValue);
   };
 
   const handleDib = (isDibed) => {
-    if(isDibed===null) {
-      postDibStore.mutate({email: email, storeId: storeId, status: '찜'}, {
-        onSuccess: () => {console.log('찜 성공'); queryClient.invalidateQueries(['storeDetail', {storeId: storeId}])},
-        onError: e => {alert('찜 등록에 문제가 발생했습니다.'); console.error(e)}
-      })
+    if (isDibed === null) {
+      postDibStore.mutate({ email: email, storeId: storeId, status: '찜' }, {
+        onSuccess: () => { console.log('찜 성공'); queryClient.invalidateQueries(['storeDetail', { storeId: storeId }]) },
+        onError: e => { alert('찜 등록에 문제가 발생했습니다.'); console.error(e) }
+      });
       return;
     }
 
-    if(isDibed==='일반') {
-      postDibStore.mutate({email: email, storeId: storeId, status: '찜'}, {
-        onSuccess: () => {console.log('찜 성공'); queryClient.invalidateQueries(['storeDetail', {storeId: storeId}])},
-        onError: e => {alert('찜 등록에 문제가 발생했습니다.'); console.error(e)}
-      })
-    } else if (isDibed==='찜') {
-      postDibStore.mutate({email: email, storeId: storeId, status: '일반'}, {
-        onSuccess: () => {console.log('일반 성공'); queryClient.invalidateQueries(['storeDetail', {storeId: storeId}])},
-        onError: e => {alert('찜 등록에 문제가 발생했습니다.'); console.error(e)}
-      })
+    if (isDibed === '일반') {
+      postDibStore.mutate({ email: email, storeId: storeId, status: '찜' }, {
+        onSuccess: () => { console.log('찜 성공'); queryClient.invalidateQueries(['storeDetail', { storeId: storeId }]) },
+        onError: e => { alert('찜 등록에 문제가 발생했습니다.'); console.error(e) }
+      });
+    } else if (isDibed === '찜') {
+      postDibStore.mutate({ email: email, storeId: storeId, status: '일반' }, {
+        onSuccess: () => { console.log('일반 성공'); queryClient.invalidateQueries(['storeDetail', { storeId: storeId }]) },
+        onError: e => { alert('찜 등록에 문제가 발생했습니다.'); console.error(e) }
+      });
     }
-  }
+  };
 
   return (
-    <Box sx={{ margin: -1 }}>
-    <Box sx={{ height: 'auto', backgroundImage: 'url(/img/sl0.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ margin: 0 }}>
       <SearchHeader />
       {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && storeDetail && 
@@ -104,29 +101,34 @@ export default function StoreDetail() {
         </Tabs>
       </Box>
         <Grid container>
-          <Grid item xs={4}/>
-          <Grid item xs={2.5}>
-            <Typography variant='h4' sx={{textAlign:'end', mt: 3}}>{storeDetail.name}</Typography>
+          <Grid item xs={2} />
+          <Grid item xs>
+            <Typography variant='h4' sx={{textAlign:'center', mt: 3}}>{storeDetail.name} 
+              {role!=='점주' &&
+                <Fragment>
+                  {storeDetail.isDibed==='일반' || storeDetail.isDibed===null ? 
+                    <FavoriteIcon sx={{cursor:'pointer', fontSize:30, mb:1, ":hover":{color:'red'}}} onClick={() => handleDib(storeDetail.isDibed)} />
+                    :
+                    <FavoriteIcon sx={{cursor:'pointer', fontSize:30, color:'red', mb:1}} onClick={() => handleDib(storeDetail.isDibed)} />
+                  } 
+                </Fragment>
+              }
+            </Typography>
           </Grid>
-          <Grid item sx={{ml:2}} xs> 
-            {role!=='점주' && storeDetail.isDibed==='일반' || storeDetail.isDibed===null ? 
-              <FavoriteBorderIcon sx={{cursor:'pointer', fontSize:30, mt: 3}} onClick={() => handleDib(storeDetail.isDibed)} />
-              :
-              <FavoriteIcon sx={{cursor:'pointer', fontSize:30, color:'red', mt: 3}} onClick={() => handleDib(storeDetail.isDibed)} />
-            } 
-          </Grid>
+          <Grid item xs={2} /> 
         </Grid>
-      
       <CustomTabPanel value={value} index={1}>
-        <StoreMenuList storeName={storeDetail.name} />
+        <StoreMenuList storeName={storeDetail.name} deliveryTip={storeDetail.deliveryTip} minDeliveryPrice={storeDetail.minDeliveryPrice}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <StoreInfo storeDetail={storeDetail} />
       </CustomTabPanel>
+      <CustomTabPanel value={value} index={3}>
+        <StoreReviews storeId={storeId} />
+      </CustomTabPanel>
       <Footer />
       </Fragment>
       }
-    </Box>
     </Box>
   );
 }

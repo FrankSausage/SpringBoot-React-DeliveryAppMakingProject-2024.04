@@ -47,7 +47,7 @@ export default function AppNavbar() {
           <Grid container alignItems="center">
             <Grid item xs={2} sm={2} md={2}>
               <Link to="/" style={{ textDecoration: 'none', color: 'Black' }}>
-                <img src={'/img/logo01.png'} style={{ width: '40%', height: '40%', maxWidth: '150px', maxHeight: '150px' }} />
+                <img src={'/img/logo01.png'} style={{ width: '60%', height: '40%', maxWidth: '150px', maxHeight: '150px' }} />
               </Link>
             </Grid>
             {role === '회원' && (
