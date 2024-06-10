@@ -53,7 +53,6 @@ export default function MenuRegister() {
       data.append('name', name);
       data.append('price', price);
       data.append('menuPictureName', menuPictureUrl ? menuPictureUrl : menuPictureName);
-      // data.append('menuPictureUrl', menuPictureUrl);
       return data;
     } catch (error) {
       console.error('setFormData Error!: ', error);
@@ -61,19 +60,16 @@ export default function MenuRegister() {
     }
   };
 
-  const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const fileName = file.name;
+  const handleFileUpload = e => {
+    if (e.target.files.length > 0) {
       setIsFileUploading(true);
-      setMenuPictureName(fileName);
-      try {
-        const url = await uploadImageToCloudinary(file); // 클라우드니어리에 이미지 업로드
-        setMenuPictureUrl(url); // 업로드된 이미지 URL 저장
-        setIsFileUploading(false);
-      } catch (error) {
-        console.error('Failed to upload image to Cloudinary:', error);
-      }
+      setMenuPictureName(e.target.files[0].name);
+        uploadImageToCloudinary(e.target.files[0])
+          .then(url => setMenuPictureUrl(url))
+          .then(() => setIsFileUploading(false))
+        .catch((error) => console.error('Failed to upload image to Cloudinary:', error));
+    } else if (e.target.files.length <= 0) {
+      setIsFileUploading(false);
     }
   };
 
