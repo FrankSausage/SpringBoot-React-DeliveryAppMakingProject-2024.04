@@ -97,7 +97,7 @@ export default function SignUp() {
       data.append('currentAddress', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '')
         + ',' + (detailAddress ? detailAddress : '')));
       data.append('role', role);
-      data.append('addressCode', role === '회원' ? addressCode.substring(0, 8) : '00000000');
+      data.append('addressCode', role === '회원' ? addressCode.toString().substring(0, 8) : '00000000');
       return await data;
     }
     catch (error) {

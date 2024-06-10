@@ -122,20 +122,15 @@ export default function MenuUpdate() {
   };
 
   const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const fileName = file.name;
+    if (e.target.files.length > 0) {
       setIsFileUploading(true);
-      setInitialMenuPictureName(fileName);
-      uploadImageToCloudinary(file) // 클라우드니어리에 이미지 업로드
-        .then((url) => {
-          setMenuPictureUrl(url); // 업로드된 이미지 URL 저장
-        })
-        .then(() => setIsFileUploading(false)
-        )
-        .catch((error) => {
-          console.error('Failed to upload image to Cloudinary:', error);
-        });
+      setInitialMenuPictureName(e.target.files[0].name);
+      uploadImageToCloudinary(e.target.files[0]) // 클라우드니어리에 이미지 업로드
+        .then(url => setMenuPictureUrl(url))
+        .then(() => setIsFileUploading(false))
+      .catch((error) => console.error('Failed to upload image to Cloudinary:', error));
+    } else if (e.target.files.length <= 0) {
+      setIsFileUploading(false);
     }
   };
 

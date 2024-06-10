@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import ProtectedRoute from './pages/ProtectedRoute';
+import ProtectedRoute from './Route/ProtectedRoute';
 import Home from './pages/Home';
 // Users
 import UserMain from './pages/Users/View/UserMain';
@@ -28,11 +28,10 @@ import MenuUpdate from './pages/Stores/Menus/MenuUpdate';
 import Order from './pages/Order/View/Order';
 import OrderList from './pages/Order/OrderList';
 import OwnerOrderList from './pages/Order/OwnerOrderList';
-// Dibs
-import Dibs from './pages/Dibs/View/Dibs';
-import TossChackOut from './pages/Order/Toss/TossCheckOut';
 import { Success } from './pages/Order/Toss/SuccessPage';
 import { Fail } from './pages/Order/Toss/FailPage';
+// Dibs
+import Dibs from './pages/Dibs/View/Dibs';
 
 const router = createBrowserRouter([
   {
@@ -43,37 +42,33 @@ const router = createBrowserRouter([
       { path: 'Signin', element: <SignIn />},
       { path: 'SignUp', element: <SignUp />},
       { path: 'Update', element: <ProtectedRoute><Update /></ProtectedRoute>},
-      { path: 'Address', element: <Address />},
+      { path: 'Address', element: <ProtectedRoute><Address /></ProtectedRoute>},
       { path: 'Store', element: <ProtectedRoute><Store /></ProtectedRoute>},
       { path: 'Store/:category', element: <ProtectedRoute><Store /></ProtectedRoute>},
       { path: 'StoreSearch', element: <ProtectedRoute><StoreSearch /></ProtectedRoute>},
-      { path: 'StoreRegister', element: <StoreRegister />},
-      { path: 'StoreUpdate', element: <StoreUpdate />},
-      { path: 'StoreUpdate/:storeId', element: <StoreUpdate />},
-      { path: 'StoreDetail/:storeId', element: <StoreDetail />},
-      { path: 'MyReviews', element: <MyReviews />},
-      { path: 'StoreReviews', element: <StoreReviews />},
-      { path: 'MenuRegister/:storeId', element: <MenuRegister />},
-      { path: 'MenuUpdate', element: <MenuUpdate />},
+      { path: 'StoreRegister', element: <ProtectedRoute><StoreRegister /></ProtectedRoute>},
+      { path: 'StoreUpdate', element: <ProtectedRoute><StoreUpdate /></ProtectedRoute>},
+      { path: 'StoreUpdate/:storeId', element: <ProtectedRoute><StoreUpdate /></ProtectedRoute>},
+      { path: 'StoreDetail/:storeId', element: <ProtectedRoute><StoreDetail /></ProtectedRoute>},
+      { path: 'MyReviews', element: <ProtectedRoute><MyReviews /></ProtectedRoute>},
+      { path: 'StoreReviews', element: <ProtectedRoute><StoreReviews /></ProtectedRoute>},
+      { path: 'MenuRegister/:storeId', element: <ProtectedRoute><MenuRegister /></ProtectedRoute>},
+      { path: 'MenuUpdate', element: <ProtectedRoute><MenuUpdate /></ProtectedRoute>},
       { path: 'UserMain', element: <UserMain />,},
       { path: 'OwnerMain', element: <OwnerMain />},
-      { path: 'Order', element: <Order />},
-      { path: 'OrderList', element: <OrderList />},
-      { path: 'OwnerOrderList', element: <OwnerOrderList />},
-      { path: 'Dibs', element: <Dibs />},
-      { path: 'CheckOut', element: <TossChackOut />},
+      { path: 'Order', element: <ProtectedRoute><Order /></ProtectedRoute>},
+      { path: 'OrderList', element: <ProtectedRoute><OrderList /></ProtectedRoute>},
+      { path: 'OwnerOrderList', element: <ProtectedRoute><OwnerOrderList /></ProtectedRoute>},
+      { path: 'Dibs', element: <ProtectedRoute><Dibs /></ProtectedRoute>},
       { path: 'success', element: <Success />},
       { path: 'fail', element: <Fail />},
-
     ]
   }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+  <RouterProvider router={router} />
 );
 
 reportWebVitals();
