@@ -150,7 +150,7 @@ export default function Address() {
                   <Grid item sx={{ mb: 3, marginLeft: '-70px' }}>
                       { !roadAddress && <Button variant="contained" disabled sx={{fontSize: '1.2rem', height: '3rem'}}>추가</Button> }
                       { roadAddress && <Button sx={{border: 0, mx: 1, fontSize: '1.2rem', height: '3rem',
-                        backgroundColor: '#66BB6A', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#41df78'}}} 
+                        backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'}}} 
                         type="submit" variant="contained" >주소 추가</Button> }
                   </Grid>
                 </Stack>
