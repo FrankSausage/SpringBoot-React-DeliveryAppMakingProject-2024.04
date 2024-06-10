@@ -5,6 +5,9 @@ const defaultTheme = createTheme();
 
 export default function StoreInfo({storeDetail}) {
 
+  const renderContentWithLineBreaks = (content) => { 
+    return content.split('\n').map((line, index) => ( <span key={index}>{line}<br /></span>));};  //가게 소개 줄, 문단 바꾸기 적용//
+
   return (
     <ThemeProvider theme={defaultTheme}>
       {storeDetail && (
@@ -66,7 +69,8 @@ export default function StoreInfo({storeDetail}) {
                   <div style={{ padding: 0,  fontSize: '16px'}}>
                     <h2 style={{ marginBottom: '15px', color: '#333', fontSize: '22px' }}>가게 소개</h2>
                     <ul style={{ padding: '0', margin: '0', textAlign: 'left' }}>
-                      <li style={{ listStyleType: 'none', marginBottom: '10px' }}>{storeDetail.content}</li>
+                      {/* <li style={{ listStyleType: 'none', marginBottom: '10px' }}>{storeDetail.content}</li> */}
+                      <li style={{ listStyleType: 'none', marginBottom: '10px' }}>{renderContentWithLineBreaks(storeDetail.content)}</li>
                     </ul>
                   </div>
                 </Box>
