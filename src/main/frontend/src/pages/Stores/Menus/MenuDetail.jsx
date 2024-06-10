@@ -46,14 +46,15 @@ export default function MenuDetail(props) {
         {error && <Typography>정보를 받아오지 못했습니다!</Typography>}
         {!isLoading && menuDetailData && 
         <Fragment>
-          <Typography variant="h5" sx={{textAlign:'center', mt: 2, mb:-5}}> {menuDetailData.menus.name} </Typography>
           <CloseIcon sx={CloseBoxStyle} onClick={() => menuClose()} />
             <Grid container sx={{mt:9, width: 500 }}>
                 <Stack>
                   <Card sx={{mb:1,width: 410, ml: 5.5}}>
                     <CardContent sx={{m:1}}>
                       <img src={menuDetailData.menus.menuPictureName} style={{width:'50%', height: 'auto', display: 'block', margin: '0 auto', borderRadius: '8px'}} />
-                      <Typography sx={{textAlign: 'center', mt:3}} variant="h6">{menuDetailData.menus.content.length > 15 ? `${menuDetailData.menus.content.slice(0, 15)}..` : menuDetailData.menus.content}</Typography>
+                      <Typography variant="h5" sx={{textAlign:'center', fontWeight:'bold', mt: 2, mb:-5}}> {menuDetailData.menus.name} </Typography>
+                      <Divider />
+                      <Typography sx={{textAlign: 'center', mt:10}} variant="subtitle1">{menuDetailData.menus.content.length > 15 ? `${menuDetailData.menus.content.slice(0, 15)}..` : menuDetailData.menus.content}</Typography>
                     </CardContent>
                   </Card>
                   <Card sx={{my:3, width: 410, ml: 5.5}}>
