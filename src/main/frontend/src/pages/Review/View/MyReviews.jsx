@@ -29,7 +29,6 @@ export default function MyReviews(props) {
         {isLoading && <BackDrop isLoading={isLoading} />}
         {!isLoading && reviewData && reviewData.data.reviewList.length === 0 &&
           <Card sx={{ m: 'auto', border: 1, width: '50%', height: 400, textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', boxShadow: 3, transition: 'transform 0.3s, box-shadow 0.3s', '&:hover': { transform: 'scale(1.05)', boxShadow: 6 } }}>
-            <CloseIcon sx={CloseBoxStyle} onClick={reviewClose} />
             <CardContent>
               <Typography>아직 리뷰를 남긴 가게가 없어요!</Typography>
             </CardContent>
