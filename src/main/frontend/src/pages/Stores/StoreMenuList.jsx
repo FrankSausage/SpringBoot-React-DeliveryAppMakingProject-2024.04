@@ -86,7 +86,7 @@ export default function StoreMenuList({ storeName, deliveryTip, minDeliveryPrice
               <Grid item xs={12} sm={6} md={4} lg={4} key={res.menuId}>
                 <Box sx={boxStyle}>
                   <Box onClick={e => handleOpen(e, res.menuId, res.status)} sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
-                    <img src={res.menuPictureName} style={{ width: '150px', height: '120px', objectFit: 'cover', borderRadius: '10px', display: 'block', margin: '0 auto' }} alt="메뉴 사진" />
+                    <img src={res.menuPictureName} style={{ width: '180px', height: '150px', objectFit: 'cover', borderRadius: '10px', display: 'block', margin: '0 auto' }} alt="메뉴 사진" />
                   </Box>
                   <Box sx={{ flexGrow: 1 }}>
                     {role === '회원' && res.status === '품절' && <img src='/img/soltout.jpg' style={{ position: 'absolute', top: 1, left: 1, width: '80px', height: '80px', objectFit: 'cover', borderRadius: '50%' }} alt="품절 이미지" />}
@@ -135,7 +135,7 @@ export default function StoreMenuList({ storeName, deliveryTip, minDeliveryPrice
               <Grid item xs={12} sm={6} md={4} lg={4}>
                 <Box sx={boxStyle}>
                   <Box onClick={e => handleOpen(e, res.menuId, res.status)} sx={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
-                    <img src={res.menuPictureName} style={{ width: '150px', height: '120px', objectFit: 'cover', borderRadius: '10px', display: 'block', margin: '0 auto' }} alt="메뉴 사진" />
+                    <img src={res.menuPictureName} style={{ width: '180px', height: '150px', objectFit: 'cover', borderRadius: '10px', display: 'block', margin: '0 auto' }} alt="메뉴 사진" />
                   </Box>
                   <Box sx={{ flexGrow: 1 }}>
                     {role === '회원' && res.status === '품절' && <img src='/img/soltout.jpg' style={{ position: 'absolute', top: 1, left: 1, width: '80px', height: '80px', objectFit: 'cover', borderRadius: '50%' }} alt="품절 이미지" />}

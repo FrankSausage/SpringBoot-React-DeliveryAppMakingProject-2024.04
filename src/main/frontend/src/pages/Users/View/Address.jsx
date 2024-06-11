@@ -12,6 +12,7 @@ import axios from "axios";
 import AddressUpdate from "../AddressUpdate";
 import AddressDelete from "../AddressDelete";
 import BackDrop from "../../../components/BackDrop";
+import { color } from "@cloudinary/url-gen/qualifiers/background";
 
 
 export default function Address() {
@@ -137,7 +138,7 @@ export default function Address() {
                       sx={{width: 430}} 
                       placeholder="주소를 입력하세요..." 
                       required/>
-                      <Button sx={{border: 1, mx: 1}} onClick={handleFindPostcode}> 검색 </Button>
+                      <Button variant="outlined" sx={{mx: 1}} onClick={handleFindPostcode}> 검색 </Button>
                     </Stack>
                     <Stack direction={"row"}  sx={{my: 4, marginLeft: '-69px' }}>
                       <Input type="text" value={detailAddress} 
@@ -165,14 +166,14 @@ export default function Address() {
                       <Input value={data.address} sx={{width: 500}}/>  
                       <AddressUpdate addressData={data.address} addressId={data.addressId} 
                         email={email} currentAddress={currentAddress}/>
-                      <RoomIcon sx={{ml: 0}}/>
+                      <RoomIcon sx={{ml: 0, color:'#5775fa'}}/>
                       </>
                     : 
                       <>
                       <Input value={data.address} sx={{width: 400}}/>
                       <AddressUpdate addressData={data.address} addressId={data.addressId} email={email}/>
                       <AddressDelete addressData={data.address} addressId={data.addressId}/>
-                      <RoomOutlinedIcon onClick={() => handleCurrentChange(data)} sx={{cursor: "pointer"}}/>
+                      <RoomOutlinedIcon onClick={() => handleCurrentChange(data)} sx={{cursor: "pointer", ":hover":{ color:'#5775fa' }}} />
                       </>
                   }
                 </Stack>
