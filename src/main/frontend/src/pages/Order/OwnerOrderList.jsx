@@ -7,7 +7,7 @@ import BackDrop from "../../components/BackDrop";
 
 export default function OwnerOrderList() {
   const location = useLocation();
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const navigate = useNavigate(); 
   const email = localStorage.getItem('email');
   const { storeId, storeName } = location.state;
   const { getOwnerOrderListByEmail: { isLoading, data: orderData }, updateOrderStatus } = useOrderOwner(email, storeId);
