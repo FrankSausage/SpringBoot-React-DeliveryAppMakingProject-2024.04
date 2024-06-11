@@ -31,7 +31,7 @@ export default function OwnerOrderList() {
   }
 
   return (
-    <Paper elevation={3} sx={{ minHeight: '100vh', maxHeight: 'auto', backgroundImage: 'url(/img/order.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
+    <Paper elevation={3} sx={{ minHeight: '100vh', maxHeight: 'auto', backgroundImage: 'url(/img/order.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'rgba(255, 255, 255, 0.3)', p: 2 }}>
       {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && orderData &&
         <Grid container justifyContent="center">
