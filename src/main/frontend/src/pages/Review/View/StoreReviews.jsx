@@ -45,9 +45,9 @@ export default function StoreReviews() {
               <Grid item xs={8}>
                 {storeReviewData.data.reviewList.map((data, idx) => (
                   <Card key={idx} sx={{ my: 2, p: 2, border: 1 }}>
-                    <Typography>유저 명: {data.userName}</Typography>
+                    <Typography>유저명: {data.userName}</Typography>
                     <Typography>레벨: {data.userGrade}</Typography>
-                    <Typography>작성 일: {data.createdDate.replace('T', ' ')}</Typography>
+                    <Typography>작성일: {data.createdDate.replace('T', ' ')}</Typography>
                     <CardContent>
                       <Typography><Rating value={data.rating} readOnly /></Typography>
                       {data.reviewPictureName && <img src={data.reviewPictureName} width={100} height={100} style={{ margin: 30 }} />}
@@ -56,15 +56,15 @@ export default function StoreReviews() {
                     </CardContent>
                     {data.ceoReviewContent &&
                       <Box>
-                        <Typography>작성 일: {data.ceoReviewCreatedDate.replace('T', ' ')}</Typography>
-                        <TextField value={data.ceoReviewContent} sx={{ width: 500 }} maxRows={4} minRows={4}
+                        <Typography sx={{ mb: 2 }}>작성일: {data.ceoReviewCreatedDate.replace('T', ' ')}</Typography>
+                        <TextField value={data.ceoReviewContent} sx={{ width: 500, mb: 2 }} maxRows={4} minRows={4}
                           multiline InputProps={{ readOnly: true, }} />
                       </Box>
                     }
                     {role === '점주' &&
                       <Fragment>
                         {openPortal ?
-                          (!data.ceoReviewContent && <Button onClick={() => handleClick(idx)} variant="contained">접기</Button>)
+                          (!data.ceoReviewContent && <Button onClick={() => handleClick(idx)} variant="contained" sx={{ mb: 2 }}>접기</Button>)
                           :
                           (!data.ceoReviewContent ?
                             <Button onClick={() => handleClick(idx)} variant="contained">댓글 달기</Button>
