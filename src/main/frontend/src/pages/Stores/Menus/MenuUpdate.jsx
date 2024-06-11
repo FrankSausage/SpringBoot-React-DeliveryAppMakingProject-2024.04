@@ -142,7 +142,7 @@ export default function MenuUpdate() {
         <Box>
           <SearchHeader />
           <Paper sx={{...Paperstyle}}>
-            <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
+            <Box style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
               <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
                 <Container component="main" maxWidth="xs">
                   <CssBaseline />
@@ -226,7 +226,7 @@ export default function MenuUpdate() {
                   <Footer sx={{ mt: 5 }} />
                 </Container>
               </Container>
-            </div>
+            </Box>
           </Paper>
         </Box>
       }
