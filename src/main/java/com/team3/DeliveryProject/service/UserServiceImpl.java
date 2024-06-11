@@ -68,10 +68,12 @@ public class UserServiceImpl implements UserService {
         users.setCurrentAddress(user.getCurrentAddress());
         users.setAddressCode(user.getAddressCode());
         Long userId = usersRepository.save(users).getUserId();
-        Address address = addressRepository.findAddressByUserId(userId).get();
-        address.setAddress(users.getCurrentAddress());
-        address.setAddressCode(users.getAddressCode());
-        addressRepository.save(address);
+
+        Optional<Address> existAddress = addressRepository.findAddressByUserIdAndAddress(userId, user.getCurrentAddress());
+        if(!existAddress.isPresent()){
+            Address address = new Address(userId, users.getCurrentAddress(), user.getAddressCode(), LocalDateTime.now(), LocalDateTime.now(), "일반");
+            addressRepository.save(address);
+        }
         return Response.toResponseEntity(USER_UPDATE_SUCCESS);
     }
 

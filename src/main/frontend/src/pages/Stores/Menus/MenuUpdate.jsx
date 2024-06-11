@@ -10,7 +10,7 @@ import MenuOptionDetail from './MenuOptionDetail';
 import { useMenuUpByEmail } from '../../../utils/storeInfo';
 import SearchHeader from '../../../components/SearchHeader';
 import { uploadImageToCloudinary } from '../../../utils/uploader';
-import { QueryClient, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useMenu } from '../Hook/useMenu';
 import BackDrop from '../../../components/BackDrop';
 
@@ -122,20 +122,15 @@ export default function MenuUpdate() {
   };
 
   const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const fileName = file.name;
+    if (e.target.files.length > 0) {
       setIsFileUploading(true);
-      setInitialMenuPictureName(fileName);
-      uploadImageToCloudinary(file) // 클라우드니어리에 이미지 업로드
-        .then((url) => {
-          setMenuPictureUrl(url); // 업로드된 이미지 URL 저장
-        })
-        .then(() => setIsFileUploading(false)
-        )
-        .catch((error) => {
-          console.error('Failed to upload image to Cloudinary:', error);
-        });
+      setInitialMenuPictureName(e.target.files[0].name);
+      uploadImageToCloudinary(e.target.files[0]) // 클라우드니어리에 이미지 업로드
+        .then(url => setMenuPictureUrl(url))
+        .then(() => setIsFileUploading(false))
+      .catch((error) => console.error('Failed to upload image to Cloudinary:', error));
+    } else if (e.target.files.length <= 0) {
+      setIsFileUploading(false);
     }
   };
 
@@ -147,7 +142,7 @@ export default function MenuUpdate() {
         <Box>
           <SearchHeader />
           <Paper sx={{...Paperstyle}}>
-            <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
+            <Box style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
               <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
                 <Container component="main" maxWidth="xs">
                   <CssBaseline />
@@ -231,7 +226,7 @@ export default function MenuUpdate() {
                   <Footer sx={{ mt: 5 }} />
                 </Container>
               </Container>
-            </div>
+            </Box>
           </Paper>
         </Box>
       }

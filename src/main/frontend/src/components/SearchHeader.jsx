@@ -62,8 +62,8 @@ export default function AppNavbar() {
                     }
                     endAdornment={
                       <InputAdornment position="end">
-                        <Button variant="outline-success" className="nav_search-btn" type="submit" style={{ color: 'black', borderColor: 'black' }} >
-                          <FaSearch aria-hidden="true" style={{ color: 'black' }} />
+                        <Button variant="outline" className="nav_search-btn" type="submit" style={{ color: 'black', borderColor: 'black',}} >
+                          <FaSearch aria-hidden="true" style={{ color: 'black' , marginTop:-5}} />
                         </Button>
                       </InputAdornment>}
                     sx={{ mt: 1, mb: 1, width: '100%', maxWidth: 550, backgroundColor: 'white', cursor: 'pointer', borderRadius: '30px', padding: '1px 15px', fontSize: '1rem', textAlign: 'center' }} inputProps={{ style: { textAlign: 'center' } }} onClick={() => handleNavigate('Address')}
@@ -75,7 +75,7 @@ export default function AppNavbar() {
               <Stack direction="row" spacing={1} justifyContent="flex-end" alignItems="center" sx={{ width: '100%' }}>
                 {user ? (
                   <>
-                   <Cart allClose={handleClose} />
+                   {role !== '점주' && <Cart allClose={handleClose} />}
                     <DropUserInfo role={role} />
                     <Typography variant="body1" sx={{ color: 'white', fontWeight: 'bold' }}>
                       {user.displayName}

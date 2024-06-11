@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router";
-import { Avatar, Box, Button,Divider, Grid, Input, Stack,  Typography, Container, CssBaseline} from "@mui/material";
+import { Avatar, Box, Button, Grid, Input, Stack,  Typography, Container, CssBaseline} from "@mui/material";
 import { Link } from 'react-router-dom';
 import RoomIcon from '@mui/icons-material/Room';
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
@@ -8,16 +8,15 @@ import MailSharpIcon from '@mui/icons-material/MailSharp';
 import { findPostcode } from "../../../utils/AddressUtil";
 import { useAddressListByEmail } from "../../../utils/userInfo";
 import { extractDataFromFormData, splitAddressFromCurrentUserAddress } from "../../../utils/commonUitil";
-import { getCurrentUser } from "../../../utils/firebase";
 import axios from "axios";
 import AddressUpdate from "../AddressUpdate";
 import AddressDelete from "../AddressDelete";
-import SearchHeader from "../../../components/SearchHeader";
 import BackDrop from "../../../components/BackDrop";
+import { color } from "@cloudinary/url-gen/qualifiers/background";
 
 
 export default function Address() {
-    const { email } = getCurrentUser();
+    const email = localStorage.getItem('email')
     const currentAddress = localStorage.getItem('address');
     const { isLoading, error, address } = useAddressListByEmail(email);
     const [roadAddress, setRoadAddress] = useState('');
@@ -73,7 +72,7 @@ export default function Address() {
     }
 
     const handleCurrentChange = addressData => {
-      axios.post(`/dp/address/change`, {...addressData, ['email'] : email})
+      axios.post(`/dp/address/change`, {...addressData, email})
       .then(() => {
         setOutletAddress(addressData.address);
         localStorage.setItem('address', addressData.address)
@@ -116,7 +115,7 @@ export default function Address() {
         <Box sx={{  marginTop: 8, display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', textAlign: 'center', width: '100%' }}>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', color: 'black', fontFamily: 'Arial, sans-serif', display: 'flex', justifyContent: 'center' }}>
-              <img src={'/img/logo01.png'} style={{ width: '30%', position: 'relative', marginBottom: '20px'}}/>
+              <img src={'/img/logo01.png'} style={{ width: '30%', position: 'relative', marginBottom: '20px'}} alt='로고 이미지'/>
             </Link>
           </Typography>
           <Avatar sx={{ m: 1, bgcolor: '#f09032', alignSelf: 'center', marginLeft: '20px'}}>
@@ -139,7 +138,7 @@ export default function Address() {
                       sx={{width: 430}} 
                       placeholder="주소를 입력하세요..." 
                       required/>
-                      <Button sx={{border: 1, mx: 1}} onClick={handleFindPostcode}> 검색 </Button>
+                      <Button variant="outlined" sx={{mx: 1}} onClick={handleFindPostcode}> 검색 </Button>
                     </Stack>
                     <Stack direction={"row"}  sx={{my: 4, marginLeft: '-69px' }}>
                       <Input type="text" value={detailAddress} 
@@ -148,7 +147,7 @@ export default function Address() {
                     </Stack>
                   </Grid>
                   <Grid item sx={{ mb: 3, marginLeft: '-70px' }}>
-                      { !roadAddress && <Button disabled sx={{fontSize: '1.2rem', height: '3rem'}}>추가</Button> }
+                      { !roadAddress && <Button variant="contained" disabled sx={{fontSize: '1.2rem', height: '3rem'}}>추가</Button> }
                       { roadAddress && <Button sx={{border: 0, mx: 1, fontSize: '1.2rem', height: '3rem',
                         backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33'}}} 
                         type="submit" variant="contained" >주소 추가</Button> }
@@ -167,14 +166,14 @@ export default function Address() {
                       <Input value={data.address} sx={{width: 500}}/>  
                       <AddressUpdate addressData={data.address} addressId={data.addressId} 
                         email={email} currentAddress={currentAddress}/>
-                      <RoomIcon sx={{ml: 0}}/>
+                      <RoomIcon sx={{ml: 0, color:'#5775fa'}}/>
                       </>
                     : 
                       <>
                       <Input value={data.address} sx={{width: 400}}/>
                       <AddressUpdate addressData={data.address} addressId={data.addressId} email={email}/>
                       <AddressDelete addressData={data.address} addressId={data.addressId}/>
-                      <RoomOutlinedIcon onClick={() => handleCurrentChange(data)} sx={{cursor: "pointer"}}/>
+                      <RoomOutlinedIcon onClick={() => handleCurrentChange(data)} sx={{cursor: "pointer", ":hover":{ color:'#5775fa' }}} />
                       </>
                   }
                 </Stack>

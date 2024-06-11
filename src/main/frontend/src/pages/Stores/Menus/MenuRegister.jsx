@@ -68,8 +68,8 @@ export default function MenuRegister() {
       setIsFileUploading(true);
       setMenuPictureName(fileName);
       try {
-        const url = await uploadImageToCloudinary(file); // 클라우드니어리에 이미지 업로드
-        setMenuPictureUrl(url); // 업로드된 이미지 URL 저장
+        const url = await uploadImageToCloudinary(file); 
+        setMenuPictureUrl(url); 
         setIsFileUploading(false);
       } catch (error) {
         console.error('Failed to upload image to Cloudinary:', error);
@@ -81,7 +81,7 @@ export default function MenuRegister() {
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <SearchHeader />
-      <div style={{ backgroundImage: 'url(/img/frame.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
+      <div style={{ backgroundImage: 'url(/img/kaka.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
         <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
           <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
             <Container component="main" maxWidth="xs">

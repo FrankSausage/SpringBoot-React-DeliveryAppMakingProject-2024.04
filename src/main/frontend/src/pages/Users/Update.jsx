@@ -60,9 +60,9 @@ export default function Update() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const navigate = useNavigate();
-
+    
     const backgroundImage = role === '회원' ? 'url(/img/kitchen.jpg)' : 'url(/img/Okitchen.jpg)';
-
+    
     useEffect(() => {
       const loadDaumPostcodeScript = () => {
         const script = document.createElement('script');
@@ -116,6 +116,7 @@ export default function Update() {
               postUserUpdate.mutate(resFormData, {
                 onSuccess: () => {
                   setOutletAddress(resFormData.currentAddress);
+                  logout();
                   navigate('/Signin');
                 },
                 onError: e => {console.error('업데이트 실패: ', e)}
@@ -143,8 +144,7 @@ export default function Update() {
         + (updateExtraAddress ? updateExtraAddress : '') + ','
         + (updateDetailAddress ? updateDetailAddress : '')
       ));
-      data.append('addressCode', (role === '회원') ? addressCode.substring(0, 8) : '00000000');
-      data.append('userId', user.data.userId);
+      data.append('addressCode', (role === '회원') ? addressCode.toString().substring(0, 8) : '00000000');
       return await data;
     } catch (error) {
       return ('setFormData Error!: ' + error);
