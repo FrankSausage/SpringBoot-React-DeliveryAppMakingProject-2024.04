@@ -10,7 +10,7 @@ import MenuOptionDetail from './MenuOptionDetail';
 import { useMenuUpByEmail } from '../../../utils/storeInfo';
 import SearchHeader from '../../../components/SearchHeader';
 import { uploadImageToCloudinary } from '../../../utils/uploader';
-import { QueryClient, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useMenu } from '../Hook/useMenu';
 import BackDrop from '../../../components/BackDrop';
 

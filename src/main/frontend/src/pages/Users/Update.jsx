@@ -62,7 +62,7 @@ export default function Update() {
     const navigate = useNavigate();
     
     const backgroundImage = role === '회원' ? 'url(/img/kitchen.jpg)' : 'url(/img/Okitchen.jpg)';
-
+    
     useEffect(() => {
       const loadDaumPostcodeScript = () => {
         const script = document.createElement('script');
@@ -110,7 +110,6 @@ export default function Update() {
     if (passwordCheck.password === passwordCheck.secondPassword) {
       setFormData(data)
         .then(res => {
-          console.log(res)
           updateUser(res);
           extractDataFromFormData(res)
             .then(resFormData => {
@@ -140,14 +139,12 @@ export default function Update() {
 
   const setFormData = async (data) => {
     try {
-      
       data.append('email', email);
       data.append('currentAddress', ((updateRoadAddress ? updateRoadAddress : '') + ','
         + (updateExtraAddress ? updateExtraAddress : '') + ','
         + (updateDetailAddress ? updateDetailAddress : '')
       ));
       data.append('addressCode', (role === '회원') ? addressCode.toString().substring(0, 8) : '00000000');
-      data.append('userId', user.data.userId);
       return await data;
     } catch (error) {
       return ('setFormData Error!: ' + error);
