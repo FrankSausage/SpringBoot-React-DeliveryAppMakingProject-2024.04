@@ -6,12 +6,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import BackDrop from "../../../components/BackDrop";
 
 export default function MenuDetail(props) {
-  const { handleOpen, menuClose, storeId, storeName, menuId } = props
+  const { handleOpen, menuClose, storeId, storeName, menuId, deliveryTip, minDeliveryPrice } = props
   const { isLoading, error, menuDetailData } = useMenuDetailByMenuId(menuId)
   const { addItemToCart } = useCart();
   const [ items, setItems ] = useState([]);
-
-  
 
   const handleAddItem = data => {
     if (!items.find(e => e === data)) {
@@ -25,7 +23,7 @@ export default function MenuDetail(props) {
 
   const handleSubmit = () => {
     addItemToCart({menus: {menuId: menuId, menuName: menuDetailData.menus.name, menuPictureName: menuDetailData.menus.menuPictureName, menuContent: menuDetailData.menus.content,
-      menuPrice: menuDetailData.menus.price, storeId: storeId, storeName: storeName, menuOptions: items}})
+      menuPrice: menuDetailData.menus.price, storeId: storeId, storeName: storeName, menuOptions: items}}, deliveryTip, minDeliveryPrice)
     .then(res => {
       if(res===false){
         return;
@@ -34,6 +32,7 @@ export default function MenuDetail(props) {
       menuClose();
     });
   }
+
 
   return(
     <Dialog 
@@ -47,22 +46,23 @@ export default function MenuDetail(props) {
         {error && <Typography>정보를 받아오지 못했습니다!</Typography>}
         {!isLoading && menuDetailData && 
         <Fragment>
-          <Typography variant="h5" sx={{textAlign:'center', mt: 2, mb:-5}}> {menuDetailData.menus.name} </Typography>
           <CloseIcon sx={CloseBoxStyle} onClick={() => menuClose()} />
             <Grid container sx={{mt:9, width: 500 }}>
                 <Stack>
-                  <Card sx={{mb:1}}>
+                  <Card sx={{mb:1,width: 410, ml: 5.5}}>
                     <CardContent sx={{m:1}}>
                       <img src={menuDetailData.menus.menuPictureName} style={{width:'50%', height: 'auto', display: 'block', margin: '0 auto', borderRadius: '8px'}} />
-                      <Typography sx={{textAlign: 'center', mt:3 }} variant="h6">{menuDetailData.menus.content}</Typography>
+                      <Typography variant="h5" sx={{textAlign:'center', fontWeight:'bold', mt: 2, mb:-5}}> {menuDetailData.menus.name} </Typography>
+                      <Divider />
+                      <Typography sx={{textAlign: 'center', mt:10}} variant="subtitle1">{menuDetailData.menus.content.length > 15 ? `${menuDetailData.menus.content.slice(0, 15)}..` : menuDetailData.menus.content}</Typography>
                     </CardContent>
                   </Card>
-                  <Card sx={{my:4, width: 500}}>
+                  <Card sx={{my:3, width: 410, ml: 5.5}}>
                     <CardContent sx={{m:1}}>
                       <Typography sx={{textAlign:'center'}} variant="h6">가격</Typography>
                       <Divider sx={{borderWidth:2}}/>
                       <Stack direction={'row'}>
-                        <Grid container sx={{justifyContent:'start'}}>
+                        <Grid container sx={{justifyContent:'center'}}>
                           <Grid item xs={5}>
                             <FormControlLabel 
                             control={<Radio defaultChecked/>}
@@ -79,7 +79,7 @@ export default function MenuDetail(props) {
                     </CardContent>
                   </Card>
                   {menuDetailData.menus.options && menuDetailData.menus.options.length!==0 && 
-                    <Card sx={{mb:1}}>
+                    <Card sx={{mb:1, width: 410, ml: 5.5}}>
                       <CardContent sx={{m:1}}>
                         <Typography sx={{textAlign:'center'}} variant="h6">옵션</Typography>
                         <Divider />
@@ -118,13 +118,13 @@ export default function MenuDetail(props) {
 
 let BoxStyle = {
   height: 'auto', 
-  minHeight: '105vh', 
+  minHeight: '130vh', 
   border:2,
-  backgroundImage: 'url(/img/m01.jpg)', 
+  backgroundImage: 'url(/img/tasty.jpg)', 
   backgroundSize: 'cover', 
   backgroundPosition: 'center', 
   backgroundBlendMode: 'lighten', 
-  backgroundColor: 'rgba(255, 255, 255, 0.6)', 
+  backgroundColor: 'rgba(255, 255, 255, 0.2)', 
   display: 'flex', 
   flexDirection: 'column', 
   p:3,

@@ -1,10 +1,14 @@
-import { Box, Button, Grid, InputBase, Typography } from "@mui/material";
+import { Box, Button, Grid, InputBase, Paper, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Link, } from "react-router-dom";
 import SearchHeader from "../../components/SearchHeader";
 import SearchIcon from '@mui/icons-material/Search';
 import StoreList from '../Stores/StoreList';
 import { useQueryClient } from "@tanstack/react-query";
+import Slider from "react-slick";
+import { Stack } from "react-bootstrap";
+import Footer from "../../components/Footer";
+import { slideSettings } from "../../utils/commonUitil";
 
 export default function StoreSearch() {
 	const queryClient = useQueryClient();
@@ -18,22 +22,30 @@ export default function StoreSearch() {
 	}
 
 	return (
-		<Box sx={{ margin: -1 }}>
+		<Box>
 			<SearchHeader />
-			<Typography component={Link} to={'/Store'} style={{ textDecoration: 'none', color: 'inherit' }}>◀ 돌아가기 </Typography>
-			<div style={{
-				backgroundImage: 'url(/img/sl0.jpg)',
-				backgroundSize: 'cover',
-				backgroundPosition: 'center',
-				display: 'flex',
-				justifyContent: 'center',
-				padding: '23px 0',
-				backgroundBlendMode: 'lighten',
-				backgroundColor: 'rgba(255, 255, 255, 0.6)' // This makes the background image appear lighter
-			}}>
-				<Grid container justifyContent="center" alignItems="center" mt={2}>
-					<Grid item xs={6} md={4}>
-						{/* <Box sx={{ display: 'flex', alignItems: 'center', border: 1, borderColor: 'divider', borderRadius: 1 }}> */}
+			<Grid container spacing={2}>
+				<Grid item xs={12}>
+					<Stack sx={{ maxHeight: 300, borderRadius: 0, overflow: 'hidden' }}>
+						<Slider {...slideSettings}>
+							<Box component="img" sx={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/01.jpg" alt="01" />
+							<Box component="img" sx={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/02.jpg" alt="02" />
+							<Box component="img" sx={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/03.jpg" alt="03" />
+							<Box component="img" sx={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/04.jpg" alt="04" />
+							<Box component="img" sx={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/05.jpg" alt="05" />
+							<Box component="img" sx={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/06.jpg" alt="06" />
+							<Box component="img" sx={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/07.jpg" alt="07" />
+							<Box component="img" sx={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/08.jpg" alt="08" />
+							<Box component="img" sx={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 'inherit' }} src="img/c/09.jpg" alt="09" />
+						</Slider>
+					</Stack>
+				</Grid>
+			</Grid>
+			<Paper elevation={3} sx={{ minHeight: '100vh',maxHeight: 'auto', backgroundImage: 'url(/img/space.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.1)', p: 2 }}>
+			<Typography component={Link} to={'/Store'} style={{ textDecoration: 'none', color: 'white' }}> ◀ 뒤로가기 </Typography>
+			<Grid container justifyContent="center" alignItems="center" mt={2}>
+				<Grid item xs={6} md={4}>
+					{/* <Box sx={{ display: 'flex', alignItems: 'center', border: 1, borderColor: 'divider', borderRadius: 1 }}> */}
 						<Box sx={{ display: 'flex', justifyContent: 'center', border: 1, borderColor: 'divider', borderRadius: 3, p: 1, bgcolor: '#fff', boxShadow: 1 }}>
 							<Box sx={{ display: 'flex', alignItems: 'center', marginLeft: 5 }}>
 								<SearchIcon sx={{ m: 1 }} />
@@ -41,12 +53,13 @@ export default function StoreSearch() {
 								<Button onClick={handleSubmit}>검색</Button>
 							</Box>
 						</Box>
-					</Grid>
 				</Grid>
-			</div>
+			</Grid>
 			{searchText &&
 				<StoreList searchText={searchText} />
 			}
-		</Box>
+			</Paper>
+			<Footer/>
+		</Box >
 	);
 }

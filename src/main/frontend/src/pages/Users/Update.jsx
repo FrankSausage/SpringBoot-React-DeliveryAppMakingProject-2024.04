@@ -6,9 +6,9 @@ import Footer from '../../components/Footer';
 import axios from 'axios';
 import SearchHeader from '../../components/SearchHeader';
 import { findPostcode } from '../../utils/AddressUtil';
-import { extractDataFromFormData, formatPhoneNumber } from '../../utils/commonUitil';
+import { checkTextError, extractDataFromFormData, formatPhoneNumber } from '../../utils/commonUitil';
 import { getCurrentUser, logout, updateUser } from '../../utils/firebase';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useUser } from './Hook/useUser';
 import BackDrop from '../../components/BackDrop';
 
@@ -42,23 +42,27 @@ const theme = createTheme({
 });
 
 export default function Update() {
-    const { email, displayName } = getCurrentUser();
-    const { getUserByEmail: {isLoading, error, data: user} } = useUser();
+    const email = localStorage.getItem('email')
+    const { displayName } = getCurrentUser();
+    const { getUserByEmail: {isLoading, error, data: user}, postUserUpdate } = useUser(email);
     const [ phone, setPhoneNumber] = useState();
-    const [ passwordCheck, setPasswordCheck ] = useState('');
-    const [ isPasswordMatch, setIsPasswordMatch ] = useState(true);
+    const [passwordCheck, setPasswordCheck] = useState({ password: '', secondPassword: '' });
+    const [nameCheck, setNameCheck ] = useState('');
     const { roadAddress, extraAddress, detailAddress} = (localStorage.getItem("splitAddress") ? 
         JSON.parse(localStorage.getItem("splitAddress")) : ({roadAddress: '', extraAddress: '', detailAddress : ''}));
     const [ updateRoadAddress, setUpdateRoadAddress ] = useState(roadAddress ? roadAddress : '');
     const [ updateExtraAddress, setUpdateExtraAddress ] = useState(extraAddress ? extraAddress : '');
     const [ updateDetailAddress ,setUpdateDetailAddress ] = useState(detailAddress ? detailAddress : '');
+    const { setOutletAddress } = useOutletContext();
     const [ addressCode, setAddressCode ] = useState('');
-    const [open, setOpen] = React.useState(false);
+    const [ open, setOpen ] = useState(false);
     const role = localStorage.getItem('role');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const navigate = useNavigate();
+    
     const backgroundImage = role === '회원' ? 'url(/img/kitchen.jpg)' : 'url(/img/Okitchen.jpg)';
+    
     useEffect(() => {
       const loadDaumPostcodeScript = () => {
         const script = document.createElement('script');
@@ -86,6 +90,10 @@ export default function Update() {
     findPostcode(setUpdateRoadAddress, setUpdateExtraAddress, setAddressCode);
   };
 
+  const handlePasswordChange = e => {
+    setPasswordCheck({ ...passwordCheck, [e.target.name]: e.target.value });
+  }
+
   const handlePhoneNumberChange = (event) => {
     const formattedPhoneNumber = formatPhoneNumber(event.target.value);
     setPhoneNumber(formattedPhoneNumber);
@@ -94,27 +102,27 @@ export default function Update() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    if (data.get('password') !== passwordCheck) {
-      setIsPasswordMatch(false);
-      return;
-    } else {
-      setIsPasswordMatch(true);
 
-      if (setIsPasswordMatch) {
-        setFormData(data)
-          .then(res => {
-            updateUser(res);
-            extractDataFromFormData(res)
-              .then(resFormData => {
-                console.log(resFormData);
-                axios.post(`/dp/user/update`, resFormData);
+    if(checkTextError('password',passwordCheck.password) || checkTextError('name', nameCheck) || passwordCheck.password.length < 6) {
+      return;
+    } 
+
+    if (passwordCheck.password === passwordCheck.secondPassword) {
+      setFormData(data)
+        .then(res => {
+          updateUser(res);
+          extractDataFromFormData(res)
+            .then(resFormData => {
+              postUserUpdate.mutate(resFormData, {
+                onSuccess: () => {
+                  setOutletAddress(resFormData.currentAddress);
+                  logout();
+                  navigate('/Signin');
+                },
+                onError: e => {console.error('업데이트 실패: ', e)}
               })
-          })
-          .then(() => {
-            alert('회원 정보 수정이 완료되었습니다.');
-            navigate('/signin');
-          });
-      }
+            })
+        })
     }
   };
 
@@ -136,8 +144,7 @@ export default function Update() {
         + (updateExtraAddress ? updateExtraAddress : '') + ','
         + (updateDetailAddress ? updateDetailAddress : '')
       ));
-      data.append('addressCode', (role === '회원') ? addressCode.substring(0, 8) : '00000000');
-      data.append('userId', user.data.userId);
+      data.append('addressCode', (role === '회원') ? addressCode.toString().substring(0, 8) : '00000000');
       return await data;
     } catch (error) {
       return ('setFormData Error!: ' + error);
@@ -151,9 +158,8 @@ export default function Update() {
       {user && user.data &&
         <>
       <SearchHeader />
-      <Box sx={{ height: 'auto', minHeight: '100vh', backgroundImage: 'url(/img/kitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '28px 0',}}>
+      <Box sx={mainBoxStyle}>
           <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
-          {/* <Container component="main" maxWidth="xs"> */}
             <CssBaseline />
             <Box
             sx={{
@@ -163,16 +169,6 @@ export default function Update() {
               padding: '20px',
               borderRadius: '10px'
             }}>
-            {/* <Box
-              sx={{
-                marginTop: 8, display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                bgcolor: 'background.paper',
-                boxShadow: 1,
-                p: 4,
-                borderRadius: 2,
-              }}> */}
               <Avatar sx={{ m: 1, bgcolor: (role === '회원') ? 'quaternary.main' : (role === '점주') ? 'primary.main' : 'default' }}>
                 <RestorePageIcon />
               </Avatar>
@@ -182,17 +178,31 @@ export default function Update() {
               <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <TextField required fullWidth id="name" name="name" label="이름" defaultValue={displayName} />
+                    <TextField required fullWidth id="name" name="name" label="이름" onChange={e => setNameCheck(e.target.value)} 
+                      error={checkTextError('name', nameCheck)}
+                      helperText={checkTextError('name', nameCheck) && '이름은 한글, 영문자 외에는 입력하실 수 없습니다.'} 
+                      defaultValue={displayName} 
+                    />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField fullWidth label="이메일" defaultValue={email} autoComplete="current-email" disabled />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField required fullWidth name="password" label="비밀번호" type="password" id="password" autoComplete="current-password" />
+                    <TextField required fullWidth name="password" label="비밀번호" type="password" id="password" 
+                    onChange={e => handlePasswordChange(e)} 
+                    error={checkTextError('password', passwordCheck.password)}
+                    helperText={checkTextError('password', passwordCheck.password) && '비밀번호는 6자리 이상의 영문 또는 숫자만 입력해야 합니다.'}
+                    autoComplete="current-password" />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
-                      required fullWidth label="비밀번호 확인" type="password" onChange={e => { setPasswordCheck(e.target.value); }} error={!isPasswordMatch} helperText={!isPasswordMatch && "비밀번호가 일치하지 않습니다"} autoComplete="second-current-password" />
+                      required fullWidth name="secondPassword" label="비밀번호 확인" type="password" id="secondPassword" 
+                      onChange={e => handlePasswordChange(e)} 
+                      error={passwordCheck.password && passwordCheck.secondPassword && passwordCheck.password!==passwordCheck.secondPassword} 
+                      helperText={passwordCheck.password && passwordCheck.secondPassword && passwordCheck.password!==passwordCheck.secondPassword 
+                                    && "비밀번호가 일치하지 않습니다"} 
+                      autoComplete="second-current-password" 
+                    />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField required fullWidth id="phone" name="phone" label="휴대전화" defaultValue={user.data.phone} value={phone} onChange={handlePhoneNumberChange} inputProps={{ maxLength: 13, inputMode: 'numeric'}}/>
@@ -227,7 +237,6 @@ export default function Update() {
             <Footer sx={{ mt: 3 }} />
           </Container>
           </Box>
-          {/* </div> */}
           <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description" >
             <Box sx={modalStyle}>
               <Typography id="modal-modal-title" variant="h5" component="h2" sx={{ textAlign: 'center' }}>
@@ -252,4 +261,28 @@ export default function Update() {
   );
 }
 
-const modalStyle = { position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 24, p: 4 };
+const modalStyle = { 
+  position: 'absolute', 
+  top: '50%', 
+  left: '50%', 
+  transform: 'translate(-50%, -50%)', 
+  width: 400, 
+  bgcolor: 'background.paper', 
+  borderRadius: 2, 
+  boxShadow: 24, 
+  p: 4 
+};
+
+const mainBoxStyle = {
+  height: 'auto', 
+  minHeight: '100vh', 
+  backgroundImage: 'url(/img/kitchen.jpg)', 
+  backgroundSize: 'cover', 
+  backgroundPosition: 'center',
+  backgroundBlendMode: 'lighten', 
+  backgroundColor: 'rgba(255, 255, 255, 0.6)', 
+  display: 'flex', 
+  flexDirection: 'column', 
+  justifyContent: 'space-between', 
+  padding: '28px 0',
+};

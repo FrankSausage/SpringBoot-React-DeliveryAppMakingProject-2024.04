@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Grid, InputBase, Button, Typography, Stack, Container, Paper, Rating } from '@mui/material/';
-import SearchIcon from '@mui/icons-material/Search';
+import React, { useState } from 'react';
+import { Box, Grid, Button, Typography, Stack, Paper, Rating } from '@mui/material/';
 import { Link, useParams } from 'react-router-dom';
 import SearchHeader from '../../../components/SearchHeader';
 import { getCurrentUser } from '../../../utils/firebase';
@@ -10,7 +9,6 @@ import Footer from '../../../components/Footer';
 import BackDrop from '../../../components/BackDrop';
 
 export default function OwnerMain() {
-  const email = localStorage.getItem('email');
   const role = localStorage.getItem('role');
   const { storeId } = useParams();
   const [isOpened, setIsOpened] = useState([]);
@@ -41,27 +39,14 @@ export default function OwnerMain() {
   return (
     <Box sx={{ margin: -1 }}>
       <SearchHeader />
-      {/* <Grid container justifyContent="center" alignItems="center" mt={2}>
-        <Grid item xs={10} md={6}>
-          <Box sx={{ display: 'flex', alignItems: 'center', border: 1, borderColor: 'divider', borderRadius: 10, p: 1, boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' }}>
-            <SearchIcon sx={{ m: 1, color: '#888' }} />
-            <InputBase
-              placeholder="검색"
-              inputProps={{ 'aria-label': 'search' }}
-              fullWidth
-              sx={{ ml: 1 }}
-            />
-          </Box>
-        </Grid>
-      </Grid> */}
-      <Paper elevation={3} sx={{ height: '100vh', backgroundImage: 'url(/img/Okitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
+      <Paper elevation={3} sx={{ minHeight: 'auto',maxHeight: 'auto', backgroundImage: 'url(/img/011.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
         {isLoading && <BackDrop isLoading={isLoading} />}
         {error && <Typography>에러 발생!</Typography>}
         {!isLoading && storeData?.storeList?.length === 0 && (
           <Typography variant='h4' sx={{ textAlign: 'center', p: 5 }}>가게가 아직 없어요!</Typography>
         )}
         {!isLoading && storeData && (
-          storeData.storeList.map((data, idx) => (
+          storeData.storeList.map((data) => (
             <Grid container key={data.storeId} justifyContent="center" alignItems="center" mt={2}>
               <Grid item xs={12} sm={10} md={8}>
                 <Box sx={{ border: '1px solid rgb(217, 217, 217)', borderRadius: '10px', p: 2, mb: 2, position: 'relative', backgroundColor: 'white', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', transition: 'transform 0.3s ease-in-out', ':hover': { transform: 'scale(1.02)', boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.2)' } }}>
@@ -79,13 +64,6 @@ export default function OwnerMain() {
                     </Link>
                     {role === '점주' &&
                       <Stack spacing={2} direction="column" sx={{ ml: 2 }}>
-                        {/* <Button
-                        variant="contained"
-                        sx={{ backgroundColor: isOpened[idx] ? 'green' : 'red', color: 'white', ':hover': { backgroundColor: isOpened[idx] ? 'darkgreen' : 'darkred' } }}
-                        onClick={() => handleCheckboxChange(idx)}
-                        >
-                        {isOpened[idx] ? '가게 오픈' : '가게 휴업'}
-                      </Button> */}
                         <Link to={`/StoreUpdate/${data.storeId}`} style={{ textDecoration: 'none' }}>
                           <Button variant="outlined">가게 수정하기</Button>
                         </Link>

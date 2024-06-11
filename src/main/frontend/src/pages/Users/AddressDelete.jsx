@@ -26,15 +26,9 @@ export default function AddressDelete({addressId, addressData}) {
         <Button sx={{border: 1, mx: 1}} onClick={handleOpen}>
           삭제
         </Button>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
+        <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description"  >
           <DialogTitle id="alert-dialog-title">
             <Typography variant="h5" sx={{textAlign: 'center'}}>주소 삭제</Typography>
-            
           </DialogTitle>
           <Divider />
           <DialogContent>

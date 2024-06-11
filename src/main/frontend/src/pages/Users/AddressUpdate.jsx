@@ -84,7 +84,7 @@ export default function AddressUpdate({addressData, email, currentAddress, addre
         data.append('email', email);
         data.append('address', ((roadAddress ? roadAddress : '') + ',' 
           + (extraAddress ? extraAddress : '') + ',' + (detailAddress ? detailAddress : '')));
-        data.append('addressCode', addressCode.substring(0,8));
+        data.append('addressCode', addressCode.toString().substring(0,8));
         return await data;
       } catch(error) {
         return ('setFormData Error!: ' + error);

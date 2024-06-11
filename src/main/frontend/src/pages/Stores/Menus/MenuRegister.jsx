@@ -53,7 +53,6 @@ export default function MenuRegister() {
       data.append('name', name);
       data.append('price', price);
       data.append('menuPictureName', menuPictureUrl ? menuPictureUrl : menuPictureName);
-      // data.append('menuPictureUrl', menuPictureUrl);
       return data;
     } catch (error) {
       console.error('setFormData Error!: ', error);
@@ -61,19 +60,16 @@ export default function MenuRegister() {
     }
   };
 
-  const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const fileName = file.name;
+  const handleFileUpload = e => {
+    if (e.target.files.length > 0) {
       setIsFileUploading(true);
-      setMenuPictureName(fileName);
-      try {
-        const url = await uploadImageToCloudinary(file); // 클라우드니어리에 이미지 업로드
-        setMenuPictureUrl(url); // 업로드된 이미지 URL 저장
-        setIsFileUploading(false);
-      } catch (error) {
-        console.error('Failed to upload image to Cloudinary:', error);
-      }
+      setMenuPictureName(e.target.files[0].name);
+        uploadImageToCloudinary(e.target.files[0])
+          .then(url => setMenuPictureUrl(url))
+          .then(() => setIsFileUploading(false))
+        .catch((error) => console.error('Failed to upload image to Cloudinary:', error));
+    } else if (e.target.files.length <= 0) {
+      setIsFileUploading(false);
     }
   };
 
@@ -81,7 +77,7 @@ export default function MenuRegister() {
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <SearchHeader />
-      <div style={{ backgroundImage: 'url(/img/Okitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
+      <div style={{ backgroundImage: 'url(/img/frame.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
         <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
           <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
             <Container component="main" maxWidth="xs">
@@ -89,12 +85,7 @@ export default function MenuRegister() {
                 <Avatar sx={{ m: 1, bgcolor: 'secondary', width: '40px', height: '40px' }}>
                   <LockOutlinedIcon />
                 </Avatar>
-                <Typography variant="h6" component="div" sx={{
-                  flexGrow: 1,
-                  marginBottom: '20px',
-                  fontWeight: 'bold',
-                  color: '#333'
-                }}>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1, marginBottom: '20px', fontWeight: 'bold', color: '#333'}}>
                   <Link to={`/StoreDetail/${storeId}`} state={{ storeId: storeId }} style={{ textDecoration: 'none', color: '#333', fontSize: '1.2rem' }}>
                     가게 이동
                   </Link>

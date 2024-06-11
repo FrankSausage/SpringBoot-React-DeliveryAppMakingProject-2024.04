@@ -46,7 +46,7 @@ export default function StoreList({ category, searchText, initialSort }) {
                     {!isLoading && sortedStoreList && (
                         sortedStoreList.map((data) => (
                             <Box key={data.storeId} component={Link} to={`/StoreDetail/${data.storeId}`} state={{ storeName: data.name, isDibed: data.isDibed }} sx={{ ...linkStyle, width: { xs: '90%', sm: '47%' }, marginX: 'auto' }}>
-                                <Paper sx={{ ...paperStyle, position: 'relative', display: 'flex', alignItems: 'center' }}>
+                                <Paper sx={{ ...paperStyle, position: 'relative', display: 'flex', alignItems: 'center',  boxShadow: 3, transition: 'transform 0.3s, box-shadow 0.3s', '&:hover': { transform: 'scale(1.05)', boxShadow: 6 }  }}>
                                     <img src={data.storePictureName} style={{ width: '20%', height: '100%', borderRadius: '8px' }} />
                                     <Box sx={{ flex: 1, paddingLeft: '20px' }}>
                                         <ul style={{ padding: 0, margin: 0, textAlign: 'left' }}>

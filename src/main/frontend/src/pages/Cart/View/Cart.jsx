@@ -26,6 +26,8 @@ export default function Cart({ allClose }) {
   useEffect(() =>{
     if(cartItems.length!==0) {
       getPrice().then(res=> setTotalPrice(res))
+    } else if (cartItems.length===0) {
+      setTotalPrice(0);
     }
   }, [open])
 
@@ -47,6 +49,10 @@ export default function Cart({ allClose }) {
   }
 
   const handleOrder = () => {
+    if (totalPrice < cartItems[0].minDeliveryPrice) {
+      alert('주문 금액이 모자릅니다.')
+      return;
+    }
     navigate('/Order', {state: {totalPrice: totalPrice}})
   }
 
@@ -62,7 +68,7 @@ export default function Cart({ allClose }) {
   return (
     <React.Fragment>
       <React.Fragment>
-        {localStorage.getItem('cartCount')>0 ?
+        {localStorage.getItem('cartCount') > 0 ?
         <StyledBadge
           overlap="circular"
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
@@ -126,6 +132,8 @@ export default function Cart({ allClose }) {
               ))
             }
           </DialogContentText>
+         {localStorage.getItem('cartItems') && <Typography sx={{textAlign:'center', mt:3,  color: '#222831', fontSize: '1rem'}}>최소 주문 가격: {cartItems[0].minDeliveryPrice && cartItems[0].minDeliveryPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography> }
+         {localStorage.getItem('cartItems') && <Typography sx={{textAlign:'center', mt:3,  color: '#222831', fontSize: '1rem'}}>배달 팁: {cartItems[0].deliveryTip && cartItems[0].deliveryTip.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</Typography> }
           <Typography sx={{textAlign:'center', mt:3,  color: '#222831', fontSize: '1rem'}}>최종 가격: {totalPrice ? totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}원</Typography>
         </DialogContent>
         <DialogActions sx={{justifyContent:'space-around', mb:1, borderTop: 1}}>
@@ -138,14 +146,6 @@ export default function Cart({ allClose }) {
     </React.Fragment>
   );
 }
-// const StyledBadge = styled(Badge)(({ theme }) => ({
-//   '& .MuiBadge-badge': {
-//     right: -3,
-//     top: 13,
-//     border: `2px solid ${theme.palette.background.paper}`,
-//     padding: '0 4px',
-//   },
-// }));
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {

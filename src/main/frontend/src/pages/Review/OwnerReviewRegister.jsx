@@ -1,9 +1,11 @@
 import { Box, Button, Stack, TextField, } from "@mui/material";
 import React, { Fragment, useEffect, useState } from "react";
 import { useStoreReviewList } from "./Hook/useReview";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function OwnerReviewRegister({ isPortalOpen, reviewId }) {
   const [show, setShow] = useState(false);
+  const queryClient = useQueryClient();
   const [ownerReviewText, setOwnerReviewText] = useState('');
   const { postOwnerReview } = useStoreReviewList();
   useEffect(() =>{
@@ -37,7 +39,10 @@ export default function OwnerReviewRegister({ isPortalOpen, reviewId }) {
     content: ownerReviewText,
   },
   {
-    onSuccess: () => {alert('댓글 작성에 성공 하였습니다.');},
+    onSuccess: () => {
+      alert('댓글 작성에 성공 하였습니다.');
+      queryClient.invalidateQueries(['reviewList']);
+    },
     onError: e => {alert('댓글 작성에 실패 하였습니다.'); console.error(e);}
   })
   }

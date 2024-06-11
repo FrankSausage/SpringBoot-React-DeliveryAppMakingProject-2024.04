@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { Button, Card, Divider, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import Modal from 'react-modal';
 import { useOrder } from "../Hook/useOrder";
+import TossChackOut from "../Toss/TossCheckOut";
 
 Modal.setAppElement('#root');
 
@@ -14,10 +15,23 @@ export default function Order() {
 	const { userPoint } = useOutletContext();
 	const { totalPrice } = location.state;
 	const { postOrderRegist } = useOrder();
+	const [ open, setOpen ] = useState('');
 	const [request, setRequest] = useState('');
 	const [paymentMethod, setPaymentMethod] = useState('');
 	const [point, setPoint] = useState(0);
 	const cartItems = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [];
+
+	const handleOpen = () => {
+		if (!open) {
+			setOpen(true);
+		}
+	}
+
+	const handleClose = () => {
+		if (open) {
+			setOpen(false);
+		}
+	}
 
 	const handleSubmit = () => {
 		if (!paymentMethod) {
@@ -40,15 +54,9 @@ export default function Order() {
 					address: address,
 					menus: cartItems
 				});
-
 				sessionStorage.setItem('tossTemp', tossTemp);
-				return navigate('/CheckOut', {state: {
-					storeId: cartItems[0].storeId,
-					userEmail: email,
-					point: point,
-					totalPrice: (point > 0) ? ((totalPrice - point) <= 0 ? 0 : (totalPrice - point)) : totalPrice,
-					tempData: tossTemp
-				}});
+				handleOpen();
+				return;
 		}
 
 		postOrderRegist.mutate({
@@ -118,7 +126,7 @@ export default function Order() {
 			</Stack>
 			<Grid container sx={{ my: 3 }}>
 				<Grid item xs />
-				<Grid item xs={3}>
+				<Grid item xs={2.7}>
 					<FormControl fullWidth>
 						<InputLabel id='paymentMethod'>결제 방식</InputLabel>
 						<Select
@@ -126,6 +134,7 @@ export default function Order() {
 							id='paymentMethod-select'
 							value={paymentMethod}
 							label='결제 방식 선택'
+							style={{ textAlign: 'center' }}
 							onChange={e => setPaymentMethod(e.target.value)}
 						>
 							<MenuItem value={'현금결제'}>만나서 현금 결제</MenuItem>
@@ -147,6 +156,7 @@ export default function Order() {
 				<Button sx={{ border: 1, width: '30%' }} color="error" onClick={() => navigate(-1)}>돌아가기</Button>
 				<Button sx={{ border: 1, width: '30%' }} onClick={handleSubmit}>주문하기</Button>
 			</Stack>
+			<TossChackOut handleOpen={open} tossClose={handleClose} storeId={cartItems[0].storeId} userEmail={email} point={point} totalPrice={(point > 0) ? ((totalPrice - point) <= 0 ? 0 : (totalPrice - point)) : totalPrice} />
 		</Card>
 	);
 }
