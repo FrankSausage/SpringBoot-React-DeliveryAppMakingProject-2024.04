@@ -68,9 +68,8 @@ public class UserServiceImpl implements UserService {
         users.setCurrentAddress(user.getCurrentAddress());
         users.setAddressCode(user.getAddressCode());
         Long userId = usersRepository.save(users).getUserId();
-        Address address = addressRepository.findAddressByUserId(userId).get();
-        address.setAddress(users.getCurrentAddress());
-        address.setAddressCode(users.getAddressCode());
+
+        Address address = new Address(userId, users.getCurrentAddress(), "일반");
         addressRepository.save(address);
         return Response.toResponseEntity(USER_UPDATE_SUCCESS);
     }
