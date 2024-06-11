@@ -120,7 +120,7 @@ const CardStyle = {
 
 const paperStyle = {
   minHeight: '100vh',maxHeight: 'auto',
-  backgroundImage: 'url(/img/sl0.jpg)',
+  backgroundImage: 'url(/img/order.jpg)',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundBlendMode: 'lighten',

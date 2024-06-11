@@ -65,12 +65,14 @@ export default function ReviewRegister({ orderId, status, email }) {
   }
 
   const handleFileUpload = (e) => {
-    if(e.target.files) {
+    if(e.target.files.length > 0) {
       setIsImageUploading(true);
       uploadImageToCloudinary(e.target.files[0])
         .then(url => setReviewImage(url))
         .then(() => setIsImageUploading(false))
-        .catch(console.error);
+      .catch((error) => console.error('Failed to upload image to Cloudinary:', error));
+    } else if (e.target.files.length <= 0) {
+      setIsImageUploading(false);
     }
   }
 
