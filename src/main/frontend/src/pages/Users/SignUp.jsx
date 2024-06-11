@@ -7,7 +7,6 @@ import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { findPostcode } from '../../utils/AddressUtil';
 import { register } from '../../utils/firebase';
 import { checkTextError, extractDataFromFormData, formatPhoneNumber } from '../../utils/commonUitil';
-import axios from 'axios';
 import { useUser } from './Hook/useUser';
 
 const defaultTheme = createTheme();
@@ -97,7 +96,7 @@ export default function SignUp() {
       data.append('currentAddress', ((roadAddress ? roadAddress : '') + ',' + (extraAddress ? extraAddress : '')
         + ',' + (detailAddress ? detailAddress : '')));
       data.append('role', role);
-      data.append('addressCode', role === '회원' ? addressCode.substring(0, 8) : '00000000');
+      data.append('addressCode', role === '회원' ? addressCode.toString().substring(0, 8) : '00000000');
       return await data;
     }
     catch (error) {
@@ -113,7 +112,7 @@ export default function SignUp() {
           <Box sx={{ marginTop: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', borderRadius: '10px'  }}>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               <Link to="/" style={{ textDecoration: 'none', color: 'black', fontFamily: 'Arial, sans-serif', display: 'flex', justifyContent: 'center' }}>
-                <img src={'/img/logo01.png'} style={{ width: '50%', height: '50%', position: 'relative', top: 5, marginBottom: '20px' }} />
+                <img src={'/img/logo01.png'} style={{ width: '50%', height: '50%', position: 'relative', top: 5, marginBottom: '20px' }} alt='로고 이미지' />
               </Link>
             </Typography>
             <Avatar sx={{ m: 1, bgcolor: '#ffbe33', marginBottom: '10px' }}>

@@ -65,11 +65,11 @@ export default function Dibs(props) {
 
 const paperStyle = {
   height: '90vh',
-  backgroundImage: 'url(/img/sl0.jpg)',
+  backgroundImage: 'url(/img/differen.jpg)',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundBlendMode: 'lighten',
-  backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  backgroundColor: 'rgba(255, 255, 255, 0.6)',
   p: 3,
   overflowY: 'auto'
 };

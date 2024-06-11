@@ -54,8 +54,7 @@ export default function StoreDetail() {
   const { storeId } = useParams();
   const { isLoading, storeDetail } = useStoreDeatilByEmail(email, storeId);
   const { postDibStore } = useDibs();
-  const [value, setValue] = useState(1);
-  const [popularity, setPopularity] = useState('');
+  const [value, setValue] = useState(0);
   const navigate = useNavigate();
 
   const handleChange = (e, newValue) => {
@@ -87,34 +86,22 @@ export default function StoreDetail() {
   return (
     <Box sx={{ margin: 0 }}>
       <SearchHeader />
+
       {isLoading && <BackDrop isLoading={isLoading} />}
       {!isLoading && storeDetail &&
         <Fragment>
-          <Box sx={{ borderBottom: 1, borderColor: 'black', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
-            <Grid container alignItems="center">
-              <Grid item xs={3}>
-                <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-                  <Button variant="contained" onClick={() => navigate(-1)} sx={{ mb: 2, backgroundColor: '#3f51b5', color: '#ffffff' }}>
-                    ◀ 뒤로가기
-                  </Button>
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <Tabs
-                  value={value}
-                  onChange={handleChange}
-                  aria-label="basic tabs example"
-                  centered
-                >
-                  <Tab label="메뉴" {...a11yProps(1)} sx={{ marginLeft: 2, marginRight: 2 }} />
-                  <Tab label="가게·원산지 정보" {...a11yProps(2)} autoFocus sx={{ marginLeft: 2, marginRight: 2 }} />
-                  <Tab label="리뷰" {...a11yProps(3)} autoFocus sx={{ marginLeft: 2, marginRight: 2 }} />
-                </Tabs>
-              </Grid>
-              <Grid item xs={3} />
-            </Grid>
+          <Box sx={{ borderBottom: 1, borderColor: 'black', display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.8)'}}>
+            <Button variant="contained" onClick={() => navigate(-1)} sx={{ backgroundColor: 'transparent', color: 'black', boxShadow: 'none', '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.1)' }, alignSelf: 'flex-start', mr: 2}} >
+              ◀ 뒤로가기
+            </Button>
+
+            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', mr: 15  }} centered >
+              <Tab label="메뉴" {...a11yProps(0)} sx={{ marginLeft: 2, marginRight: 2 }} />
+              <Tab label="가게·원산지 정보" {...a11yProps(1)} autoFocus sx={{ marginLeft: 2, marginRight: 2 }} />
+              <Tab label="리뷰" {...a11yProps(2)} autoFocus sx={{ marginLeft: 2, marginRight: 2 }} />
+            </Tabs>
           </Box>
-          <Paper elevation={3} sx={{ minHeight: '100vh', maxHeight: 'auto', backgroundImage: 'url(/img/cooking.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.2)', p: 2, overflowY: 'auto' }}>
+          <Paper elevation={3} sx={{ minHeight: '100vh', maxHeight: 'auto', backgroundImage: 'url(/img/cooking.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
             <Grid container>
               <Grid item xs={2} />
               <Grid item xs>
@@ -132,13 +119,13 @@ export default function StoreDetail() {
               </Grid>
               <Grid item xs={2} />
             </Grid>
-            <CustomTabPanel value={value} index={0}> 
-              <StoreMenuList storeName={storeDetail.name} />
+            <CustomTabPanel value={value} index={0}>
+              <StoreMenuList storeName={storeDetail.name} deliveryTip={storeDetail.deliveryTip} minDeliveryPrice={storeDetail.minDeliveryPrice} />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
               <StoreInfo storeDetail={storeDetail} />
             </CustomTabPanel>
-            <CustomTabPanel value={value} index={2}> 
+            <CustomTabPanel value={value} index={2}>
               <StoreReviews storeId={storeId} />
             </CustomTabPanel>
             <Footer />
