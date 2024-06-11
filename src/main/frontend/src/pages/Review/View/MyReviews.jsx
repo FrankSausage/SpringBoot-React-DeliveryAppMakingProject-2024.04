@@ -18,13 +18,7 @@ export default function MyReviews(props) {
   }
 
   return(
-    <Dialog
-      open={handleOpen}
-      onClose={reviewClose}
-      maxWidth="md"
-      fullWidth
-      sx={{ '& .MuiDialog-paper': { borderRadius: 2, ...paperStyle } }}
-    >
+    <Dialog open={handleOpen} onClose={reviewClose} maxWidth="md" fullWidth sx={{ '& .MuiDialog-paper': { borderRadius: 2, ...paperStyle } }}>
       <Box sx={{ p: 3 }}>
         {isLoading && <BackDrop isLoading={isLoading} />}
         {!isLoading && reviewData && reviewData.data.reviewList.length === 0 &&
@@ -81,7 +75,7 @@ let CloseBoxStyle = {
 
 const paperStyle = {
   height: '90vh',
-  backgroundImage: 'url(/img/s01.jpg)',
+  backgroundImage: 'url(/img/flat.jpg)',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundBlendMode: 'lighten',

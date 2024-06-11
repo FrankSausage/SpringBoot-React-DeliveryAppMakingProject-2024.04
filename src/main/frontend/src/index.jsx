@@ -21,6 +21,7 @@ import StoreSearch from './pages/Stores/StoreSearch';
 // Reviews
 import MyReviews from './pages/Review/View/MyReviews';
 import StoreReviews from './pages/Review/View/StoreReviews';
+import StoreReviews1 from './pages/Review/View/StoreReviews1';
 // Menus
 import MenuRegister from './pages/Stores/Menus/MenuRegister';
 import MenuUpdate from './pages/Stores/Menus/MenuUpdate';
@@ -52,6 +53,7 @@ const router = createBrowserRouter([
       { path: 'StoreDetail/:storeId', element: <ProtectedRoute><StoreDetail /></ProtectedRoute>},
       { path: 'MyReviews', element: <ProtectedRoute><MyReviews /></ProtectedRoute>},
       { path: 'StoreReviews', element: <ProtectedRoute><StoreReviews /></ProtectedRoute>},
+      { path: 'StoreReviews1', element: <ProtectedRoute><StoreReviews1 /></ProtectedRoute>},
       { path: 'MenuRegister/:storeId', element: <ProtectedRoute><MenuRegister /></ProtectedRoute>},
       { path: 'MenuUpdate', element: <ProtectedRoute><MenuUpdate /></ProtectedRoute>},
       { path: 'UserMain', element: <UserMain />,},

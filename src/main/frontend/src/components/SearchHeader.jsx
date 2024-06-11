@@ -75,7 +75,7 @@ export default function AppNavbar() {
               <Stack direction="row" spacing={1} justifyContent="flex-end" alignItems="center" sx={{ width: '100%' }}>
                 {user ? (
                   <>
-                   <Cart allClose={handleClose} />
+                   {role !== '점주' && <Cart allClose={handleClose} />}
                     <DropUserInfo role={role} />
                     <Typography variant="body1" sx={{ color: 'white', fontWeight: 'bold' }}>
                       {user.displayName}
