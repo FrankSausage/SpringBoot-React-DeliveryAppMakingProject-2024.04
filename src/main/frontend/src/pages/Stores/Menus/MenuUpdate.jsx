@@ -151,7 +151,7 @@ export default function MenuUpdate() {
                       <LockOutlinedIcon />
                     </Avatar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                      <Link to={`/StoreDetail/${storeId}`} style={{ textDecoration: 'none', color: 'black' }}>메뉴 리스트</Link>
+                      {/* <Link to={`/StoreDetail/${storeId}`} style={{ textDecoration: 'none', color: 'black' }}>메뉴 리스트</Link> */}
                     </Typography>
                     <Typography component="h1" variant="h5">
                       음식 정보 수정

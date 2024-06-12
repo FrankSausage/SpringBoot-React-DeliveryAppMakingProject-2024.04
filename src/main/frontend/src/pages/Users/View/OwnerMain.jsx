@@ -58,7 +58,7 @@ export default function OwnerMain() {
                           <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{data.name}</Typography>
                           <Typography variant="body2" sx={{ fontWeight: 'bold' }}><Rating name="read-only" value={data.rating} readOnly /></Typography>
                           <Typography variant="body2" color="textSecondary">리뷰: {data.reviewCount}</Typography>
-                          <Typography variant="body2" color="textSecondary">조회수: {data.dibsCount}</Typography>
+                          <Typography variant="body2" color="textSecondary">찜수: {data.dibsCount}</Typography>
                         </Box>
                       </Box>
                     </Link>

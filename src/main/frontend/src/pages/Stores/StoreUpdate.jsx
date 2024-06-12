@@ -257,9 +257,9 @@ export default function StoreUpdate() {
       {store && store.addressCodes &&
         <>
           <SearchHeader />
-          <Paper style={{ backgroundImage: 'url(/img/Okitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
+          <Paper style={{ backgroundImage: 'url(/img/kaka.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
             <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
-              <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
+              <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px'}}>
                 <Container component="main" maxWidth="xs">
                   <CssBaseline />
                   <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }} >
@@ -267,7 +267,7 @@ export default function StoreUpdate() {
                       <LockOutlinedIcon />
                     </Avatar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                      <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>
+                      {/* <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link> */}
                     </Typography>
                     <Typography component="h1" variant="h5">
                       가게 정보 수정
