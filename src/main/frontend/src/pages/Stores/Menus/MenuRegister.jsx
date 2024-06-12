@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useStore } from '../Hook/useStore';
 import Footer from '../../../components/Footer';
 import { extractDataFromFormData } from '../../../utils/commonUitil';
-import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container } from '@mui/material';
+import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container, Paper } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -68,8 +68,8 @@ export default function MenuRegister() {
       setIsFileUploading(true);
       setMenuPictureName(fileName);
       try {
-        const url = await uploadImageToCloudinary(file); 
-        setMenuPictureUrl(url); 
+        const url = await uploadImageToCloudinary(file);
+        setMenuPictureUrl(url);
         setIsFileUploading(false);
       } catch (error) {
         console.error('Failed to upload image to Cloudinary:', error);
@@ -79,17 +79,17 @@ export default function MenuRegister() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <CssBaseline />
       <SearchHeader />
-      <div style={{ backgroundImage: 'url(/img/kaka.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
+      <Paper sx={{ ...Paperstyle}}>
         <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
-          <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
-            <Container component="main" maxWidth="xs">
-              <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#ffffff', padding: '10px 10px', borderRadius: '10px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
+          <Container component="main" maxWidth="xs" style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px' }}>
+            <Container component="main" maxWidth="xs" >
+              <CssBaseline />
+              <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center',  padding: '10px 10px' }}>
                 <Avatar sx={{ m: 1, bgcolor: 'secondary', width: '40px', height: '40px' }}>
                   <LockOutlinedIcon />
                 </Avatar>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1, marginBottom: '20px', fontWeight: 'bold', color: '#333'}}>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1, marginBottom: '20px', fontWeight: 'bold', color: '#333' }}>
                   <Link to={`/StoreDetail/${storeId}`} state={{ storeId: storeId }} style={{ textDecoration: 'none', color: '#333', fontSize: '1.2rem' }}>
                     가게 이동
                   </Link>
@@ -133,7 +133,7 @@ export default function MenuRegister() {
                       <Typography variant="h6" gutterBottom>
                         메뉴 사진 업로드
                       </Typography>
-                      {menuPictureUrl && <img src={menuPictureUrl} width={100} height={100} style={{margin: 30}}/>}
+                      {menuPictureUrl && <img src={menuPictureUrl} width={100} height={100} style={{ margin: 30 }} />}
                       <input accept=".png, .jpeg, .jpg" id="upload-photo" type="file" style={{ display: 'none' }} onChange={handleFileUpload} multiple />
                       <TextField autoComplete="given-name" name="menuPictureName" value={menuPictureName} fullWidth id="menuPictureName" label="메뉴 사진" onClick={() => document.getElementById('upload-photo').click()} InputProps={{ readOnly: true }} sx={{ mb: 2 }} />
                       {isFileUploading ?
@@ -157,7 +157,7 @@ export default function MenuRegister() {
                       음식 등록 하기
                     </Button>
                     :
-                    <Button type="submit" fullWidth  variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
+                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1.1rem' }}>
                       음식 등록 하기
                     </Button>
                   }
@@ -167,7 +167,18 @@ export default function MenuRegister() {
             </Container>
           </Container>
         </div>
-      </div>
+      </Paper>
     </ThemeProvider>
   );
 }
+
+const Paperstyle = {
+  backgroundImage: 'url(/img/kaka.jpg)',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  display: 'flex',
+  justifyContent: 'center',
+  padding: '23px 0',
+  backgroundBlendMode: 'lighten',
+  backgroundColor: 'rgba(255, 255, 255, 0.2)'
+};
