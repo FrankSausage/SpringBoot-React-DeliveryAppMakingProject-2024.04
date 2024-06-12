@@ -161,7 +161,7 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public ReviewListOwnerResponseDto listOwnerReview(ReviewListOwnerRequestDto requestDto) {
         Stores stores = storesRepository.findById(requestDto.getStoreId()).orElseThrow(()->new RuntimeException("Stores not found"));
-        List<Orders> ordersList = ordersRepository.findAllByStoreId(stores.getStoreId());
+        List<Orders> ordersList = ordersRepository.findAllByStoreIdOOrderByCreatedDateDesc(stores.getStoreId());
         List<Reviews> reviewsList = new ArrayList<>();
         List<ReviewListOwnerInnerReviewListResponseDto> innerReviewListResponseDtos = new ArrayList<>();
 
