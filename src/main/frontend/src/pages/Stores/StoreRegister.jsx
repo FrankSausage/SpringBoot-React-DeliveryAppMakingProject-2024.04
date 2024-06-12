@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container, FormControl, InputLabel, Select, Input, MenuItem, ListItemText, Paper } from '@mui/material';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
@@ -164,7 +165,7 @@ export default function StoreRegister() {
                   <ContentPasteIcon />
                 </Avatar>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                  <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>DP</Link>
+                  <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>HOME</Link>
                 </Typography>
                 <Typography component="h1" variant="h5">
                   온라인 입점 신청서
