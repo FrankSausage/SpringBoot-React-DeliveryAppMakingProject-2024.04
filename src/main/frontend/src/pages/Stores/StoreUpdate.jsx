@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container, FormControl, InputLabel, Select, Input, MenuItem, ListItemText, Paper } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import ContentPasteGoIcon from '@mui/icons-material/ContentPasteGo';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { useOwnerByEmail } from '../../utils/storeInfo';
@@ -14,7 +14,10 @@ import { useQueryClient } from '@tanstack/react-query';
 import { uploadImageToCloudinary } from '../../utils/uploader';
 import BackDrop from '../../components/BackDrop';
 
-const defaultTheme = createTheme();
+const defaultTheme = createTheme({
+  palette: { primary: { main: '#1976d2' }, secondary: { main: '#dc004e' } },
+  typography: { fontFamily: 'Roboto, sans-serif', h5: { fontWeight: 600 } },
+});
 
 export default function StoreUpdate() {
   const email = localStorage.getItem('email')
@@ -264,7 +267,7 @@ export default function StoreUpdate() {
                   <CssBaseline />
                   <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }} >
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                      <LockOutlinedIcon />
+                      <ContentPasteGoIcon />
                     </Avatar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                       {/* <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link> */}
