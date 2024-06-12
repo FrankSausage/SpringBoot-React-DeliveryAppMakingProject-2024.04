@@ -172,7 +172,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderOwnerListResponseDto ownerListOrder(OrderOwnerListRequestDto requestDto) {
-        List<Orders> ordersList = ordersRepository.findAllByStoreIdOOrderByCreatedDateDesc(requestDto.getStoreId());
+        List<Orders> ordersList = ordersRepository.findAllByStoreIdOrderByCreatedDateDesc(requestDto.getStoreId());
         List<OrderOwnerListInnerOrdersResponseDto> innerOrdersResponseDtoList = new ArrayList<>();
         for (Orders orders : ordersList) {
             List<OrderMenu> orderMenus = orderMenuRepository.findAllByOrderId(orders.getOrderId());
