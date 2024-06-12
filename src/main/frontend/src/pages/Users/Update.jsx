@@ -18,7 +18,7 @@ const theme = createTheme({
       main: '#dcdcdc',
     },
     secondary: {
-      main: '#ff9800',
+      main: '#dc004e',
     },
     tertiary: {
       main: '#f09032'
@@ -169,7 +169,7 @@ export default function Update() {
               padding: '20px',
               borderRadius: '10px'
             }}>
-              <Avatar sx={{ m: 1, bgcolor: (role === '회원') ? 'quaternary.main' : (role === '점주') ? 'primary.main' : 'default' }}>
+              <Avatar sx={{ m: 1, bgcolor: (role === '회원') ? 'quaternary.main' : (role === '점주') ? 'secondary.main' : 'default' }}>
                 <RestorePageIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
@@ -224,8 +224,10 @@ export default function Update() {
                     </Fragment>
                   }
                   <Grid item xs={12}>
-                    <Button type="submit" fullWidth variant="contained" sx={role === '회원' ? { mt: 3, mb: 2, backgroundColor: '#e69c00', color: '#FFFFFF' ,'&:hover': {backgroundColor: '#ffbe33' }} : {mt: 3, mb: 2 }}>
-                      정보 수정
+                    <Button type="submit" fullWidth variant="contained" sx={(theme) => ({ mt: 3, mb: 2, ...(role === '회원' 
+                        ? { backgroundColor: '#e69c00', color: '#FFFFFF', '&:hover': { backgroundColor: '#ffbe33' }}
+                        : { backgroundColor: '#a9a9a9', color: 'white', '&:hover': { backgroundColor: '#0056b3' }}
+                            ),})}> 정보 수정
                     </Button>
                     <Button fullWidth variant="contained" color='error' sx={{ mt: 2 }} onClick={handleOpen}>
                       계정 삭제
