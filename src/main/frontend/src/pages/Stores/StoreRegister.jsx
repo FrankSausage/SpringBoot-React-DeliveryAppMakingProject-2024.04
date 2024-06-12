@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container, FormControl, InputLabel, Select, Input, MenuItem, ListItemText, Paper } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
@@ -161,7 +161,7 @@ export default function StoreRegister() {
               <CssBaseline />
               <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }} >
                 <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                  <LockOutlinedIcon />
+                  <ContentPasteIcon />
                 </Avatar>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                   <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>DP</Link>

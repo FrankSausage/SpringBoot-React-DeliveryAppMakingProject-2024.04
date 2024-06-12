@@ -23,7 +23,7 @@ export default function AddressDelete({addressId, addressData}) {
     }
     return(
         <Fragment>
-        <Button sx={{border: 1, mx: 1}} onClick={handleOpen}>
+        <Button color="error" variant="outlined" sx={{mx: 1}} onClick={handleOpen}>
           삭제
         </Button>
         <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description"  >

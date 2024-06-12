@@ -3,7 +3,7 @@ import axios from 'axios';
 import Footer from '../../../components/Footer';
 import { extractDataFromFormData } from '../../../utils/commonUitil';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container, Paper } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import MenuOptionDetail from './MenuOptionDetail';
@@ -14,7 +14,10 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useMenu } from '../Hook/useMenu';
 import BackDrop from '../../../components/BackDrop';
 
-const defaultTheme = createTheme();
+const defaultTheme = createTheme({
+  palette: { primary: { main: '#1976d2' }, secondary: { main: '#dc004e' } },
+  typography: { fontFamily: 'Roboto, sans-serif', h5: { fontWeight: 600 } },
+});
 
 export default function MenuUpdate() {
   const location = useLocation();
@@ -148,12 +151,12 @@ export default function MenuUpdate() {
                   <CssBaseline />
                   <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                      <LockOutlinedIcon />
+                      <RestaurantMenuIcon />
                     </Avatar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                      <Link to={`/StoreDetail/${storeId}`} style={{ textDecoration: 'none', color: 'black' }}>메뉴 리스트</Link>
+                      <Link to={`/StoreDetail/${storeId}`} style={{ textDecoration: 'none', color: 'black' }}>메뉴</Link>
                     </Typography>
-                    <Typography component="h1" variant="h5">
+                    <Typography component="h1" variant="h5" sx={{ fontWeight:'bold' }}>
                       음식 정보 수정
                     </Typography>
                     {menu.menus[0].options && <MenuOptionDetail options={menu.menus[0].options} email={email} />}
