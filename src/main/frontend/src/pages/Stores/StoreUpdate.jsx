@@ -270,7 +270,7 @@ export default function StoreUpdate() {
                       <ContentPasteGoIcon />
                     </Avatar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                      {/* <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link> */}
+                      <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>HOME</Link>
                     </Typography>
                     <Typography component="h1" variant="h5">
                       가게 정보 수정
