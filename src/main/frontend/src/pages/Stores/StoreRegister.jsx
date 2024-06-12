@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container, FormControl, InputLabel, Select, Input, MenuItem, ListItemText } from '@mui/material';
+import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container, FormControl, InputLabel, Select, Input, MenuItem, ListItemText, Paper } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
@@ -154,7 +154,7 @@ export default function StoreRegister() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <SearchHeader />
-      <div style={{ backgroundImage: 'url(/img/kaka.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.2)' }}>
+      <Paper sx={Paperstyle}>
         <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
           <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
             <Container component="main" maxWidth="xs">
@@ -321,7 +321,18 @@ export default function StoreRegister() {
             </Container>
           </Container>
         </div>
-      </div>
+      </Paper>
     </ThemeProvider>
   );
 }
+
+const Paperstyle = {
+  backgroundImage: 'url(/img/kaka.jpg)',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  display: 'flex',
+  justifyContent: 'center',
+  padding: '23px 0',
+  backgroundBlendMode: 'lighten',
+  backgroundColor: 'rgba(255, 255, 255, 0.2)'
+};
