@@ -53,3 +53,30 @@ export const generateTimeOptions = (startHour, endHour) => {
   return options;
 };
 
+export const slideSettings = { 
+  dots: true, 
+  infinite: true, 
+  speed: 1000, 
+  slidesToShow: 1, 
+  slidesToScroll: 1, 
+  autoplay: true, 
+  autoplaySpeed: 6500, 
+};
+export const checkTextError = (type, text) => {
+  let checkText = '';
+
+  switch(type){
+    case 'name':
+      checkText = /^[a-zA-Z가-힣]*$/;
+      return !checkText.test(text);
+    case 'email':
+      checkText = /^[a-zA-Z0-9@]*$/;
+      return !checkText.test(text);
+    case 'password':
+      checkText = /^[a-zA-Z0-9]*$/;
+      return !checkText.test(text);
+    default:
+      return false;
+  }
+}
+

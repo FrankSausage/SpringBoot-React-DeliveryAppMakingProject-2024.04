@@ -73,6 +73,7 @@ export default function Order() {
 			onSuccess: () => {
 				localStorage.removeItem('cartItems');
 				localStorage.removeItem('cartCount');
+				alert('주문이 완료 되었습니다.');
 				navigate('/')
 			},
 			onError: e => {console.log(e)},
@@ -126,7 +127,7 @@ export default function Order() {
 			</Stack>
 			<Grid container sx={{ my: 3 }}>
 				<Grid item xs />
-				<Grid item xs={3}>
+				<Grid item xs={2.7}>
 					<FormControl fullWidth>
 						<InputLabel id='paymentMethod'>결제 방식</InputLabel>
 						<Select
@@ -134,6 +135,7 @@ export default function Order() {
 							id='paymentMethod-select'
 							value={paymentMethod}
 							label='결제 방식 선택'
+							style={{ textAlign: 'center' }}
 							onChange={e => setPaymentMethod(e.target.value)}
 						>
 							<MenuItem value={'현금결제'}>만나서 현금 결제</MenuItem>

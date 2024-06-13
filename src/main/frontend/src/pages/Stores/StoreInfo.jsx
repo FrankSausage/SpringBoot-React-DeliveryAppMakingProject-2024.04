@@ -1,9 +1,12 @@
 import * as React from 'react';
-import { Box, Grid, createTheme, ThemeProvider, Typography } from '@mui/material';
+import { Box, Grid, createTheme, ThemeProvider, } from '@mui/material';
 
 const defaultTheme = createTheme();
 
 export default function StoreInfo({storeDetail}) {
+
+  const renderContentWithLineBreaks = (content) => { 
+    return content.split('\n').map((line, index) => ( <span key={index}>{line}<br /></span>));};  //가게 소개 줄, 문단 바꾸기 적용//
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -12,28 +15,18 @@ export default function StoreInfo({storeDetail}) {
           {/* 가게·원산지 정보 */}
           <Grid container>
             <Grid item xs />
-            <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center', }}>
+            <Grid container sx={{ position: 'relative', border: 1, borderColor: 'rgba(255, 0, 0, 0)', justifyContent: 'center', alignItems: 'center',textAlign: 'center' }}>
               <Grid className="centerBody" container columnSpacing={{ xs: 2, sm: 2 }} sx={gridStyle}>
                 <Box
                   className="storeIntro"
                   sx={{
                     ...boxStyle,
                     position: 'relative',
-                    width: { xs: '100%', sm: '70%' },
-                    height: '380px',
-                    marginX: 'auto',
-                    marginBottom: '10px',
-                    overflow: 'hidden',
-                    borderRadius: '10px',
-                    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-                    backgroundColor: '#f9f9f9',
-                    padding: '20px',
-                  }}
-                >
+                    width: { xs: '100%', sm: '70%' }, height: '380px', marginX: 'auto', marginBottom: '10px', overflow: 'hidden', borderRadius: '10px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', backgroundColor: '#f9f9f9', padding: '20px', }}>
                   {/* <div style={{ position: 'absolute', top: '52%', left: '25%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0, fontSize: '16px'}}> */}
-                  <div style={{ padding: 0, fontSize: '16px'}}>
+                  <div style={{ padding: 0, fontSize: '16px',}}>
                     <h2 style={{ marginBottom: '15px', color: '#333', fontSize: '22px' }}>가게 정보</h2>
-                    <ul style={{ padding: '0', margin: '0', textAlign: 'left' }}>
+                    <ul style={{ padding: '0', margin: '0', textAlign: 'left',textAlign: 'center' }}>
                       <li style={{ listStyleType: 'none', marginBottom: '10px' }}>가게 이름: {storeDetail.name}</li>
                       <li style={{ listStyleType: 'none', marginBottom: '10px' }}>주소: {storeDetail.address}</li>
                       <li style={{ listStyleType: 'none', marginBottom: '10px' }}>전화번호: {storeDetail.phone}</li>
@@ -65,8 +58,9 @@ export default function StoreInfo({storeDetail}) {
                   {/* <div style={{ position: 'absolute', top: '30%', left: '34%', transform: 'translate(-50%, -50%)', padding: 0, margin: 0, fontSize: '16px' }}> */}
                   <div style={{ padding: 0,  fontSize: '16px'}}>
                     <h2 style={{ marginBottom: '15px', color: '#333', fontSize: '22px' }}>가게 소개</h2>
-                    <ul style={{ padding: '0', margin: '0', textAlign: 'left' }}>
-                      <li style={{ listStyleType: 'none', marginBottom: '10px' }}>{storeDetail.content}</li>
+                    <ul style={{ padding: '0', margin: '0', textAlign: 'center' }}>
+                      {/* <li style={{ listStyleType: 'none', marginBottom: '10px' }}>{storeDetail.content}</li> */}
+                      <li style={{ listStyleType: 'none', marginBottom: '10px' }}>{renderContentWithLineBreaks(storeDetail.content)}</li>
                     </ul>
                   </div>
                 </Box>

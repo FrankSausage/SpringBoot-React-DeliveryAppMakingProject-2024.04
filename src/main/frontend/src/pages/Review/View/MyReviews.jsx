@@ -18,18 +18,11 @@ export default function MyReviews(props) {
   }
 
   return(
-    <Dialog
-      open={handleOpen}
-      onClose={reviewClose}
-      maxWidth="md"
-      fullWidth
-      sx={{ '& .MuiDialog-paper': { borderRadius: 2, ...paperStyle } }}
-    >
+    <Dialog open={handleOpen} onClose={reviewClose} maxWidth="md" fullWidth sx={{ '& .MuiDialog-paper': { borderRadius: 2, ...paperStyle } }}>
       <Box sx={{ p: 3 }}>
         {isLoading && <BackDrop isLoading={isLoading} />}
         {!isLoading && reviewData && reviewData.data.reviewList.length === 0 &&
           <Card sx={{ m: 'auto', border: 1, width: '50%', height: 400, textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', boxShadow: 3, transition: 'transform 0.3s, box-shadow 0.3s', '&:hover': { transform: 'scale(1.05)', boxShadow: 6 } }}>
-            <CloseIcon sx={CloseBoxStyle} onClick={reviewClose} />
             <CardContent>
               <Typography>아직 리뷰를 남긴 가게가 없어요!</Typography>
             </CardContent>
@@ -54,7 +47,7 @@ export default function MyReviews(props) {
                     </Box>
                     {data.ceoReviewContent &&
                       <Box sx={{ mt: 2 }}>
-                        <Typography variant="body2" color="textSecondary">사장님 댓글 작성 일: {data.ceoReviewCreatedDate.replace('T', ' ')}</Typography>
+                        <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>사장님 댓글 작성 일: {data.ceoReviewCreatedDate.replace('T', ' ')}</Typography>
                         <TextField value={data.ceoReviewContent} sx={{ width: '100%' }} maxRows={4} minRows={4} multiline InputProps={{ readOnly: true }} />
                       </Box>
                     }
@@ -82,7 +75,7 @@ let CloseBoxStyle = {
 
 const paperStyle = {
   height: '90vh',
-  backgroundImage: 'url(/img/s01.jpg)',
+  backgroundImage: 'url(/img/flat.jpg)',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundBlendMode: 'lighten',

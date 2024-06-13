@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface AddressRepository extends JpaRepository<Address, Long> {
 
     Optional<Address> findAddressByUserId(Long uId);
+    Optional<Address> findAddressByUserIdAndAddress(Long userId, String address);
 
     Optional<Address> findAddressByAddressId(Long addressId);
 
