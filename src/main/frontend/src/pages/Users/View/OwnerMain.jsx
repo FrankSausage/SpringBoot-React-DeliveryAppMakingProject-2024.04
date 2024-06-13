@@ -39,7 +39,7 @@ export default function OwnerMain() {
   return (
     <Box sx={{ margin: -1 }}>
       <SearchHeader />
-      <Paper elevation={3} sx={{ minHeight: 'auto',maxHeight: 'auto', backgroundImage: 'url(/img/011.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
+      <Paper elevation={3} sx={{ minHeight: '100vh',maxHeight: 'auto', backgroundImage: 'url(/img/cooking.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)', p: 2 }}>
         {isLoading && <BackDrop isLoading={isLoading} />}
         {error && <Typography>에러 발생!</Typography>}
         {!isLoading && storeData?.storeList?.length === 0 && (
@@ -58,7 +58,7 @@ export default function OwnerMain() {
                           <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{data.name}</Typography>
                           <Typography variant="body2" sx={{ fontWeight: 'bold' }}><Rating name="read-only" value={data.rating} readOnly /></Typography>
                           <Typography variant="body2" color="textSecondary">리뷰: {data.reviewCount}</Typography>
-                          <Typography variant="body2" color="textSecondary">조회수: {data.dibsCount}</Typography>
+                          <Typography variant="body2" color="textSecondary">찜수: {data.dibsCount}</Typography>
                         </Box>
                       </Box>
                     </Link>
@@ -70,7 +70,7 @@ export default function OwnerMain() {
                         <Link to={`/OwnerOrderList`} state={{ storeId: data.storeId, storeName: data.name }} style={{ textDecoration: 'none' }}>
                           <Button variant="outlined">가게 주문확인</Button>
                         </Link>
-                        <Link to={`/StoreReviews`} state={{ storeId: data.storeId }} style={{ textDecoration: 'none' }}>
+                        <Link to={`/StoreReviews1`} state={{ storeId: data.storeId }} style={{ textDecoration: 'none' }}>
                           <Button variant="outlined">가게 리뷰</Button>
                         </Link>
                       </Stack>

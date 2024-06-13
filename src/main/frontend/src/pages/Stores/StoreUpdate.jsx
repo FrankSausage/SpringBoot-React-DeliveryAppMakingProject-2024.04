@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container, FormControl, InputLabel, Select, Input, MenuItem, ListItemText, Paper } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import ContentPasteGoIcon from '@mui/icons-material/ContentPasteGo';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from '../../components/Footer';
 import { useOwnerByEmail } from '../../utils/storeInfo';
@@ -14,7 +14,10 @@ import { useQueryClient } from '@tanstack/react-query';
 import { uploadImageToCloudinary } from '../../utils/uploader';
 import BackDrop from '../../components/BackDrop';
 
-const defaultTheme = createTheme();
+const defaultTheme = createTheme({
+  palette: { primary: { main: '#1976d2' }, secondary: { main: '#dc004e' } },
+  typography: { fontFamily: 'Roboto, sans-serif', h5: { fontWeight: 600 } },
+});
 
 export default function StoreUpdate() {
   const email = localStorage.getItem('email')
@@ -257,17 +260,17 @@ export default function StoreUpdate() {
       {store && store.addressCodes &&
         <>
           <SearchHeader />
-          <Paper style={{ backgroundImage: 'url(/img/Okitchen.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
+          <Paper style={{ backgroundImage: 'url(/img/kaka.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', padding: '23px 0', backgroundBlendMode: 'lighten', backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
             <div style={{ width: '100%', maxWidth: '900px', display: 'flex', justifyContent: 'center' }}>
-              <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px' }}>
+              <Container component="main" maxWidth="xs" style={{ backgroundColor: '#ffffffd9', padding: '20px', borderRadius: '8px'}}>
                 <Container component="main" maxWidth="xs">
                   <CssBaseline />
                   <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }} >
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                      <LockOutlinedIcon />
+                      <ContentPasteGoIcon />
                     </Avatar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                      <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>휴먼 딜리버리</Link>
+                      <Link to="/OwnerMain" style={{ textDecoration: 'none', color: 'black' }}>HOME</Link>
                     </Typography>
                     <Typography component="h1" variant="h5">
                       가게 정보 수정
