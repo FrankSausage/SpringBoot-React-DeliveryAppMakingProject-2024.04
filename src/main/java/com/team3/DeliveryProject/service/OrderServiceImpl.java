@@ -172,7 +172,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderOwnerListResponseDto ownerListOrder(OrderOwnerListRequestDto requestDto) {
-        List<Orders> ordersList = ordersRepository.findAllByStoreId(requestDto.getStoreId());
+        List<Orders> ordersList = ordersRepository.findAllByStoreIdOrderByCreatedDateDesc(requestDto.getStoreId());
         List<OrderOwnerListInnerOrdersResponseDto> innerOrdersResponseDtoList = new ArrayList<>();
         for (Orders orders : ordersList) {
             List<OrderMenu> orderMenus = orderMenuRepository.findAllByOrderId(orders.getOrderId());
@@ -223,7 +223,7 @@ public class OrderServiceImpl implements OrderService {
         List<OrderListInnerOrdersResponseDto> innerOrdersResponseDtoList = new ArrayList<>();
         Users users = usersRepository.findUsersByEmail(requestDto.getEmail())
             .orElseThrow(() -> new RuntimeException("User not found"));
-        List<Orders> ordersList = ordersRepository.findAllByDeliveryUserId(users.getUserId());
+        List<Orders> ordersList = ordersRepository.findAllByDeliveryUserIdOrderByCreatedDateDesc(users.getUserId());
         for (Orders orders : ordersList) {
             if (orders.getStatus().equals("삭제")) {
                 continue;
