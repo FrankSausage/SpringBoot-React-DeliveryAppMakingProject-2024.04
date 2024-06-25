@@ -47,7 +47,7 @@ export default function MyReviews(props) {
                     </Box>
                     {data.ceoReviewContent &&
                       <Box sx={{ mt: 2 }}>
-                        <Typography variant="body2" color="textSecondary">사장님 댓글 작성 일: {data.ceoReviewCreatedDate.replace('T', ' ')}</Typography>
+                        <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>사장님 댓글 작성 일: {data.ceoReviewCreatedDate.replace('T', ' ')}</Typography>
                         <TextField value={data.ceoReviewContent} sx={{ width: '100%' }} maxRows={4} minRows={4} multiline InputProps={{ readOnly: true }} />
                       </Box>
                     }

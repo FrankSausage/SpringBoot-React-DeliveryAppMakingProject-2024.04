@@ -73,6 +73,7 @@ export default function Order() {
 			onSuccess: () => {
 				localStorage.removeItem('cartItems');
 				localStorage.removeItem('cartCount');
+				alert('주문이 완료 되었습니다.');
 				navigate('/')
 			},
 			onError: e => {console.log(e)},
