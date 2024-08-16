@@ -1,7 +1,18 @@
-## Delivery-App-Project
-프로젝트 설명
+## 🚴‍♂️ Delivery-App-Project
 
-Tech Stack
+프로젝트 소개
+----
+
+팀원 구성 🙋‍♂️
+----
+<img alt="Static Badge" src="https://img.shields.io/badge/FE-%EA%B9%80%EB%8F%99%ED%98%B8-green?style=flat-square">|<img alt="Static Badge" src="https://img.shields.io/badge/FE-%EC%9C%A0%ED%9D%AC%EC%9E%AC-green?style=flat-square">|<img alt="Static Badge" src="https://img.shields.io/badge/FE-%EA%B9%80%EA%B8%B0%EC%A3%BC-green?style=flat-square">|<img alt="Static Badge" src="https://img.shields.io/badge/BE-%EC%9C%A0%EA%B8%B0%EC%A4%80-green?style=flat-square">|
+---|---|---|---|
+페이지 설계 및 <br/> 로직 구현|페이지 디자인 및 <br/> DB 데이터 관리|페이지 설계 및 <br/> 페이지 디자인|로직 구현 및 <br/> DB 테이블 설계|
+
+
+
+
+기술 스택
 ---
 ### Language 🚀
 <div>
@@ -30,3 +41,4 @@ Tech Stack
   <img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=Jira&logoColor=white" />
   <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" />  
 </div>
+
