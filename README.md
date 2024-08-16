@@ -1,4 +1,6 @@
 ## 🚴‍♂️ Delivery-App-Project
+![image](https://github.com/user-attachments/assets/ee1d8589-c3ad-4163-a489-843983f06d25)
+
 
 프로젝트 소개
 ----
