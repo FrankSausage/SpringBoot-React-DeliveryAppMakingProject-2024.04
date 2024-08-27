@@ -5,7 +5,22 @@
 📌 목차 
 ----
 
-프로젝트 개요
+
+1. [📚 프로젝트 개요](https://github.com/FrankSausage/SpringBoot-React-DeliveryAppMakingProject-2024.04/blob/main/README.md#%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B0%9C%EC%9A%94)
+
+
+2. [📖 주요 기능](https://github.com/FrankSausage/SpringBoot-React-DeliveryAppMakingProject-2024.04/blob/main/README.md#-%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5)
+
+  
+3. [🛠️ 기술 스택](https://github.com/FrankSausage/SpringBoot-React-DeliveryAppMakingProject-2024.04/blob/main/README.md#-%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5)
+
+ 
+4. [🏗️ ERD](https://github.com/FrankSausage/SpringBoot-React-DeliveryAppMakingProject-2024.04/blob/main/README.md#-%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5)
+
+ 
+5. [🖨️ API 명세](https://github.com/FrankSausage/SpringBoot-React-DeliveryAppMakingProject-2024.04/blob/main/README.md#-%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5)
+
+📚 프로젝트 개요
 ----
 #### 📆 개발기간  
 - 2024년 4월 16일 ~ 6월 13일 
@@ -68,11 +83,11 @@
   <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" />  
 </div>
 
-ERD
+🏗️ ERD
 ----
 <img src="https://github.com/user-attachments/assets/6e6e7af8-c236-4cd3-ae7c-b19c8103a71f" />
 
 
-API명세
+🖨️ API명세
 ----
 [API 명세 자료](https://docs.google.com/spreadsheets/d/19CAVK8HQnf0X1SrffZ50eb8AjZtd64PRHUc8RU-Vs74/edit?gid=0#gid=0)
