@@ -39,31 +39,87 @@
 
 📖 주요 기능
 ----
-페이지 구현 내용 작성 요망
+<details>
+  <summary>
+    
+#### 로그인 / 회원가입 화면
+  </summary>
+  로그인 / 회원가입 화면 내용
+</details>
+
+<details>
+  <summary>
+
+#### 1-1. 유저 화면
+  </summary>
+@@@@@@@@@@@@@@@@@@@@@@@@
+
+  <details>
+    <summary> 1-2. 홈 화면  </summary>
+  1-2 내용
+  </details>
+  
+  <details>
+    <summary> 1-3. 유저 정보 수정  </summary>
+  1-3 내용
+  </details>
+  
+  <details>
+    <summary> 1-4. 유저 주소 수정 </summary>
+  1-4 내용
+  </details>
+  
+@@@@@@@@@@@@@@@@@@@@@@@@@@
+</details>
+
+<details>
+  <summary>
+
+#### 2-1. 점주 화면
+  </summary>
+@@@@@@@@@@@@@@@@@@@@@@@@
+
+  <details>
+    <summary> 2-2. 홈 화면  </summary>
+  2-2 내용
+  </details>
+  
+  <details>
+    <summary> 2-3. 가게 등록/확인/수정/삭제  </summary>
+  2-3 내용
+  </details>
+  
+  <details>
+    <summary> 2-4. 메뉴 등록/확인/수정/삭제 </summary>
+  2-4 내용
+  </details>
+  
+@@@@@@@@@@@@@@@@@@@@@@@@@@
+</details>
 
 🛠️ 기술 스택
 ----
 
-- ### 🔧 Tool
+### 🔧 Tool
 <div>
   <img src="https://img.shields.io/badge/IntelliJ_IDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white" />
   <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white" />
 </div>
 
-- ### 📑 DB
+### 📑 DB
 <div>
   <img src="https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white" />
   <img src="https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=Firebase&logoColor=white" />
 </div>
 
-- ### 📂 Back-end
+### 📂 Back-end
 <div>
   <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" />
   <img src="https://img.shields.io/badge/Spring_Data_JPA-6DB33F?style=for-the-badge&logoColor=white" />
   <img src="https://img.shields.io/badge/Lombok-CC2927?style=for-the-badge&logoColor=white" />
 </div>
 
-- ### 🖥️ Front-end
+### 🖥️ Front-end
 <div>
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white" />
   <img src="https://img.shields.io/badge/HTML-239120?style=for-the-badge&logo=html5&logoColor=white" />
