@@ -91,7 +91,7 @@
    <img src="https://github.com/user-attachments/assets/6ca9508f-ab3b-45d8-9c90-13a759a78e2c" />
   
   ● 등록된 주소 측면의 아이콘 클릭을 통해 현재 주소 변경
-   <img src="https://github.com/user-attachments/assets/49b996d1-b4dd-43d8-bcbd-7d867cd64a0a" />
+   <img src="https://github.com/user-attachments/assets/04c8f6ab-31a4-45b0-9cfb-aeed67f44c32" />
   
   ● 주소 검색 API를 사용한 검색 기능
    <img src="https://github.com/user-attachments/assets/4e69674a-2e68-4325-93d6-02005573c9b7" />
