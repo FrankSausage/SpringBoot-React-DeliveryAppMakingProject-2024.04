@@ -178,6 +178,15 @@
   ● 가게 메뉴 화면
    <img src="https://github.com/user-attachments/assets/ce2cdf42-ebaa-4392-89c0-b45c6f4ccf26" />
     
+  ● 메뉴 품절 설정 시 유저 화면에서 SOLD OUT 처리
+   <img src="https://github.com/user-attachments/assets/002f1d42-2787-45fc-a224-dd137b2df259" />
+   
+  ● 메뉴 신규 추가 화면
+   <img src="https://github.com/user-attachments/assets/f1928122-dff4-4c4c-9c4e-394d47ee5e35" />
+   
+  ● 메뉴 사진 등록 시 트랜잭션 처리
+   <img src="https://github.com/user-attachments/assets/d84be306-fe3b-4ae2-b81b-f6468c7d3923" />
+    
   </details>
   
 @@@@@@@@@@@@@@@@@@@@@@@@@@
