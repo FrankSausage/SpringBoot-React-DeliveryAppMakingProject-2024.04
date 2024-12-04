@@ -59,14 +59,15 @@
 
 #### 1-1. 유저 화면
   </summary>
-
-
+  <br/>
+  
+  ● 메인 화면
+   <img src="https://github.com/user-attachments/assets/008dbdee-7273-4606-af07-2d3745fba121" />
+  <br/>
   <details>
     <summary> 1-2. 홈 화면  </summary>
   <br/>
-  ● 메인 화면
-   <img src="https://github.com/user-attachments/assets/008dbdee-7273-4606-af07-2d3745fba121" />
-   
+     
   ● 정보 수정 화면
    <img src="https://github.com/user-attachments/assets/cc9d229d-dba4-438c-96c2-44a83c0bd925" />
 
