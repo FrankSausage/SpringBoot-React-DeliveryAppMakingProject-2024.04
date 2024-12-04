@@ -63,7 +63,8 @@
 
   <details>
     <summary> 1-2. 홈 화면  </summary>
-  1-2 내용
+  ● 유저 홈 화면
+   <img src="https://github.com/user-attachments/assets/008dbdee-7273-4606-af07-2d3745fba121" />
   </details>
   
   <details>
