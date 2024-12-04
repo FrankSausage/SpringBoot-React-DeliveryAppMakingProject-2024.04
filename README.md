@@ -63,8 +63,7 @@
 
   <details>
     <summary> 1-2. 홈 화면  </summary>
-
-    
+  <br/>
   ● 메인 화면
    <img src="https://github.com/user-attachments/assets/008dbdee-7273-4606-af07-2d3745fba121" />
    
@@ -88,10 +87,9 @@
   
   <details>
     <summary> 1-2. 유저 주소 수정 </summary>
-
-
-  ● 유저 주문내역 화면
-   <img src="https://github.com/user-attachments/assets/07aa7482-8002-4d42-8b7e-c0ee5f490306" />
+  <br/>
+  ● 유저 주소 화면
+   <img src="https://github.com/user-attachments/assets/6ca9508f-ab3b-45d8-9c90-13a759a78e2c" />
   
   ● 등록된 주소 측면의 아이콘 클릭을 통해 현재 주소 변경
    <img src="https://github.com/user-attachments/assets/49b996d1-b4dd-43d8-bcbd-7d867cd64a0a" />
@@ -107,8 +105,7 @@
 
   <details>
     <summary> 1-3. 유저 가게 및 주문 화면 </summary>
-
-    
+  <br/>   
   ● 가게 화면
    <img src="https://github.com/user-attachments/assets/a28c3f64-12d7-45a1-8ad5-ced4d5375174" />
    
