@@ -59,25 +59,59 @@
 
 #### 1-1. 유저 화면
   </summary>
-@@@@@@@@@@@@@@@@@@@@@@@@
+
 
   <details>
     <summary> 1-2. 홈 화면  </summary>
-  ● 유저 홈 화면
+    
+  ● 메인 화면
    <img src="https://github.com/user-attachments/assets/008dbdee-7273-4606-af07-2d3745fba121" />
+  
   </details>
   
   <details>
-    <summary> 1-3. 유저 정보 수정  </summary>
+    <summary> 1-2. 유저 정보 수정  </summary>
+  1-2 내용
+  </details>
+  
+  <details>
+    <summary> 1-3. 유저 주소 수정 </summary>
   1-3 내용
   </details>
-  
+
   <details>
-    <summary> 1-4. 유저 주소 수정 </summary>
-  1-4 내용
+    <summary> 1-4. 유저 가게 및 주문 화면 </summary>
+    
+  ● 가게 화면
+   <img src="https://github.com/user-attachments/assets/a28c3f64-12d7-45a1-8ad5-ced4d5375174" />
+   
+  ● 상단의 카테고리 선택을 통한 가게 정렬 기능
+   <img src="https://github.com/user-attachments/assets/e93ff952-2736-4bd8-9c95-01dfeb025e01" />
+
+  ● 검색창을 통한 가게 검색 기능
+   <img src="https://github.com/user-attachments/assets/de43a21a-10dd-4f97-9cc2-4d26f61dbda0" />
+
+  ● 가게 메뉴 화면
+   <img src="https://github.com/user-attachments/assets/55105515-b7e7-447a-9468-e3fd57e16290" />
+
+  ● 상단의 카테고리 선택을 통한 메뉴 정렬 기능
+   <img src="https://github.com/user-attachments/assets/f92ffac6-d922-41dc-a296-a155acbafc6c" />
+
+  ● 메뉴 선택 화면
+   <img src="https://github.com/user-attachments/assets/9a3a8424-fd6d-47be-820c-dca248386663" />
+
+  ● 메뉴 선택 화면
+   <img src="https://github.com/user-attachments/assets/9a3a8424-fd6d-47be-820c-dca248386663" />
+   
+  ● 메뉴 선택 화면
+   <img src="https://github.com/user-attachments/assets/9a3a8424-fd6d-47be-820c-dca248386663" />
+   
+  ● 메뉴 선택 화면
+   <img src="https://github.com/user-attachments/assets/9a3a8424-fd6d-47be-820c-dca248386663" />
+   
   </details>
   
-@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 </details>
 
 <details>
