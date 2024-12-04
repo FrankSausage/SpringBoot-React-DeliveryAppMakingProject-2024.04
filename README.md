@@ -147,8 +147,10 @@
 
 #### 2-1. 점주 화면
   </summary>
-@@@@@@@@@@@@@@@@@@@@@@@@
-
+  <br/>  
+  ● 메인 화면
+   <img src="https://github.com/user-attachments/assets/c76f614d-4512-4305-b5e7-2405c81e42a5" />
+   
   <details>
     <summary> 2-2. 홈 화면  </summary>
   2-2 내용
