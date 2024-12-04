@@ -63,24 +63,51 @@
 
   <details>
     <summary> 1-2. 홈 화면  </summary>
+
     
   ● 메인 화면
    <img src="https://github.com/user-attachments/assets/008dbdee-7273-4606-af07-2d3745fba121" />
+   
+  ● 정보 수정 화면
+   <img src="https://github.com/user-attachments/assets/cc9d229d-dba4-438c-96c2-44a83c0bd925" />
+
+  ● 리뷰 관리 화면
+   <img src="https://github.com/user-attachments/assets/45967279-3be2-4fec-bbb4-222f7f2e16f1" />
+
+  ● 찜목록 화면
+   <img src="https://github.com/user-attachments/assets/34ca6c83-c50b-4f49-b63f-7639bdf3a2f8" />
+
+  ● 장바구니 화면
+   <img src="https://github.com/user-attachments/assets/42468ffd-8c1f-46ab-9284-c0de24ac9189" />
+  
+  ● 주문내역 화면
+   <img src="https://github.com/user-attachments/assets/07aa7482-8002-4d42-8b7e-c0ee5f490306" />
   
   </details>
+
   
   <details>
-    <summary> 1-2. 유저 정보 수정  </summary>
-  1-2 내용
-  </details>
+    <summary> 1-2. 유저 주소 수정 </summary>
+
+
+  ● 유저 주문내역 화면
+   <img src="https://github.com/user-attachments/assets/07aa7482-8002-4d42-8b7e-c0ee5f490306" />
   
-  <details>
-    <summary> 1-3. 유저 주소 수정 </summary>
-  1-3 내용
+  ● 등록된 주소 측면의 아이콘 클릭을 통해 현재 주소 변경
+   <img src="https://github.com/user-attachments/assets/49b996d1-b4dd-43d8-bcbd-7d867cd64a0a" />
+  
+  ● 주소 검색 API를 사용한 검색 기능
+   <img src="https://github.com/user-attachments/assets/4e69674a-2e68-4325-93d6-02005573c9b7" />
+
+  ● 주소가 입력 됐을 시 버튼 활성화
+   <img src="https://github.com/user-attachments/assets/49b996d1-b4dd-43d8-bcbd-7d867cd64a0a" />
+
+  
   </details>
 
   <details>
-    <summary> 1-4. 유저 가게 및 주문 화면 </summary>
+    <summary> 1-3. 유저 가게 및 주문 화면 </summary>
+
     
   ● 가게 화면
    <img src="https://github.com/user-attachments/assets/a28c3f64-12d7-45a1-8ad5-ced4d5375174" />
@@ -100,14 +127,6 @@
   ● 메뉴 선택 화면
    <img src="https://github.com/user-attachments/assets/9a3a8424-fd6d-47be-820c-dca248386663" />
 
-  ● 메뉴 선택 화면
-   <img src="https://github.com/user-attachments/assets/9a3a8424-fd6d-47be-820c-dca248386663" />
-   
-  ● 메뉴 선택 화면
-   <img src="https://github.com/user-attachments/assets/9a3a8424-fd6d-47be-820c-dca248386663" />
-   
-  ● 메뉴 선택 화면
-   <img src="https://github.com/user-attachments/assets/9a3a8424-fd6d-47be-820c-dca248386663" />
    
   </details>
   
