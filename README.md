@@ -45,7 +45,7 @@
 #### 로그인 / 회원가입 화면
   </summary>
   ● 로그인 화면
-  <img src="https://github.com/user-attachments/assets/f414070e-2f01-4b62-86fc-385c585d285e" />
+  <img src="https://github.com/user-attachments/assets/7d7e8ad1-7b9d-44aa-b87c-95e761e95464" />
 
   ● 유저 회원가입 화면
   <img src="https://github.com/user-attachments/assets/d8ffe782-654c-4659-be78-70ef696873c5" />
