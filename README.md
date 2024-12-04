@@ -147,23 +147,37 @@
 
 #### 2-1. 점주 화면
   </summary>
-  <br/>  
+  <br/>
   ● 메인 화면
    <img src="https://github.com/user-attachments/assets/c76f614d-4512-4305-b5e7-2405c81e42a5" />
+  
+  <details>
+    <summary> 2-2. 가게 관리  </summary>
+  <br/>
+  ● 신규 가게 등록 화면
+   <img src="https://github.com/user-attachments/assets/385926f5-daa4-45a7-a149-3cf549b016ed" />
+    
+  ● 영업 시간과 휴무일을 드롭다운 형태로 구현
+   <img src="https://github.com/user-attachments/assets/99dd08f4-b398-473b-86b9-cd203a8ef491" />
    
-  <details>
-    <summary> 2-2. 홈 화면  </summary>
-  2-2 내용
+   <img src="https://github.com/user-attachments/assets/e2296b02-f447-4a8f-b886-83f15cb84648" />
+  
+  ● 가게 정보 수정
+   <img src="https://github.com/user-attachments/assets/9a724264-9e3a-4f72-81c2-59ed42ea3719" />
+  
+  ● 리뷰 확인 및 사장님 댓글 달기
+   <img src="https://github.com/user-attachments/assets/c11b8b94-8ac2-436f-bbca-4cef7bad31cc" />
+   
+   <img src="https://github.com/user-attachments/assets/3194e288-056b-49b6-bb84-f23110a1b88f" />
+  
   </details>
   
   <details>
-    <summary> 2-3. 가게 등록/확인/수정/삭제  </summary>
-  2-3 내용
-  </details>
-  
-  <details>
-    <summary> 2-4. 메뉴 등록/확인/수정/삭제 </summary>
-  2-4 내용
+    <summary> 2-3. 메뉴 관리 </summary>
+  <br/>
+  ● 가게 메뉴 화면
+   <img src="https://github.com/user-attachments/assets/ce2cdf42-ebaa-4392-89c0-b45c6f4ccf26" />
+    
   </details>
   
 @@@@@@@@@@@@@@@@@@@@@@@@@@
