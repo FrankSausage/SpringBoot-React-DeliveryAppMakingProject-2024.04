@@ -133,8 +133,6 @@
   ● Toss 결제 화면
   
    <img src="https://github.com/user-attachments/assets/e96c76d0-2a64-4bf7-aca5-318a5f0791b5" />
-   
-  ● Toss 결제 완료 화면
   
    <img src="https://github.com/user-attachments/assets/bf838c00-9e47-42ce-9f58-de5ac023eae5" />
 
